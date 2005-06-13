@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.1 2005/06/13 09:05:07 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -126,9 +126,9 @@ string itsProblem::getInformations()
           msg << "Optimum " << sep;
       }
       msg << "<";
-      print(getOptima()[i].getValues(),",",&msg);
+      print(getOptima()[i].getValues()," ",&msg);
       msg << "> @ <";
-      print(getOptima()[i].getSolution(),",",&msg);
+      print(getOptima()[i].getSolution()," ",&msg);
       msg << ">";
       msg << endl;
   }
@@ -137,7 +137,7 @@ string itsProblem::getInformations()
   msg << "Bounds" << sep << "[";
   for(unsigned int i=0;i<getBounds().size();i++) {
       msg << "[";
-      print(getBounds()[i],",",&msg);
+      print(getBounds()[i]," ",&msg);
       msg << "]";
   }
   msg << "]" << endl;
@@ -172,9 +172,9 @@ string itsProblem::getInformations_XML()
           msg << "<point>" << "<values>";
       }
       
-      print(getOptima()[i].getValues(),",",&msg);
+      print(getOptima()[i].getValues()," ",&msg);
       msg << "</values>" << "<solution>";
-      print(getOptima()[i].getSolution(),",",&msg);
+      print(getOptima()[i].getSolution()," ",&msg);
       msg << "</solution>" << "</point>" << endl;
   
   }

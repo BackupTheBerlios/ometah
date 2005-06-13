@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.1 2005/06/13 09:05:06 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -148,6 +148,8 @@ int main(int argc, char ** argv)
     argumentParser.defArg("-S", "--com-server", 
 			  (serverUsage.str()).c_str() ,
 			  true, "string", "Embedded");
+    argumentParser.defArg("-r", "--ran-seed", 
+			  "seed of the pseudo-random generator", true, "int", "0");
     argumentParser.defArg("-D", "--debug", 
 			  "debug key" ,true, "string", "");
     argumentParser.defArg("-i", "--iterations", 
@@ -275,6 +277,11 @@ int main(int argc, char ** argv)
   setProblem.item()->setDimension( argumentParser.getIntValue("-d") );
   setMetaheuristic.item()->setSampleSize( argumentParser.getIntValue("-s") );
   setMetaheuristic.item()->setIterationsMaxNumber( argumentParser.getIntValue("-i") );
+
+  // Initialize pseudo random generator with time unit
+  // (overloaded method exists with an unsigned parameter as seed)
+  setMetaheuristic.item()->initRandom();// argumentParser.getIntValue("-r") );
+  
 
   if (VERBOSE)
     clog << "parameters ok, starting optimization..." << endl;

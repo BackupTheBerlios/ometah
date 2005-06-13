@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.1 2005/06/13 09:05:06 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>

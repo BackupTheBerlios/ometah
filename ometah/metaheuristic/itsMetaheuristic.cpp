@@ -1,5 +1,5 @@
 /**************************************************************************** 
- * $Id: itsMetaheuristic.cpp,v 1.1 2005/06/13 09:05:06 nojhan Exp $
+ * $Id: itsMetaheuristic.cpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  * Authors : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -28,6 +28,7 @@
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+#include <sys/timeb.h>
 #include "itsMetaheuristic.hpp"
 #include "../common/random.hpp"
 #include "../common/string.hpp"
@@ -88,7 +89,7 @@ itsMetaheuristic::itsMetaheuristic()
   this->logKeys["instanciations"] = 2;
   this->logKeys["iterations"] = 2;
   this->logKeys["sample_steps"] = 3;
-
+ 
 }
 
 void itsMetaheuristic::initialization()
@@ -470,4 +471,20 @@ void itsMetaheuristic::setOutDebug(ostream* out)
 unsigned int itsMetaheuristic::getEvaluationNumber()
 {
     return this->evaluationsNumber;
+}
+
+void itsMetaheuristic::initRandom(unsigned seed){
+
+  if (!seed)
+    initRandom();
+  srand(seed);
+}
+
+void itsMetaheuristic::initRandom(){
+
+  struct timeb * tim;
+  tim=(struct timeb*)malloc(sizeof(tim));
+  ftime(tim);
+  srand(tim->millitm);
+  
 }

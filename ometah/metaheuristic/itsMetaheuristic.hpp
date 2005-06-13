@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.1 2005/06/13 09:05:07 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -324,6 +324,11 @@ public:
 
   //! Format a point in xml
   string printXMLPoint(itsPoint p);
+
+  //! Initialize PRG
+  void initRandom(unsigned);
+
+  void initRandom();
 };
 
 
