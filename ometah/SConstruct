@@ -1,0 +1,64 @@
+# -*- coding: iso-8859-1 -*-
+################################################################################
+#  $Id: SConstruct,v 1.1 2005/06/13 09:04:58 nojhan Exp $
+#  Copyright : Universit� Paris 12 Val-de-Marne
+#              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+#  Author : Johann Dréo <nojhan@gmail.com>
+################################################################################
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public License
+# as published by the Free Software Foundation; either version 2.1 of
+# the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+# License for more details.
+# 
+# You should have received a copy of the GNU Lesser General
+# Public License along with this program; if not, write to the Free
+# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+# 02111-1307 USA
+
+
+# flags for optimization, use them in production
+foptim = '-fcaller-saves -fcse-follow-jumps -fcse-skip-blocks  \
+          -felide-constructors -fexpensive-optimizations -ffast-math \
+          -ffloat-store -funroll-all-loops -funroll-loops -O3'
+
+# flags for checking the code
+#-Wstrict-prototypes -Wmissing-prototypes 
+fcheck = '-Wall -ansi -pedantic -Wimplicit \
+          -Wredundant-decls -Wreturn-type -Wunused'
+          
+# flags for debugging
+fdebug = '-ggdb'
+
+# more flags
+fsup = '-Wno-deprecated'
+
+env = Environment(CCFLAGS = " ".join( [fcheck,fdebug,fsup] ) )
+
+
+
+common = ['itsPoint.cpp','geometry.cpp','itsSet.cpp','logic.cpp','matrix.cpp', \
+          'random.cpp','string.cpp']
+common = ['common/'+i for i in common]
+
+metaheuristic = ['itsMetaheuristic.cpp','itsEstimationOfDistribution.cpp']
+metaheuristic = ['metaheuristic/'+i for i in metaheuristic]
+
+problem = ['itsProblem.cpp', \
+           'CEC05/itsCEC05_SSRPO_Base.cpp', 'CEC05/itsCEC05_SSRPO_Problems.cpp']
+problem = ['problem/'+i for i in problem]
+
+communication = ['itsCommunication.cpp', \
+                'itsCommunicationClient.cpp', 'itsCommunicationServer.cpp', \
+                'itsCommunicationClient_embedded.cpp', 'itsCommunicationServer_embedded.cpp']
+communication = ['communication/'+i for i in communication]
+
+interface = ['ometah.cpp','itsArgument.cpp']
+interface = ['interface/'+i for i in interface]
+
+env.Program( target = 'ometah', source = common+metaheuristic+problem+communication+interface )

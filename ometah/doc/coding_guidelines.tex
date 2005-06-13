@@ -1,0 +1,121 @@
+%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[frenchb]{article}
+\usepackage[OT1]{fontenc}
+\usepackage[latin1]{inputenc}
+\IfFileExists{url.sty}{\usepackage{url}}
+                      {\newcommand{\url}{\texttt}}
+
+\makeatletter
+\usepackage{babel}
+\makeatother
+\begin{document}
+
+\title{Open Metaheuristic : coding guidelines}
+
+\maketitle
+
+\section{Coding style}
+
+
+\subsection{Header comment blocks}
+
+All files should include the LGPL statement as the header :
+
+\begin{quotation}
+\texttt{Open Metaheuristic is a library aimed at the conception of
+metaheuristics for difficult optimization.}
+
+\texttt{(c) Copyrights 2005 Johann Dréo}
+
+\texttt{This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1 of
+the License, or (at your option) any later version.}
+
+\texttt{This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+License for more details.}
+
+\texttt{You should have received a copy of the GNU Lesser General
+Public License along with this program; if not, write to the Free
+Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA}
+\end{quotation}
+Add the list of the authors.
+
+
+\subsection{Comments}
+
+Code must be highly commented. 
+
+If applicable, one should use the doxygen syntax, see Doxygen web site \url{http://www.stack.nl/~dimitri/doxygen/}.
+
+
+\subsection{Control structures}
+
+Use a space between the controle statement and the opening parenthesis.
+
+Use brackets, even if they are optional.
+
+
+\subsection{Functions}
+
+No spaces between the function name, the opening parenthesis, and
+the first parameter. 
+
+Spaces between commas and each parameter. 
+
+No space between the last parameter, the closing parenthesis, and
+the semicolon.
+
+Put the first opening brackets after a function delcaration on a new
+line.
+
+
+\subsection{Naming}
+
+If there is a logical hierarchy, name should reflect it, from the
+most general word, to the most precise one. Use the underscore as
+the first depth of hierarchy, and {}``studly caps'' notation as
+the second depth.\\
+the extension of the Source files is ``.cpp'', and the header files is ``.h''
+
+
+\subsubsection{Classes}
+
+Class names should always begin with {}``its'' followed by an uppercase
+letter. Use descriptive names, abbreviations should be employed only
+for algorithms name (e.g. NMS, GA, ACO, SA, etc.).
+
+Examples : itsMetaheuristic, itsCGA\_SubClass
+
+
+\subsubsection{Functions}
+
+The initial letter of the name is lowercase, capitalize each letter
+that starts a new word. 
+
+Example : get\_pointNumber
+
+
+\subsubsection{Variables}
+
+The initial letter of the name is lowercase, capitalize each letter
+that starts a new word. 
+
+Examples : sample\_initial\_pointNumber, iteration\_maxNumber
+
+
+\subsection{Formatting}
+
+Use ISO-8859-1 character encoding.
+
+Lines must end only with a line feed.
+
+Use an indent of 4 spaces, no tabs.
+
+It is recommended to break lines approximatively at 80 characters,
+if possible.
+\end{document}

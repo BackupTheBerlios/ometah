@@ -1,0 +1,202 @@
+# Anjuta Version 1.2.2 
+Compatibility Level: 1 
+
+<PROJECT_DESCRIPTION_START>
+Blabla<PROJECT_DESCRIPTION_END>
+<CONFIG_PROGS_START>
+<CONFIG_PROGS_END>
+<CONFIG_LIBS_START>
+<CONFIG_LIBS_END>
+<CONFIG_HEADERS_START>
+/***************************************************************************
+ *  $Id: ometah.prj,v 1.1 2005/06/13 09:04:58 nojhan Exp $
+ *  Copyright : Université Paris 12 Val-de-Marne
+ *  Author : Johann Dréo <nojhan@gmail.com>
+ ****************************************************************************/
+
+/*  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
+ *  for difficult optimization.
+ *  
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+<CONFIG_HEADERS_END>
+<CONFIG_CHARACTERISTICS_START>
+<CONFIG_CHARACTERISTICS_END>
+<CONFIG_LIB_FUNCS_START>
+<CONFIG_LIB_FUNCS_END>
+<CONFIG_ADDITIONAL_START>
+<CONFIG_ADDITIONAL_END>
+<CONFIG_FILES_START>
+<CONFIG_FILES_END>
+<MAKEFILE_AM_START>
+<MAKEFILE_AM_END>
+
+props.file.type=project
+
+anjuta.version=1.2.2
+anjuta.compatibility.level=1
+
+project.name=ometah
+project.type=GENERIC
+project.target.type=EXECUTABLE
+project.version=0.1
+project.author=Johann Dréo
+project.source.target=unknown
+project.has.gettext=0
+project.gui.command=
+project.programming.language=C++
+project.excluded.modules=intl
+
+project.config.extra.modules.before=
+project.config.extra.modules.after=
+project.config.blocked=1
+project.config.disable.overwriting=1 1 1 1 1 1 1 1 1 
+
+project.menu.entry=ometah Version 0.1
+project.menu.group=Application
+project.menu.comment=ometah Version 0.1
+project.menu.icon=
+project.menu.need.terminal=0
+
+project.configure.options=
+anjuta.program.arguments=
+preferences.build.option.jobs=0
+preferences.build.option.silent=0
+preferences.build.option.autosave=1
+preferences.make=scons
+preferences.build.option.keep.going=1
+preferences.build.option.warn.undef=0
+preferences.autoformat.custom.style= -i8 -sc -bli0 -bl0 -cbi0 -ss
+preferences.indent.opening=1
+preferences.autoformat.disable=0
+preferences.indent.automatic=1
+preferences.use.tabs=0
+preferences.indent.size=4
+preferences.tabsize=4
+preferences.indent.closing=1
+
+module.include.name=.
+module.include.type=
+module.include.files=\
+	problem/itsProblem.hpp\
+	metaheuristic/itsMetaheuristic.hpp\
+	metaheuristic/itsEstimationOfDistribution.hpp\
+	common/random.hpp\
+	common/itsPoint.hpp\
+	common/itsSet.hpp\
+	common/geometry.hpp\
+	common/matrix.hpp\
+	common/string.hpp\
+	common/logic.hpp\
+	communication/itsCommunicationClient.hpp\
+	communication/itsCommunicationServer.hpp\
+	communication/itsCommunication.hpp\
+	communication/itsCommunicationClient_embedded.hpp\
+	communication/itsCommunicationServer_embedded.hpp\
+	problem/CEC05/itsCEC05_SSRPO_Base.hpp\
+	interface/ometah.hpp\
+	interface/itsArgument.hpp\
+	problem/CEC05/itsCEC05_SSRPO_Problems.hpp
+
+module.source.name=.
+module.source.type=
+module.source.files=\
+	problem/itsProblem.cpp\
+	metaheuristic/itsMetaheuristic.cpp\
+	metaheuristic/itsEstimationOfDistribution.cpp\
+	common/random.cpp\
+	common/logic.cpp\
+	common/geometry.cpp\
+	common/matrix.cpp\
+	common/itsPoint.cpp\
+	common/string.cpp\
+	interface/ometah.cpp\
+	common/itsSet.cpp\
+	SConstruct\
+	communication/itsCommunication.cpp\
+	communication/itsCommunicationClient.cpp\
+	communication/itsCommunicationServer.cpp\
+	communication/itsCommunicationClient_embedded.cpp\
+	communication/itsCommunicationServer_embedded.cpp\
+	problem/CEC05/itsCEC05_SSRPO_Base.cpp\
+	interface/itsArgument.cpp\
+	problem/CEC05/itsCEC05_SSRPO_Problems.cpp
+
+module.pixmap.name=.
+module.pixmap.type=
+module.pixmap.files=
+
+module.data.name=.
+module.data.type=
+module.data.files=
+
+module.help.name=.
+module.help.type=
+module.help.files=
+
+module.doc.name=.
+module.doc.type=
+module.doc.files=\
+	COPYING\
+	AUTHORS\
+	README\
+	doc/coding_guidelines/coding_guidelines.html\
+	doc/coding_guidelines/node1.html\
+	doc/coding_guidelines/node2.html\
+	doc/coding_guidelines/node3.html\
+	doc/coding_guidelines/node4.html\
+	doc/coding_guidelines/node5.html\
+	doc/coding_guidelines/node6.html\
+	doc/coding_guidelines/node7.html\
+	doc/coding_guidelines/node8.html\
+	doc/coding_guidelines/node9.html\
+	doc/coding_guidelines/node10.html\
+	doc/coding_guidelines/node11.html\
+	doc/coding_guidelines/index.html\
+	doc/roadmap/roadmap.html\
+	doc/roadmap/node1.html\
+	doc/roadmap/node2.html\
+	doc/roadmap/node3.html\
+	doc/roadmap/node4.html\
+	doc/roadmap/node5.html\
+	doc/roadmap/node6.html\
+	doc/roadmap/index.html\
+	doc/user_guide/user_guide.html\
+	doc/user_guide/node1.html\
+	doc/user_guide/node2.html\
+	doc/user_guide/node3.html\
+	doc/user_guide/node4.html\
+	doc/user_guide/index.html
+
+module.po.files=
+
+compiler.options.supports=
+compiler.options.include.paths=\
+	.\
+	..
+compiler.options.library.paths=
+compiler.options.libraries=
+compiler.options.libraries.selected=
+compiler.options.defines=\
+	HAVE_CONFIG_H
+compiler.options.defines.selected=
+compiler.options.warning.buttons=0 0 1 1 0 1 0 0 0 0 0 0 0 1 0 0 
+compiler.options.optimize.buttons=0 0 1 0 
+compiler.options.other.buttons=1 0 
+compiler.options.other.c.flags=
+compiler.options.other.l.flags=
+compiler.options.other.l.libs=
+
+project.src.paths=
