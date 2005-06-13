@@ -1,5 +1,5 @@
 /**************************************************************************** 
- * $Id: itsMetaheuristic.cpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ * $Id: itsMetaheuristic.cpp,v 1.3 2005/06/13 13:05:48 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  * Authors : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -216,8 +216,19 @@ bool itsMetaheuristic::isStoppingCriteria()
 {
   // if the maximum iterations number has been reached
   if(iterationsCurrent>=iterationsMaxNumber) {
+    printLog("steps","Maximum iterations reached");
     return true;
 
+  // if the maximum evaluations number has been reached
+  } else if ( evaluationsNumber >= evaluationsMaxNumber ) {
+    printLog("steps","Maximum evaluations reached");
+    return true;
+  
+  // if the minimum value has been reached
+  } else if (getOptimum().getValues()[0] <= getValueMin() ) {
+    printLog("steps","Minimum value reached");
+    return true;
+  
   } else {
     // no stopping criterion reached
     return false;
@@ -487,4 +498,28 @@ void itsMetaheuristic::initRandom(){
   ftime(tim);
   srand(tim->millitm);
   
+}
+
+
+unsigned int itsMetaheuristic::getEvaluationsMaxNumber()
+{
+    return this->evaluationsMaxNumber;
+}
+
+
+void itsMetaheuristic::setEvaluationsMaxNumber(unsigned int nb)
+{
+    this->evaluationsMaxNumber = nb;
+}
+
+
+double itsMetaheuristic::getValueMin()
+{
+    return this->valueThreshold;
+}
+  
+
+void itsMetaheuristic::setValueMin(double val)
+{
+    this->valueThreshold = val;
 }

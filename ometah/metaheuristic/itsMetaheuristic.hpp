@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.3 2005/06/13 13:05:48 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -125,6 +125,17 @@ protected:
 
   //! The true evaluations number
   unsigned int evaluationsNumber;
+
+  //! Maximum evaluations number
+  unsigned int evaluationsMaxNumber;
+
+  //! The value threshold for stopping criterion
+  /*!
+      If the optimum value is better than this threshold,
+      the stopping criterion is reached.
+  */
+  double valueThreshold;
+
 
   //! Stream for the main result of the optimization
   /*!  
@@ -259,6 +270,19 @@ public:
   
   //! Return the current number of evaluationsNumber
   unsigned int getEvaluationNumber();
+  
+  //! Return the maximum evaluations number allowed
+  unsigned int getEvaluationsMaxNumber();
+  
+  //! Change the max evaluation number
+  void setEvaluationsMaxNumber(unsigned int nb);
+  
+  //! Return the value threshold
+  double getValueMin();
+  
+  //! Change the value threshold
+  void setValueMin(double val);
+  
   
   //! Return the key
   string getKey();

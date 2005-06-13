@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ *  $Id: ometah.cpp,v 1.3 2005/06/13 13:05:48 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -110,9 +110,9 @@ int main(int argc, char ** argv)
   // create a parser
   itsArgumentParser argumentParser(argc, argumentsVector);
 
-  char VERBOSE;
-  if (argumentParser.defArg("-v", "--verbose", "verbose mode", false, "", ""))
-    VERBOSE = 1;
+  int VERBOSE;
+  if (argumentParser.defArg("-v", "--verbose", "verbose level", true, "int", "0"))
+    VERBOSE = argumentParser.getIntValue("-v");
   else
     VERBOSE = 0;
     
@@ -154,6 +154,10 @@ int main(int argc, char ** argv)
 			  "debug key" ,true, "string", "");
     argumentParser.defArg("-i", "--iterations", 
 			  "maximum number of iterations" ,true, "int", "10");
+    argumentParser.defArg("-e", "--evaluations", 
+			  "maximum number of evaluations" ,true, "int", "1000");
+    argumentParser.defArg("-p", "--precision", 
+			  "minimum value to reach" ,true, "double", "0.0");
     argumentParser.defArg("-s", "--sample-size", 
 			  "number of points in the sample" ,true, "int", "10");
     argumentParser.defArg("-d", "--dimension", 
@@ -256,8 +260,10 @@ int main(int argc, char ** argv)
   hash_map<string,string, eqstr> parameters;
   setCommunicationClient.item()->initialization( parameters );
 
-  if (VERBOSE)
+  if (VERBOSE) {
     clog << "initialization communication client done" << endl;
+  }
+  setMetaheuristic.item()->setLogLevel(VERBOSE);
   
     
   /*
@@ -276,12 +282,15 @@ int main(int argc, char ** argv)
   // parameters
   setProblem.item()->setDimension( argumentParser.getIntValue("-d") );
   setMetaheuristic.item()->setSampleSize( argumentParser.getIntValue("-s") );
+
+  // Stopping criteria
+  setMetaheuristic.item()->setEvaluationsMaxNumber( argumentParser.getIntValue("-e") );
   setMetaheuristic.item()->setIterationsMaxNumber( argumentParser.getIntValue("-i") );
+  setMetaheuristic.item()->setValueMin( argumentParser.getDoubleValue("-p") );
 
   // Initialize pseudo random generator with time unit
   // (overloaded method exists with an unsigned parameter as seed)
   setMetaheuristic.item()->initRandom();// argumentParser.getIntValue("-r") );
-  
 
   if (VERBOSE)
     clog << "parameters ok, starting optimization..." << endl;
