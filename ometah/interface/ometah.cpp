@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.3 2005/06/13 13:05:48 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.4 2005/06/13 15:06:00 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -156,7 +156,7 @@ int main(int argc, char ** argv)
 			  "maximum number of iterations" ,true, "int", "10");
     argumentParser.defArg("-e", "--evaluations", 
 			  "maximum number of evaluations" ,true, "int", "1000");
-    argumentParser.defArg("-p", "--precision", 
+    argumentParser.defArg("-P", "--precision", 
 			  "minimum value to reach" ,true, "double", "0.0");
     argumentParser.defArg("-s", "--sample-size", 
 			  "number of points in the sample" ,true, "int", "10");
@@ -204,8 +204,11 @@ int main(int argc, char ** argv)
 	 << "\n metah: "<< argumentParser.getStringValue("-m")
 	 << "\n client: " << argumentParser.getStringValue("-C") 
 	 << "\n server " << argumentParser.getStringValue("-S")
+	 << "\n seed: " << argumentParser.getIntValue("-r")
 	 << "\n debug: "<< argumentParser.getStringValue("-D") 
 	 << "\n iterations: " << argumentParser.getIntValue("-i")
+	 << "\n evaluations: " << argumentParser.getIntValue("-e")
+	 << "\n precision: " << argumentParser.getDoubleValue("-P")
 	 << "\n sample size: " << argumentParser.getIntValue("-s")
 	 << "\n dimension: " << argumentParser.getIntValue("-d")
 	 << endl;
