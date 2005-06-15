@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ *  $Id: itsArgument.hpp,v 1.3 2005/06/15 22:58:43 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -75,7 +75,10 @@ public:
   //! Returns default key (short)
   string getKey();
 
-  //! Returns alternative key (long)
+  //! Returns short key ( ie "-v" )
+  string getShortKey();
+
+  //! Returns long key ( ie "--version" )
   string getLongKey();
 
   //! Returns the value

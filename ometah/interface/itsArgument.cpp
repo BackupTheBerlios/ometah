@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ *  $Id: itsArgument.cpp,v 1.3 2005/06/15 22:58:43 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -53,9 +53,13 @@ itsArgument::itsArgument(string flagShort, string flagLong, string usage,
 
 string itsArgument::getKey()
 {
-  return this->flagShort;
+  return this->flagLong;
 }
 
+string itsArgument::getShortKey()
+{
+  return this->flagShort;
+}
 
 string itsArgument::getLongKey()
 {
@@ -224,7 +228,7 @@ void itsArgumentParser::usage()
   vector<itsArgument>::iterator iter;
   iter = this->arguments.begin();
   while (iter != this->arguments.end()){
-    printf(" %s, %13s\t%s\n", iter->getKey().c_str(), 
+    printf(" %s, %13s\t%s\n", iter->getShortKey().c_str(), 
 	   iter->getLongKey().c_str(), iter->getUsage().c_str());
     iter++;
   }  
@@ -281,7 +285,7 @@ bool itsArgumentParser::isAnArgument(string s)
   vector<itsArgument>::iterator iter;
   iter = this->arguments.begin();
   while (iter != this->arguments.end()){
-    if ((s == iter->getKey()) || (s == iter->getLongKey()))
+    if ((s == iter->getShortKey()) || (s == iter->getLongKey()))
       return true;
     iter++;
   }
@@ -294,7 +298,7 @@ bool itsArgumentParser::hasValue(string flag)
   vector<itsArgument>::iterator iter;
   iter = arguments.begin();
   while (iter != arguments.end()){
-    if ((flag == iter->getKey()) || (flag == iter->getLongKey())){
+    if ((flag == iter->getShortKey()) || (flag == iter->getLongKey())){
       return iter->getHasValue();
     }
     iter++;

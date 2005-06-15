@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.4 2005/06/13 15:06:00 jpau Exp $
+ *  $Id: ometah.cpp,v 1.5 2005/06/15 22:58:43 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -112,10 +112,9 @@ int main(int argc, char ** argv)
 
   int VERBOSE;
   if (argumentParser.defArg("-v", "--verbose", "verbose level", true, "int", "0"))
-    VERBOSE = argumentParser.getIntValue("-v");
+    VERBOSE = argumentParser.getIntValue("--verbose");
   else
     VERBOSE = 0;
-    
   
   /* 
    * Make the usage strings
@@ -184,7 +183,6 @@ int main(int argc, char ** argv)
     }
   }
 
-
   try {
     if (argumentParser.syntaxCorrect()){      
       if (VERBOSE)
@@ -200,17 +198,17 @@ int main(int argc, char ** argv)
   
   if (VERBOSE){
     clog << "\ngetValues :" 
-	 << "\n problem: " << argumentParser.getStringValue("-p") 
-	 << "\n metah: "<< argumentParser.getStringValue("-m")
-	 << "\n client: " << argumentParser.getStringValue("-C") 
-	 << "\n server " << argumentParser.getStringValue("-S")
-	 << "\n seed: " << argumentParser.getIntValue("-r")
-	 << "\n debug: "<< argumentParser.getStringValue("-D") 
-	 << "\n iterations: " << argumentParser.getIntValue("-i")
-	 << "\n evaluations: " << argumentParser.getIntValue("-e")
-	 << "\n precision: " << argumentParser.getDoubleValue("-P")
-	 << "\n sample size: " << argumentParser.getIntValue("-s")
-	 << "\n dimension: " << argumentParser.getIntValue("-d")
+	 << "\n problem: " << argumentParser.getStringValue("--problem") 
+	 << "\n metah: "<< argumentParser.getStringValue("--metah")
+	 << "\n client: " << argumentParser.getStringValue("--com-client") 
+	 << "\n server " << argumentParser.getStringValue("--com-server")
+	 << "\n seed: " << argumentParser.getIntValue("--ran-seed")
+	 << "\n debug: "<< argumentParser.getStringValue("--debug") 
+	 << "\n iterations: " << argumentParser.getIntValue("--iterations")
+	 << "\n evaluations: " << argumentParser.getIntValue("--evaluations")
+	 << "\n precision: " << argumentParser.getDoubleValue("--precision")
+	 << "\n sample size: " << argumentParser.getIntValue("--sample-size")
+	 << "\n dimension: " << argumentParser.getIntValue("--dimension")
 	 << endl;
   }
 
@@ -220,10 +218,10 @@ int main(int argc, char ** argv)
    */
     
   try {
-    setMetaheuristic.choose(argumentParser.getStringValue("-m"));
-    setProblem.choose(argumentParser.getStringValue("-p"));
-    setCommunicationClient.choose(argumentParser.getStringValue("-C"));
-    setCommunicationServer.choose(argumentParser.getStringValue("-S"));
+    setMetaheuristic.choose(argumentParser.getStringValue("--metah"));
+    setProblem.choose(argumentParser.getStringValue("--problem"));
+    setCommunicationClient.choose(argumentParser.getStringValue("--com-client"));
+    setCommunicationServer.choose(argumentParser.getStringValue("--com-server"));
   }
   catch (const char * s){
     cerr << s;
@@ -246,8 +244,8 @@ int main(int argc, char ** argv)
   setCommunicationServer.item()->problem = setProblem.item();
     
   // Special case for the embedded protocol : we must link client and server
-  if( setCommunicationClient.item()->getKey() == argumentParser.getStringValue("-C") && 
-      setCommunicationServer.item()->getKey() ==  argumentParser.getStringValue("-S")) {
+  if( setCommunicationClient.item()->getKey() == argumentParser.getStringValue("--com-client") && 
+      setCommunicationServer.item()->getKey() ==  argumentParser.getStringValue("--com-server")) {
     setCommunicationClient.item()->problem = setCommunicationServer.item();
   }
 
@@ -276,20 +274,20 @@ int main(int argc, char ** argv)
   // TESTS
 
   // Debug keys
-  setMetaheuristic.item()->addDebugKey(argumentParser.getStringValue("-D"));
+  setMetaheuristic.item()->addDebugKey(argumentParser.getStringValue("--debug"));
   //setMetaheuristic.item()->addDebugKey("selectNumber");
 
   // Log
   //setMetaheuristic.item()->setLogLevel(0);
 
   // parameters
-  setProblem.item()->setDimension( argumentParser.getIntValue("-d") );
-  setMetaheuristic.item()->setSampleSize( argumentParser.getIntValue("-s") );
+  setProblem.item()->setDimension( argumentParser.getIntValue("--dimension") );
+  setMetaheuristic.item()->setSampleSize( argumentParser.getIntValue("--sample-size") );
 
   // Stopping criteria
-  setMetaheuristic.item()->setEvaluationsMaxNumber( argumentParser.getIntValue("-e") );
-  setMetaheuristic.item()->setIterationsMaxNumber( argumentParser.getIntValue("-i") );
-  setMetaheuristic.item()->setValueMin( argumentParser.getDoubleValue("-p") );
+  setMetaheuristic.item()->setEvaluationsMaxNumber( argumentParser.getIntValue("--evaluations") );
+  setMetaheuristic.item()->setIterationsMaxNumber( argumentParser.getIntValue("--iterations") );
+  setMetaheuristic.item()->setValueMin( argumentParser.getDoubleValue("--precision") );
 
   // Initialize pseudo random generator with time unit
   // (overloaded method exists with an unsigned parameter as seed)
