@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.3 2005/06/16 09:21:01 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -67,6 +67,8 @@ itsEstimationOfDistribution::itsEstimationOfDistribution()
 
     //setDistribution("Uniform");
     setDistribution("Normal");
+    keepBounds();
+    
     
     setSelectRatio(0.5);
 }
@@ -130,6 +132,26 @@ void itsEstimationOfDistribution::learning()
     }
 }
  
+vector<double> itsEstimationOfDistribution::diversificationNormal()
+{
+    // random in the distribution
+    vector<double> sol = randomNormalMulti(this->parameterNormalMean, this->parameterNormalVarCovar);
+
+    // test if is in bounds
+    if( this->isKeepBounds ) {
+        for(int i=0; i < this->problem->getDimension(); i++) {
+            // if < min or > max
+            if( sol[i] < this->problem->boundsMinima()[i] ||
+                sol[i] > this->problem->boundsMaxima()[i] ) {
+                    // redraw in a uniform distribution on bounds
+                    sol = randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() );
+            }
+        }
+    }
+
+    return sol;
+}
+
 void itsEstimationOfDistribution::diversification()
 {
     // reinit all
@@ -144,7 +166,7 @@ void itsEstimationOfDistribution::diversification()
             p.setSolution( randomUniform(this->parameterUniformMinima, this->parameterUniformMaxima) );
         
         } else if (distribution == "Normal") {  
-            p.setSolution( randomNormalMulti(this->parameterNormalMean, this->parameterNormalVarCovar) );
+            p.setSolution( diversificationNormal() );
         
         } else {
             p.setSolution( randomUniform(this->parameterUniformMinima, this->parameterUniformMaxima) );
@@ -200,10 +222,17 @@ double itsEstimationOfDistribution::getSelectRatio()
     return this->selectRatio;
 }
 
-
+void itsEstimationOfDistribution::keepBounds()
+{
+    this->isKeepBounds = true;
+}
+  
+void itsEstimationOfDistribution::keepBoundsNot()
+{
+    this->isKeepBounds = false;
+}
 
 itsMetaheuristic* itsEstimationOfDistributionFactory::create()
 {
     return new itsEstimationOfDistribution;
 }
-

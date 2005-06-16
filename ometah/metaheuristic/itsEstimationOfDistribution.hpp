@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.hpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ *  $Id: itsEstimationOfDistribution.hpp,v 1.3 2005/06/16 09:21:01 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -60,6 +60,13 @@ protected:
   */
   double selectRatio;
 
+  //! Bounds respect
+  /*! 
+      If false, allow points to go out of bounds, 
+      if true points are kept within bounds
+  */
+  bool isKeepBounds;
+  
 protected:
   //! the intensification is a the a method
   void intensification();
@@ -75,6 +82,9 @@ protected:
 
   //! Learn the parameters of a normal distribution
   void learningNormal(vector< vector<double> > aSample);
+
+  //! Draw the sample in the learned normal distribution
+  vector<double> diversificationNormal();
 
 public:
 
@@ -96,6 +106,12 @@ public:
 
   //! Change the select ratio
   void setSelectRatio( double ratio );
+
+  //! Keep points within bounds
+  void keepBounds();
+  
+  //! Don't keep point within bounds
+  void keepBoundsNot();
 
 };
 
