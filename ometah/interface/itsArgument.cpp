@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.3 2005/06/15 22:58:43 jpau Exp $
+ *  $Id: itsArgument.cpp,v 1.4 2005/06/16 12:19:26 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -106,7 +106,8 @@ void itsArgumentParser::searchEndFlags()
   if (this->defArg("-V", "--version", "check version", false, "", "")){
     throw VERSION;  
   }
-  if (this->defArg("-h", "--help", "show help", false, "", "")){
+  if (this->defArg("-h", "--help", "show help", false, "", "") ||
+      this->defArg("-u", "--usage", "show help", false, "", "")){
     throw USAGE;
   }
 }
@@ -223,8 +224,10 @@ bool itsArgumentParser::getBoolValue(string key)
 void itsArgumentParser::usage()
 {
 
-  cout << "\nUsage: " << this->argv.at(0) << " [options]" <<  endl; 
+  cout << "Usage: " << this->argv.at(0) << " [options]" <<  endl; 
   cout << "Options:" << endl;
+  printf(" %s, %13s\t%s\n", "Short","Long         ","Description" );
+
   vector<itsArgument>::iterator iter;
   iter = this->arguments.begin();
   while (iter != this->arguments.end()){
