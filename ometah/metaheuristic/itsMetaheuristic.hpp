@@ -1,9 +1,9 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.3 2005/06/13 13:05:48 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.4 2005/06/16 10:17:04 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
- *           Johann Dréo <nojhan@gmail.com>
+ *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
 
 /*  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
@@ -179,6 +179,17 @@ protected:
   //! The current log levels
   int logLevel;
   
+  //! Print a parameter in xml formated
+  template<class T>
+  string printParameter_XML(string name, T value) {
+    stringstream infos;
+    infos << "<parameter>" 
+        << "<name>" << name << "</name>" 
+        << "<value>" << value << "<value>" 
+    << "</parameter>" << endl;
+    return infos.str();
+}
+
 
 public:
   //! Virtual destructor
@@ -252,6 +263,9 @@ public:
     (in this order) of the algorithm, if given. In xml format.
   */
   string getInformations_XML();
+  
+  //! Return a formated output with the values of parameters
+  string getParameters_XML();
 
   //! Return the sample size
   unsigned int getSampleSize();

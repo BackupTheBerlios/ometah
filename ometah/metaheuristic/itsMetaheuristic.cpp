@@ -1,9 +1,9 @@
 /**************************************************************************** 
- * $Id: itsMetaheuristic.cpp,v 1.3 2005/06/13 13:05:48 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.4 2005/06/16 10:17:04 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
- * Authors : Walid Tfaili <tfaili@univ-paris12.fr>
- *           Johann Dréo <nojhan@gmail.com>
+ *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
+ *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
 
 /*  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
@@ -337,12 +337,28 @@ string itsMetaheuristic::getInformations_XML()
     infos << "<description>" << getDescription() << "</description>" << endl;
     infos << "<reference>" << getCitation() << "</reference>" << endl;
 
+    infos << "<parameters>" << endl;
+        infos << getParameters_XML();
+    infos << "</parameters>" << endl;
+
     infos << "</metaheuristic>" << endl;
 
     // get back the string only
     return infos.str();
 }
 
+
+string itsMetaheuristic::getParameters_XML()
+{
+    stringstream infos;
+
+    infos << printParameter_XML( "sampleSize",getSampleSize() );
+    infos << printParameter_XML( "iterationsMaxNumber",getIterationsMaxNumber() );
+    infos << printParameter_XML( "evaluationsMaxNumber", getEvaluationsMaxNumber() );
+    //infos << printParameter_XML( "", );
+
+    return infos.str();
+}
 unsigned int itsMetaheuristic::getSampleSize()
 {
     return this->sampleSize;
