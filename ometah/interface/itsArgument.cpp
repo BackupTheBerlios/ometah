@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.4 2005/06/16 12:19:26 nojhan Exp $
+ *  $Id: itsArgument.cpp,v 1.5 2005/06/16 14:49:33 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -39,7 +39,7 @@ itsArgument::~itsArgument(){
 
 
 itsArgument::itsArgument(string flagShort, string flagLong, string usage,
-			 bool hasValue, string type, string value)
+			 bool hasValue, string type, string value, string defaultValue)
 {
 
   this->flagShort = flagShort;
@@ -48,6 +48,7 @@ itsArgument::itsArgument(string flagShort, string flagLong, string usage,
   this->hasValue = hasValue;
   this->type = type;
   this->value = value;
+  this->defaultValue = defaultValue;
 }
 
 
@@ -84,6 +85,10 @@ bool itsArgument::getHasValue()
   return this->hasValue;
 }
 
+string itsArgument::getDefault()
+{
+  return this->defaultValue;
+}
 
 // ITSPARSER 
 
@@ -120,6 +125,7 @@ bool itsArgumentParser::defArg(string flagShort, string flagLong, string usage,
   unsigned i = 1;
   bool found = false;
   string value = valueDefault;
+  string defaultVal = valueDefault;
   
 
   while ( (i < this->argv.size()) && (!found)) {
@@ -145,7 +151,7 @@ bool itsArgumentParser::defArg(string flagShort, string flagLong, string usage,
     i++;
   }
  
-  itsArgument newArgument(flagShort, flagLong, usage, hasValue, type, value);
+  itsArgument newArgument(flagShort, flagLong, usage, hasValue, type, value, defaultVal);
   arguments.push_back(newArgument);
 
   return found;

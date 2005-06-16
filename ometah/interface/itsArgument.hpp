@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.3 2005/06/15 22:58:43 jpau Exp $
+ *  $Id: itsArgument.hpp,v 1.4 2005/06/16 14:49:33 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -62,6 +62,9 @@ protected:
   //! Value of the argument, empty if argument has no value
   string value;
 
+  //! Default value
+  string defaultValue;
+
 
 public:
 
@@ -70,7 +73,7 @@ public:
 
   //! Constructor
   itsArgument(string flagShort, string flagLong, string usage, 
-               bool hasValue=false, string type="", string valueDefault="");  
+               bool hasValue=false, string type="", string value="", string defaultValue="");  
 
   //! Returns default key (short)
   string getKey();
@@ -88,6 +91,8 @@ public:
   string getUsage();
 
   bool getHasValue();
+
+  string getDefault();
 
 };
 
