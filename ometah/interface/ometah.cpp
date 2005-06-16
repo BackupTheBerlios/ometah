@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.5 2005/06/15 22:58:43 jpau Exp $
+ *  $Id: ometah.cpp,v 1.6 2005/06/16 12:07:49 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -147,7 +147,7 @@ int main(int argc, char ** argv)
     argumentParser.defArg("-S", "--com-server", 
 			  (serverUsage.str()).c_str() ,
 			  true, "string", "Embedded");
-    argumentParser.defArg("-r", "--ran-seed", 
+    argumentParser.defArg("-r", "--random-seed", 
 			  "seed of the pseudo-random generator", true, "int", "0");
     argumentParser.defArg("-D", "--debug", 
 			  "debug key" ,true, "string", "");
@@ -202,7 +202,7 @@ int main(int argc, char ** argv)
 	 << "\n metah: "<< argumentParser.getStringValue("--metah")
 	 << "\n client: " << argumentParser.getStringValue("--com-client") 
 	 << "\n server " << argumentParser.getStringValue("--com-server")
-	 << "\n seed: " << argumentParser.getIntValue("--ran-seed")
+	 << "\n seed: " << argumentParser.getIntValue("--random-seed")
 	 << "\n debug: "<< argumentParser.getStringValue("--debug") 
 	 << "\n iterations: " << argumentParser.getIntValue("--iterations")
 	 << "\n evaluations: " << argumentParser.getIntValue("--evaluations")
@@ -291,7 +291,7 @@ int main(int argc, char ** argv)
 
   // Initialize pseudo random generator with time unit
   // (overloaded method exists with an unsigned parameter as seed)
-  setMetaheuristic.item()->initRandom();// argumentParser.getIntValue("-r") );
+  setMetaheuristic.item()->initRandom( argumentParser.getIntValue("--random-seed") );
 
   if (VERBOSE)
     clog << "parameters ok, starting optimization..." << endl;
