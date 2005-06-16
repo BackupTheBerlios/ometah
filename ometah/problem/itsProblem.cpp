@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ *  $Id: itsProblem.cpp,v 1.3 2005/06/16 08:35:37 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -185,13 +185,13 @@ string itsProblem::getInformations_XML()
 
   msg << "<minimums>";
     msg << "<point>" << "<solution>";
-    msg << print( getBoundsMinima() );
+    msg << print( getBoundsMinima(), " ");
     msg << "</solution>" << "</point>";
   msg << "</minimums>" << endl;
 
   msg << "<maximums>";
     msg << "<point>" << "<solution>";
-    msg << print( getBoundsMaxima() );
+    msg << print( getBoundsMaxima(), " ");
     msg << "</solution>" << "</point>";
   msg << "</maximums>" << endl;
 
