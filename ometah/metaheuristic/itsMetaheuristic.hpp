@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.4 2005/06/16 10:17:04 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.5 2005/06/16 12:02:55 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -136,6 +136,8 @@ protected:
   */
   double valueThreshold;
 
+  //! The random seed used
+  unsigned int seed;
 
   //! Stream for the main result of the optimization
   /*!  
@@ -363,10 +365,14 @@ public:
   //! Format a point in xml
   string printXMLPoint(itsPoint p);
 
-  //! Initialize PRG
-  void initRandom(unsigned);
+  //! Initialize the random generator on a given seed
+  void initRandom(unsigned int seed);
 
+  //! Initialize the random generator on time
   void initRandom();
+  
+  //! Return the random seed used
+  unsigned int getSeed();
 };
 
 

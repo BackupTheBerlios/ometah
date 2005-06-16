@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.4 2005/06/16 10:17:04 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.5 2005/06/16 12:02:55 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -355,6 +355,8 @@ string itsMetaheuristic::getParameters_XML()
     infos << printParameter_XML( "sampleSize",getSampleSize() );
     infos << printParameter_XML( "iterationsMaxNumber",getIterationsMaxNumber() );
     infos << printParameter_XML( "evaluationsMaxNumber", getEvaluationsMaxNumber() );
+    infos << printParameter_XML( "valueThreshold",getValueMin() );
+    infos << printParameter_XML( "randomSeed",getSeed() );
     //infos << printParameter_XML( "", );
 
     return infos.str();
@@ -500,14 +502,17 @@ unsigned int itsMetaheuristic::getEvaluationNumber()
     return this->evaluationsNumber;
 }
 
-void itsMetaheuristic::initRandom(unsigned seed){
-
+void itsMetaheuristic::initRandom(unsigned int seed)
+{
   if (!seed)
     initRandom();
   srand(seed);
+  
+  this->seed = seed;
 }
 
-void itsMetaheuristic::initRandom(){
+void itsMetaheuristic::initRandom()
+{
 
   struct timeb * tim;
   tim=(struct timeb*)malloc(sizeof(tim));
@@ -516,6 +521,10 @@ void itsMetaheuristic::initRandom(){
   
 }
 
+unsigned int itsMetaheuristic::getSeed()
+{
+    return this->seed;
+}
 
 unsigned int itsMetaheuristic::getEvaluationsMaxNumber()
 {
