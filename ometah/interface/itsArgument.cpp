@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.5 2005/06/16 14:49:33 jpau Exp $
+ *  $Id: itsArgument.cpp,v 1.6 2005/06/16 15:00:30 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -232,13 +232,17 @@ void itsArgumentParser::usage()
 
   cout << "Usage: " << this->argv.at(0) << " [options]" <<  endl; 
   cout << "Options:" << endl;
-  printf(" %s, %13s\t%s\n", "Short","Long         ","Description" );
+  printf(" %s   %13s\t%s\n", "Short","Long         ","Description" );
 
   vector<itsArgument>::iterator iter;
   iter = this->arguments.begin();
   while (iter != this->arguments.end()){
-    printf(" %s, %13s\t%s\n", iter->getShortKey().c_str(), 
+    printf(" %s, %13s\t%s", iter->getShortKey().c_str(), 
 	   iter->getLongKey().c_str(), iter->getUsage().c_str());
+    if (iter->getHasValue()){
+      printf(", default : %s", iter->getDefault().c_str());
+    }
+    printf("\n");
     iter++;
   }  
 }
