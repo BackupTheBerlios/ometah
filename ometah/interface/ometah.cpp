@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.6 2005/06/16 12:07:49 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.7 2005/06/16 12:45:31 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -161,6 +161,8 @@ int main(int argc, char ** argv)
 			  "number of points in the sample" ,true, "int", "10");
     argumentParser.defArg("-d", "--dimension", 
 			  "dimension of the problem" ,true, "int", "1");
+    argumentParser.defArg("-o", "--output", 
+			  "output of the results" ,true, "string", "");
   }
   catch(const char * s) {
     cerr << s;
@@ -303,12 +305,26 @@ int main(int argc, char ** argv)
 	 << " on " << setProblem.item()->getName() 
 	 << " using " << setCommunicationClient.item()->getKey() << endl;
   
+  ostream * pout;
+  ofstream outfile;
+  // if we want the output on stdout
+  if( argumentParser.getStringValue("--output") == "" || 
+      argumentParser.getStringValue("--output") == "-" ) {
+      pout = &cout;
+      
+  // if we want to output to a file
+  } else {
+      outfile.open ( argumentParser.getStringValue("--output").c_str(), ofstream::out | ofstream::app);
+      pout = &outfile;
+  }
+  // link process and en output
+  setMetaheuristic.item()->setOutProcessResult(pout);
+  setMetaheuristic.item()->setOutEndResult(pout);
   
-  setMetaheuristic.item()->setOutProcessResult(&cout);
-  cout << "<? xml-version=\"1.0\" encoding=\"iso-8859-15\" ?>" << endl;
-  cout << "<ometah>" << endl;
-  cout << setProblem.item()->getInformations_XML() << endl;
-  cout << setMetaheuristic.item()->getInformations_XML() << endl;
+  *pout << "<? xml-version=\"1.0\" encoding=\"iso-8859-15\" ?>" << endl;
+  *pout << "<ometah>" << endl;
+  *pout << setProblem.item()->getInformations_XML() << endl;
+  *pout << setMetaheuristic.item()->getInformations_XML() << endl;
   
   try {
     setMetaheuristic.item()->start();
@@ -323,6 +339,10 @@ int main(int argc, char ** argv)
     cerr << "Unknown error" << endl;
   }
 
-  cout << "</ometah>" << endl;
-    
+  *pout << "</ometah>" << endl;
+  
+  // close the file if necessary
+  if( outfile.is_open() ) {
+      outfile.close();
+  }
 }

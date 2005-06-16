@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ *  $Id: ometah.hpp,v 1.3 2005/06/16 12:45:31 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -25,6 +25,8 @@
  
 #include <hash_map.h>
 #include <string>
+#include <iostream>
+#include <fstream>
 
 // common stuff
 #include "../common/logic.hpp"

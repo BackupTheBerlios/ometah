@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.5 2005/06/16 12:02:55 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.6 2005/06/16 12:45:31 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -53,12 +53,12 @@ void itsMetaheuristic::learning()
 { }
 void itsMetaheuristic::parseSpecific()
 { }
-
+*/
 
 itsMetaheuristic::~itsMetaheuristic()
 {
 }
-*/
+
 
 itsMetaheuristic::itsMetaheuristic()
 {
