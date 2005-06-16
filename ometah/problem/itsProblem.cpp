@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.3 2005/06/16 08:35:37 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.4 2005/06/16 08:55:11 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -211,6 +211,16 @@ string itsProblem::getInformations_XML()
 
 vector<itsPoint> itsProblem::getOptima()
 {
+    // if the optimum does not correspond to dimension
+    if( this->optima[0].getSolutionDimension() == 1 ) {
+    
+        // we duplicate its solutions to match the dimension
+        for( unsigned int i=0; i < this->optima.size(); i++ ) {
+            vector<double> sol(getDimension(), this->optima[i].getSolution()[0] );
+            this->optima[i].setSolution(sol);
+        }
+    }
+
     return this->optima;
 }
 

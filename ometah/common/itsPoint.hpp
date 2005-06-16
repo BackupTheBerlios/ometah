@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.hpp,v 1.1 2005/06/13 09:04:58 nojhan Exp $
+ * $Id: itsPoint.hpp,v 1.2 2005/06/16 08:55:11 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  * Author :  Walid TFAILI <tfaili@univ-paris12.fr>
@@ -53,6 +53,13 @@ public:
  
   //! Set the value vector
   void setValues(vector<double> values);
+
+  //! Return the dimension of the solution
+  unsigned int getSolutionDimension();
+
+  //! Return the number of values
+  unsigned int getValuesNumber();
+
 };
 
 //! Check if a point has a smaller value than another one for a given dimension

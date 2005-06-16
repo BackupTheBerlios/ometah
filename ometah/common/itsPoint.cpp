@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.cpp,v 1.1 2005/06/13 09:04:58 nojhan Exp $
+ * $Id: itsPoint.cpp,v 1.2 2005/06/16 08:55:11 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  * Author : Johann Dréo <nojhan@gmail.com>
@@ -53,6 +53,16 @@ void itsPoint::setValues(vector<double> values)
 }
 
 
+unsigned int itsPoint::getSolutionDimension()
+{
+    return this->solution.size();
+}
+
+
+unsigned int itsPoint::getValuesNumber()
+{
+    return this->values.size();
+}
 
 bool isValueSmaller(itsPoint p1, itsPoint p2, int dimension)
 {
