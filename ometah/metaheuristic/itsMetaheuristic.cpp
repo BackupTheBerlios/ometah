@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.6 2005/06/16 12:45:31 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.7 2005/06/17 06:10:25 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -504,9 +504,12 @@ unsigned int itsMetaheuristic::getEvaluationNumber()
 
 void itsMetaheuristic::initRandom(unsigned int seed)
 {
-  if (!seed)
+  if ( !seed ) {
     initRandom();
-  srand(seed);
+  }
+  else {
+    srand(seed);
+  }
   
   this->seed = seed;
 }
