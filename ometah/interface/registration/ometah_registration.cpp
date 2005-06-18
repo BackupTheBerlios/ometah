@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.1 2005/06/17 17:55:34 nojhan Exp $
+ *  $Id: ometah_registration.cpp,v 1.2 2005/06/18 07:08:09 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -135,8 +135,6 @@ int main(int argc, char ** argv)
 			  "minimum value to reach" ,true, "double", "0.0");
     argumentParser.defArg("-s", "--sample-size", 
 			  "number of points in the sample" ,true, "int", "10");
-    argumentParser.defArg("-d", "--dimension", 
-			  "dimension of the problem" ,true, "int", "1");
     argumentParser.defArg("-o", "--output", 
 			  "output of the results" ,true, "string", "");
               
@@ -234,11 +232,15 @@ int main(int argc, char ** argv)
   setMetaheuristic.item()->addDebugKey(argumentParser.getStringValue("--debug"));
 
   // parameters
-  problem.setDimension( argumentParser.getIntValue("--dimension") );
+try {
   problem.setInputImages(
     argumentParser.getStringValue("--image-static"),
     argumentParser.getStringValue("--image-registered")
   );
+} catch (const char * s) {
+    cerr << s << endl;
+    return -1;
+}
 
   setMetaheuristic.item()->setSampleSize( argumentParser.getIntValue("--sample-size") );
 
