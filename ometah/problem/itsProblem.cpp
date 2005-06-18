@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.4 2005/06/16 08:55:11 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.5 2005/06/18 08:17:59 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -270,7 +270,10 @@ vector<double> itsProblem::getBoundsMinima()
 void itsProblem::setBoundsMinima(vector<double> minima)
 {
     if(minima.size() != getDimension() ) {
-        throw "ErrorSize";
+        ostringstream msg;
+        msg << "ErrorSize: number of bounds (" << minima.size() 
+            << ") does not correspond to dimension  (" << getDimension() << ")";
+        throw msg.str().c_str();
     } else {
         this->boundsMinima = minima;
     }
@@ -284,7 +287,10 @@ vector<double> itsProblem::getBoundsMaxima()
 void itsProblem::setBoundsMaxima(vector<double> maxima)
 {
     if(maxima.size() != getDimension() ) {
-        throw "ErrorSize";
+        ostringstream msg;
+        msg << "ErrorSize: number of bounds (" << maxima.size() 
+            << ") does not correspond to dimension  (" << getDimension() << ")";
+        throw msg.str().c_str();
     } else {
         this->boundsMaxima = maxima;
     }
