@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.1 2005/06/13 09:04:58 nojhan Exp $
+#  $Id: SConstruct,v 1.2 2005/06/18 06:30:27 nojhan Exp $
 #  Copyright : Universit� Paris 12 Val-de-Marne
 #              (61 avenue du Général de Gaulle, 94010, Créteil, France)
 #  Author : Johann Dréo <nojhan@gmail.com>
@@ -18,6 +18,7 @@
 # 
 # You should have received a copy of the GNU Lesser General
 # Public License along with this program; if not, write to the Free
+
 # Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # 02111-1307 USA
 
@@ -38,27 +39,28 @@ fdebug = '-ggdb'
 # more flags
 fsup = '-Wno-deprecated'
 
-env = Environment(CCFLAGS = " ".join( [fcheck,fdebug,fsup] ) )
+dir_main = ['common',        \
+            'communication', \
+            'metaheuristic', \
+            'problem',       \
+            'interface']
+
+dir_lib = ['problem/CEC05', \
+           'problem/registration']
+           #'interface/registration',
+
+env = Environment(CCFLAGS = " ".join( [fcheck,fdebug,fsup] ), LIBPATH = dir_main+dir_lib )
+Export('env')
+
+SConscript( [ l+'/SConscript' for l in dir_main ] )
 
 
 
-common = ['itsPoint.cpp','geometry.cpp','itsSet.cpp','logic.cpp','matrix.cpp', \
-          'random.cpp','string.cpp']
-common = ['common/'+i for i in common]
+ometah_registration = env.Program( target = 'ometah_registration', \
+    source = 'interface/registration/ometah_registration.cpp', \
+    LIBS=['problem_registration','common','communication','metaheuristic','interface'] )
 
-metaheuristic = ['itsMetaheuristic.cpp','itsEstimationOfDistribution.cpp']
-metaheuristic = ['metaheuristic/'+i for i in metaheuristic]
+ometah = env.Program( target = 'ometah', source = 'interface/ometah.cpp', \
+    LIBS=['common','communication','metaheuristic','problem','problem_CEC05','interface'] )
 
-problem = ['itsProblem.cpp', \
-           'CEC05/itsCEC05_SSRPO_Base.cpp', 'CEC05/itsCEC05_SSRPO_Problems.cpp']
-problem = ['problem/'+i for i in problem]
-
-communication = ['itsCommunication.cpp', \
-                'itsCommunicationClient.cpp', 'itsCommunicationServer.cpp', \
-                'itsCommunicationClient_embedded.cpp', 'itsCommunicationServer_embedded.cpp']
-communication = ['communication/'+i for i in communication]
-
-interface = ['ometah.cpp','itsArgument.cpp']
-interface = ['interface/'+i for i in interface]
-
-env.Program( target = 'ometah', source = common+metaheuristic+problem+communication+interface )
+Default(ometah,ometah_registration)

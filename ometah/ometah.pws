@@ -1,12 +1,12 @@
 
 [filenumbers]
 0=28
-1=319
-2=308
-3=1
-4=28
-5=153
-6=1
+1=55
+2=85
+3=39
+4=349
+5=54
+6=243
 7=56
 
 [filemarkers]
@@ -31,9 +31,13 @@ RunInTerminal=true
 clean before build=false
 
 [filelist]
-0=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/itsMetaheuristic.cpp
-1=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/itsMetaheuristic.hpp
-2=/home/nojhan/travail/openMetaheuristic/source/ometah/interface/ometah.cpp
+0=/home/nojhan/travail/openMetaheuristic/image_difference.cpp
+1=/home/nojhan/travail/openMetaheuristic/source/ometah/problem/CEC05/itsCEC05_SSRPO_Base.cpp
+2=/home/nojhan/travail/openMetaheuristic/source/ometah/problem/registration/itsRegistration.cpp
+3=/home/nojhan/travail/openMetaheuristic/source/ometah/problem/registration/itsRegistration.hpp
+4=/home/nojhan/travail/openMetaheuristic/source/ometah/interface/ometah.cpp
+5=/home/nojhan/travail/openMetaheuristic/source/ometah/interface/ometah.hpp
+6=/home/nojhan/travail/openMetaheuristic/source/ometah/interface/ometah_registration.cpp
 
 [Project Tree]
 0=0
