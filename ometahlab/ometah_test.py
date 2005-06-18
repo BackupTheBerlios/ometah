@@ -70,7 +70,7 @@ class Test( object ):
         # one log for each metarun
         self.__logName = "ometahtest.log"
         # location of ometah
-        self.__ometah_path = "../ometah"        
+        self.__ometah_path = "../ometah/ometah"        
 
     def init(self, argv, runNumber, logFile):
         """ initialize a metarun  :
