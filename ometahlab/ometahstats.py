@@ -52,7 +52,7 @@ class Comparison:
         # each metarun (each Serialized) has different parameters
         
         # list of Serialized objects, one for each metarun
-        self.__runs = []
+        self.__tests = []
         # working directory
         self.__dir = ''
         # report file name
@@ -64,7 +64,7 @@ class Comparison:
                 q = "%s/SERIALIZED" % p
                 fd = open(q, 'r')
                 s = pickle.load(fd)
-                self.__runs.append(s)
+                self.__tests.append(s)
             except:
                 msg = 'error while loading %s' % q
                 self.__fatal(msg)
@@ -72,12 +72,12 @@ class Comparison:
         # initialize optimas and points
         #
         self.__optimas = []
-        for serial in self.__runs:
+        for serial in self.__tests:
             self.__optimas.append(serial.optima)
 
         self.__points = []
         # sample size 
-        for serial in self.__runs:
+        for serial in self.__tests:
             self.__points.append(serial.points)
         # Note : each serial.points is a list of sublists, where each
         # sublist corresponds to an iteration
@@ -104,12 +104,32 @@ class Comparison:
         - same sampleSize
         - etc...
         A fatal error or a warning message can be given, whether the divergence is fatal or not."""
-        pass
+
+        pb = self.__tests[0].problem.key
+        dim = self.__tests[0].problem.dimension
+        sample = self.__tests[0].parameters.sampleSize
+        nbRuns = self.__tests[0].nbRuns
+
+        print ''
+        for test in self.__tests:
+            if test.problem.key != pb:
+                self.__fatal('tests have different problems.')
+            elif test.problem.dimension != dim:
+                self.__fatal('tests have different problem dimensions.')
+            elif test.parameters.sampleSize != sample:
+                self.__fatal('tests have different sample sizes.')
+            elif test.nbRuns != nbRuns:
+                self.__warning('tests have different numbers of runs.')
+            elif test.parameters.randomSeed != 0: # 0 means we use time as a seed
+                self.__warning('you should not specify a random seed for a test, all the runs would get the same optimum.')
         
     def __fatal(self, msg):
         import sys
-        print 'FATAL ERROR: ', msg, '\n'
+        print 'FATAL ERROR : %s\n' % msg
         sys.exit(-1)
+
+    def __warning(self, msg):
+        print "WARNING : %s" % msg
 
     def plot(self):
         """ Plot results as postscript files :
@@ -164,10 +184,10 @@ class Comparison:
         txt += ' REPORT'
         txt += '\n--------------------------------------------/\n\n'
         fd.write(txt)
-        txt = 'Number of executions : %i\n\n' % (len(self.__runs))
+        txt = 'Number of executions : %i\n\n' % (len(self.__tests))
         fd.write(txt)
         i = 0
-        for run in self.__runs:
+        for run in self.__tests:
             i = i + 1
             txt = '%s\n--------------------------------------------/\n\n' % run.args
             fd.write(txt)

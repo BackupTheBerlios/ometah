@@ -54,6 +54,8 @@ class Serialized:
         self.optima = []
         # command line
         self.args = ""
+        # nb of runs
+        self.nbRuns = 25
         
 
 class Test:
