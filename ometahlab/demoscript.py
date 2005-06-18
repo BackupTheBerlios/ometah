@@ -6,27 +6,27 @@ try:
 except:
     pass
 
-import ometah_test
-import ometah_stats
+import ometahtest
+import ometahstats
 
-t = ometah_test.Test()
+t = ometahtest.Test()
 t.setArgs('-e 50')
 t.setNbRuns(30)
 t.start()
 
-u = ometah_test.Test()
+u = ometahtest.Test()
 u.setArgs('-e 70')
 u.setNbRuns(30)
 u.start()
 
 
-v = ometah_test.Test()
+v = ometahtest.Test()
 v.setArgs('-e 100')
 v.setNbRuns(30)
 v.start()
 
 
-w = ometah_test.Test()
+w = ometahtest.Test()
 w.setArgs('-e 150')
 w.setNbRuns(30)
 w.start()
