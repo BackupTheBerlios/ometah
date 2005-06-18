@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.2 2005/06/18 06:30:27 nojhan Exp $
+#  $Id: SConstruct,v 1.3 2005/06/18 08:58:40 nojhan Exp $
 #  Copyright : Universit� Paris 12 Val-de-Marne
 #              (61 avenue du Général de Gaulle, 94010, Créteil, France)
 #  Author : Johann Dréo <nojhan@gmail.com>
@@ -39,28 +39,48 @@ fdebug = '-ggdb'
 # more flags
 fsup = '-Wno-deprecated'
 
+# base directories
 dir_main = ['common',        \
             'communication', \
             'metaheuristic', \
             'problem',       \
             'interface']
 
+# additionnal directories
 dir_lib = ['problem/CEC05', \
            'problem/registration']
            #'interface/registration',
 
-env = Environment(CCFLAGS = " ".join( [fcheck,fdebug,fsup] ), LIBPATH = dir_main+dir_lib )
-Export('env')
 
+# setting the environnement
+env = Environment(CCFLAGS = " ".join( [fcheck,fdebug,fsup] ), LIBPATH = dir_main+dir_lib )
+
+
+# Configuration
+conf = Configure(env)
+have_cimg = False
+if conf.CheckCXXHeader('CImg.h'):
+    have_cimg = True
+env = conf.Finish()
+
+
+# other SConscript files
+Export('env')
 SConscript( [ l+'/SConscript' for l in dir_main ] )
 
 
+# targets
+# registration interface must have the CImg library available
+if have_cimg == False:
+    print "You must have the CImg.h library installed to build ometah_registration"
+    Exit(1)
+else:
+    ometah_registration = env.Program( target = 'ometah_registration', \
+        source = 'interface/registration/ometah_registration.cpp', \
+        LIBS=['problem_registration','common','communication','metaheuristic','interface'] )
 
-ometah_registration = env.Program( target = 'ometah_registration', \
-    source = 'interface/registration/ometah_registration.cpp', \
-    LIBS=['problem_registration','common','communication','metaheuristic','interface'] )
-
+# standard interface
 ometah = env.Program( target = 'ometah', source = 'interface/ometah.cpp', \
     LIBS=['common','communication','metaheuristic','problem','problem_CEC05','interface'] )
 
-Default(ometah,ometah_registration)
+Default(ometah)
