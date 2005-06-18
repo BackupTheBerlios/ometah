@@ -69,8 +69,11 @@ class Test( object ):
         self.dir = "."
         # one log for each metarun
         self.__logName = "ometahtest.log"
-        # location of ometah
+        # default location of ometah
         self.__ometah_path = "../ometah/ometah"        
+        # common dir for all results
+        self.__results_dir = "labResults"
+
 
     def init(self, argv, runNumber, logFile):
         """ initialize a metarun  :
@@ -124,6 +127,11 @@ class Test( object ):
         # list of sublist, one for each run, containing Point objects
         self.__points = []
 
+        try:
+            os.listdir(self.__results_dir)
+        except:
+            os.mkdir(self.__results_dir)
+
         print "\nRunning ometah", ''.join(self.argv)
         for i in range(self._NB_RUNS):
             intf = self.init(self.argv, i, self.__logName)
@@ -136,8 +144,8 @@ class Test( object ):
         ok = 0
         while not ok:
             ok = 1
-            dir = '%s_%s_d%i_e%s_r%s__%i' \
-                  % (self.problem.name, self.metah.key, \
+            dir = '%s/%s_%s_d%i_e%s_r%s__%i' \
+                  % (self.__results_dir, self.problem.name, self.metah.key, \
                      self.problem.dimension, self.parameters.maxEvaluations, \
                      self.parameters.randomSeed, i)
             try:
@@ -200,6 +208,9 @@ class Test( object ):
 
     def setArgs(self, args):
         self.argv = [''] + [args]
+
+    def setOmetahPath(self, path):
+        self.__ometah_path = path
 
     def getPath(self):
         return str(self.__dir)

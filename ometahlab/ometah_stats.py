@@ -53,6 +53,7 @@ class Comparison:
     def __init__(self, paths):
         """ """
         import pickle
+        import string
         import os
         # each metarun (each Serialized) has different parameters
         
@@ -80,7 +81,6 @@ class Comparison:
         for serial in self.__runs:
             self.__optimas.append(serial.optima)
 
-
         self.__points = []
         # sample size 
         for serial in self.__runs:
@@ -93,7 +93,8 @@ class Comparison:
         ok = 0
         while not ok:
             ok = 1
-            dir = 'comp_%i' %  i
+            dir = '%s/comp_%i' \
+                  % (string.split(paths[0], sep='/')[0], i)
             try:
                 os.mkdir(dir)
             except:
