@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.hpp,v 1.1 2005/06/17 17:54:38 nojhan Exp $
+ *  $Id: itsRegistration.hpp,v 1.2 2005/06/18 06:29:18 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -38,16 +38,16 @@ class itsRegistration : public itsProblem
 {
 protected:
     //! The file name of the first input image
-    char * inputImage_static;
+    string inputImage_static;
 
     //! The file name of the second input image
-    char * inputImage_registered;
+    string inputImage_registered;
 
     //! The first image
-    cimg_library::CImg<unsigned char> img1;
+    CImg<unsigned int> img1;
 
     //! The second image
-    cimg_library::CImg<unsigned char> img2;
+    CImg<unsigned int> img2;
 
     //! resize images so that their sizes match
     void resizeImages();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.1 2005/06/17 17:54:38 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.2 2005/06/18 06:29:18 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -40,7 +40,7 @@ itsRegistration::itsRegistration()
     setKey("Registration");
     setDescription("The aim of the problem is to find the best registration of two image, minimizing a similarity criterion");
     setCitation("Unknown");    
-    setFormula("${\displaystyle \sum_{i=1}^{n}}\left(I_{1}\left(i\right)-I_{2}\left(i\right)\right)^{2}$");
+    setFormula("${\\displaystyle \\sum_{i=1}^{n}}\\left(I_{1}\\left(i\\right)-I_{2}\\left(i\\right)\\right)^{2}$");
     
     setDimension(2);
     
@@ -51,14 +51,14 @@ itsRegistration::itsRegistration()
 itsPoint itsRegistration::objectiveFunction(itsPoint point)
 {
 
-    int rx = (int) floor( point.getSolution()[0] );
-    int ry = (int) floor( point.getSolution()[1] );
+    unsigned int rx = (unsigned int) floor( point.getSolution()[0] );
+    unsigned int ry = (unsigned int) floor( point.getSolution()[1] );
 
     // similarity of the registered images
     double similarity = 0;
     
     // loop over X and Y
-    cimg_mapXY(x,y) {
+    cimg_mapXY(img1,x,y) {
         double diff = 0.0;
         
           // if we do not try out of bounds
@@ -70,33 +70,34 @@ itsPoint itsRegistration::objectiveFunction(itsPoint point)
         
         similarity += diff;
     }
-    
-    point.setValues( vector<double> val(1,similarity) );
+
+    vector<double> val(1,similarity);
+    point.setValues( val );
 
     return point;
 }
 
 
-void resizeImages()
+void itsRegistration::resizeImages()
 {
     // load images
-    img1(file_static);
-    img2(file_registered);
+    img1.load( this->inputImage_static.c_str() );
+    img2.load( this->inputImage_registered.c_str() );
 
     // resize if necessary
-    int sx = cimg_library::cimg::max(img1.width,img2.width);
-    int sy = cimg_library::cimg::max(img1.height,img2.height);
+    int sx = cimg::max( img1.width, img2.width );
+    int sy = cimg::max( img1.height, img2.height );
 
-    if (img2.width!=img1.width || img2.height!=img1.height ) {
-        img1.resize(sx,sy);
-        img2.resize(sx,sy);
+    if ( img2.width != img1.width || img2.height != img1.height ) {
+        img1.resize( sx, sy );
+        img2.resize( sx, sy );
     }
 
     // get the bounds
     vector<double> bmin, bmax;
 
     bmin.push_back( -1*sx );
-    bmin.push_back(  -1*sy );
+    bmin.push_back( -1*sy );
 
     bmax.push_back( sx );
     bmax.push_back( sy );
@@ -107,14 +108,14 @@ void resizeImages()
 
 
 
-void setInputImages(string file_static, string file_registered)
+void itsRegistration::setInputImages(string file_static, string file_registered)
 {
-    if (!file_static || !file_registered) {
+    if (file_static=="" || file_registered=="") {
         throw "Error: missing input images";
     }
 
-    this->inputImage_static = file_static.c_str();
-    this->inputImage_registered = file_registered.c_str();
+    this->inputImage_static = file_static;
+    this->inputImage_registered = file_registered;
 
     resizeImages();
 }
