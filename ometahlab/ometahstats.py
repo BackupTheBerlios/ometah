@@ -120,7 +120,7 @@ class Comparison:
                 self.__fatal('tests have different sample sizes.')
             elif test.nbRuns != nbRuns:
                 self.__warning('tests have different numbers of runs.')
-            elif test.parameters.randomSeed != 0: # 0 means we use time as a seed
+            elif test.parameters.randomSeed != '0': # 0 means we use time as a seed
                 self.__warning('you should not specify a random seed for a test, all the runs would get the same optimum.')
         
     def __fatal(self, msg):
