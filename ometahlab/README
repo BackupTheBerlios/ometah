@@ -1,0 +1,80 @@
+
+/--------------
+OMETAHTESTS
+---------------/
+
+/---------------------------------------------------------
+Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+2005
+-----------------------------------------------------------/
+
+Ometahtest is a set of python scripts to study ometah results.
+Results are plotted with R (http://www.r-project.org).
+
+You must have compiled ometah previously.
+
+Rpy (http://rpy.sf.net) is needed to plot results, and obviously you
+need R to (http://www.r-project.org).
+
+If you have Psyco installed (http://psyco.sf.net), it is used by the
+script, but otherwise you won't get an error.
+
+
+Doc API
+----------------------------/
+
+TODO...
+
+
+Some examples 
+----------------------------/
+
+#!/usr/bin/python
+
+try:
+    import psyco
+    psyco.full()
+except:
+    pass
+
+# you need to import those 2 modules
+import ometah_test
+import ometah_stats
+
+# instance a new test, that is a set of multiple runs 
+# of the same command line
+t = ometah_test.Test()
+
+# give ometah options as a string
+# for options list, see 'ometah --help'
+t.setArgs('-e 100')
+
+# set the number of times you will run the given command line
+t.setNbRuns(20)
+
+# start the test, a directory is created containing XML output,
+# and a log of the test.
+t.start()
+
+# same thing for another test, with a different command line
+u = ometah_test.Test()
+u.setArgs('-e 200')
+u.setNbRuns(20)
+u.start()
+
+# you'll need to build a list of the path where are stocked the ouputs
+# if you have already done some tests, you can specify the directory
+# explicitely
+# ie : p = ['aPath', 'anotherPath' ]
+# there is no limitation on the list size
+p = [ t.getPath(), u.getPath() ]
+
+# launch the comparison between the given tests,
+ometah_stats.compare(p)
+
+
+
+(TODO...)
+
+
+For a demo, see demoscript.py
