@@ -33,4 +33,4 @@ w.start()
 
 
 p = [ t.getPath(), u.getPath(), v.getPath(), w.getPath() ]
-ometah_stats.compare(p)
+ometahstats.compare(p)

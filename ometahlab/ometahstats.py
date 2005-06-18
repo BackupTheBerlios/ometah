@@ -73,7 +73,7 @@ class Comparison:
                 self.__runs.append(s)
             except:
                 msg = 'error while loading %s' % q
-                self.fatal(msg)
+                self.__fatal(msg)
 
         # initialize optimas and points
         #
@@ -110,14 +110,8 @@ class Comparison:
         - same sampleSize
         and identify FATAL divergences... """
         pass
-
-    def start(self):
-        # plot et report dans comp_%i
-        self.plot()
-        self.writeReport()
-        pass
         
-    def fatal(self, msg):
+    def __fatal(self, msg):
         import sys
         print 'FATAL ERROR: ', msg, '\n'
         sys.exit(-1)
@@ -167,16 +161,16 @@ class Comparison:
         path = os.path.join(self.__dir, self.__report)
         fd = open(path, 'w')
 
-        txt = '\n---------------------/\n'
+        txt = '\n--------------------------------------------/\n'
         txt += ' REPORT'
-        txt += '\n---------------------/\n\n'
+        txt += '\n--------------------------------------------/\n\n'
         fd.write(txt)
-        txt = 'Number of command lines (metaruns) : %i\n\n' % (len(self.__runs))
+        txt = 'Number of executions : %i\n\n' % (len(self.__runs))
         fd.write(txt)
         i = 0
         for run in self.__runs:
             i = i + 1
-            txt = '\tRun %i\n-----------------/\n\n' % i
+            txt = '%s\n--------------------------------------------/\n\n' % run.args
             fd.write(txt)
             txt = '\tNumber of runs : %i\n' % (run.nbRuns)
             fd.write(txt)
@@ -199,8 +193,6 @@ class Comparison:
                   % ''.join([str(i) for i in run.problem.optimum[0].coords])
             fd.write(txt)
             vals = [p.value for p in run.optima]
-            txt = '\tCommand line : %s\n' % (run.args)            
-            fd.write(txt)
             txt = '\tOptima mean value : %f\n' % (r.mean(vals))
             fd.write(txt)
             txt = '\tOptima standard deviation : %f\n' % (r.sd(vals))
@@ -210,6 +202,7 @@ class Comparison:
             fd.write('\n\n')
             i = i + 1
         fd.close()
+
 
     def getDir(self):
         return self.__dir

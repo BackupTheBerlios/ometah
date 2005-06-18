@@ -46,9 +46,11 @@ class Serialized:
         self.points = []
         # list of Points, only optima
         self.optima = []
+        # command line
+        self.args = ""
         
 
-class Test( object ):
+class Test:
     """ a Test is a set of _NB_RUNS of the same command line """
 
     # nb of runs for each metarun
@@ -163,7 +165,7 @@ class Test( object ):
         # Create the Serialized object
         s = Serialized()
         s.nbRuns = self._NB_RUNS
-        s.args = 'ometah' + ''.join(self.argv)
+        s.args = 'ometah ' + ''.join(self.argv)
         s.problem = self.problem
         s.parameters = self.parameters
         s.metah = self.metah
