@@ -1,9 +1,11 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 #
-# Test module for Open Metaheuristic, main file
+# Ometahlab is a set of Python scripts to make experiments on Ometah.
+#####################################################################
 # Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-# Started 06/2005
+# File : ometahstats.py
+# This module is used to generate graphical and text output from several Ometah executions.
 #
 #  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
 #  for difficult optimization.
@@ -24,23 +26,14 @@
 #
 
 from rpy import *
-import ometah_test
+import ometahtest
 
 #!!!  to put in ometah_stat module
 def compare(paths):
-    """ paths is a list of paths to metaruns directories
-    compare() checks their integrity and run comparison b/w them
-    -> plottings, report """
+    """ Generate text report and graphic representation in postscript format,
+    comparing the previous Ometah execution which directories' paths are given as a list of strings,
+    ometahtest's function getPath can be used to get those strings. See demoscript for usage example."""
 
-    """
-    instancier une Comparaison c
-    s.ser = [ Serializeds loadés de path ]
-    check cohérence
-    optimas = ( (optima1) (optima2) ) ...
-    points ( ( (iter1 pr NB_RUN) (iter2) ..) ( () () ) )
-    ( => pour plotter un grah de boxes pour chaque objet serialié)
-
-    """
     c = Comparison(paths)
     c.check()
     c.plot()
@@ -49,9 +42,10 @@ def compare(paths):
 
 
 class Comparison:
+    """ A comparison between several Ometah executions, giving text and graphical reports. """
 
     def __init__(self, paths):
-        """ """
+        """ Constructor, paths is a list of strings, which are paths to Ometah executions directories."""
         import pickle
         import string
         import os
@@ -104,11 +98,12 @@ class Comparison:
 
 
     def check(self):
-        """ check the coherence of given runs, ie :
+        """ Check the coherence of Ometah executions, ie :
         - same problem
-        - same dimensions
+        - same problem dimensions
         - same sampleSize
-        and identify FATAL divergences... """
+        - etc...
+        A fatal error or a warning message can be given, whether the divergence is fatal or not."""
         pass
         
     def __fatal(self, msg):
@@ -117,7 +112,11 @@ class Comparison:
         sys.exit(-1)
 
     def plot(self):
-        """ plot results """
+        """ Plot results as postscript files :
+        - optimaDistributions.ps : the frequency distributions of optimas for each Ometah execution.
+        - valueBoxes.ps : each execution's optima shown as quantile boxes.
+        - valuesGraph.ps : the optimum (minimal) value for each execution, as a graph.
+        - valuesConvergences.ps : show each iteration of each run as a quantile box, showing the evolution of points during the optimization."""
         file1 = os.path.join(self.__dir, 'valuesBoxes.ps')
         file2 = os.path.join(self.__dir, 'valuesGraph.ps')
 
@@ -157,7 +156,7 @@ class Comparison:
         r.dev_off()
 
     def writeReport(self):
-        """ write report in working directory"""
+        """ Write the plain text report, in the file REPORT."""
         path = os.path.join(self.__dir, self.__report)
         fd = open(path, 'w')
 
@@ -205,4 +204,10 @@ class Comparison:
 
 
     def getDir(self):
+        """ Returns the path of the directory containing files created."""
         return self.__dir
+
+
+
+if __name__ == '__main__':
+    print "This file contains no instructions in main(), please see README for program usage\n"

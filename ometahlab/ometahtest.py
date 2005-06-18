@@ -1,9 +1,13 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 #
-# Test module for Open Metaheuristic, main file
+# Ometahlab is a set of Python scripts to make experiments on Ometah.
+#####################################################################
 # Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-# Started 06/2005
+# File : ometahtest.py
+# This module contains the Test class, which corresponds to an execution of ometah,
+# with given parameters.
+#
 #
 #  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
 #  for difficult optimization.
@@ -33,9 +37,11 @@ from rpy import *
 
 
 class Serialized:
-    """ metarun infos needed for stats functions """
+    """ A Serialized object is saved in the directory of each Ometah execution,
+    to be used later by the ometahstats function. """
     
     def __init__(self):
+        """ Constructor. """
         # Problem instance
         self.problem = None
         # Metaheuristic instance
@@ -51,16 +57,16 @@ class Serialized:
         
 
 class Test:
-    """ a Test is a set of _NB_RUNS of the same command line """
+    """ a Test is a set of executions (runs) of the same command line. """
 
     # nb of runs for each metarun
-    _NB_RUNS = 20
+    _NB_RUNS = 25
 
     # turned to 1 when problem string updated
     _INFO_PB = 0
 
     def __init__(self):        
-        """ constructor """
+        """ Constructor. """
         # list of _NB_RUNS Points
         self.__optima = []
         # list of all Points
@@ -78,11 +84,10 @@ class Test:
 
 
     def __init(self, argv, runNumber, logFile):
-        """ initialize a metarun  :
-        - run ometah
-        - parse XML output
-        - get Point list and Header instances
-        - return the interface created """
+        """ Initialize a Test, which can be sawn as a 'metarun', a set of several runs (default : 25).
+        Run runNumber-th Ometah run  with given argv arguments, logFile as the name of the log file.
+        Then returns the Interface instance used.
+        """
         import parser
         import interface
         intfc = interface.Interface(argv)
@@ -122,13 +127,13 @@ class Test:
     
     
     def __metarun(self):
-        """ make a metarun ~ run ometah with argv N times """        
+        """ Make a metarun, which is running Ometah NB_RUN  times with the same command line arguments.
+        A Serialized object is created in the metarun directory, to save informations like point list, optimum, etc..."""        
         import pickle
         # list of the N optimas, have to sort it after
         self.__optima = []
         # list of sublist, one for each run, containing Point objects
         self.__points = []
-
         try:
             os.listdir(self.__results_dir)
         except:
@@ -139,7 +144,6 @@ class Test:
             intf = self.__init(self.argv, i, self.__logName)
             self.__optima.append(intf.getOptimum())
             self.__points.append(intf.getPoints())            
-
         intf.log(intf.getTitle())
         
         i = 1
@@ -155,7 +159,6 @@ class Test:
             except:
                 ok = 0
                 i = i + 1
-
         self.__dir = dir
         vlist = [ x.value for x in self.__optima ]
         slog = "\n----optima results---------\nmean : %f\n std : %f\n\n" \
@@ -206,19 +209,27 @@ class Test:
 
 
     def setNbRuns(self, n):
+        """ Set the number of runs of the test to n. Default value is 25."""
         self._NB_RUNS = n
 
     def setArgs(self, args):
+        """ Set the arguments of Ometah execution, as a string. Ie give '-p Sphere -e 50'."""
         self.argv = [''] + [args]
 
     def setOmetahPath(self, path):
+        """ Set the path to Ometah binary file, which is set to '../ometah/ometah' as default value."""
         self.__ometah_path = path
 
     def getPath(self):
+        """ Return the path of the working directory created, which can then be given to ometahstats.compare function."""
         return str(self.__dir)
 
     def start(self):
+        """ Start the test, making a metarun, which is running Ometah NB_RUN  times with the same command line arguments.
+        A Serialized object is created in the metarun directory, to save informations like point list, optimum, etc..."""
         self.__metarun()
+
+
 
 if __name__ == '__main__':
     print "This file contains no instructions in main(), please see README for program usage\n"
