@@ -147,6 +147,7 @@ class Test:
             self.__optima.append(intf.getOptimum())
             self.__points.append(intf.getPoints())            
         intf.log(intf.getTitle())
+        intf.archiveXml()
         
         i = 1
         ok = 0
@@ -206,7 +207,7 @@ class Test:
             intc.fatal('pickle failed [Test.metarun]')
         fd.close()
 
-        cmd = "mv *.xml SERIALIZED %s %s &> /dev/null" % (self.__logName, self.__dir)
+        cmd = "mv xml.tar.gz  *.xml SERIALIZED %s %s &> /dev/null" % (self.__logName, self.__dir)
         os.system(cmd)
 
 
