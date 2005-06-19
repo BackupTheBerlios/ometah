@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConscript,v 1.1 2005/06/18 06:30:28 nojhan Exp $
+#  $Id: SConscript,v 1.2 2005/06/19 13:01:33 nojhan Exp $
 #  Copyright : Université Paris 12 Val-de-Marne
 #              (61 avenue du GÃ©nÃ©ral de Gaulle, 94010, CrÃ©teil, France)
 #  Author : Johann DrÃ©o <nojhan@gmail.com>
@@ -27,5 +27,3 @@ Import('env')
 interface = ['itsArgument.cpp']
 
 env.StaticLibrary('interface',interface)
-
-SConscript('registration/SConscript')

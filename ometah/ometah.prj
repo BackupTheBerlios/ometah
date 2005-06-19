@@ -9,7 +9,7 @@ Blabla<PROJECT_DESCRIPTION_END>
 <CONFIG_LIBS_END>
 <CONFIG_HEADERS_START>
 /***************************************************************************
- *  $Id: ometah.prj,v 1.2 2005/06/18 06:30:27 nojhan Exp $
+ *  $Id: ometah.prj,v 1.3 2005/06/19 13:01:33 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -135,7 +135,14 @@ module.source.files=\
 	interface/itsArgument.cpp\
 	problem/CEC05/itsCEC05_SSRPO_Problems.cpp\
 	problem/registration/itsRegistration.cpp\
-	interface/registration/ometah_registration.cpp
+	interface/registration/ometah_registration.cpp\
+	common/SConscript\
+	communication/SConscript\
+	interface/SConscript\
+	metaheuristic/SConscript\
+	problem/SConscript\
+	problem/CEC05/SConscript\
+	problem/registration/SConscript
 
 module.pixmap.name=.
 module.pixmap.type=
