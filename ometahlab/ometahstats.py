@@ -155,14 +155,16 @@ class Comparison:
         # plot a box for each sublist
         r.postscript(file1, paper='letter')
         vlist = [[p.value for p in points ] for points in self.__optimas ]
-        r.boxplot(vlist, style='quantile', col='yellow', main='Optimas list', xlab='Metarun index', ylab='')
+        r.boxplot(vlist, style='quantile', col='yellow', main='Optimas list', xlab='Test index', ylab='')
         r.grid(nx=10, ny=40)
         r.dev_off()
 
         # plot the nbMetarun optimas ~ we select the best among the 25 for each metarun       
         r.postscript(file2, paper='letter')
         olist = [(min([p.value for p in points])) for points in self.__optimas ]
-        r.plot(olist, type='o', col='green', main='Optima evolution', xlab='Metarun index', ylab='Optima value')
+        wlist = [(max([p.value for p in points])) for points in self.__optimas ]
+        r.plot(olist, type='o', col='blue', main='Bests optima  evolution', xlab='Test index', ylab='Optima value')
+        r.plot(wlist, type='o', col='red', main='Worsts optima  evolution', xlab='Test index', ylab='Optima value')
         r.grid(nx=10, ny=40)
         r.dev_off()
         
