@@ -76,7 +76,7 @@ class Test:
         # the initial argv
         self.argv = ['']
         # directory where to put report, plottings...
-        self.dir = "."
+        self.__dir = "."
         # one log for each metarun
         self.__logName = "ometahtest.log"
         # default location of ometah

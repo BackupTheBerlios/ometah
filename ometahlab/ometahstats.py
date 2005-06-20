@@ -140,7 +140,7 @@ class Comparison:
         file1 = os.path.join(self.__dir, 'valuesBoxes.ps')
         file2 = os.path.join(self.__dir, 'valuesGraph.ps')
 
-        # plot frequency distributions
+        ## plot frequency distributions
         breaks = 10        
         i = 1
         file0 = os.path.join(self.__dir, 'optimaDistributions.ps')        
@@ -152,23 +152,37 @@ class Comparison:
             i = i + 1
         r.dev_off()
         
-        # plot a box for each sublist
+        ## plot a box for each sublist
         r.postscript(file1, paper='letter')
         vlist = [[p.value for p in points ] for points in self.__optimas ]
         r.boxplot(vlist, style='quantile', col='yellow', main='Optimas list', xlab='Test index', ylab='')
         r.grid(nx=10, ny=40)
         r.dev_off()
 
-        # plot the nbMetarun optimas ~ we select the best among the 25 for each metarun       
+        ## plot the nbMetarun optimas ~ we select the best among the 25 for each metarun       
         r.postscript(file2, paper='letter')
+
+        # make best optima list (minima)
         olist = [(min([p.value for p in points])) for points in self.__optimas ]
+
+        # make worst optima list (maxima)
         wlist = [(max([p.value for p in points])) for points in self.__optimas ]
+
+        # make media optima list (sort and take (len/2)'s index value)        
+        [ points.sort() for points in self.__optimas ]
+        # all sublist should have the same length, that is NB_RUN
+        length = len(self.__optimas[0])
+        print "length: ", length
+        medianIndex = length/2 # integer division, ok with first index = zero
+        mlist = [ points[medianIndex].value for points in self.__optimas]
+        
         r.plot(olist, type='o', col='blue', main='Bests optima  evolution', xlab='Test index', ylab='Optima value')
         r.plot(wlist, type='o', col='red', main='Worsts optima  evolution', xlab='Test index', ylab='Optima value')
+        r.plot(mlist, type='o', col='orange', main='Median optima  evolution', xlab='Test index', ylab='Optima value')        
         r.grid(nx=10, ny=40)
         r.dev_off()
         
-        # plot convergence boxes (one graph for each metarun)
+        ## plot convergence boxes (one graph for each metarun)
         file3 = os.path.join(self.__dir, 'valuesConvergences.ps')
         r.postscript(file3, paper='letter')
         for metalist in self.__points:
