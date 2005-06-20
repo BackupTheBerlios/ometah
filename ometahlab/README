@@ -23,7 +23,7 @@ script, but otherwise you won't get an error.
 Doc API
 ----------------------------/
 
-TODO...
+c
 
 
 Some examples 
@@ -71,7 +71,6 @@ p = [ t.getPath(), u.getPath() ]
 
 # launch the comparison between the given tests,
 ometah_stats.compare(p)
-
 
 
 (TODO...)

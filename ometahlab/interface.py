@@ -185,6 +185,15 @@ class Interface:
         wfd.close()
         return xfile
 
+    def archiveXml(self):
+        """ Create a compressed tar archive of XML files. """
+        try:
+            cmd = 'tar zcvf %s/xml.tar.gz %s/*xml &> /dev/null && rm -f %s/*xml' \
+                  % (self.__path, self.__path, self.__path)
+            os.system(cmd)
+        except:
+            pass
+
     def rmDiskCopy(self, filename="xml"):
         """ remove XML copy on disk """
         path = "%s/%s.xml" % (self.__path, filename)
