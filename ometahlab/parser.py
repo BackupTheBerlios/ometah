@@ -183,7 +183,7 @@ class Problem:
     description = None
     formula = None
     dimension = None
-    optimum = []   # list of Point objects
+    optimum = []   # list of Point
     min_bound = [] # idem
     max_bound = [] # idem
     reference = None
