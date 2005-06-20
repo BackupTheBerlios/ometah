@@ -184,6 +184,9 @@ class Test:
 
         # give succRate & succPerf their value
         self.__calculSuccessRates()
+
+        # empty large unuseful variables
+        self.__points = []
         
         fd = open('TEST', 'w')
         try:
@@ -228,8 +231,6 @@ class Test:
         vlist = [ float(p.value) for p in self.problem.optimum ]        
         realOptimum = min(vlist)
         optimumFound = float(point.value)
-        print "acc : ", self.problem.accuracy
-        print "diff :", optimumFound-realOptimum
         if (optimumFound - realOptimum) > self.problem.accuracy:
             return False
         return True
