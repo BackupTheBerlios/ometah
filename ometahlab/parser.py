@@ -114,6 +114,7 @@ class XMLParser:
             self.__header__.problem.description = self.__getText(probl.getElementsByTagName('description')[0])
             self.__header__.problem.dimension = int(self.__getText(probl.getElementsByTagName('dimension')[0]))
             self.__header__.problem.reference = self.__getText(probl.getElementsByTagName('reference')[0])
+            self.__header__.problem.accuracy = float(self.__getText(probl.getElementsByTagName('accuracy')[0]))
         except:
             self.__interface.log('ERROR: XML exploration error for <problem> simple values [XMLParser.getHeader]')
 
@@ -187,6 +188,7 @@ class Problem:
     min_bound = [] # idem
     max_bound = [] # idem
     reference = None
+    accuracy = 0.0
     
     def __init__(self):
         pass
