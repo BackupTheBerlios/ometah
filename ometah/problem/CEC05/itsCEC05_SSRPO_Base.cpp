@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Base.cpp,v 1.1 2005/06/13 09:05:08 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Base.cpp,v 1.2 2005/06/20 13:06:24 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  * Author: Johann Dréo <nojhan@gmail.com>
@@ -53,6 +53,8 @@ itsAckley::itsAckley()
     
     setBoundsMinimaAll(-32);
     setBoundsMaximaAll(32);
+
+    setAccuracy(0.01);
     
     vector<itsPoint> optim;
     itsPoint pt;
@@ -113,7 +115,9 @@ itsRastrigin::itsRastrigin()
     
     setBoundsMinimaAll(-5);
     setBoundsMaximaAll(5);
-    
+
+    setAccuracy(0.01);    
+
     vector<itsPoint> optim;
     itsPoint pt;
 
@@ -168,7 +172,9 @@ itsWeierstrass::itsWeierstrass()
     
     setBoundsMinimaAll(-0.5);
     setBoundsMaximaAll(0.5);
-    
+
+    setAccuracy(0.01);
+
     vector<itsPoint> optim;
     itsPoint pt;
 
@@ -233,7 +239,9 @@ itsGriewank::itsGriewank()
     
     setBoundsMinimaAll(0);
     setBoundsMaximaAll(600);
-    
+
+    setAccuracy(0.01);
+
     vector<itsPoint> optim;
     itsPoint pt;
 
@@ -292,6 +300,8 @@ itsSphere::itsSphere()
     
     setBoundsMinimaAll(-100);
     setBoundsMaximaAll(100);
+
+    setAccuracy(0.00001);
     
     vector<itsPoint> optim;
     itsPoint pt;
@@ -346,6 +356,8 @@ itsSchwefel::itsSchwefel()
     
     setBoundsMinimaAll(-100);
     setBoundsMaximaAll(100);
+
+    setAccuracy(0.00001);
     
     vector<itsPoint> optim;
     itsPoint pt;
@@ -407,6 +419,8 @@ itsRosenbrock::itsRosenbrock()
     
     setBoundsMinimaAll(-100);
     setBoundsMaximaAll(100);
+
+    setAccuracy(0.01);
     
     vector<itsPoint> optim;
     itsPoint pt;

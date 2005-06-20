@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.2 2005/06/13 12:06:04 jpau Exp $
+ *  $Id: itsProblem.hpp,v 1.3 2005/06/20 13:06:23 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -87,6 +87,11 @@ protected:
   */
   vector<double> boundsMaxima;
   
+  //! Accuracy need for a success
+  /*!
+    It's the maximal error value with the optimum to get a success when calculating success rate
+   */
+  float accuracy;
   
 public:
   //! Constructor
@@ -182,6 +187,11 @@ public:
   string getKey();
   //! Change the key
   void setKey( string key );
+
+  //! Return the accuracy
+  float getAccuracy();
+  //! Change the accuracy 
+  void setAccuracy( float acc );
     
   //@}
 

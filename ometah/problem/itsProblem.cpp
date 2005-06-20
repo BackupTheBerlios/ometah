@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.5 2005/06/18 08:17:59 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.6 2005/06/20 13:06:23 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -161,6 +161,7 @@ string itsProblem::getInformations_XML()
   msg << "<description>" << getDescription() << "</description>" << endl;
   msg << "<formula>" << getFormula() << "</formula>" << endl;
   msg << "<dimension>" << getDimension() << "</dimension>" << endl;
+  msg << "<accuracy>" << getAccuracy() << "</accuracy>" << endl;
   
 
   // print vectors of the optimums
@@ -340,4 +341,16 @@ string itsProblem::getKey()
 void itsProblem::setKey( string key )
 {
     this->key = key;
+}
+
+
+float itsProblem::getAccuracy()
+{
+  return this->accuracy;
+}
+
+
+void itsProblem::setAccuracy(float acc)
+{
+  this->accuracy = acc;
 }
