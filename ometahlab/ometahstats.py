@@ -179,7 +179,9 @@ class Comparison:
         mlist = [ points[medianIndex].value for points in self.__optimas]
         
         r.plot(olist, type='o', col='blue', main='Bests optima  evolution', xlab='Test index', ylab='Optima value')
+        r.grid(nx=10, ny=40)
         r.plot(wlist, type='o', col='red', main='Worsts optima  evolution', xlab='Test index', ylab='Optima value')
+        r.grid(nx=10, ny=40)
         r.plot(mlist, type='o', col='orange', main='Median optima  evolution', xlab='Test index', ylab='Optima value')        
         r.grid(nx=10, ny=40)
         r.dev_off()
