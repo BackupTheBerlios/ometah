@@ -49,19 +49,21 @@ class Comparison:
         import pickle
         import string
         import os
-        # each metarun (each Serialized) has different parameters
+        # each metarun (each Test) has different parameters
         
-        # list of Serialized objects, one for each metarun
+        # list of Test objects, one for each metarun
         self.__tests = []
         # working directory
         self.__dir = ''
         # report file name
         self.__report = 'REPORT'
+        # serialized file name
+        self.__serialized = 'TEST'
 
         # pickle.load serialized objects in paths
         for p in paths:
             try:
-                q = "%s/SERIALIZED" % p
+                q = "%s/TEST" % p
                 fd = open(q, 'r')
                 s = pickle.load(fd)
                 self.__tests.append(s)
@@ -77,8 +79,8 @@ class Comparison:
 
         self.__points = []
         # sample size 
-        for serial in self.__tests:
-            self.__points.append(serial.points)
+        for test in self.__tests:
+            self.__points.append(test.pointsIterations)
         # Note : each serial.points is a list of sublists, where each
         # sublist corresponds to an iteration
 
@@ -108,7 +110,7 @@ class Comparison:
         pb = self.__tests[0].problem.key
         dim = self.__tests[0].problem.dimension
         sample = self.__tests[0].parameters.sampleSize
-        nbRuns = self.__tests[0].nbRuns
+        runsNb = self.__tests[0].runsNb
 
         print ''
         for test in self.__tests:
@@ -118,7 +120,7 @@ class Comparison:
                 self.__fatal('tests have different problem dimensions.')
             elif test.parameters.sampleSize != sample:
                 self.__fatal('tests have different sample sizes.')
-            elif test.nbRuns != nbRuns:
+            elif test.runsNb != runsNb:
                 self.__warning('tests have different numbers of runs.')
             elif test.parameters.randomSeed != '0': # 0 means we use time as a seed
                 self.__warning('you should not specify a random seed for a test, all the runs would get the same optimum.')
@@ -202,37 +204,43 @@ class Comparison:
         fd.write(txt)
         txt = 'Number of executions : %i\n\n' % (len(self.__tests))
         fd.write(txt)
+        for test in self.__tests:
+            txt = '\t%s\n' % test.args
+            fd.write(txt)
+        fd.write('\n')
         i = 0
-        for run in self.__tests:
+        for test in self.__tests:
             i = i + 1
-            txt = '%s\n--------------------------------------------/\n\n' % run.args
+            txt = '%s\n--------------------------------------------/\n\n' % test.args
             fd.write(txt)
-            txt = '\tNumber of runs : %i\n' % (run.nbRuns)
+            txt = '\tNumber of runs : %i\n' % ( test.runsNb )
             fd.write(txt)
-            txt = '\tSample size : %s\n' % run.parameters.sampleSize
+            txt = '\tSample size : %s\n' % test.parameters.sampleSize
             fd.write(txt)
-            txt = '\tTreshold  : %s\n' % run.parameters.treshold
+            txt = '\tTreshold  : %s\n' % test.parameters.treshold
             fd.write(txt)
-            if run.parameters.randomSeed == 0:
+            if test.parameters.randomSeed == '0':
                 txt = '\tRandom seed : Unknown (from time)\n'
             else:
-                txt = '\tRandom seed  : %s\n' % run.parameters.randomSeed
+                txt = '\tRandom seed  : %s\n' % test.parameters.randomSeed
             fd.write(txt)
             txt = '\tProblem : %s\n\tDimension : %i\n' \
-                  % (run.problem.name, run.problem.dimension)
+                  % ( test.problem.name, test.problem.dimension )
             fd.write(txt)
             txt = '\tOptimum value : %s\n' \
-              % str(run.problem.optimum[0].value)
+              % str( test.problem.optimum[0].value )
             fd.write(txt)
             txt = '\tOptimum solution : %s\n' \
-                  % ''.join([str(i) for i in run.problem.optimum[0].coords])
+                  % ''.join( [str(i) for i in test.problem.optimum[0].coords] )
             fd.write(txt)
-            vals = [p.value for p in run.optima]
+            vals = [p.value for p in test.optima]
             txt = '\tOptima mean value : %f\n' % (r.mean(vals))
             fd.write(txt)
             txt = '\tOptima standard deviation : %f\n' % (r.sd(vals))
             fd.write(txt)
             txt = '\tOptimum value : %f\n' % (min(vals))
+            fd.write(txt)
+            txt ='\tSuccess rate : ' + str(100*test.succRate) + ' % \n'
             fd.write(txt)
             fd.write('\n\n')
             i = i + 1

@@ -36,49 +36,24 @@ except:
 from rpy import *
 
 
-class Serialized:
-    """ A Serialized object is saved in the directory of each Ometah execution,
-    to be used later by the ometahstats function.
-    One Test => One Serialized. """
-    
-    def __init__(self):
-        """ Constructor. """
-        # Problem instance
-        self.problem = None
-        # Metaheuristic instance
-        self.metah = None
-        # Parameters instance
-        self.parameters = None
-        # list of Points
-        self.points = []
-        # list of Points, only optima for each run
-        self.optima = []
-        # command line
-        self.args = ""
-        # nb of runs
-        self.nbRuns = 25
-        # success rate
-        self.succRate = 0
-        # success performance = mean(FES for successful run * #run)/#succRuns
-        self.succPerf = 0
-
 class Test:
     """ a Test is a set of executions (runs) of the same command line. """
-
-    # nb of runs for each metarun
-    _NB_RUNS = 25
 
     # turned to 1 when problem string updated
     _INFO_PB = 0
 
     def __init__(self):        
         """ Constructor. """
-        # list of _NB_RUNS Points
-        self.__optima = []
+        # list of runsNb Points
+        self.optima = []
         # list of all Points
         self.__points = []
-        # the initial argv
+        # list of Points  sorted by iteration
+        self.pointsIterations = []
+        # the initial argv as a list
         self.argv = ['']
+        # and as a string
+        self.args = ''
         # directory where to put report, plottings...
         self.__dir = "."
         # one log for each metarun
@@ -93,6 +68,12 @@ class Test:
         self.succRate = 0
         # success performance = mean(FES for successful run * #run)/#succRuns
         self.succPerf = 0
+        # nb of runs for each metarun
+        self.runsNb = 25
+
+        self.problem = None
+        self.parameters = None
+        self.metah = None
 
     def __init(self, argv, runNumber, logFile):
         """ Initialize a Test, which can be sawn as a 'metarun', a set of several runs (default : 25).
@@ -138,11 +119,11 @@ class Test:
     
     
     def __metarun(self):
-        """ Make a metarun, which is running Ometah NB_RUN  times with the same command line arguments.
-        A Serialized object is created in the metarun directory, to save informations like point list, optimum, etc..."""        
+        """ Make a metarun, which is running Ometah RunsNb  times with the same command line arguments.
+        A serialized object of the self instance is created in the metarun directory """        
         import pickle
         # list of the N optimas, have to sort it after
-        self.__optima = []
+        self.optima = []
         # list of sublist, one for each run, containing Point objects
         self.__points = []
         try:
@@ -151,9 +132,9 @@ class Test:
             os.mkdir(self.__results_dir)
 
         print "\nRunning ometah", ''.join(self.argv)
-        for i in range(self._NB_RUNS):
+        for i in range(self.runsNb):
             intf = self.__init(self.argv, i, self.__logName)
-            self.__optima.append(intf.getOptimum())
+            self.optima.append(intf.getOptimum())
             self.__points.append(intf.getPoints())            
         intf.log(intf.getTitle())
         intf.archiveXml()
@@ -172,62 +153,57 @@ class Test:
                 ok = 0
                 i = i + 1
         self.__dir = dir
-        vlist = [ x.value for x in self.__optima ]
+        vlist = [ x.value for x in self.optima ]
         slog = "\n----optima results---------\nmean : %f\n std : %f\n\n" \
                % (r.mean(vlist), r.sd(vlist))
         intf.log(slog)
 
-        # Create the Serialized object
-        s = Serialized()
-        s.nbRuns = self._NB_RUNS
-        s.args = 'ometah ' + ''.join(self.argv)
-        s.problem = self.problem
-        s.parameters = self.parameters
-        s.metah = self.metah
-        s.optima = self.__optima
-
         # s.points is a set of Point sublists :
         # one sublist for each iteration, containing all points of the N runs
-        s.points = []
-        ssize = int(self.parameters.sampleSize) / 2
+
+        # !!! /2 'cos take intensification Points !
+        # don't '/2' for diversification
+        size = int(self.parameters.sampleSize) / 2
         # initialize the length of s.points
-        iters = len(self.__points[0]) / ssize        
+        iters = len(self.__points[0]) / size        
         for i in range(iters):
-            s.points.append([])       
+            self.pointsIterations.append([])       
         
         # for each sublist (each run)
         for sublist in self.__points:
             # nb of iterations = nb of points / sample size
-            iters = len(sublist) / ssize
+            iters = len(sublist) / size
             it = 0 # current iteration
             c = 0
             for p in sublist:
-                s.points[it].append(p)
+                self.pointsIterations[it].append(p)
                 c = c + 1
-                if c == ssize:
+                if c == size:
                     it = it + 1
                     c = 0
 
-        self.calculSuccessRates()
+        # give succRate & succPerf their value
+        self.__calculSuccessRates()
         
-        fd = open('SERIALIZED', 'w')
+        fd = open('TEST', 'w')
         try:
-            pickle.dump(s,fd)
+            pickle.dump(self,fd)
         except:
             int.fatal('pickle failed [Test.metarun]')
         fd.close()
 
-        cmd = "mv xml.tar.gz  *.xml SERIALIZED %s %s &> /dev/null" % (self.__logName, self.__dir)
+        cmd = "mv xml.tar.gz  *.xml TEST %s %s &> /dev/null" % (self.__logName, self.__dir)
         os.system(cmd)
 
 
     def setNbRuns(self, n):
         """ Set the number of runs of the test to n. Default value is 25."""
-        self._NB_RUNS = n
+        self.runsNb = n
 
     def setArgs(self, args):
         """ Set the arguments of Ometah execution, as a string. Ie give '-p Sphere -e 50'."""
         self.argv = [''] + [args]
+        self.args = 'ometah ' + ''.join(self.argv)
 
     def setOmetahPath(self, path):
         """ Set the path to Ometah binary file, which is set to '../ometah/ometah' as default value."""
@@ -237,23 +213,20 @@ class Test:
         """ Return the path of the working directory created, which can then be given to ometahstats.compare function."""
         return str(self.__dir)
 
-    def calculSuccessRates(self):
+    def __calculSuccessRates(self):
         """ Update succRate & succPerf values, according to the current optima list and problem instance """
-        total = self._NB_RUNS
+        total = self.runsNb
         success = 0
-        for point in self.__optima:
-            if self.success(point):
+        for point in self.optima:
+            if self.__success(point):
                 success += 1
         self.succRate = float(success) / float(total)
-        print 'sucess rate : %f / %f = %f ' \
-              % (success, total, self.succRate)
         
-    def success(self, point):
-        """ return true if the point given matches problem's optima,
+    def __success(self, point):
+        """ Returns true if the point given matches problem's optima,
         with a precision of self.__precision, returns false otherwise """
         realOptimum = float(self.problem.optimum[0].value)
         optimumFound = float(point.value)
-        print 'real : %f, found : %f' % (realOptimum, optimumFound)
         if (optimumFound - realOptimum) > self.__precision:
             return False
         return True
