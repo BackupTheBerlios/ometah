@@ -229,6 +229,8 @@ class Comparison:
             txt = '\tProblem : %s\n\tDimension : %i\n' \
                   % ( test.problem.name, test.problem.dimension )
             fd.write(txt)
+            txt = '\tAccuracy : %s\n' % (test.problem.accuracy)
+            fd.write()
             txt = '\tOptimum value : %s\n' \
               % str( test.problem.optimum[0].value )
             fd.write(txt)

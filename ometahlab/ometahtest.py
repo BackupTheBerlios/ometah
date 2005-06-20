@@ -225,9 +225,12 @@ class Test:
     def __success(self, point):
         """ Returns true if the point given matches problem's optima,
         with a precision of self.__precision, returns false otherwise """
-        realOptimum = float(self.problem.optimum[0].value)
+        vlist = [ float(p.value) for p in self.problem.optimum ]        
+        realOptimum = min(vlist)
         optimumFound = float(point.value)
-        if (optimumFound - realOptimum) > self.__precision:
+        print "acc : ", self.problem.accuracy
+        print "diff :", optimumFound-realOptimum
+        if (optimumFound - realOptimum) > self.problem.accuracy:
             return False
         return True
 
