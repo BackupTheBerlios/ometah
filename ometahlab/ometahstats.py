@@ -157,7 +157,7 @@ class Comparison:
         ## plot a box for each sublist
         r.postscript(file1, paper='letter')
         vlist = [[p.value for p in points ] for points in self.__optimas ]
-        r.boxplot(vlist, style='quantile', col='yellow', main='Optimas list', xlab='Test index', ylab='')
+        r.boxplot(vlist, style='quantile', col='orange', main='Optimas list', xlab='Test index', ylab='')
         r.grid(nx=10, ny=40)
         r.dev_off()
 
@@ -178,11 +178,17 @@ class Comparison:
         medianIndex = length/2 # integer division, ok with first index = zero
         mlist = [ points[medianIndex].value for points in self.__optimas]
         
-        r.plot(olist, type='o', col='blue', main='Bests optima  evolution', xlab='Test index', ylab='Optima value')
+        r.plot(olist, type='n', main='Bests optima evolution', xlab='Test index', ylab='Optima value')
+        r.lines(olist, lty='dotted')
+        r.points(olist, bg = 'white', pch = 21)
         r.grid(nx=10, ny=40)
-        r.plot(wlist, type='o', col='red', main='Worsts optima  evolution', xlab='Test index', ylab='Optima value')
+        r.plot(wlist, type='n', main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
+        r.lines(wlist, lty='dotted')
+        r.points(wlist, bg ='white', pch = 21)
         r.grid(nx=10, ny=40)
-        r.plot(mlist, type='o', col='orange', main='Median optima  evolution', xlab='Test index', ylab='Optima value')        
+        r.plot(mlist, type='n', main='Median optima evolution', xlab='Test index', ylab='Optima value')        
+        r.lines(mlist, lty='dotted')
+        r.points(mlist, bg ='white', pch = 21)
         r.grid(nx=10, ny=40)
         r.dev_off()
         
@@ -191,8 +197,20 @@ class Comparison:
         r.postscript(file3, paper='letter')
         for metalist in self.__points:
             vlist = [[p.value for p in points] for points in metalist ]
-            r.boxplot(vlist, style='quantile', col='red', main='Iterations convergence', xlab='Iteration index', ylab='Optima value')
+            r.boxplot(vlist, style='quantile', col='orange', main='Iterations convergence', xlab='Iteration index', ylab='Optima value')
             r.grid(nx=10, ny=40)
+        r.dev_off()
+
+        ## plot success rates
+        file3 = os.path.join(self.__dir, 'succRateGraph.ps')
+        r.postscript(file3, paper='letter')
+        slist = []
+        for test in self.__tests:
+            slist.append(test.succRate*100)
+        r.plot(slist, type='n', main='Success rate for each test', xlab='Test index', ylab='Rate (%)')
+        r.lines(slist, lty='dotted')
+        r.points(slist, bg ='white', pch = 21)
+        r.grid(nx=10, ny=40)
         r.dev_off()
 
     def writeReport(self):
@@ -230,7 +248,7 @@ class Comparison:
                   % ( test.problem.name, test.problem.dimension )
             fd.write(txt)
             txt = '\tAccuracy : %s\n' % (test.problem.accuracy)
-            fd.write()
+            fd.write(txt)
             txt = '\tOptimum value : %s\n' \
               % str( test.problem.optimum[0].value )
             fd.write(txt)
