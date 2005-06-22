@@ -66,57 +66,7 @@ class Interface:
         except:
             self.log('ERROR : wrong path to XML file [Interface.getXmlFromFile]\n')
         return fd
-        
-    def plotValuesDistribHist(self, plist, breaks):
-        """ plot distribution of points
-        plist = list of Point objects
-        breaks = number of breaks in the histogram """
-        vlist = []
-        vlist = [x.value for x in plist]
-        r.hist(vlist, breaks, col='green', main='Distribution', xlab='Values', ylab='Frequency')
-    
-    def plotValuesIterationsGraph(self, plist, dimension):
-        """ plot graph of values for each point in any iteration
-        plist = list of Point objects
-        dimension = dimension of the problem """        
-        if dimension == 1 :
-            vlist = []
-            vlist = [x.value for x in plist]
-            r.plot(vlist, type='o', col='red', main='Values evolution', xlab='Points', ylab='Value')
-        elif dimension == 2:
-            self.log('ERROR : dimension > 1 [Interface.plotValuesIterationsGraph]\n')
-
-    def plotValuesIterationsBoxes(self, plist, iterations):
-        """ plot a box for each iteration's list of Points  """
-        clist = []                      # is a list of lists, which are the iterations
-        ppi = len(plist) / iterations
-        if ppi != int(ppi):
-            self.log('ERROR : Iteration number does not match list size [Interface.plotValuesIterationsBoxes]\n')
-            return -1
-        for i in range(iterations):     # for each iteration  
-            buf = []                    # buf is a set of points for an iteration
-            for j in range(ppi):        # for each point of the cluster
-                buf.append( (plist[i * (ppi-1) + j]).value )
-            clist.append(buf)           # add the created cluster to our plotted list                        
-        r.boxplot(clist, style='quantile', col='orange', main='Boxes of samples', xlab='Iterations')
-
-    def plotValuesIterationsStdGraph(self, plist, iterations):
-        """ plot the standard deviation for each iteration list of Points  """
-        sdlist = []
-        bflist = []
-        ppi = len(plist) / iterations
-        if ppi != int(ppi):
-            self.log('ERROR : Iteration number does not match list size [plotValuesIterationsStdGraph]\n')
-            return -1
-        for i in range(iterations):
-            buf = []
-            for j in range(ppi):
-                buf.append( (plist[i * (ppi-1) + j]).value)
-            bflist.append(buf)
-        for i in bflist:
-            sdlist.append(r.sd(i))
-        r.plot(sdlist, col='blue', type='o', main='Standard deviations', xlab='Iteration', ylab='Std')
-        
+            
     def log(self, astring):
         """ write log of current job in a *.log file with date,
         pb name, output files... """    
@@ -133,22 +83,6 @@ class Interface:
     def setLogFileName(self, astring):
         self.__logfile = astring
     
-    def setPostscriptOutput(self, filename="default"):
-        """  set a postscript output file """
-        if filename == "default":
-            s = "%s/%s.ps" % (self.__path, self.__defaultFileName)
-        else:
-            s = "%s/%s.ps" % (self.__path, filename)
-        r.postscript(s, paper='letter')
-
-    def setBitmapOutput(self, filename="default"):
-        """ set a bitmap (png) output file """
-        if filename == "default":
-            s = "%s.png" % (self.__defaultFileName)
-        else:
-            s = "%s.png" % (filename)         
-        r.bitmap(s, res=150)
-       
     def datedFileName(self, name, extension):
         """ return a string of toda
         y's date + given string """
