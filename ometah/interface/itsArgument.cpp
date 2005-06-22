@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.6 2005/06/16 15:00:30 jpau Exp $
+ *  $Id: itsArgument.cpp,v 1.7 2005/06/22 12:22:09 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -135,7 +135,7 @@ bool itsArgumentParser::defArg(string flagShort, string flagLong, string usage,
       if (hasValue){
 	
 	// if not end of line AND next word isnt a flag
-	if ( (++i) < this->argv.size() && (this->argv.at(i)[0] != '-' ) )	
+	if ( (++i) < this->argv.size() && ((this->argv.at(i)[0] != '-' ) || ( this->argv.at(i)[1] < 60  )))	
 	  value = this->argv.at(i);	
 	else { 
 	  stringstream s;
