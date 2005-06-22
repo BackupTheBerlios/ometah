@@ -117,9 +117,9 @@ class Comparison:
             if test.problem.key != pb:
                 self.__fatal('tests have different problems.')
             elif test.problem.dimension != dim:
-                self.__fatal('tests have different problem dimensions.')
+                self.__warning('tests have different problem dimensions.')
             elif test.parameters.sampleSize != sample:
-                self.__fatal('tests have different sample sizes.')
+                self.__warning('tests have different sample sizes.')
             elif test.runsNb != runsNb:
                 self.__warning('tests have different numbers of runs.')
             elif test.parameters.randomSeed != '0': # 0 means we use time as a seed
@@ -174,7 +174,6 @@ class Comparison:
         [ points.sort() for points in self.__optimas ]
         # all sublist should have the same length, that is NB_RUN
         length = len(self.__optimas[0])
-        print "length: ", length
         medianIndex = length/2 # integer division, ok with first index = zero
         mlist = [ points[medianIndex].value for points in self.__optimas]
         
@@ -212,6 +211,50 @@ class Comparison:
         r.points(slist, bg ='white', pch = 21)
         r.grid(nx=10, ny=40)
         r.dev_off()
+
+        # plot points in plan
+        self.plotSpace()
+
+
+    def plotSpace(self):
+        """ plot optima and the optimum in their neighborhood plan
+        for dimension 2
+        => use ACP when dim > 2 ! """
+
+        file5 = os.path.join(self.__dir, 'solutionsPlan.ps') 
+        r.postscript(file5, paper='letter')            
+        for t in self.__tests:        
+            if t.problem.dimension < 2:
+
+                x = range(len(t.optima))
+                y = []
+
+                for p in t.optima:
+                    y.append(p.coords[0])
+
+                xlimm = [0, len(t.optima)]
+                ylimm = [t.problem.optimum[0].coords[0]-.1, max(y) ]
+
+                r.plot(x, y, xlim=xlimm, ylim=ylimm, xlab = 'Points', ylab='Position', \
+                       main=t.args, bg='lightblue', pch=21')
+                opt = t.problem.optimum[0].coords[0]
+                r.lines(xlimm, [opt, opt], col='red')
+                
+            else:
+                x = []
+                y = []
+                for p in t.optima:
+                    x.append(p.coords[0])
+                    y.append(p.coords[1])
+                xlimm = [t.problem.min_bound[0].coords[0], t.problem.max_bound[0].coords[0]]
+                ylimm = [t.problem.min_bound[0].coords[1], t.problem.max_bound[0].coords[1]]
+                r.plot(x,y, bg='lightblue', pch=21, xlab='X', ylab='Y', \
+                       main=t.args, xlim=xlimm, ylim=xlimm)
+                r.points([t.problem.optimum[0].coords[0]], \
+                         [t.problem.optimum[0].coords[1]], \
+                         bg='red', pch=21)
+        r.dev_off()
+
 
     def writeReport(self):
         """ Write the plain text report, in the file REPORT."""
