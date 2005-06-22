@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.6 2005/06/20 13:06:23 jpau Exp $
+ *  $Id: itsProblem.cpp,v 1.7 2005/06/22 12:13:23 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -48,10 +48,17 @@ itsProblem::itsProblem()
   setBoundsMaximaAll(1);
   setBoundsMinimaAll(0);
 
-  //vector<itsPoint> optim;
-  //optim.setSolution(vector<double> sol);
-  //optim.setValues(vector<double> val);
-  //setOptima(optim);
+  setAccuracy(0.1);
+
+  // A fake optimum
+  vector<itsPoint> optim;
+  itsPoint pt;
+  vector<double> sol(getDimension(),0);
+  pt.setSolution(sol); // a vector of 0
+  vector<double> val(1,0);
+  pt.setValues(val); // a value of 0
+  optim.push_back(pt);
+  setOptima(optim);
 }
 
 string itsProblem::getName() 

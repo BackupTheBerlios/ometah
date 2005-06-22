@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.2 2005/06/18 06:29:18 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.3 2005/06/22 12:13:23 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -46,6 +46,19 @@ itsRegistration::itsRegistration()
     
     setBoundsMinimaAll(-1);
     setBoundsMaximaAll(1);
+
+    setAccuracy(1);
+
+    // The registration problem has no fixe optimum
+    // But we need to fix one for the output
+    vector<itsPoint> optim;
+    itsPoint pt;
+    vector<double> sol(getDimension(),0);
+    pt.setSolution(sol); // a vector of 0
+    vector<double> val(1,0);
+    pt.setValues(val); // a value of 0
+    optim.push_back(pt);
+    setOptima(optim);
 }
 
 itsPoint itsRegistration::objectiveFunction(itsPoint point)
