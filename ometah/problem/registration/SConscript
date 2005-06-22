@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConscript,v 1.1 2005/06/18 06:30:28 nojhan Exp $
+#  $Id: SConscript,v 1.2 2005/06/22 11:36:11 nojhan Exp $
 #  Copyright : Université Paris 12 Val-de-Marne
 #              (61 avenue du GÃ©nÃ©ral de Gaulle, 94010, CrÃ©teil, France)
 #  Author : Johann DrÃ©o <nojhan@gmail.com>
@@ -24,7 +24,7 @@
 Import('env')
 
 #library flags for CImg library
-fcimg = '-ffast-math -I/usr/X11R6/include -L/usr/X11R6/lib -lX11 -lpthread'
+fcimg = '-ffast-math' #-I/usr/X11R6/include -L/usr/X11R6/lib -lX11 -lpthread'
 env_registration = env.Copy()
 env_registration.Append( CCFLAGS = " "+fcimg )
 
