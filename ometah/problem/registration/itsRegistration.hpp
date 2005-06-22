@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.hpp,v 1.2 2005/06/18 06:29:18 nojhan Exp $
+ *  $Id: itsRegistration.hpp,v 1.3 2005/06/22 14:08:18 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -44,10 +44,10 @@ protected:
     string inputImage_registered;
 
     //! The first image
-    CImg<unsigned int> img1;
+    CImg<unsigned char> img1;
 
     //! The second image
-    CImg<unsigned int> img2;
+    CImg<unsigned char> img2;
 
     //! resize images so that their sizes match
     void resizeImages();

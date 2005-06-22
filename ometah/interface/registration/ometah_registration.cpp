@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.2 2005/06/18 07:08:09 nojhan Exp $
+ *  $Id: ometah_registration.cpp,v 1.3 2005/06/22 14:08:17 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -103,12 +103,6 @@ int main(int argc, char ** argv)
   // create a parser
   itsArgumentParser argumentParser(argc, argumentsVector);
 
-  int VERBOSE;
-  if (argumentParser.defArg("-v", "--verbose", "verbose level", true, "int", "0"))
-    VERBOSE = argumentParser.getIntValue("--verbose");
-  else
-    VERBOSE = 0;
-  
   /* 
    * Make the usage strings
    */
@@ -122,7 +116,8 @@ int main(int argc, char ** argv)
     argumentParser.defArg("-m", "--metah",
 			  (metahUsage.str()).c_str(), 
 			  true, "string", "CEDA");
-  
+    argumentParser.defArg("-v", "--verbose", 
+              "verbose level", true, "int", "0");
     argumentParser.defArg("-r", "--random-seed", 
 			  "seed of the pseudo-random generator", true, "int", "0");
     argumentParser.defArg("-D", "--debug", 
@@ -166,8 +161,6 @@ int main(int argc, char ** argv)
 
   try {
     if ( argumentParser.syntaxCorrect() ) {      
-      if (VERBOSE)
-        clog << "syntax ok" << endl;      
     }
   }
   catch (const char * s) {
@@ -189,9 +182,6 @@ int main(int argc, char ** argv)
     return -1;
   }
 
-  if (VERBOSE)
-    clog << "items chosen" << endl;
-
 
   /*
    *  Links
@@ -201,13 +191,13 @@ int main(int argc, char ** argv)
   // metaheuristic -> client
   setMetaheuristic.item()->problem = & communicationClient;
     
-  // server -> problem
+  // client -> server
   communicationClient.problem = & communicationServer;
 
-  if (VERBOSE)
-    clog << "links done" << endl;
-  
-    
+  // server -> problem
+  communicationServer.problem = & problem;
+
+
   /*
    *  Parameter setting
    */
@@ -216,10 +206,7 @@ int main(int argc, char ** argv)
   hash_map<string,string, eqstr> parameters;
   communicationClient.initialization( parameters );
 
-  if (VERBOSE) {
-    clog << "initialization communication client done" << endl;
-  }
-  setMetaheuristic.item()->setLogLevel(VERBOSE);
+  setMetaheuristic.item()->setLogLevel(argumentParser.getIntValue("--verbose"));
   
     
   /*
@@ -253,16 +240,8 @@ try {
   // Initialize pseudo random generator with time unit
   // (overloaded method exists with an unsigned parameter as seed)
   setMetaheuristic.item()->initRandom( argumentParser.getIntValue("--random-seed") );
-
-  if (VERBOSE)
-    clog << "parameters ok, starting optimization..." << endl;
-    
-  // Starting the optimization
   
-  if (VERBOSE)
-    clog << "Launching " << setMetaheuristic.item()->getName() 
-	 << " on " << problem.getName() 
-	 << " using " << communicationClient.getKey() << endl;
+  // Starting the optimization
   
   ostream * pout;
   ofstream outfile;

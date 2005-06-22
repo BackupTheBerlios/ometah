@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.3 2005/06/22 12:13:23 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.4 2005/06/22 14:08:18 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -29,6 +29,10 @@
 #include <CImg.h>
 
 #include "itsRegistration.hpp"
+
+#include <cstdlib>
+#include <iostream>
+#include "../../common/string.hpp"
 
 using namespace std;
 using namespace cimg_library;
@@ -63,7 +67,6 @@ itsRegistration::itsRegistration()
 
 itsPoint itsRegistration::objectiveFunction(itsPoint point)
 {
-
     unsigned int rx = (unsigned int) floor( point.getSolution()[0] );
     unsigned int ry = (unsigned int) floor( point.getSolution()[1] );
 
@@ -94,14 +97,22 @@ itsPoint itsRegistration::objectiveFunction(itsPoint point)
 void itsRegistration::resizeImages()
 {
     // load images
-    img1.load( this->inputImage_static.c_str() );
-    img2.load( this->inputImage_registered.c_str() );
+    img1 = img1.load(this->inputImage_static.c_str() );
+    img2 = img2.load( this->inputImage_registered.c_str() );
+
+    if (img1.dimx() == 0 || img1.dimy() == 0 || img2.dimx() == 0 || img2.dimy() ==0 ) {
+        ostringstream msg;
+        msg << "ErrorImage: images seems to be empty. Sizes: " 
+            << this->inputImage_static.c_str() << " (" << img1.dimx() << "," << img1.dimy() << "), "
+            << this->inputImage_registered.c_str() << " (" << img2.dimx() << "," << img2.dimy() << ")";
+        throw msg.str().c_str();
+    }
 
     // resize if necessary
-    int sx = cimg::max( img1.width, img2.width );
-    int sy = cimg::max( img1.height, img2.height );
+    int sx = max( img1.dimx(), img2.dimx() );
+    int sy = max( img1.dimy(), img2.dimx() );
 
-    if ( img2.width != img1.width || img2.height != img1.height ) {
+    if ( img2.dimx() != img1.dimx() || img2.dimx() != img1.dimx() ) {
         img1.resize( sx, sy );
         img2.resize( sx, sy );
     }
