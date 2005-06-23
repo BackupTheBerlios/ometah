@@ -71,7 +71,7 @@ class Interface:
         """ write log of current job in a *.log file with date,
         pb name, output files... """    
         if self.LOG_ON:
-            logf = "%s/%s" % (self.__path, self.__logfile)
+            logf = os.path.join(self.__path, self.__logfile)
             fd = open(logf, 'a')
             fd.write(astring)
             fd.close()
@@ -107,7 +107,8 @@ class Interface:
     def copyToDisk(self, rfd, filename="xml"):
         """ copy the file open with fd to a new file on disk
         used to cp XML output on disk """
-        xfile = "%s/%s.xml" % (self.__path, filename)
+        filename = filename + '.xml'
+        xfile = os.path.join(self.__path, filename)
         try:
             wfd = open(xfile, 'w')
         except:
@@ -122,15 +123,23 @@ class Interface:
     def archiveXml(self):
         """ Create a compressed tar archive of XML files. """
         try:
-            cmd = 'tar zcvf %s/xml.tar.gz %s/*xml &> /dev/null && rm -f %s/*xml' \
-                  % (self.__path, self.__path, self.__path)
-            os.system(cmd)
+            import tarfile
+            path = os.path.join(self.__path, 'xml.tar.gz')
+            tf = tarfile.open(name=path, mode='w:gz')
+            print 'path', path
+            for s in os.listdir(self.__path):
+                if s[-4:] == '.xml':
+                    f = os.path.join(self.__path, s)
+                    tf.add(f)
+                    os.remove(f)
+            tf.close()
         except:
             pass
 
     def rmDiskCopy(self, filename="xml"):
         """ remove XML copy on disk """
-        path = "%s/%s.xml" % (self.__path, filename)
+        filename = filename 
+        path = os.path.join(self.__path, filename)
         try: # if ls fail, the wrong file name, exit
             os.listdir(path)
         except:
@@ -144,10 +153,11 @@ class Interface:
 
     def moveLog(self):
         """ move the log file to the new path value """
-        src = "%s/%s" % (self.__temp, self.__logfile)
+        src = os.path.join(self.__temp, self.__logfile)
         tar = "%s/" % (self.__path)
         try:
             cmd = "mv %s %s" % (src, tar)
+            # !!!!!!!!! USE ...autre chose !!!!!!!!!!!
             os.system(cmd)
         except:
             self.log('ERROR : cannot move log file [Interface.moveLog]\n')

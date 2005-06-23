@@ -59,7 +59,7 @@ class Test:
         # one log for each metarun
         self.__logName = "ometahtest.log"
         # default location of ometah
-        self.__ometah_path = "../ometah/ometah"        
+        self.__ometah_path = os.path.join('..', os.path.join('ometah', 'ometah'))
         # common dir for all results
         self.__results_dir = "labResults"
         # precision for success rates calculs
@@ -143,10 +143,11 @@ class Test:
         ok = 0
         while not ok:
             ok = 1
-            dir = '%s/%s_%s_d%i_e%s_r%s__%i' \
-                  % (self.__results_dir, self.problem.name, self.metah.key, \
+            dir = '%s_%s_d%i_e%s_r%s__%i' \
+                  % (self.problem.name, self.metah.key, \
                      self.problem.dimension, self.parameters.maxEvaluations, \
                      self.parameters.randomSeed, i)
+            dir = os.path.join(self.__results_dir, dir)
             try:
                 os.mkdir(dir)
             except:
@@ -196,6 +197,7 @@ class Test:
         fd.close()
 
         cmd = "mv xml.tar.gz  *.xml TEST %s %s &> /dev/null" % (self.__logName, self.__dir)
+        # !!!!!! USE ... autre chose !!!!!!!!!
         os.system(cmd)
 
 

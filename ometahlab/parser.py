@@ -123,7 +123,7 @@ class XMLParser:
             for point in optimums.getElementsByTagName('point'):
                 if point.nodeType == point.ELEMENT_NODE:
                     p = Point()
-                    p.value = self.__getText(point.getElementsByTagName('values')[0])
+                    p.value = float(self.__getText(point.getElementsByTagName('values')[0]))
                     p.coords = self.__getSplitListFloat(point.getElementsByTagName('solution')[0])
                     self.__header__.problem.optimum.append(p)
             bounds = probl.getElementsByTagName('bounds')[0]

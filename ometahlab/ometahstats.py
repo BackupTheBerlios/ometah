@@ -63,7 +63,7 @@ class Comparison:
         # pickle.load serialized objects in paths
         for p in paths:
             try:
-                q = "%s/TEST" % p
+                q = os.path.join(p, 'TEST')
                 fd = open(q, 'r')
                 s = pickle.load(fd)
                 self.__tests.append(s)
@@ -89,8 +89,8 @@ class Comparison:
         ok = 0
         while not ok:
             ok = 1
-            dir = '%s/ometahlab%i' \
-                  % (string.split(paths[0], sep='/')[0], i)
+            dir = 'ometahlab%i' % i
+            dir = os.path.join( string.split(paths[0], sep='/')[0], dir)
             try:
                 os.mkdir(dir)
             except:
