@@ -229,7 +229,6 @@ class Test:
         self.succRate = float(success) / float(total)
         if success != 0:
             self.succPerf = r.mean(successIndex)*float(total) / float(success)
-        print 'succ rate :', self.succRate, ', succ perf :', self.succPerf
         
     def __success(self, point):
         """ Returns true if the point given matches problem's optima,
