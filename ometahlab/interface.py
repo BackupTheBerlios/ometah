@@ -154,11 +154,9 @@ class Interface:
     def moveLog(self):
         """ move the log file to the new path value """
         src = os.path.join(self.__temp, self.__logfile)
-        tar = "%s/" % (self.__path)
+        tar = os.path.join(self.__path, src)
         try:
-            cmd = "mv %s %s" % (src, tar)
-            # !!!!!!!!! USE ...autre chose !!!!!!!!!!!
-            os.system(cmd)
+            os.rename(src, tar)
         except:
             self.log('ERROR : cannot move log file [Interface.moveLog]\n')
 

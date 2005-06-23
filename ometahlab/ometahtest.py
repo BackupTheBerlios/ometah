@@ -195,10 +195,9 @@ class Test:
         except:
             int.fatal('pickle failed [Test.metarun]')
         fd.close()
-
-        cmd = "mv xml.tar.gz  *.xml TEST %s %s &> /dev/null" % (self.__logName, self.__dir)
-        # !!!!!! USE ... autre chose !!!!!!!!!
-        os.system(cmd)
+        for src in ['xml.tar.gz', 'TEST', self.__logName]:
+            tar = os.path.join(self.__dir, src)
+            os.rename(src, tar)
 
 
     def setNbRuns(self, n):
