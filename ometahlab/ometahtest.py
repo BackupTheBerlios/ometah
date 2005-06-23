@@ -162,11 +162,9 @@ class Test:
                % (r.mean(vlist), r.sd(vlist))
         intf.log(slog)
 
-        # s.points is a set of Point sublists :
+
         # one sublist for each iteration, containing all points of the N runs
 
-        # !!! /2 'cos take intensification Points !
-        # don't '/2' for diversification
         size = int(self.parameters.sampleSize)
         # initialize the length of s.points
         iters = len(self.__points[0]) / size        

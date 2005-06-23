@@ -140,13 +140,13 @@ class Comparison:
         - optimaValuesBoxes.ps : each execution's optima shown as quantile boxes.
         - optimaValuesGraph.ps : the optimum (minimal) value for each execution, as a graph.
         - IterationsValuesConvergences.ps : show each iteration of each run as a quantile box, showing the evolution of points during the optimization."""
-        file1 = os.path.join(self.__dir, 'optimaValuesBoxes.ps')
-        file2 = os.path.join(self.__dir, 'optimaValuesGraph.ps')
+        file1 = os.path.join(self.__dir, 'optValBoxes.ps')
+        file2 = os.path.join(self.__dir, 'optValGraph.ps')
 
         ## plot frequency distributions
         breaks = 10        
         i = 1
-        file0 = os.path.join(self.__dir, 'optimaValuesDistributions.ps')        
+        file0 = os.path.join(self.__dir, 'optValDistrib.ps')        
         r.postscript(file0, paper='letter')
         for points in self.__optimas:
             vlist = [p.value for p in points]
@@ -193,7 +193,7 @@ class Comparison:
         r.dev_off()
         
         ## plot convergence boxes for all points in iterations (one graph for each metarun)
-        file3 = os.path.join(self.__dir, 'iterationsValuesConvergences.ps')
+        file3 = os.path.join(self.__dir, 'pointsIterValBoxConv.ps')
         r.postscript(file3, paper='letter')
         for metalist in self.__pointsIter:
             vlist = [[p.value for p in points] for points in metalist ]
@@ -202,7 +202,7 @@ class Comparison:
         r.dev_off()
 
          ## plot convergence boxes for all points in iterations (one graph for each metarun)
-        file3 = os.path.join(self.__dir, 'optimaValuesConvergences.ps')
+        file3 = os.path.join(self.__dir, 'optIterValBoxConv.ps')
         r.postscript(file3, paper='letter')
         for metalist in self.__optimaIter:
             vlist = [[p.value for p in points] for points in metalist ]
@@ -222,6 +222,24 @@ class Comparison:
         r.grid(nx=10, ny=40)
         r.dev_off()
 
+        ## plot convergence graphs superposed for each run, for each test
+        # => #tests pages
+        import random
+        file3 = os.path.join(self.__dir, 'optIterValGraphConv.ps')
+        r.postscript(file3, paper='letter')
+        olist = []
+        # to give a color to each run        
+        # new page for each test
+        for test in self.__tests:
+            # initialize plotting window with first run
+            olist = [sub[0].value for sub in test.optimaIterations]
+            r.plot(olist, type='o', lty='dotted', ylim=[0,0.5])            
+            # then iter over the runsNb, plotting their graphs
+            for i in range(test.runsNb)[1:]:
+                olist = [sub[i].value for sub in test.optimaIterations]
+                r.points(olist, type='o')                
+        r.dev_off()
+        
         # plot points in plan
         self.plotSpace()
 
@@ -231,7 +249,7 @@ class Comparison:
         for dimension 2
         => use ACP when dim > 2 ! """
 
-        file5 = os.path.join(self.__dir, 'solutionsPlan.ps') 
+        file5 = os.path.join(self.__dir, 'optSolDistance.ps') 
         r.postscript(file5, paper='letter')            
         for t in self.__tests:        
             if t.problem.dimension < 2:
