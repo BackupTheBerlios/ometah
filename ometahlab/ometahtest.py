@@ -164,7 +164,7 @@ class Test:
 
         # !!! /2 'cos take intensification Points !
         # don't '/2' for diversification
-        size = int(self.parameters.sampleSize) / 2
+        size = int(self.parameters.sampleSize)
         # initialize the length of s.points
         iters = len(self.__points[0]) / size        
         for i in range(iters):
@@ -221,10 +221,15 @@ class Test:
         """ Update succRate & succPerf values, according to the current optima list and problem instance """
         total = self.runsNb
         success = 0
+        successIndex = []
         for point in self.optima:
             if self.__success(point):
                 success += 1
+                successIndex.append(point.index)                
         self.succRate = float(success) / float(total)
+        if success != 0:
+            self.succPerf = r.mean(successIndex)*float(total) / float(success)
+        print 'succ rate :', self.succRate, ', succ perf :', self.succPerf
         
     def __success(self, point):
         """ Returns true if the point given matches problem's optima,

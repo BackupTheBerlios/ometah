@@ -44,7 +44,7 @@ class XMLParser:
         """ constructor, xmlFile is the file object of the XML output """
         self.__xmlFile = xmlFile
         self.__interface = interf
-        self.__class = 'intensification'
+        self.__class = 'diversification'
 
     def readXml(self):
         from xml.dom.minidom import parse
@@ -85,6 +85,8 @@ class XMLParser:
         if self.__pointsList__ != None:
             return self.__pointsList__
         self.__pointsList__ = []
+
+
     
         optimization = self.__getRootElement().getElementsByTagName('optimization')[0]
         for iteration in optimization.getElementsByTagName('iteration'):
@@ -93,13 +95,25 @@ class XMLParser:
                     for sample in step.getElementsByTagName('sample'):
                         for point in sample.getElementsByTagName('point'):
                             if point.nodeType == point.ELEMENT_NODE:
-                                p = Point()                            
+                                p = Point()
                                 try:
                                     p.value = float(self.__getText(point.getElementsByTagName('values')[0]))
-                                    p.coords = self.__getSplitListFloat(point.getElementsByTagName('solution')[0])
+                                    p.coords = self.__getSplitListFloat(point.getElementsByTagName('solution')[0])                                    
                                 except:
                                     self.__interface.log('ERROR : XML element missing [XMLParser.getPoints]\n')
                                 self.__pointsList__.append(p)
+        # give index for each pt, used to get the #FES to reach a success
+        #! SEE ometahtest.__calculSuccessRates()
+        """
+        count = 0
+        for p in self.__pointsList__:
+            if count == 0:
+                count = 1
+            else:
+                count = 0
+            p.index = count
+            print p.index,
+        """
         return self.__pointsList__
     
     def getHeader(self):
@@ -259,10 +273,10 @@ class Point:
     coords = None
     value = None
     error = None
+    index = 0
 
     def __init__(self):
         pass
-
 
 if __name__ == '__main__':
     print "This file contains no instructions in main(), please see README for program usage\n"

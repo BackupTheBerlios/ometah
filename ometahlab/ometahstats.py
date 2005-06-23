@@ -292,7 +292,7 @@ class Comparison:
             fd.write(txt)
             txt = '\tAccuracy : %s\n' % (test.problem.accuracy)
             fd.write(txt)
-            txt = '\Problem\'s optimum value : %s\n' \
+            txt = '\tProblem\'s optimum value : %s\n' \
               % str( test.problem.optimum[0].value )
             fd.write(txt)
             txt = '\tProblem\' optimum solution : %s\n' \

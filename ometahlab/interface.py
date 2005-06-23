@@ -162,6 +162,10 @@ class Interface:
     def setPoints(self, points):
         """ set the list of Point object to be plotted """
         self.__points = points
+        c = 1
+        for p in self.__points:            
+            p.index = c
+            c += 1
 
     def getPoints(self):
         return self.__points
@@ -171,7 +175,7 @@ class Interface:
         from __points list """
         optim = self.__points[0]
         for point in self.__points:
-            if point.value < optim:
+            if point.value < optim.value:
                 optim = point
         slog = 'optimum value : %f\n' % (optim.value)
         self.log(slog)
