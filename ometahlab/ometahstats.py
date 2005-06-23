@@ -29,7 +29,7 @@ from rpy import *
 import ometahtest
 
 #!!!  to put in ometah_stat module
-def compare(paths):
+def stat(paths):
     """ Generate text report and graphic representation in postscript format,
     comparing the previous Ometah execution which directories' paths are given as a list of strings,
     ometahtest's function getPath can be used to get those strings. See demoscript for usage example."""
