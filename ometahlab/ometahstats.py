@@ -122,8 +122,6 @@ class Comparison:
                 self.__warning('tests have different sample sizes.')
             elif test.runsNb != runsNb:
                 self.__warning('tests have different numbers of runs.')
-            elif test.parameters.randomSeed != '0': # 0 means we use time as a seed
-                self.__warning('you should not specify a random seed for a test, all the runs would get the same optimum.')
         
     def __fatal(self, msg):
         import sys
@@ -231,14 +229,16 @@ class Comparison:
 
                 for p in t.optima:
                     y.append(p.coords[0])
-
+                y.sort()
+                
                 xlimm = [0, len(t.optima)]
                 ylimm = [t.problem.optimum[0].coords[0]-.1, max(y) ]
 
                 r.plot(x, y, xlim=xlimm, ylim=ylimm, xlab = 'Points', ylab='Position', \
-                       main=t.args, bg='lightblue', pch=21')
+                       main=t.args, bg='lightblue', pch=21, type='o')
                 opt = t.problem.optimum[0].coords[0]
-                r.lines(xlimm, [opt, opt], col='red')
+                print 'lines: ', xlimm, ', ', opt
+                r.lines(xlimm, [opt, opt], col='red', type='o')
                 
             else:
                 x = []
@@ -292,10 +292,10 @@ class Comparison:
             fd.write(txt)
             txt = '\tAccuracy : %s\n' % (test.problem.accuracy)
             fd.write(txt)
-            txt = '\tOptimum value : %s\n' \
+            txt = '\Problem\'s optimum value : %s\n' \
               % str( test.problem.optimum[0].value )
             fd.write(txt)
-            txt = '\tOptimum solution : %s\n' \
+            txt = '\tProblem\' optimum solution : %s\n' \
                   % ''.join( [str(i) for i in test.problem.optimum[0].coords] )
             fd.write(txt)
             vals = [p.value for p in test.optima]
@@ -303,7 +303,7 @@ class Comparison:
             fd.write(txt)
             txt = '\tOptima standard deviation : %f\n' % (r.sd(vals))
             fd.write(txt)
-            txt = '\tOptimum value : %f\n' % (min(vals))
+            txt = '\tOptimum value found : %f\n' % (min(vals))
             fd.write(txt)
             txt ='\tSuccess rate : ' + str(100*test.succRate) + ' % \n'
             fd.write(txt)
