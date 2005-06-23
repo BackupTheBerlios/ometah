@@ -77,10 +77,13 @@ class Comparison:
         for serial in self.__tests:
             self.__optimas.append(serial.optima)
 
-        self.__points = []
-        # sample size 
+        self.__pointsIter = []
         for test in self.__tests:
-            self.__points.append(test.pointsIterations)
+            self.__pointsIter.append(test.pointsIterations)
+            
+        self.__optimaIter = []
+        for test in self.__tests:
+            self.__optimaIter.append(test.optimaIterations)
         # Note : each serial.points is a list of sublists, where each
         # sublist corresponds to an iteration
 
@@ -133,17 +136,17 @@ class Comparison:
 
     def plot(self):
         """ Plot results as postscript files :
-        - optimaDistributions.ps : the frequency distributions of optimas for each Ometah execution.
-        - valueBoxes.ps : each execution's optima shown as quantile boxes.
-        - valuesGraph.ps : the optimum (minimal) value for each execution, as a graph.
-        - valuesConvergences.ps : show each iteration of each run as a quantile box, showing the evolution of points during the optimization."""
-        file1 = os.path.join(self.__dir, 'valuesBoxes.ps')
-        file2 = os.path.join(self.__dir, 'valuesGraph.ps')
+        - optimaValuesDistributions.ps : the frequency distributions of optimas for each Ometah execution.
+        - optimaValuesBoxes.ps : each execution's optima shown as quantile boxes.
+        - optimaValuesGraph.ps : the optimum (minimal) value for each execution, as a graph.
+        - IterationsValuesConvergences.ps : show each iteration of each run as a quantile box, showing the evolution of points during the optimization."""
+        file1 = os.path.join(self.__dir, 'optimaValuesBoxes.ps')
+        file2 = os.path.join(self.__dir, 'optimaValuesGraph.ps')
 
         ## plot frequency distributions
         breaks = 10        
         i = 1
-        file0 = os.path.join(self.__dir, 'optimaDistributions.ps')        
+        file0 = os.path.join(self.__dir, 'optimaValuesDistributions.ps')        
         r.postscript(file0, paper='letter')
         for points in self.__optimas:
             vlist = [p.value for p in points]
@@ -189,12 +192,21 @@ class Comparison:
         r.grid(nx=10, ny=40)
         r.dev_off()
         
-        ## plot convergence boxes (one graph for each metarun)
-        file3 = os.path.join(self.__dir, 'valuesConvergences.ps')
+        ## plot convergence boxes for all points in iterations (one graph for each metarun)
+        file3 = os.path.join(self.__dir, 'iterationsValuesConvergences.ps')
         r.postscript(file3, paper='letter')
-        for metalist in self.__points:
+        for metalist in self.__pointsIter:
             vlist = [[p.value for p in points] for points in metalist ]
-            r.boxplot(vlist, style='quantile', col='orange', main='Iterations convergence', xlab='Iteration index', ylab='Optima value')
+            r.boxplot(vlist, style='quantile', col='orange', main='Iterations convergence for all points', xlab='Iteration index', ylab='Optima value')
+            r.grid(nx=10, ny=40)
+        r.dev_off()
+
+         ## plot convergence boxes for all points in iterations (one graph for each metarun)
+        file3 = os.path.join(self.__dir, 'optimaValuesConvergences.ps')
+        r.postscript(file3, paper='letter')
+        for metalist in self.__optimaIter:
+            vlist = [[p.value for p in points] for points in metalist ]
+            r.boxplot(vlist, style='quantile', col='orange', main='Iterations convergence for optima', xlab='Iteration index', ylab='Optima value')
             r.grid(nx=10, ny=40)
         r.dev_off()
 

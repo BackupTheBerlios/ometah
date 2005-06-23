@@ -162,10 +162,6 @@ class Interface:
     def setPoints(self, points):
         """ set the list of Point object to be plotted """
         self.__points = points
-        c = 1
-        for p in self.__points:            
-            p.index = c
-            c += 1
 
     def getPoints(self):
         return self.__points

@@ -48,8 +48,11 @@ class Test:
         self.optima = []
         # list of all Points
         self.__points = []
-        # list of Points  sorted by iteration
+        # list of Points sorted by iteration, for any points of all runs
         self.pointsIterations = []
+        # list of Points sorted by iteration,
+        # each one containing the optimum for each run
+        self.optimaIterations = []
         # the initial argv as a list
         self.argv = ['']
         # and as a string
@@ -169,19 +172,29 @@ class Test:
         iters = len(self.__points[0]) / size        
         for i in range(iters):
             self.pointsIterations.append([])       
+            self.optimaIterations.append([])
         
+        subindex = -1 # sublist index in followin iteration
+        import parser
         # for each sublist (each run)
         for sublist in self.__points:
             # nb of iterations = nb of points / sample size
-            iters = len(sublist) / size
+            subindex += 1
             it = 0 # current iteration
             c = 0
+            minp = parser.Point()
+            minp.value = 1000
             for p in sublist:
                 self.pointsIterations[it].append(p)
+                if p.value < minp.value:
+                    minp = p
                 c = c + 1
                 if c == size:
+                    self.optimaIterations[it].append(minp)
                     it = it + 1
                     c = 0
+
+        # PRENDRE AUSSI LE MEILLEUR DE CHAQUE ITERATION, PR CHAQUE RUN!
 
         # give succRate & succPerf their value
         self.__calculSuccessRates()

@@ -104,16 +104,11 @@ class XMLParser:
                                 self.__pointsList__.append(p)
         # give index for each pt, used to get the #FES to reach a success
         #! SEE ometahtest.__calculSuccessRates()
-        """
-        count = 0
+        
+        c = 1
         for p in self.__pointsList__:
-            if count == 0:
-                count = 1
-            else:
-                count = 0
-            p.index = count
-            print p.index,
-        """
+            p.index = c
+            c += 1
         return self.__pointsList__
     
     def getHeader(self):
