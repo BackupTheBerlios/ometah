@@ -126,7 +126,6 @@ class Interface:
             import tarfile
             path = os.path.join(self.__path, 'xml.tar.gz')
             tf = tarfile.open(name=path, mode='w:gz')
-            print 'path', path
             for s in os.listdir(self.__path):
                 if s[-4:] == '.xml':
                     f = os.path.join(self.__path, s)
