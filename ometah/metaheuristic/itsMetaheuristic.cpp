@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.9 2005/06/22 15:32:24 jpau Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.10 2005/06/23 06:52:03 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -152,7 +152,7 @@ void itsMetaheuristic::start()
     msg << "iteration " << iterationsCurrent+1;
     printLog("iterations", msg.str() );
   
-    *outProcessResult << "<iteration id=\"" << iterationsCurrent << "\">" << endl;
+    *outProcessResult << "<iteration id=\"" << iterationsCurrent+1 << "\">" << endl;
   
   
     /* main phases */
