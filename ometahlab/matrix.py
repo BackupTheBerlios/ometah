@@ -70,6 +70,7 @@ def covar(M):
 
     M = [ [ observation1  ] [ observation2 ] etc...]
     => each column is a point
+    M is a matrix, not a list of lists ! (Numeric.reshape...)
     """
     # initialize dimension and number of vectors
     d = len(M[0]) # nb of dimensions = a row's
@@ -118,7 +119,7 @@ def varCovar(M):
             M[i][dim] = (M[i][dim] - means[dim])
 
     # return d*d covariance matrix
-    V = matrixmultiply( M, transpose(M) )
+    V = matrixmultiply( transpose(M), M )
 
     for i in range(len(V)):
         for j in range(len(V[0])):
@@ -127,7 +128,7 @@ def varCovar(M):
     
 
 def orderedEigenvectors(A):
-    """ returns the matrix of th eigenvectors ordered by decreasing eigenvalue of A (square)"""
+    """ Returns the matrix of th eigenvectors ordered by decreasing eigenvalue of A (square)"""
     values = eigenvalues(A)
     vectors = eigenvectors(A)
     svectors = eigenvectors(A)
@@ -146,9 +147,12 @@ def orderedEigenvectors(A):
 
     return svectors[1]
     
+def orderedEigenvalues(A):
+    """ """
+    return sort(eigenvalues(A))
 
 def list2matrix(mlist, rows, columns):
-    """ transform the given list in a matrix of the given nb of rows and columns,
+    """ Transform the given list in a matrix of the given nb of rows and columns,
     if mlist size matches
     IE row = #dimensions, colums = #observations"""
     if len(mlist) != rows*columns:
