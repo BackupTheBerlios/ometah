@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.1 2005/06/13 09:05:00 nojhan Exp $
+ *  $Id: matrix.hpp,v 1.2 2005/06/24 19:36:51 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -120,8 +120,7 @@ T multiply( T matA, T matB)
   newMat=matrixFilled( Al,Bc,0.0);
 
   if(Ac!=Bl) {
-    throw("Error: Can not multiply matrices, sizes does not match");
-    return newMat;
+    throw("Error: Cannot multiply matrices, sizes does not match");
   }
 
   for( unsigned int i=0; i<Al; i++ ) {
@@ -185,15 +184,23 @@ T cholesky( T A)
     for(k=0; k<i; k++) {
       sum += B[i][k]*B[i][k];
     }
+    
+    // Check for math error
+    if( (A[i][i]-sum) <= 0 ) {
+        ostringstream msg;
+        msg << "Error: Cannot compute the Cholesky decomposition, matrix may not be positive definite (A[";
+        msg << i << "][" << i << "]-sum(B[i][k]^2) = " << A[i][i]-sum << ").";
+        throw msg.str().c_str();
+    }
+    
     B[i][i] = sqrt( A[i][i] - sum );
 
-    
     for(j=i+1;j<Al;j++){ // rows
 
       // one element
       sum = 0.0;
       for(k=0; k<i; k++) {
-	sum += B[j][k]*B[i][k];
+          sum += B[j][k]*B[i][k];
       }
       B[j][i] = (A[j][i] - sum) / B[i][i];
       
@@ -259,12 +266,22 @@ T mean( vector<T> aVector, int begin=0, int during=0)
 }
 
 //! Calculate a variance-covariance matrix from a list of vector
+/*!
+    For a population of p points on n dimensions :
+        if onRow==true, the matrix should have p rows and n columns.
+        if onRow==false, the matrix should have n rows and p columns.
+*/
 template<class U>
-U varianceCovariance( U pop)
+U varianceCovariance( U pop, bool onRow = true)
 {
+/*
   // vector of means
-  // => average of columns => transposition before calculations
-  typename U::value_type  vecMeanCentered = mean( transpose(pop) );
+  typename U::value_type  vecMeanCentered;
+  if(onRow) {
+    vecMeanCentered = mean( transpose(pop) ); // p rows and n columns => means of p
+  } else {
+    vecMeanCentered = mean( pop ); // n rows and p columns => means of n
+  }
   
   // centered population 
   // same size as the initial matrix
@@ -278,17 +295,23 @@ U varianceCovariance( U pop)
       popMeanCentered[i][j] = (pop[i][j] - vecMeanCentered[j]);
     }
   }
-  
+*/
+  // no centering
+  U popMeanCentered = pop;
+
   // transposition of the centered matrix
   U popMeanCenteredT;
   popMeanCenteredT = transpose(popMeanCentered);
 
-
-  // final varaince/covariance matrix
+  // final variance/covariance matrix
   U popVar;
-  popVar = multiply( popMeanCenteredT, popMeanCentered );
+  if(onRow) {
+      popVar = multiply( popMeanCenteredT, popMeanCentered ); // if p rows and n columns => covariance of p
+  } else {
+      popVar = multiply( popMeanCentered, popMeanCenteredT ); // if n rows and p columns => covariance of n
+  }
 
-  // multiplication by n-1 :
+  // multiplication by 1/n :
   for(unsigned int i=0;i<popVar.size();i++) {
     for(unsigned int j=0;j<popVar[i].size();j++) {
       popVar[i][j]=popVar[i][j]/(pop.size());

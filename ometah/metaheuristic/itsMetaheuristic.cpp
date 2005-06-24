@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.10 2005/06/23 06:52:03 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.11 2005/06/24 19:36:51 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -82,6 +82,8 @@ itsMetaheuristic::itsMetaheuristic()
   this->outDebug = &cerr;
 
   this->iterationsCurrent=0;
+
+  this->isInternalStoppingCriterion = false;
 
   this->logLevel = 0;
 
@@ -230,6 +232,11 @@ bool itsMetaheuristic::isStoppingCriteria()
   // if the minimum value has been reached
   } else if (getOptimum().getValues()[0] <= getValueMin() ) {
     printLog("steps","Minimum value reached");
+    return true;
+  
+  // if we reach some internal stopping criterion
+  } else if (isInternalStoppingCriterion) {
+    printLog("steps","Internal stopping criterion reached");
     return true;
   
   } else {

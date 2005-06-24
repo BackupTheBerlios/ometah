@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: string.hpp,v 1.1 2005/06/13 09:05:02 nojhan Exp $
+ *  $Id: string.hpp,v 1.2 2005/06/24 19:36:51 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -27,6 +27,7 @@
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -54,6 +55,20 @@ string print( T aVector, char * aSeparator="," )
 
   return out.str();
 };
+
+//! Print a matrix
+template<class T>
+string print( vector< vector< T > > aMatrix, char * sepCol = ",", char * sepLine = "\n")
+{
+  ostringstream out;
+  out << print(aMatrix[0]);
+  
+  for( unsigned int i=1; i<aMatrix.size(); i++ ) {
+    out << sepLine << print(aMatrix[i],sepCol);
+  }
+
+  return out.str();
+}
 
 
 //! Make a double vector from a string vector

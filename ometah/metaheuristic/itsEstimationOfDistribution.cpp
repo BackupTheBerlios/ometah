@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.3 2005/06/16 09:21:01 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.4 2005/06/24 19:36:51 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -134,8 +134,15 @@ void itsEstimationOfDistribution::learning()
  
 vector<double> itsEstimationOfDistribution::diversificationNormal()
 {
+    vector<double> sol;
+
     // random in the distribution
-    vector<double> sol = randomNormalMulti(this->parameterNormalMean, this->parameterNormalVarCovar);
+    try {
+        sol = randomNormalMulti(this->parameterNormalMean, this->parameterNormalVarCovar);
+    } catch (const char * s) {
+        this->isInternalStoppingCriterion = true;
+        sol = randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() );
+    }
 
     // test if is in bounds
     if( this->isKeepBounds ) {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.7 2005/06/16 12:52:35 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.8 2005/06/24 19:36:51 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -135,6 +135,9 @@ protected:
       the stopping criterion is reached.
   */
   double valueThreshold;
+  
+  //! Flag for an internal stopping criterion
+  bool isInternalStoppingCriterion;
 
   //! The random seed used
   unsigned int seed;
