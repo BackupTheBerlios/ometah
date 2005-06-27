@@ -183,16 +183,16 @@ class Test:
             minp = parser.Point()
             minp.value = 1000
             for p in sublist:
+                p.error = p.value - self.problem.optimum[0].value
                 self.pointsIterations[it].append(p)
                 if p.value < minp.value:
                     minp = p
                 c = c + 1
+                # when sample size reached, select the optimum for this iteration
                 if c == size:
                     self.optimaIterations[it].append(minp)
                     it = it + 1
-                    c = 0
-
-        # PRENDRE AUSSI LE MEILLEUR DE CHAQUE ITERATION, PR CHAQUE RUN!
+                    c = 0        
 
         # give succRate & succPerf their value
         self.__calculSuccessRates()

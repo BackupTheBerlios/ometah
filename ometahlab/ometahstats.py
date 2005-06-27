@@ -42,7 +42,7 @@ def stat(paths):
 
 
 class Comparison:
-    """ A comparison between several Ometah executions, giving text and graphical reports. """
+    """ A comparison between several Ometah executions (Test instances), giving text and graphical reports. """
 
     def __init__(self, paths):
         """ Constructor, paths is a list of strings, which are paths to Ometah executions directories."""
@@ -50,6 +50,9 @@ class Comparison:
         import string
         import os
         # each metarun (each Test) has different parameters
+
+        # color used in graphic plottings
+        self.__color = 'grey85'
         
         # list of Test objects, one for each metarun
         self.__tests = []
@@ -92,7 +95,7 @@ class Comparison:
         ok = 0
         while not ok:
             ok = 1
-            dir = 'ometahlab%i' % i
+            dir = 'Results_%i' % i
             dir = os.path.join( string.split(paths[0], sep='/')[0], dir)
             try:
                 os.mkdir(dir)
@@ -134,37 +137,35 @@ class Comparison:
     def __warning(self, msg):
         print "WARNING : %s" % msg
 
-    def plot(self):
-        """ Plot results as postscript files :
-        - optimaValuesDistributions.ps : the frequency distributions of optimas for each Ometah execution.
-        - optimaValuesBoxes.ps : each execution's optima shown as quantile boxes.
-        - optimaValuesGraph.ps : the optimum (minimal) value for each execution, as a graph.
-        - IterationsValuesConvergences.ps : show each iteration of each run as a quantile box, showing the evolution of points during the optimization."""
-        file1 = os.path.join(self.__dir, 'optValBoxes.ps')
-        file2 = os.path.join(self.__dir, 'optValGraph.ps')
-
-        ## plot frequency distributions
-        breaks = 10        
-        i = 1
-        file0 = os.path.join(self.__dir, 'optValDistrib.ps')        
-        r.postscript(file0, paper='letter')
+    def plot_1(self):
+        """ Plot frequency distribution of optima for each test, that is each Test instance,
+        each one having its own sublist of optimas in self.__optimas."""
+        fileName = os.path.join(self.__dir, 'optValDistrib.ps')        
+        breaks = 10 # number of breaks in the histogram, may be reduced if not enough points
+        r.postscript(fileName, paper='letter')
         for points in self.__optimas:
             vlist = [p.value for p in points]
-            r.hist(vlist, breaks, col='orange', main='Optima distribution', ylab='Frequency') 
+            r.hist(vlist, breaks, col=self.__color, main='Optima distribution', xlab='Value', ylab='Frequency') 
             r.grid(nx=10)
-            i = i + 1
         r.dev_off()
         
-        ## plot a box for each sublist
-        r.postscript(file1, paper='letter')
+    def plot_2(self):
+        """ Show one quantile box of optima for each Test. """
+        fileName = os.path.join(self.__dir, 'optValueBoxes.ps')
+        r.postscript(fileName, paper='letter')
         vlist = [[p.value for p in points ] for points in self.__optimas ]
-        r.boxplot(vlist, style='quantile', col='orange', main='Optimas list', xlab='Test index', ylab='')
+        r.boxplot(vlist, style='quantile', col=self.__color, main='Optimas list', xlab='Test index', ylab='')
         r.grid(nx=10, ny=40)
         r.dev_off()
 
-        ## plot the nbMetarun optimas ~ we select the best among the 25 for each metarun       
-        r.postscript(file2, paper='letter')
-
+    def plot_3(self):
+        """ Plot the graph of optimas' values, to finally have one Point for each Test, we present 3 selections :
+        - best optimum
+        - worst optimum
+        - median optimum value"""
+        fileName = os.path.join(self.__dir, 'optValGraph.ps')        
+        r.postscript(fileName, paper='letter')
+        
         # make best optima list (minima)
         olist = [(min([p.value for p in points])) for points in self.__optimas ]
 
@@ -191,28 +192,33 @@ class Comparison:
         r.points(mlist, bg ='white', pch = 21)
         r.grid(nx=10, ny=40)
         r.dev_off()
-        
-        ## plot convergence boxes for all points in iterations (one graph for each metarun)
-        file3 = os.path.join(self.__dir, 'pointsIterValBoxConv.ps')
-        r.postscript(file3, paper='letter')
+
+
+    def plot_4(self):
+        """ For each Test, plot the sequence of iterations (for any run) as a set of quantile boxes. So we have one graphic for each Test. """
+        fileName = os.path.join(self.__dir, 'pointsIterValBoxConv.ps')
+        r.postscript(fileName, paper='letter')
         for metalist in self.__pointsIter:
             vlist = [[p.value for p in points] for points in metalist ]
-            r.boxplot(vlist, style='quantile', col='orange', main='Iterations convergence for all points', xlab='Iteration index', ylab='Optima value')
+            r.boxplot(vlist, style='quantile', col=self.__color, main='Iterations convergence for all points', xlab='Iteration index', ylab='Optima value')
             r.grid(nx=10, ny=40)
         r.dev_off()
 
-         ## plot convergence boxes for all points in iterations (one graph for each metarun)
-        file3 = os.path.join(self.__dir, 'optIterValBoxConv.ps')
-        r.postscript(file3, paper='letter')
+
+    def plot_5(self):
+        """ Same than plot_4, but instead of showing box for any point of the iteration, we only select the optimum for each run."""
+        fileName = os.path.join(self.__dir, 'optIterValBoxConv.ps')
+        r.postscript(fileName, paper='letter')
         for metalist in self.__optimaIter:
             vlist = [[p.value for p in points] for points in metalist ]
             r.boxplot(vlist, style='quantile', col='orange', main='Iterations convergence for optima', xlab='Iteration index', ylab='Optima value')
             r.grid(nx=10, ny=40)
         r.dev_off()
 
-        ## plot success rates
-        file3 = os.path.join(self.__dir, 'succRateGraph.ps')
-        r.postscript(file3, paper='letter')
+    def plot_6(self):
+        """ Plot the graph of success rates, considering a Test as a success when the given precision of the problem is reached."""
+        fileName = os.path.join(self.__dir, 'succRateGraph.ps')
+        r.postscript(fileName, paper='letter')
         slist = []
         for test in self.__tests:
             slist.append(test.succRate*100)
@@ -220,31 +226,28 @@ class Comparison:
         r.lines(slist, lty='dotted')
         r.points(slist, bg ='white', pch = 21)
         r.grid(nx=10, ny=40)
-        r.dev_off()
+        r.dev_off()        
 
-        ## plot convergence graphs superposed for each run, for each test
-        # => #tests pages
+    def plot_7(self):
+        """ Plot graph of convergences, that is for each Test the view of all runs convergence over iterations."""
         import random
-        file3 = os.path.join(self.__dir, 'optIterValGraphConv.ps')
-        r.postscript(file3, paper='letter')
+        fileName = os.path.join(self.__dir, 'optIterValGraphConv.ps')
+        r.postscript(fileName, paper='letter')
         olist = []
         # to give a color to each run        
         # new page for each test
         for test in self.__tests:
             # initialize plotting window with first run
             olist = [sub[0].value for sub in test.optimaIterations]
-            r.plot(olist, type='o', lty='dotted', ylim=[0,0.5])            
+            r.plot(olist, type='o', lty='dotted', ylim=[0,0.5], main='Convergence over the runs', ylab='Value', xlab='Run index')            
             # then iter over the runsNb, plotting their graphs
             for i in range(test.runsNb)[1:]:
                 olist = [sub[i].value for sub in test.optimaIterations]
                 r.points(olist, type='o')                
         r.dev_off()
-        
-        # plot points in plan
-        self.plotSpace()
-
-
-    def plotSpace(self):
+    
+    
+    def plot_8(self):
         """ plot optima and the optimum in their neighborhood plan
         for dimension 2
         => use ACP when dim > 2 ! """
@@ -264,10 +267,9 @@ class Comparison:
                 xlimm = [0, len(t.optima)]
                 ylimm = [t.problem.optimum[0].coords[0]-.1, max(y) ]
 
-                r.plot(x, y, xlim=xlimm, ylim=ylimm, xlab = 'Points', ylab='Position', \
+                r.plot(x, y, xlim=xlimm, ylim=ylimm, xlab = 'Points, from best to worst', ylab='Position', \
                        main=t.args, bg='lightblue', pch=21, type='o')
-                opt = t.problem.optimum[0].coords[0]
-                print 'lines: ', xlimm, ', ', opt
+                opt = t.problem.optimum[0].coords[0]                
                 r.lines(xlimm, [opt, opt], col='red', type='o')
                 
             else:
@@ -284,6 +286,35 @@ class Comparison:
                          [t.problem.optimum[0].coords[1]], \
                          bg='red', pch=21)
         r.dev_off()
+
+
+    def plot(self):
+        """ Plot results as postscript files
+        - IterationsValuesConvergences.ps : show each iteration of each run as a quantile box, showing the evolution of points during the optimization."""
+
+        ## plot frequency distributions
+        self.plot_1()
+
+        ## plot a box for each sublist
+        self.plot_2()
+        
+        ## plot the graph of optimas, selecting the best among #runs of each Test, to finally have one Point for each Test.       
+        self.plot_3()
+        
+        ## plot convergence boxes for all points in iterations
+        self.plot_4()
+
+         ## plot convergence boxes for optima points in iterations
+        self.plot_5()
+        
+        ## plot success rates
+        self.plot_6()
+
+        ## plot convergence graphs superposed for each run, for each test
+        self.plot_7()
+
+        # plot points in plan
+        self.plot_8()
 
 
     def writeReport(self):
