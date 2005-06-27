@@ -243,7 +243,8 @@ class Comparison:
             # then iter over the runsNb, plotting their graphs
             for i in range(test.runsNb)[1:]:
                 olist = [sub[i].value for sub in test.optimaIterations]
-                r.points(olist, type='o')                
+                r.points(olist, type='o')
+            r.grid(nx=10, ny=40)
         r.dev_off()
     
     
@@ -252,8 +253,8 @@ class Comparison:
         for dimension 2
         => use ACP when dim > 2 ! """
 
-        file5 = os.path.join(self.__dir, 'optSolDistance.ps') 
-        r.postscript(file5, paper='letter')            
+        fileName = os.path.join(self.__dir, 'optSolDistance.ps') 
+        r.postscript(fileName, paper='letter')            
         for t in self.__tests:        
             if t.problem.dimension < 2:
 
@@ -271,6 +272,7 @@ class Comparison:
                        main=t.args, bg='lightblue', pch=21, type='o')
                 opt = t.problem.optimum[0].coords[0]                
                 r.lines(xlimm, [opt, opt], col='red', type='o')
+                r.grid(nx=10, ny=40)
                 
             else:
                 x = []
@@ -281,10 +283,11 @@ class Comparison:
                 xlimm = [t.problem.min_bound[0].coords[0], t.problem.max_bound[0].coords[0]]
                 ylimm = [t.problem.min_bound[0].coords[1], t.problem.max_bound[0].coords[1]]
                 r.plot(x,y, bg='lightblue', pch=21, xlab='X', ylab='Y', \
-                       main=t.args, xlim=xlimm, ylim=xlimm)
+                       main=t.args, xlim=xlimm, ylim=xlimm)                
                 r.points([t.problem.optimum[0].coords[0]], \
                          [t.problem.optimum[0].coords[1]], \
                          bg='red', pch=21)
+                r.grid(nx=10, ny=40)
         r.dev_off()
 
 
