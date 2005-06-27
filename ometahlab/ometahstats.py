@@ -95,7 +95,7 @@ class Comparison:
         ok = 0
         while not ok:
             ok = 1
-            dir = 'Results_%i' % i
+            dir = 'results_%i' % i
             dir = os.path.join( string.split(paths[0], sep='/')[0], dir)
             try:
                 os.mkdir(dir)
@@ -178,7 +178,6 @@ class Comparison:
         length = len(self.__optimas[0])
         medianIndex = length/2 # integer division, ok with first index = zero
         mlist = [ points[medianIndex].value for points in self.__optimas]
-        
         r.plot(olist, type='n', main='Bests optima evolution', xlab='Test index', ylab='Optima value')
         r.lines(olist, lty='dotted')
         r.points(olist, bg = 'white', pch = 21)
@@ -211,7 +210,7 @@ class Comparison:
         r.postscript(fileName, paper='letter')
         for metalist in self.__optimaIter:
             vlist = [[p.value for p in points] for points in metalist ]
-            r.boxplot(vlist, style='quantile', col='orange', main='Iterations convergence for optima', xlab='Iteration index', ylab='Optima value')
+            r.boxplot(vlist, style='quantile', col=self.__color, main='Iterations convergence for optima', xlab='Iteration index', ylab='Optima value')
             r.grid(nx=10, ny=40)
         r.dev_off()
 
@@ -282,11 +281,11 @@ class Comparison:
                     y.append(p.coords[1])
                 xlimm = [t.problem.min_bound[0].coords[0], t.problem.max_bound[0].coords[0]]
                 ylimm = [t.problem.min_bound[0].coords[1], t.problem.max_bound[0].coords[1]]
-                r.plot(x,y, bg='lightblue', pch=21, xlab='X', ylab='Y', \
+                r.plot(x,y, bg='white', pch=21, xlab='X', ylab='Y', \
                        main=t.args, xlim=xlimm, ylim=xlimm)                
                 r.points([t.problem.optimum[0].coords[0]], \
                          [t.problem.optimum[0].coords[1]], \
-                         bg='red', pch=21)
+                         bg='black', pch=21)
                 r.grid(nx=10, ny=40)
         r.dev_off()
 

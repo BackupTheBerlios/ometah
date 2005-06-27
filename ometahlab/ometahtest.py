@@ -146,7 +146,7 @@ class Test:
         ok = 0
         while not ok:
             ok = 1
-            dir = '%s_%s_d%i_e%s_r%s__%i' \
+            dir = '%s_%s_d%i_e%s_r%s_%i' \
                   % (self.problem.name, self.metah.key, \
                      self.problem.dimension, self.parameters.maxEvaluations, \
                      self.parameters.randomSeed, i)
