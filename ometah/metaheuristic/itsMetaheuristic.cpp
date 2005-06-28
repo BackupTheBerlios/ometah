@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.11 2005/06/24 19:36:51 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.12 2005/06/28 07:29:45 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -25,19 +25,9 @@
  */
  
 
-#include <iostream>
-#include <sstream>
-#include <cstdlib>
-#include <sys/timeb.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <unistd.h>
+
 #include "itsMetaheuristic.hpp"
-#include "../common/random.hpp"
-#include "../common/string.hpp"
-#include "../common/itsPoint.hpp"
-#include "../problem/itsProblem.hpp"
-#include "../communication/itsCommunicationClient.hpp"
+
  
 using namespace std;
  
@@ -529,8 +519,12 @@ void itsMetaheuristic::initRandom()
   tim=(struct timeb*)malloc(sizeof(tim));
   ftime(tim);
   
-  this->seed = tim->millitm * getpid();
+  this->seed = tim->millitm;
   
+#if !WIN32
+  this->seed *= getpid();
+#endif  
+
   srand(this->seed);
 }
 

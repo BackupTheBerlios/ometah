@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.8 2005/06/24 19:36:51 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.9 2005/06/28 07:29:45 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -27,11 +27,27 @@
 #ifndef ITSMETAHEURISTIC
 #define ITSMETAHEURISTIC
 
-#include <ostream>
+#if !WIN32
+#include <sys/types.h>
+#include <unistd.h>
+#endif
 
+
+#include <ostream>
+#include <iostream>
+#include <sstream>
+#include <cstdlib>
+#include <stdlib.h>
 #include <set.h>
+#include <sys/timeb.h>
 
 #include "../common/itsPoint.hpp"
+#include "../communication/itsCommunicationClient.hpp"
+
+#include "../common/random.hpp"
+#include "../common/string.hpp"
+#include "../common/itsPoint.hpp"
+#include "../problem/itsProblem.hpp"
 #include "../communication/itsCommunicationClient.hpp"
 
 
