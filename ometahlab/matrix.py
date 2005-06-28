@@ -26,8 +26,13 @@
 #
 
 from Numeric import *
+import Numeric
+from LinearAlgebra import *
+
 
 """
+Method used for ACP :
+
    1. Organize your data into column vectors, so you end up with a d \times n matrix, D.
    2. Find the empirical mean along each dimension, so you end up with a d \times 1 empirical mean vector, M.
    3. Subtract the empirical mean vector M from each column of the data matrix D. Store mean-subtracted data d \times n matrix in S.
@@ -37,7 +42,6 @@ from Numeric import *
 
 http://en.wikipedia.org/wiki/Principal_components_analysis
 
-
 By ordering the eigenvectors in the order of descending eigenvalues (largest first),
 one can create an ordered orthogonal basis with the first eigenvector having the direction
 of largest variance of the data.
@@ -45,58 +49,30 @@ In this way, we can find directions in which the data set has the most significa
 amountsof energy.
 
 http://www.cis.hut.fi/~jhollmen/dippa/node30.html
-
-Ex:
-http://www.itl.nist.gov/div898/handbook/pmc/section5/pmc541.htm
-
-CF.
-R
-> help(princomp)
-(example..)
-
 """
-import Numeric
 
-from LinearAlgebra import *
 
+def ACPinit(M):
+    """ Return the ordered eigenvectors, and center M. """
 
 def covar(M):
-    """ returns the covariance matrix of  M,
-    d*n, corresponding to N points of dimension d
-    Steps :
-    - V = vector of mean for each dimension 
-    - S = M[i][j] - V[i]
-    - return C = S * transpose(S)
-
-    M = [ [ observation1  ] [ observation2 ] etc...]
-    => each column is a point
-    M is a matrix, not a list of lists ! (Numeric.reshape...)
-    """
+    """ returns the covariance matrix of  M, n*d, corresponding to N points of dimension d
+    Each line of M (sublist) is a set of values, one for each dimension."""
+    
     import copy
     # initialize dimension and number of vectors
     d = len(M[0]) # nb of dimensions = a row's
     n = len(M)    # nb of observations
 
-    # initialize means vector to dimension size
-    means = array(zeros(d))
-    # as a vector of floats
-    means = means + 0.1 - 0.1
-
-    # find empirical mean along each dimension
-    for dim in range(d):
-        for i in range(n):
-            means[dim] += float(M[i][dim])
-        means[dim] = float(means[dim]) / float(n)
-
+    means = mean(M)
     N = copy.copy(M)
-
     # substract means from each row of M
     for i in range(n):
         for dim in range(d):
             N[i][dim] = (M[i][dim] - means[dim])
 
     # return d*d covariance matrix
-    return matrixmultiply( transpose(M), M )
+    return matrixmultiply( transpose(N), N )
 
 
 def mean(M):
@@ -104,12 +80,10 @@ def mean(M):
         # initialize dimension and number of vectors
     d = len(M[0]) # nb of dimensions = a row's
     n = len(M)    # nb of observations
-
     # initialize means vector to dimension size
     means = array(zeros(d))
     # as a vector of floats
     means = means + 0.1 - 0.1
-
     # find empirical mean along each dimension
     for dim in range(d):
         for i in range(n):
@@ -117,37 +91,6 @@ def mean(M):
         means[dim] = float(means[dim]) / float(n)
     return means
 
-
-def varCovar(M):
-
-     # initialize dimension and number of vectors
-    d = len(M[0]) # nb of dimensions = a row's
-    n = len(M)    # nb of observations
-
-    # initialize means vector to dimension size
-    means = array(zeros(d))
-    # as a vector of floats
-    means = means + 0.1 - 0.1
-
-    # find empirical mean along each dimension
-    for dim in range(d):
-        for i in range(n):
-            means[dim] += float(M[i][dim])
-        means[dim] = float(means[dim]) / float(n)
-
-    # substract means from each row of M
-    for i in range(n):
-        for dim in range(d):
-            M[i][dim] = (M[i][dim] - means[dim])
-
-    # return d*d covariance matrix
-    V = matrixmultiply( transpose(M), M )
-
-    for i in range(len(V)):
-        for j in range(len(V[0])):
-            V[i][j] = V[i][j] / n
-    return V
-    
 
 def orderedEigenvectors(A):
     """ Returns the matrix of th eigenvectors ordered by decreasing eigenvalue of A (square)"""
@@ -173,6 +116,7 @@ def orderedEigenvalues(A):
     """ """
     return sort(eigenvalues(A))
 
+# Unused !
 def list2matrix(mlist, rows, columns):
     """ Transform the given list in a matrix of the given nb of rows and columns,
     if mlist size matches
@@ -217,4 +161,44 @@ if __name__ == '__main__':
     for i in range(len(S)):
         Ve = S[i] - M
         print matrixmultiply(Pt, Ve)
+
+
+# TODO
+# interface to get coordinates list from vector of the matrix
+# make a class ! attribute : eigenvectors, means !
+
+class ACP:
+
+    def __init__(self, S):
+        """ Constructor """
+        # the matrix we work on, n * dim
+        self.__matrix = S
+        # transposed matrix of ordered eigenvectors
+        self.__eigenv = None
+        # vectors of means over M dimensions 
+        self.__means = self.means(S)
+
+        C = self.covar(S)
+        self.__eigenv = transpose(orderedEigenvectors(C))
         
+        pass
+
+    def covar(self):
+        pass
+
+    def orderedEigenvectors(self):
+        pass
+
+    def reduceDim(self, lineIndex, dim):
+        """ Returns a list of dim coordinates."""
+        Ve = self.__matrix[lineIndex] - self.__means
+        return matrixmultiply(self.__eigenv[:dim], Ve)
+        
+
+"""
+
+ie :
+eigen = ACPinit(Matrix)
+coord = ACPreduce(eigen, Matrix[0], dim)
+
+"""
