@@ -102,8 +102,17 @@ class Test:
         if not 'xml-version="1.0"' in fd.readline():
             intfc.log('ERROR : ometah failed to create XML\n')
             intfc.fatal('(see log file)')
-        print '\b.',
+
+        # New loading bar
+        for i in range(self.runsNb):
+            print '\b\b\b',
+
+        for i in range(runNumber):
+            print '\b=',
+        for i in range(self.runsNb - 1 - runNumber):
+            print '\b_',
         sys.stdout.flush()
+
         # parse and read XML
         XmlParser = parser.XMLParser(fd, intfc)
         XmlParser.readXml()
@@ -136,6 +145,8 @@ class Test:
             os.mkdir(self.__results_dir)
 
         print "\nRunning ometah", ''.join(self.argv)
+        for j in range(self.runsNb-1): # to initialize loading bar
+            print '\b_',
         for i in range(self.runsNb):
             intf = self.__init(self.argv, i, self.__logName)
             self.optima.append(intf.getOptimum())

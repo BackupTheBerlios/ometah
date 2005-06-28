@@ -301,8 +301,7 @@ class Comparison:
 
 
     def plot(self):
-        """ Plot results as postscript files """
-
+        """ Plot results as postscript files. """
         ## plot frequency distributions
         self.plot_1()
 
