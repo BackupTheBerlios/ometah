@@ -42,6 +42,7 @@ def stat(paths):
     c.check()
     c.plot()
     c.writeReport()
+    c.writeLatex()
     print '\nResults in in %s\n' % c.getDir()
 
 
@@ -342,7 +343,6 @@ class Comparison:
             txt = '\t%s\n' % test.args
             fd.write(txt)
         fd.write('\n')
-        i = 0
         for test in self.__tests:
             txt = '%s\n--------------------------------------------/\n\n' % test.args
             fd.write(txt)
@@ -366,7 +366,7 @@ class Comparison:
             txt = '\tProblem\'s optimum solution : %s\n' \
                   % ''.join( [str(i) for i in test.problem.optimum[0].coords] )
             fd.write(txt)
-            txt = '\tMetaheuristic : %s\n\Family : %s\n\tDescription : %s\n' \
+            txt = '\tMetaheuristic : %s\n\tFamily : %s\n\tDescription : %s\n' \
                   % ( test.metah.key, test.metah.family, test.metah.description )            
             fd.write(txt)
             txt = '\tAccuracy : %s\n' % (test.problem.accuracy)
@@ -384,6 +384,56 @@ class Comparison:
         fd.close()
 
 
+    def writeLatex(self):
+        """ Write Latex report """
+        path = os.path.join(self.__dir, 'report.tex')
+        fd = open(path, 'w')
+
+        fd.write('\\documentclass{report}\n\\begin{document}\n')
+        fd.write('\\section*{OMETAHLAB REPORT}\n\\subsection*{Tests}\n') 
+        for test in self.__tests:
+            txt = '\t%s\n' % test.args
+            fd.write(txt)
+
+        for test in self.__tests:
+            txt = '\\section*{%s}\n' % test.args
+            fd.write(txt)
+            # Problem subsection
+            fd.write('\\subsection*{Problem}\n\\begin{description}\n')
+            txt = '\t\\item[Name:] %s\n\t\\item[Dimension:] %i\n\t\\item[Optimum value:] %s\n' \
+                  % (test.problem.name, test.problem.dimension, min([x.value for x in test.problem.optimum]))
+            fd.write(txt)
+            txt = '\t\\item[Accuracy:] %s\n\\end{description}\n' % test.problem.accuracy
+            fd.write(txt)
+            # Metaheuristic subsection
+            fd.write('\\subsection*{Metaheuristic}\n\\begin{description}\n')
+            txt = '\t\\item[Key:] %s \n\t\\item[Name:] %s\n\t\\item[Description:] %s\n\t\\item[Family:] %s\n' \
+                  % (test.metah.key, test.metah.name, test.metah.description, test.metah.family)                        
+            fd.write(txt)
+            fd.write('\\end{description}\n')
+            # Parameters subsection
+            fd.write('\\subsection*{Parameters}\n\\begin{description}\n')
+            txt = '\t\\item[Runs:] %i \n\t\\item[Sample size:] %s\n\t\\item[Treshold:] %s\n\t\\item[Random seed:] %s\n' \
+                  % (test.runsNb, test.parameters.sampleSize, \
+                     test.parameters.treshold, test.parameters.randomSeed)                        
+            fd.write(txt)
+            fd.write('\\end{description}\n')
+            # Results subsection
+            vals = [p.value for p in test.optima]
+            fd.write('\\subsection*{Results}\n\\begin{description}\n')
+            txt = '\t\\item[Optima mean value:] %f \n\t\\item[Optima standard deviation:] %f\n' \
+                  % (r.mean(vals), r.sd(vals))                        
+            fd.write(txt)
+            txt = '\t\\item[Optima value found:] %f \n\t\\item[Success rate:] %f\n' \
+                  % (min(vals), 100*test.succRate)                        
+            fd.write(txt)            
+            fd.write('\\end{description}\n')
+
+        fd.write('\\end{document}\n')
+        fd.close()
+
+
+        
     def getDir(self):
         """ Returns the path of the directory containing files created."""
         return self.__dir
