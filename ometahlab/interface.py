@@ -1,8 +1,15 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 #
-# Test module for Open Metaheuristic, interface for a test
-# Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+###
+#
+#  Ometahlab is a set of Python scripts to make experiments on Ometah.
+#
+#  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+#  An Interface is used by a Test of ometah (cf. ometahtest), and should not
+#  be used directly.
+#
+###
 #
 #  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
 #  for difficult optimization.
@@ -31,36 +38,38 @@ except:
 import os
 from rpy import *
 
+
 class Interface:
-    """ the main interface with ometah output """
+    """ Interface between ometah output and ometahlab data treatement.
+    One interface instance is used for each ometah run, """
     
     LOG_ON = 0
 
     def __init__(self, args):
-        """ constructor, from command line arguments """
+        """ Constructor, args is the list of command lines arguments. """
         self.__argv = [''] + args[1:]
-        self.__defaultFileName = "metahtest"
-        self.__temp = "."
-        self.__path = "."
-        self.__logfile = "%s.log" % (self.__defaultFileName)
+        self.__defaultFileName = 'metahtest'
+        self.__temp = '.'
+        self.__path = '.'
+        self.__logfile = '%s.log' % (self.__defaultFileName)
         self.__points = []
-        self.__name = ""
+        self.__name = ''
     
     def getXmlFromExecOmetah(self, path):
-        """ execute ometah with given arguments,
-        returns the file objects corresponding to the cmd output """
+        """ Execute ometah with given arguments, where ometah's path if path,
+        returns the file objects corresponding to the XML output. """
         import string # faster here !
         cmd = "%s %s" % (path, string.join(self.__argv))
         try:
             fd = os.popen(cmd)
         except:
             self.log('ERROR : wrong path to ometah [Interface.getXmlFromExecOmetah]\n')            
-            fatal('(see log file)')
+            self.__fatal('(see log file)')
         self.log('ometah execution ... OK\n')
         return fd
 
     def getXmlFromFile(self, path):
-        """ open an existing file of XML output and return the fd """
+        """ Open an existing file of XML output located at path and return the fd. """
         try:
             fd = open(path, 'r')
         except:
@@ -68,8 +77,7 @@ class Interface:
         return fd
             
     def log(self, astring):
-        """ write log of current job in a *.log file with date,
-        pb name, output files... """    
+        """ Log the given string in the log file, appending to the end of the file. """    
         if self.LOG_ON:
             logf = os.path.join(self.__path, self.__logfile)
             fd = open(logf, 'a')
@@ -77,36 +85,15 @@ class Interface:
             fd.close()
     
     def setLog(self, boolean):
-        """ turn the log on or off """
+        """ Turn the log on or off (default : no log). """
         self.LOG_ON = boolean
 
     def setLogFileName(self, astring):
+        """ Set the name of the log file as the given string, no extension is added, you should include it in astring."""
         self.__logfile = astring
     
-    def datedFileName(self, name, extension):
-        """ return a string of toda
-        y's date + given string """
-        import datetime
-        s = datetime.date.today().isoformat()
-        return "%s%s%s" % (name, s, extension)
-
-    def setPath(self, path):
-        """ set the path where will be saved the output files (ps &| png) """
-        try:
-            os.listdir(path)
-        except: # if can't ls the dir, create it :
-            try:
-                os.mkdir(path)
-            except:
-                self.log('ERROR : wrong path for output files, error creating directory [Interface.setPath]\n')
-        self.__path = path
-
-    def getPath(self):
-        return self.__path
-
     def copyToDisk(self, rfd, filename="xml"):
-        """ copy the file open with fd to a new file on disk
-        used to cp XML output on disk """
+        """ Copy the file opened with rfd to a new file on disk, is used to copy XML output on disk. """
         filename = filename + '.xml'
         xfile = os.path.join(self.__path, filename)
         try:
@@ -135,40 +122,20 @@ class Interface:
         except:
             pass
 
-    def rmDiskCopy(self, filename="xml"):
-        """ remove XML copy on disk """
-        filename = filename 
-        path = os.path.join(self.__path, filename)
-        try: # if ls fail, the wrong file name, exit
-            os.listdir(path)
-        except:
-            self.log('ERROR : cannot remove disk copy of XML [Interface.rmDiskCopy]\n')
-            return
-        os.remove(path)
-
     def setTemp(self, path):
-        """ set the path to the temporary directory """
+        """ Set the path to the temporary directory. """
         self.__temp = path
 
-    def moveLog(self):
-        """ move the log file to the new path value """
-        src = os.path.join(self.__temp, self.__logfile)
-        tar = os.path.join(self.__path, src)
-        try:
-            os.rename(src, tar)
-        except:
-            self.log('ERROR : cannot move log file [Interface.moveLog]\n')
-
     def setPoints(self, points):
-        """ set the list of Point object to be plotted """
+        """ Set the list of Point object to be plotted. """
         self.__points = points
 
     def getPoints(self):
+        """ Returns the list of Point instances read from XML output. """
         return self.__points
 
     def getOptimum(self):
-        """ returns the Point object which has the smallest value,
-        from __points list """
+        """ Returns the Point object which has the smallest value (minimum) in the Point list. """
         optim = self.__points[0]
         for point in self.__points:
             if point.value < optim.value:
@@ -177,12 +144,7 @@ class Interface:
         self.log(slog)
         return optim
 
-    def getTitle(self):
-        return self.__title;
-    def setTitle(self, title):
-        self.__title = title
-
-    def fatal(self, mess):
+    def __fatal(self, mess):
         import sys
         print "FATAL ERROR : " + mess + "\n"
         sys.exit(1)

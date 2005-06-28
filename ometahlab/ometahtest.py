@@ -1,13 +1,15 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 #
-# Ometahlab is a set of Python scripts to make experiments on Ometah.
-#####################################################################
-# Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-# File : ometahtest.py
-# This module contains the Test class, which corresponds to an execution of ometah,
-# with given parameters.
+###
 #
+#  Ometahlab is a set of Python scripts to make experiments on Ometah.
+#
+#  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+#  This module contains the Test class, which corresponds to a set of ometah
+#  executions with the same command line arguments.
+#
+###
 #
 #  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
 #  for difficult optimization.
@@ -37,7 +39,7 @@ from rpy import *
 
 
 class Test:
-    """ a Test is a set of executions (runs) of the same command line. """
+    """ A Test is a set of executions (runs) of the same command line. """
 
     # turned to 1 when problem string updated
     _INFO_PB = 0
@@ -59,7 +61,7 @@ class Test:
         self.args = ''
         # directory where to put report, plottings...
         self.__dir = "."
-        # one log for each metarun
+        # one log for each test, grouping all runs informations
         self.__logName = "ometahtest.log"
         # default location of ometah
         self.__ometah_path = os.path.join('..', os.path.join('ometah', 'ometah'))
@@ -71,7 +73,7 @@ class Test:
         self.succRate = 0
         # success performance = mean(FES for successful run * #run)/#succRuns
         self.succPerf = 0
-        # nb of runs for each metarun
+        # number of runs for the test
         self.runsNb = 25
 
         self.problem = None
@@ -116,14 +118,13 @@ class Test:
             self.parameters = header.parameters
             self.metah = header.metah
             self._INFO_PB = 1        
-        intfc.setTitle(header.toString())
 
         return intfc
     
     
     def __metarun(self):
-        """ Make a metarun, which is running Ometah RunsNb  times with the same command line arguments.
-        A serialized object of the self instance is created in the metarun directory """        
+        """ Make a test, that is running Ometah RunsNb times with the same command line arguments.
+        A serialized object of the self instance is created in the test directory """        
         import pickle
         # list of the N optimas, have to sort it after
         self.optima = []
@@ -139,7 +140,6 @@ class Test:
             intf = self.__init(self.argv, i, self.__logName)
             self.optima.append(intf.getOptimum())
             self.__points.append(intf.getPoints())            
-        intf.log(intf.getTitle())
         intf.archiveXml()
         
         i = 1
@@ -210,24 +210,6 @@ class Test:
             tar = os.path.join(self.__dir, src)
             os.rename(src, tar)
 
-
-    def setNbRuns(self, n):
-        """ Set the number of runs of the test to n. Default value is 25."""
-        self.runsNb = n
-
-    def setArgs(self, args):
-        """ Set the arguments of Ometah execution, as a string. Ie give '-p Sphere -e 50'."""
-        self.argv = [''] + [args]
-        self.args = 'ometah ' + ''.join(self.argv)
-
-    def setOmetahPath(self, path):
-        """ Set the path to Ometah binary file, which is set to '../ometah/ometah' as default value."""
-        self.__ometah_path = path
-
-    def getPath(self):
-        """ Return the path of the working directory created, which can then be given to ometahstats.compare function."""
-        return str(self.__dir)
-
     def __calculSuccessRates(self):
         """ Update succRate & succPerf values, according to the current optima list and problem instance """
         total = self.runsNb
@@ -253,10 +235,26 @@ class Test:
 
     
     def start(self):
-        """ Start the test, making a metarun, which is running Ometah NB_RUN  times with the same command line arguments.
-        A Serialized object is created in the metarun directory, to save informations like point list, optimum, etc..."""
+        """ Start the test, making a metarun, which is running Ometah NB_RUN  times with the same command line arguments."""
         self.__metarun()
 
+
+    def setNbRuns(self, n):
+        """ Set the number of runs of the test to n. Default value is 25."""
+        self.runsNb = n
+
+    def setArgs(self, args):
+        """ Set the arguments of Ometah execution, as a string. Ie give '-p Sphere -e 50'."""
+        self.argv = [''] + [args]
+        self.args = 'ometah ' + ''.join(self.argv)
+
+    def setOmetahPath(self, path):
+        """ Set the path to Ometah binary file, which is set to '../ometah/ometah' as default value."""
+        self.__ometah_path = path
+
+    def getPath(self):
+        """ Return the path of the working directory created, which can then be given to ometahstats.compare function."""
+        return str(self.__dir)
 
 
 if __name__ == '__main__':

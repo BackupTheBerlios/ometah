@@ -1,11 +1,15 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 #
-# Ometahlab is a set of Python scripts to make experiments on Ometah.
-#####################################################################
-# Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-# File : ometahstats.py
-# This module is used to generate graphical and text output from several Ometah executions.
+###
+#
+#  Ometahlab is a set of Python scripts to make experiments on Ometah.
+#
+#  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+#  File : ometahstats.py
+#  This module is used to generate graphical and text output from several Ometah executions.
+#
+###
 #
 #  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
 #  for difficult optimization.
@@ -28,7 +32,7 @@
 from rpy import *
 import ometahtest
 
-#!!!  to put in ometah_stat module
+
 def stat(paths):
     """ Generate text report and graphic representation in postscript format,
     comparing the previous Ometah execution which directories' paths are given as a list of strings,
@@ -38,7 +42,7 @@ def stat(paths):
     c.check()
     c.plot()
     c.writeReport()
-    print '\nComparison successful, output in', c.getDir()
+    print 'Results in in %s\n' % c.getDir()
 
 
 class Comparison:
@@ -248,7 +252,7 @@ class Comparison:
     
     
     def plot_8(self):
-        """ plot optima and the optimum in their neighborhood plan
+        """ Plot optima and the optimum in their neighborhood plan
         for dimension 2
         => use ACP when dim > 2 ! """
 
@@ -291,8 +295,7 @@ class Comparison:
 
 
     def plot(self):
-        """ Plot results as postscript files
-        - IterationsValuesConvergences.ps : show each iteration of each run as a quantile box, showing the evolution of points during the optimization."""
+        """ Plot results as postscript files """
 
         ## plot frequency distributions
         self.plot_1()
@@ -336,7 +339,6 @@ class Comparison:
         fd.write('\n')
         i = 0
         for test in self.__tests:
-            i = i + 1
             txt = '%s\n--------------------------------------------/\n\n' % test.args
             fd.write(txt)
             txt = '\tNumber of runs : %i\n' % ( test.runsNb )
@@ -350,16 +352,19 @@ class Comparison:
             else:
                 txt = '\tRandom seed  : %s\n' % test.parameters.randomSeed
             fd.write(txt)
-            txt = '\tProblem : %s\n\tDimension : %i\n' \
-                  % ( test.problem.name, test.problem.dimension )
-            fd.write(txt)
-            txt = '\tAccuracy : %s\n' % (test.problem.accuracy)
+            txt = '\tProblem : %s\n\tDescription : %s\n\tDimension : %i\n' \
+                  % ( test.problem.name, test.problem.description, test.problem.dimension )
             fd.write(txt)
             txt = '\tProblem\'s optimum value : %s\n' \
               % str( test.problem.optimum[0].value )
             fd.write(txt)
-            txt = '\tProblem\' optimum solution : %s\n' \
+            txt = '\tProblem\'s optimum solution : %s\n' \
                   % ''.join( [str(i) for i in test.problem.optimum[0].coords] )
+            fd.write(txt)
+            txt = '\tMetaheuristic : %s\n\Family : %s\n\tDescription : %s\n' \
+                  % ( test.metah.key, test.metah.family, test.metah.description )            
+            fd.write(txt)
+            txt = '\tAccuracy : %s\n' % (test.problem.accuracy)
             fd.write(txt)
             vals = [p.value for p in test.optima]
             txt = '\tOptima mean value : %f\n' % (r.mean(vals))
@@ -371,7 +376,6 @@ class Comparison:
             txt ='\tSuccess rate : ' + str(100*test.succRate) + ' % \n'
             fd.write(txt)
             fd.write('\n\n')
-            i = i + 1
         fd.close()
 
 
