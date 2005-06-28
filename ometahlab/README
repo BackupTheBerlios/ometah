@@ -11,7 +11,9 @@ Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 Ometahtest is a set of python scripts to study ometah results.
 Results are plotted with R (http://www.r-project.org).
 
-You must have compiled ometah previously.
+You must have compiled ometah previously. For that you'll need scons
+tool (http://www.scons.org) if you get ometah from source, obviously 
+you don't need it if you have the binary files already compiled.
 
 Rpy (http://rpy.sf.net) is needed to plot results, and obviously you
 need R to (http://www.r-project.org).
@@ -19,14 +21,19 @@ need R to (http://www.r-project.org).
 If you have Psyco installed (http://psyco.sf.net), it is used by the
 script, but otherwise you won't get an error.
 
+Ometahlab and ometah are running on Unix and Windows.
 
-Doc API
+
+
+DOCUMENTATION
 ----------------------------/
 
-c
+See demo.py file for demo scripts, and help(moduleName) in Python
+interpreter for module documentation. Syntax is very easy and you
+should understand it after looking demo.py.
 
 
-Some examples 
+EXAMPLE
 ----------------------------/
 
 #!/usr/bin/python
@@ -38,12 +45,12 @@ except:
     pass
 
 # you need to import those 2 modules
-import ometah_test
-import ometah_stats
+import ometahtest
+import ometahstats
 
 # instance a new test, that is a set of multiple runs 
 # of the same command line
-t = ometah_test.Test()
+t = ometahtest.Test()
 
 # give ometah options as a string
 # for options list, see 'ometah --help'
@@ -70,10 +77,13 @@ u.start()
 p = [ t.getPath(), u.getPath() ]
 
 # launch the comparison between the given tests,
-ometah_stats.compare(p)
+ometahstats.stat(p)
 
 
-(TODO...)
+BUGS
+----------------------------/
 
-
-For a demo, see demoscript.py
+You may report any bug via Ometah's website, or directly to one of the
+following email adresses : 
+jeanphilippe.aumasson@gmail.com
+nojhan@gmail.com
