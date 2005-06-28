@@ -16,7 +16,8 @@ tool (http://www.scons.org) if you get ometah from source, obviously
 you don't need it if you have the binary files already compiled.
 
 Rpy (http://rpy.sf.net) is needed to plot results, and obviously you
-need R to (http://www.r-project.org).
+need R to (http://www.r-project.org), which must be correctly
+configured, the executable file must be in your $PATH variable.
 
 If you have Psyco installed (http://psyco.sf.net), it is used by the
 script, but otherwise you won't get an error.

@@ -42,7 +42,7 @@ def stat(paths):
     c.check()
     c.plot()
     c.writeReport()
-    print 'Results in in %s\n' % c.getDir()
+    print '\nResults in in %s\n' % c.getDir()
 
 
 class Comparison:
@@ -53,7 +53,7 @@ class Comparison:
         import pickle
         import string
         import os
-        # each metarun (each Test) has different parameters
+        # each each Test has different parameters
 
         # color used in graphic plottings
         self.__color = 'grey85'
@@ -241,12 +241,17 @@ class Comparison:
         # new page for each test
         for test in self.__tests:
             # initialize plotting window with first run
+            lineType = 1 # cf R, help(par), line type option
             olist = [sub[0].value for sub in test.optimaIterations]
-            r.plot(olist, type='o', lty='dotted', ylim=[0,0.5], main='Convergence over the runs', ylab='Value', xlab='Run index')            
+            r.plot(olist, type='o', lty=lineType, ylim=[0,0.5], main='Convergence over the runs', ylab='Value', xlab='Run index')            
             # then iter over the runsNb, plotting their graphs
             for i in range(test.runsNb)[1:]:
+                if i < 7:
+                    lineType += 1
+                else:
+                    lineType = 0
                 olist = [sub[i].value for sub in test.optimaIterations]
-                r.points(olist, type='o')
+                r.lines(olist, type='o', lty=lineType)
             r.grid(nx=10, ny=40)
         r.dev_off()
     
@@ -272,9 +277,9 @@ class Comparison:
                 ylimm = [t.problem.optimum[0].coords[0]-.1, max(y) ]
 
                 r.plot(x, y, xlim=xlimm, ylim=ylimm, xlab = 'Points, from best to worst', ylab='Position', \
-                       main=t.args, bg='lightblue', pch=21, type='o')
+                       main=t.args, bg='white', pch=21, type='o')
                 opt = t.problem.optimum[0].coords[0]                
-                r.lines(xlimm, [opt, opt], col='red', type='o')
+                r.lines(xlimm, [opt, opt], col='black', type='o')
                 r.grid(nx=10, ny=40)
                 
             else:
