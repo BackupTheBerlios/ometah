@@ -72,6 +72,7 @@ def covar(M):
     => each column is a point
     M is a matrix, not a list of lists ! (Numeric.reshape...)
     """
+    import copy
     # initialize dimension and number of vectors
     d = len(M[0]) # nb of dimensions = a row's
     n = len(M)    # nb of observations
@@ -87,13 +88,34 @@ def covar(M):
             means[dim] += float(M[i][dim])
         means[dim] = float(means[dim]) / float(n)
 
+    N = copy.copy(M)
+
     # substract means from each row of M
     for i in range(n):
         for dim in range(d):
-            M[i][dim] = (M[i][dim] - means[dim])
+            N[i][dim] = (M[i][dim] - means[dim])
 
     # return d*d covariance matrix
     return matrixmultiply( transpose(M), M )
+
+
+def mean(M):
+    """ Return the mean vector giving the mean over each dimension """
+        # initialize dimension and number of vectors
+    d = len(M[0]) # nb of dimensions = a row's
+    n = len(M)    # nb of observations
+
+    # initialize means vector to dimension size
+    means = array(zeros(d))
+    # as a vector of floats
+    means = means + 0.1 - 0.1
+
+    # find empirical mean along each dimension
+    for dim in range(d):
+        for i in range(n):
+            means[dim] += float(M[i][dim])
+        means[dim] = float(means[dim]) / float(n)
+    return means
 
 
 def varCovar(M):
@@ -160,3 +182,39 @@ def list2matrix(mlist, rows, columns):
     return Numeric.reshape(mlist, (columns, rows))
     
 
+
+# TEMP MAIN INSTRUCTION, TO DELETE !!!!!
+
+if __name__ == '__main__':
+    N = Numeric
+    print '5 observations, 4 dimensions'
+    #S = N.reshape([4.0, 2.0, .60, 4.2, 2.1, .59, 3.9, 2.0 , .58, 4.3, 2.1, .62, 4.1, 2.2, .63], (5,3))
+    S = N.reshape([10, 6, 9, 8, 3, 1, 2, 4, 5, 5,2, 1, 1, 1, 0, 0, 0, 0, 1, 0 ], (5,4))
+    print 'Initial matrix : (S)'
+    print S
+    
+    M = mean(S)
+    
+    C = covar(S)
+    E = orderedEigenvalues(C)
+    P = orderedEigenvectors(C)
+    Pt = transpose(P)
+    
+    print 'covar : (C)'
+    print C
+    print 'eigenvalues :'
+    print E
+    print 'eigenvectors ordered by eigenvalue: (P)'
+    print P
+    print 'P^t for dim reduced to 2'
+    Pt = Pt[:2]
+    print Pt
+    print  'means along each dim'
+    print M
+    
+    print 'P^t * Ve'
+    
+    for i in range(len(S)):
+        Ve = S[i] - M
+        print matrixmultiply(Pt, Ve)
+        
