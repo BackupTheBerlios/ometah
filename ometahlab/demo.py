@@ -123,28 +123,28 @@ def main():
         p = [ t.getPath(), u.getPath(), v.getPath() ]
         ometahstats.stat(p)
 
-elif arg == 4:
+    elif arg == 4:
         
         print """ Average length script, to have a good preview of ometahlab results, with Rosenbrock problem. """
     
         t = ometahtest.Test()
-        t.setArgs('-e 60 -p Rastrigin -d 2')
+        t.setArgs('-e 60 -p Rosenbrock -d 2')
         t.setNbRuns(30)
         t.start()
     
         u = ometahtest.Test()
-        u.setArgs('-e 120  -p Rastrigin -d 2')
+        u.setArgs('-e 120  -p Rosenbrock -d 2')
         u.setNbRuns(30)
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 240 -i 100 -p Rastrigin -d 2')
+        v.setArgs('-e 240 -i 100 -p Rosenbrock -d 2')
         v.setNbRuns(30)
         v.start()
         
         p = [ t.getPath(), u.getPath(), v.getPath() ]
         ometahstats.stat(p)
-
+ 
 
     elif arg == 5:
 
