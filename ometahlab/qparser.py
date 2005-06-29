@@ -236,7 +236,7 @@ class Qparser:
         line = fd.readline()
         st = S.find(line, '<value>')
         en = S.find(line, '</value>')
-        sampleSize = line[st+7:en]
+        sampleSize = int(line[st+7:en])
 
         line = fd.readline()
         st = S.find(line, '<value>')

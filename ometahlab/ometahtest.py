@@ -171,7 +171,7 @@ class Test:
 
         # one sublist for each iteration, containing all points of the N runs
 
-        size = int(self.parameters.sampleSize)
+        size = self.parameters.sampleSize
         # initialize the length of s.points
         iters = len(self.__points[0]) / size        
         for i in range(iters):
@@ -231,9 +231,9 @@ class Test:
     def __success(self, point):
         """ Returns true if the point given matches problem's optima,
         with a precision of self.__precision, returns false otherwise """
-        vlist = [ float(p.value) for p in self.problem.optimum ]        
+        vlist = [ p.value for p in self.problem.optimum ]        
         realOptimum = min(vlist)
-        optimumFound = float(point.value)
+        optimumFound = point.value
         if (optimumFound - realOptimum) > self.problem.accuracy:
             return False
         return True
