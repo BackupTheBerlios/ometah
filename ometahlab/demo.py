@@ -63,7 +63,8 @@ def main():
     import ometahstats    
 
     if arg == 1:
-        """ Smallest and fastest script, only two tests run, 15 runs for each one,
+        
+        print """ Smallest and fastest script, only two tests run, 15 runs for each one,
         and a maximum of 64 evaluations, results don't give many information. """
 
         t = ometahtest.Test()
@@ -82,7 +83,9 @@ def main():
         ometahstats.stat(paths)
 
     elif arg == 2:
-        """ Like first test, but with 3 dimensions. """
+        
+        print """ Like first test, but with 3 dimensions. """
+
         t = ometahtest.Test()
         t.setArgs('-e 30 -p Ackley -d 10')
         t.setNbRuns(15)
@@ -99,7 +102,8 @@ def main():
         ometahstats.stat(paths)
 
     elif arg == 3:
-        """ Average length script, to have a good preview of ometahlab results. """
+        
+        print """ Average length script, to have a good preview of ometahlab results. """
     
         t = ometahtest.Test()
         t.setArgs('-e 60 -p Rastrigin -d 2')
@@ -120,8 +124,10 @@ def main():
         ometahstats.stat(p)
 
     elif arg == 4:
-        """ Only for high frequency CPU, or patient people, we reach 1000 evaluations
+
+        print """ Only for high frequency CPU, or patient people, we reach 1000 evaluations
         for a set of five tests, each one doing 50 runs. """
+        
         t = ometahtest.Test()
         t.setArgs('-e 50 -p Sphere')
         t.setNbRuns(50)
