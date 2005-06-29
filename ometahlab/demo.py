@@ -186,7 +186,7 @@ def main():
         y.start()
 
         # report and plot comparison
-        p = [ t.getPath(), u.getPath(), v.getPath(), w.getPath(), x.getPath()]
+        p = [ t.getPath(), u.getPath(), v.getPath(), w.getPath(), x.getPath(), y.getPath()]
         ometahstats.stat(p)
 
     return
