@@ -40,8 +40,6 @@ try:
 except:
     pass
 
-import parser
-P = parser
 import string
 S = string
 
@@ -52,9 +50,6 @@ class Qparser:
     ## WARNING
     ## get Header first !!! 'cos offset of file shifted !!!
     ##
-    ##
-    ## Cast in FLOAT / INT when needed !
-    ##
     ## !!!!!!!!!!!!!!!!!!!!!!!!
     
     def __init__(self):
@@ -62,7 +57,7 @@ class Qparser:
         # list of Point instances
         self.__points = []
         # header object
-        self.__header = P.Header()
+        self.__header = Header()
         # file descriptor of ometah output
         self.__fd = None        
 
@@ -143,7 +138,7 @@ class Qparser:
         line = fd.readline() # skip <optimum>
         line = fd.readline()
         while S.find(line, '<point>') != -1:
-            p = P.Point()            
+            p = Point()            
             st = S.find(line,'<values>')
             en = S.find(line,'</values>')
             p.value = float(line[st+8:en])
@@ -157,7 +152,7 @@ class Qparser:
         fd.readline() # skip <bounds>
         # minimum line
         minb = []
-        p = P.Point()
+        p = Point()
         line = fd.readline()
         st = S.find(line,'<solution>')
         en = S.find(line,'</solution>')
@@ -165,7 +160,7 @@ class Qparser:
         minb.append(p)
         # maximum line
         maxb = []
-        p = P.Point()
+        p = Point()
         line = fd.readline()
         st = S.find(line,'<solution>')
         en = S.find(line,'</solution>')
@@ -285,17 +280,85 @@ class Qparser:
         enSol = S.find(line,'</solution>')
         solution = [float(x) for x in S.split(line[stSol+10:enSol])]
 
-        p = P.Point()
+        p = Point()
         p.value = value
         p.coords = solution
         p.index = pindex
         
         self.__points.append(p)        
-    
-if __name__ == '__main__':
 
-    q = Qparser()
-    q.load('../ometah/ometah')
-#    q.getHeader()
-    pp = q.getPoints()
- 
+
+
+class Problem:
+    """ Descriptive informations of a problem. """
+
+    key = None
+    name = None
+    description = None
+    formula = None
+    dimension = None
+    optimum = []   # list of Point
+    min_bound = [] # idem
+    max_bound = [] # idem
+    reference = None
+    accuracy = 0.0
+    
+    def __init__(self):
+        """ Void constructor."""
+        pass
+
+class Metaheuristic:
+    """ Descriptive informations of a metaheuristic. """
+
+    key = None
+    name = None
+    family = None
+    acronym = None
+    description = None
+    reference = None
+    
+    def __init__(self):
+        """ Void constructor."""
+        pass
+
+
+class Parameters:
+    """ The set of parameters specified into <parameters> elemens in XML output """
+
+    sampleSize = None
+    maxIterations = None
+    maxEvaluations = None
+    treshold = None
+    randomSeed = None
+
+    def __init__(self):
+        pass
+
+
+class Header:
+    """ Additional informations in XML file concerning problem, metaheuristic, and parameters."""
+
+    problem = Problem()
+    metah = Metaheuristic()
+    parameters = Parameters()
+
+    def __init__(self):
+        """ Void constructor."""
+        pass
+    
+
+class Point:
+    """ A point has a set of coordinates, a value, an error relative to the problem's optimum, and an index. """
+
+    coords = None
+    value = None
+    error = None
+    index = 0
+
+    def __init__(self):
+        """ Point constructor. """
+        pass
+
+
+if __name__ == '__main__':
+    print "This file contains no instructions in main(), please see README for program usage\n"

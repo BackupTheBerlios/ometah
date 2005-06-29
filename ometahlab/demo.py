@@ -67,27 +67,17 @@ def main():
         print """ Smallest and fastest script, only two tests run, 15 runs for each one,
         and a maximum of 64 evaluations, results don't give many information. """
 
-        import time
-        t1 = time.time()
-
         t = ometahtest.Test()
         t.setArgs('-e 30 -p Ackley')
         t.setNbRuns(15)
         t.setOmetahPath('../ometah/ometah')
         t.start()
-
-        t2 = time.time()
-        print t2 - t1
         
         u = ometahtest.Test()
         u.setArgs('-e 60  -p Ackley')
         u.setNbRuns(15)
         u.setOmetahPath('../ometah/ometah')
         u.start()
-
-        t1 = time.time()
-        print t1 - t2
-        
     
         paths = [ t.getPath(), u.getPath() ]
         ometahstats.stat(paths)

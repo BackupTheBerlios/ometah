@@ -85,7 +85,7 @@ class Test:
         Run runNumber-th Ometah run  with given argv arguments, logFile as the name of the log file.
         Then returns the Interface instance used.
         """
-        import parser
+        import qparser
         import interface
         intfc = interface.Interface(argv)
         intfc.setLog(1)
@@ -99,12 +99,10 @@ class Test:
         fileOut = intfc.copyToDisk(fd, filename=xmlName)
         fd.close()
         fd = open(fileOut, 'r')        
-
-        """
+        
         if not 'xml-version="1.0"' in fd.readline():
             intfc.log('ERROR : ometah failed to create XML\n')
             intfc.fatal('(see log file)')
-        """
         # Loading bar
         for i in range(self.runsNb):
             print '\b\b', # delete previous bar
@@ -114,12 +112,8 @@ class Test:
         for i in range(self.runsNb - 1 - runNumber):
             print '\b-',  # padd with default char
         sys.stdout.flush()
-        
-        ## EXPERIMENTAL
-        import qparser
         q = qparser.Qparser()
         q.setFd(fd)
-
         
         # get Test informations, only once (same header for all runs)
         if self._INFO_PB == 0:
@@ -128,17 +122,15 @@ class Test:
             self.parameters = header.parameters
             self.metah = header.metah
             self._INFO_PB = 1    
-
         intfc.setPoints(q.getPoints())
-        fd.close()
-        
+        fd.close()        
         return intfc
     
     
     def __metarun(self):
         """ Make a test, that is running Ometah RunsNb times with the same command line arguments.
         A serialized object of the self instance is created in the test directory """        
-        import pickle
+        import pickle, qparser
         # list of the N optimas, have to sort it after
         self.optima = []
         # list of sublist, one for each run, containing Point objects
@@ -177,7 +169,6 @@ class Test:
                % (r.mean(vlist), r.sd(vlist))
         intf.log(slog)
 
-
         # one sublist for each iteration, containing all points of the N runs
 
         size = int(self.parameters.sampleSize)
@@ -188,14 +179,13 @@ class Test:
             self.optimaIterations.append([])
         
         subindex = -1 # sublist index in followin iteration
-        import parser
         # for each sublist (each run)
         for sublist in self.__points:
             # nb of iterations = nb of points / sample size
             subindex += 1
             it = 0 # current iteration
             c = 0
-            minp = parser.Point()
+            minp = qparser.Point()
             minp.value = 1000
             for p in sublist:
                 p.error = p.value - self.problem.optimum[0].value
