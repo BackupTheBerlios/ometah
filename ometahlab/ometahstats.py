@@ -364,7 +364,7 @@ class Comparison:
         fd.write('\\documentclass{report}\n\\begin{document}\n')
         fd.write('\\section*{OMETAHLAB REPORT}\n\\subsection*{Tests}\n') 
         for test in self.__tests:
-            txt = '\t%s\n' % test.args
+            txt = '%s\\\\\n' % test.args
             fd.write(txt)
 
         for test in self.__tests:
