@@ -235,8 +235,8 @@ class Comparison:
         for test in self.__tests:
             slist.append(test.succRate*100)
         r.plot(slist, type='n', main='Success rate for each test', xlab='Test index', ylab='Rate (%)')
-        r.lines(slist, lty='dotted')
-        r.points(slist, bg ='white', pch = 21)
+        r.points(slist, pch = 21, type='h')
+        r.points(slist, pch = 21)
         r.grid(nx=10, ny=40)
         r.dev_off()        
 

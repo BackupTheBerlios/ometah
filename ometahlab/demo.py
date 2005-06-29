@@ -103,7 +103,7 @@ def main():
 
     elif arg == 3:
         
-        print """ Average length script, to have a good preview of ometahlab results. """
+        print """ Average length script, to have a good preview of ometahlab results, with Rastrigin problem. """
     
         t = ometahtest.Test()
         t.setArgs('-e 60 -p Rastrigin -d 2')
@@ -123,7 +123,30 @@ def main():
         p = [ t.getPath(), u.getPath(), v.getPath() ]
         ometahstats.stat(p)
 
-    elif arg == 4:
+elif arg == 4:
+        
+        print """ Average length script, to have a good preview of ometahlab results, with Rosenbrock problem. """
+    
+        t = ometahtest.Test()
+        t.setArgs('-e 60 -p Rastrigin -d 2')
+        t.setNbRuns(30)
+        t.start()
+    
+        u = ometahtest.Test()
+        u.setArgs('-e 120  -p Rastrigin -d 2')
+        u.setNbRuns(30)
+        u.start()
+        
+        v = ometahtest.Test()
+        v.setArgs('-e 240 -i 100 -p Rastrigin -d 2')
+        v.setNbRuns(30)
+        v.start()
+        
+        p = [ t.getPath(), u.getPath(), v.getPath() ]
+        ometahstats.stat(p)
+
+
+    elif arg == 5:
 
         print """ Only for high frequency CPU, or patient people, we reach 1000 evaluations
         for a set of five tests, each one doing 50 runs. """

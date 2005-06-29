@@ -108,9 +108,9 @@ class Test:
             print '\b\b',
 
         for i in range(runNumber):
-            print '\b=',
+            print '\b|',
         for i in range(self.runsNb - 1 - runNumber):
-            print '\b_',
+            print '\b-',
         sys.stdout.flush()
 
         # parse and read XML
@@ -146,7 +146,7 @@ class Test:
 
         print "\nRunning ometah", ''.join(self.argv)
         for j in range(self.runsNb-1): # to initialize loading bar
-            print '\b_',
+            print '\b-',
         for i in range(self.runsNb):
             intf = self.__init(self.argv, i, self.__logName)
             self.optima.append(intf.getOptimum())
