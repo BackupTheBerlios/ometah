@@ -283,7 +283,26 @@ class Comparison:
                 r.lines(xlimm, [opt, opt], col='black', type='o')
                 r.grid(nx=10, ny=40)
                 
-            else:
+            elif t.problem.dimension == 2:
+                import matrix
+                a = matrix.ACP()
+                co = [p.coords for p in t.optima]
+                a.setMatrix(co)
+                x = []
+                y = []
+                for i in range(len(co)):
+                    x.append(a.reduceDim(i,2)[0])
+                    y.append(a.reduceDim(i,2)[1])
+                xlimm = [t.problem.min_bound[0].coords[0], t.problem.max_bound[0].coords[0]]
+                ylimm = [t.problem.min_bound[0].coords[1], t.problem.max_bound[0].coords[1]]
+                r.plot(x,y, bg='white', pch=21, xlab='X', ylab='Y', \
+                       main=t.args, xlim=xlimm, ylim=xlimm)                
+                r.points([t.problem.optimum[0].coords[0]], \
+                         [t.problem.optimum[0].coords[1]], \
+                         bg='black', pch=21)
+                r.grid(nx=10, ny=40)
+            elif t.problem.dimension > 2:
+                # use ACP to fill x and y with principal comp'
                 x = []
                 y = []
                 for p in t.optima:

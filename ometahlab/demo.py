@@ -82,6 +82,23 @@ def main():
         ometahstats.stat(paths)
 
     elif arg == 2:
+        """ Like first test, but with 3 dimensions. """
+        t = ometahtest.Test()
+        t.setArgs('-e 30 -p Ackley -d 10')
+        t.setNbRuns(15)
+        t.setOmetahPath('../ometah/ometah')
+        t.start()
+
+        u = ometahtest.Test()
+        u.setArgs('-e 60  -p Ackley -d 10')
+        u.setNbRuns(15)
+        u.setOmetahPath('../ometah/ometah')
+        u.start()
+    
+        paths = [ t.getPath(), u.getPath() ]
+        ometahstats.stat(paths)
+
+    elif arg == 3:
         """ Average length script, to have a good preview of ometahlab results. """
     
         t = ometahtest.Test()
@@ -102,7 +119,7 @@ def main():
         p = [ t.getPath(), u.getPath(), v.getPath() ]
         ometahstats.stat(p)
 
-    elif arg == 3:
+    elif arg == 4:
         """ Only for high frequency CPU, or patient people, we reach 1000 evaluations
         for a set of five tests, each one doing 50 runs. """
         t = ometahtest.Test()

@@ -105,7 +105,7 @@ class Test:
 
         # New loading bar
         for i in range(self.runsNb):
-            print '\b\b\b',
+            print '\b\b',
 
         for i in range(runNumber):
             print '\b=',
