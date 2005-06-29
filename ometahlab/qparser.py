@@ -40,79 +40,262 @@ try:
 except:
     pass
 
+import parser
+P = parser
 import string
 S = string
 
 class Qparser:
 
-    def __init__(self, path):
+    ## !!!!!!!!!!!!!!!!!!!!!!!!
+    ##
+    ## WARNING
+    ## get Header first !!! 'cos offset of file shifted !!!
+    ##
+    ##
+    ## Cast in FLOAT / INT when needed !
+    ##
+    ## !!!!!!!!!!!!!!!!!!!!!!!!
+    
+    def __init__(self):
         """ Constructor with the path to ometah"""
-        # path to ometah binary
-        self.__opath = path
         # list of Point instances
-        self.__points = None
-        # file descriptor for ometah output
+        self.__points = []
+        # header object
+        self.__header = P.Header()
+        # file descriptor of ometah output
         self.__fd = None        
 
-    def __load(self):
+    def load(self, path):
         """ Execute ometah, returning the file object of its output """
         import os
-        fd = os.popen(self.__opath)
+        self.__fd = os.popen(path)
         
-        return fd
+        
+    def setFd(self, fd):
+        self.__fd = fd
 
-    def qparse(self):
+    def getPoints(self):
         """ """        
-        self.__fd = self.__load()
         fd = self.__fd
-
-        # reach <optimization>
+        # reach <optimization> element
         while S.find(fd.readline(), '<optimization>') == -1:
             pass
-
-        # counter for Point's indexes
-        pindex = 0
-
-        # initialize line to first line read
+        pindex = 0    # counter for Point's indexes
         line = fd.readline()
-
-        while 1 == 1:
-            # reach next step
+        while 1 == 1:        
             while S.find(line, '<step class="diversification">') == -1:                
                 line = fd.readline()
-                if line == '':
-                    print '!!! EOF !!!'
-                    return 1
-            # out of the while => <step> found
-            # skip <sample> line
-            fd.readline()
-            # for all point definitions
+                if line == '': # if EOF reached
+                    return self.__points
+            # 'while' loop left => <step> found
+            fd.readline()      # skip <sample> line
             line = fd.readline()
             while S.find(line, '<point>') != -1:
                 self.__readPoint(line, pindex)
                 pindex += 1
                 line = fd.readline()
 
+        return self.__points
+    
+    def getHeader(self):
+        """ """
+        fd = self.__fd
+        
+        # PROBLEM
+        #
+        line = fd.readline()
+        while S.find(line, '<problem>') == -1:
+            line = fd.readline()
+
+        # find start and end indexes to get value        
+        line = fd.readline()
+        st = S.find(line, '<key>')
+        en = S.find(line, '</key>')
+        key = line[st+5:en]
+
+        line = fd.readline()
+        st = S.find(line, '<name>')
+        en = S.find(line, '</name>')
+        name = line[st+6:en]
+
+        line = fd.readline()
+        st = S.find(line, '<description>')
+        en = S.find(line, '</description>')
+        desc = line[st+13:en]
+
+        line = fd.readline()
+        st = S.find(line, '<formula>')
+        en = S.find(line, '</formula>')
+        forml = line[st+9:en]
+
+        line = fd.readline()
+        st = S.find(line, '<dimension>')
+        en = S.find(line, '</dimension>')
+        dim = int(line[st+11:en])
+
+        line = fd.readline()
+        st = S.find(line, '<accuracy>')
+        en = S.find(line, '</accuracy>')
+        acc = float(line[st+10:en])
+
+        optima = []
+        line = fd.readline() # skip <optimum>
+        line = fd.readline()
+        while S.find(line, '<point>') != -1:
+            p = P.Point()            
+            st = S.find(line,'<values>')
+            en = S.find(line,'</values>')
+            p.value = float(line[st+8:en])
+            st = S.find(line,'<solution>')
+            en = S.find(line,'</solution>')
+            p.coords = [float(x) for x in S.split(line[st+10:en])]
+            optima.append(p)
+            line = fd.readline()
+         # </optimum> read in last find()
+            
+        fd.readline() # skip <bounds>
+        # minimum line
+        minb = []
+        p = P.Point()
+        line = fd.readline()
+        st = S.find(line,'<solution>')
+        en = S.find(line,'</solution>')
+        p.coords = [float(x) for x in S.split(line[st+10:en])]
+        minb.append(p)
+        # maximum line
+        maxb = []
+        p = P.Point()
+        line = fd.readline()
+        st = S.find(line,'<solution>')
+        en = S.find(line,'</solution>')
+        p.coords = [float(x) for x in S.split(line[st+10:en])]
+        maxb.append(p)
+
+        fd.readline() # skip </bound>
+        line = fd.readline()
+        st = S.find(line, '<reference>')
+        en = S.find(line, '</reference>')
+        ref = line[st+11:en]
+
+        PB = self.__header.problem
+        PB.key = key
+        PB.name = name
+        PB.description = desc
+        PB.formula = forml
+        PB.dimension = dim
+        PB.optimum = optima
+        PB.min_bound = minb
+        PB.max_bound = maxb
+        PB.reference = ref
+        PB.accuracy = acc
+
+        # METAHEURISTIC
+
+        # reach <metaheuristic>
+        line = fd.readline()
+        while S.find(line, '<metaheuristic>') == -1:
+            line = fd.readline()
+
+        line = fd.readline()
+        st = S.find(line, '<key>')
+        en = S.find(line, '</key>')
+        key = line[st+5:en]
+
+        line = fd.readline()
+        st = S.find(line, '<family>')
+        en = S.find(line, '</family>')
+        fam = line[st+8:en]
+
+        line = fd.readline()
+        st = S.find(line, '<name>')
+        en = S.find(line, '</name>')
+        name = line[st+6:en]
+
+        line = fd.readline()
+        st = S.find(line, '<accronym>')
+        en = S.find(line, '</accronym>')
+        accr = line[st+10:en]
+
+        line = fd.readline()
+        st = S.find(line, '<description>')
+        en = S.find(line, '</description>')
+        desc = line[st+13:en]
+
+        line = fd.readline()
+        st = S.find(line, '<reference>')
+        en = S.find(line, '</reference>')
+        ref = line[st+11:en]
+
+        M = self.__header.metah
+        M.key = key
+        M.name = name
+        M.family = fam
+        M.acronym = accr
+        M.description = desc
+        M.reference = ref
+
+        # PARAMETERS
+        
+        fd.readline() # skip <parameters>
+        line = fd.readline()
+        st = S.find(line, '<value>')
+        en = S.find(line, '</value>')
+        sampleSize = line[st+7:en]
+
+        line = fd.readline()
+        st = S.find(line, '<value>')
+        en = S.find(line, '</value>')
+        maxIter = line[st+7:en]
+
+        line = fd.readline()
+        st = S.find(line, '<value>')
+        en = S.find(line, '</value>')
+        maxEval = line[st+7:en]
+
+        line = fd.readline()
+        st = S.find(line, '<value>')
+        en = S.find(line, '</value>')
+        tresh = line[st+7:en]
+
+        line = fd.readline()
+        st = S.find(line, '<value>')
+        en = S.find(line, '</value>')
+        seed = line[st+7:en]
+
+        PA = self.__header.parameters
+        PA.sampleSize = sampleSize
+        PA.maxIterations = maxIter
+        PA.maxEvaluations = maxEval
+        PA.treshold = tresh
+        PA.randomSeed = seed
+
+        return self.__header
+        
 
     def __readPoint(self, line, pindex):
         """ Create an instance of Point and append it to the list,
         line argument is a string of a line read """
         import sys
-        print 'readPoint : ', line
-        stVal = string.find(line,'<values>')
-        enVal = string.find(line,'</values>')
+        stVal = S.find(line,'<values>')
+        enVal = S.find(line,'</values>')
         value = float(line[stVal+8:enVal])
-        print 'value : ', value
 
-        stSol = string.find(line,'<solution>')
-        enSol = string.find(line,'</solution>')
-        solution = [float(x) for x in string.split(line[stSol+10:enSol])]
-        print 'solutions : ', solution
+        stSol = S.find(line,'<solution>')
+        enSol = S.find(line,'</solution>')
+        solution = [float(x) for x in S.split(line[stSol+10:enSol])]
 
-        print 'index : ', pindex
-        sys.exit(-1)
+        p = P.Point()
+        p.value = value
+        p.coords = solution
+        p.index = pindex
+        
+        self.__points.append(p)        
     
 if __name__ == '__main__':
 
-    q = Qparser('../ometah/ometah')
-    q.qparse()
+    q = Qparser()
+    q.load('../ometah/ometah')
+#    q.getHeader()
+    pp = q.getPoints()
+ 

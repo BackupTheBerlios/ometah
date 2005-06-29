@@ -99,10 +99,12 @@ class Test:
         fileOut = intfc.copyToDisk(fd, filename=xmlName)
         fd.close()
         fd = open(fileOut, 'r')        
+
+        """
         if not 'xml-version="1.0"' in fd.readline():
             intfc.log('ERROR : ometah failed to create XML\n')
             intfc.fatal('(see log file)')
-
+        """
         # Loading bar
         for i in range(self.runsNb):
             print '\b\b', # delete previous bar
@@ -112,23 +114,24 @@ class Test:
         for i in range(self.runsNb - 1 - runNumber):
             print '\b-',  # padd with default char
         sys.stdout.flush()
+        
+        ## EXPERIMENTAL
+        import qparser
+        q = qparser.Qparser()
+        q.setFd(fd)
 
-        # parse and read XML
-        XmlParser = parser.XMLParser(fd, intfc)
-        XmlParser.readXml()
-        fd.close()
-        intfc.log('parsing XML : readXML() ... OK\n')
-        intfc.setPoints(XmlParser.getPoints())
-        intfc.log('getting points list : getPoints() ...  OK\n')
-
+        
         # get Test informations, only once (same header for all runs)
         if self._INFO_PB == 0:
-            header = XmlParser.getHeader()
+            header = q.getHeader()
             self.problem = header.problem
             self.parameters = header.parameters
             self.metah = header.metah
-            self._INFO_PB = 1        
+            self._INFO_PB = 1    
 
+        intfc.setPoints(q.getPoints())
+        fd.close()
+        
         return intfc
     
     
