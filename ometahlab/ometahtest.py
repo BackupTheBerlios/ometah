@@ -103,14 +103,14 @@ class Test:
             intfc.log('ERROR : ometah failed to create XML\n')
             intfc.fatal('(see log file)')
 
-        # New loading bar
+        # Loading bar
         for i in range(self.runsNb):
-            print '\b\b',
+            print '\b\b', # delete previous bar
 
         for i in range(runNumber):
-            print '\b|',
+            print '\b|',  # write as char as runNumber
         for i in range(self.runsNb - 1 - runNumber):
-            print '\b-',
+            print '\b-',  # padd with default char
         sys.stdout.flush()
 
         # parse and read XML
@@ -120,9 +120,10 @@ class Test:
         intfc.log('parsing XML : readXML() ... OK\n')
         intfc.setPoints(XmlParser.getPoints())
         intfc.log('getting points list : getPoints() ...  OK\n')
-        header = XmlParser.getHeader()
-        # get Test informations, only once
+
+        # get Test informations, only once (same header for all runs)
         if self._INFO_PB == 0:
+            header = XmlParser.getHeader()
             self.problem = header.problem
             self.parameters = header.parameters
             self.metah = header.metah

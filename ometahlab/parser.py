@@ -85,7 +85,6 @@ class XMLParser:
         slist = self.__getText(domObject)
         slist = string.split(slist)
         return [float(x) for x in slist]
-
     
     def getPoints(self):
         """ Returns the list of points given in XML output, as Point objects. """
