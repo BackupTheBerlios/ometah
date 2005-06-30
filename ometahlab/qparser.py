@@ -1,10 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-#
-# Test module for Open Metaheuristic, main file
-# Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-# Started 06/2005
-#
+
 ###
 #
 #  Ometahlab is a set of Python scripts to make experiments on Ometah.
