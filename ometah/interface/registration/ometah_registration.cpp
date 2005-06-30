@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.3 2005/06/22 14:08:17 nojhan Exp $
+ *  $Id: ometah_registration.cpp,v 1.4 2005/06/30 13:26:56 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -28,6 +28,9 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cmath>
+
+#include <CImg.h>
 
 // common stuff
 #include "../../common/logic.hpp"
@@ -133,10 +136,18 @@ int main(int argc, char ** argv)
     argumentParser.defArg("-o", "--output", 
 			  "output of the results" ,true, "string", "");
               
+    argumentParser.defArg("-a", "--affine", 
+			  "perform a affine registration (x+y+rotation+zoom)" ,false);
+    argumentParser.defArg("-t", "--bounds-rotation", 
+			  "min and max values for the rotation (min,max)" ,true, "string", "-10,10");
+    argumentParser.defArg("-g", "--bounds-zoom", 
+			  "min and max values for the zoom (min,max)" ,true, "string", "0.9,1.1");
     argumentParser.defArg("-i1", "--image-static", 
 			  "input image" ,true, "string", "");
     argumentParser.defArg("-i2", "--image-registered", 
 			  "input image" ,true, "string", "");
+    argumentParser.defArg("-w", "--save-registered-image", 
+			  "output the registered image in a file" ,true, "string", "");
   }
   catch(const char * s) {
     cerr << s;
@@ -208,6 +219,30 @@ int main(int argc, char ** argv)
 
   setMetaheuristic.item()->setLogLevel(argumentParser.getIntValue("--verbose"));
   
+  if ( argumentParser.isAsked("--affine") ) {
+      problem.setDimension(4);
+      
+      vector<double> bounds_rotation = stringToDouble_shortcuts( argumentParser.getStringValue("--bounds-rotation") );
+      vector<double> bounds_zoom = stringToDouble_shortcuts( argumentParser.getStringValue("--bounds-zoom") );
+      
+      vector<double> mins,maxs;
+      
+      mins.push_back(0);
+      mins.push_back(0);
+      mins.push_back( bounds_rotation[0] );
+      mins.push_back( bounds_zoom[0] );
+  
+      maxs.push_back(1);
+      maxs.push_back(1);
+      maxs.push_back( bounds_rotation[1] );
+      maxs.push_back( bounds_zoom[1] );
+  
+      problem.setBoundsMinima(mins);
+      problem.setBoundsMaxima(maxs);
+  
+  } else {
+      problem.setDimension(2);
+  }
     
   /*
    *  Launch the optimization
@@ -282,5 +317,38 @@ try {
   // close the file if necessary
   if( outfile.is_open() ) {
       outfile.close();
+  }
+
+
+  // output the registered image in a file
+  if ( argumentParser.getStringValue("--save-registered-image") != "" ) {
+      
+      CImg<> img1( argumentParser.getStringValue("--image-static").c_str() );
+      CImg<> img2( argumentParser.getStringValue("--image-registered").c_str() );
+  
+      CImg<> result = img1;
+  
+      itsPoint optimum = setMetaheuristic.item()->getOptimum();
+
+      const unsigned int rx = (int) floor( optimum.getSolution()[0] );
+      const unsigned int ry = (int) floor( optimum.getSolution()[1] );
+
+      float angle, zoom;
+      if ( problem.getDimension() == 4 ) {
+          angle = (float) optimum.getSolution()[2];
+          zoom = (float) optimum.getSolution()[3];
+          img2 = img2.get_rotate( angle, 0.5f*img2.width, 0.5f*img2.height, zoom, 0 );
+      }
+
+      cimg_mapXY(img1,x,y) {
+        float diff = 0.0;
+        if ( !(x+rx<0 || x+rx>img1.width || y+ry<0 || y+ry>img1.height)  ) {
+            diff =  (img1(x,y) - img2(x+rx,y+ry)) 
+                  * (img1(x,y) - img2(x+rx,y+ry)) ;
+        }
+        result(x,y) = diff;
+      }
+  
+      result.save( argumentParser.getStringValue("--save-registered-image").c_str() );
   }
 }
