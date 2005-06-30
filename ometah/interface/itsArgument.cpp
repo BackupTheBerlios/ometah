@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.7 2005/06/22 12:22:09 jpau Exp $
+ *  $Id: itsArgument.cpp,v 1.8 2005/06/30 12:09:51 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -320,4 +320,21 @@ bool itsArgumentParser::hasValue(string flag)
   s << "Unexpected error in hasValue()" << endl;
   throw (s.str()).c_str();
   return false;
+}
+
+bool itsArgumentParser::isAsked(string flag)
+{
+    // find the defined argument
+    for ( unsigned int i=0; i < this->arguments.size(); i++ ) {
+        if ( arguments[i].getShortKey() == flag || arguments[i].getLongKey() == flag ) {
+            // search it in the command line
+            for( unsigned int j=0; j < this->argv.size(); j++ ) {
+                if ( this->argv[j] == arguments[i].getShortKey() || this->argv[j] == arguments[i].getLongKey() ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    throw "Error: argument not defined (" + flag + ")";
 }

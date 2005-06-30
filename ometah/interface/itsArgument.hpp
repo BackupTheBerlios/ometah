@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.4 2005/06/16 14:49:33 jpau Exp $
+ *  $Id: itsArgument.hpp,v 1.5 2005/06/30 12:09:51 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -123,7 +123,7 @@ public:
   ~itsArgumentParser();
 
   //! Constructor
-  itsArgumentParser(int, vector<string>);
+  itsArgumentParser(int argc, vector<string> argv);
 
   //! Looks for end flags, that is flags like -V for version checking, which terminate the execution
   void searchEndFlags();
@@ -152,4 +152,7 @@ public:
 
   //! Returns true if the matching argument has a value
   bool hasValue(string flag);
+  
+  //! Return true if the matching argument has been asked
+  bool isAsked(string flag);
 };
