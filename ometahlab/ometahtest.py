@@ -43,13 +43,15 @@ class Test:
     """ A Test is a set of executions (runs) of the same command line. """
 
     # turned to 1 when problem string updated
-    _INFO_PB = 0
+    _INFO_PB = False
+    # turned to 1 to archive XML
+    _XML_ARCH = False
 
     def __init__(self):        
         """ Constructor. """
-        # list of runsNb Points
+        # list of the N optimas, have to sort it after
         self.optima = []
-        # list of all Points
+        # list of sublist, one for each run, containing Point objects
         self.__points = []
         # list of Points sorted by iteration, for any points of all runs
         self.pointsIterations = []
@@ -57,19 +59,19 @@ class Test:
         # each one containing the optimum for each run
         self.optimaIterations = []
         # the initial argv as a list
-        self.argv = ['']
+        self.__argv = ['']
         # and as a string
-        self.args = ''
+        self.__args = ''
         # directory where to put report, plottings...
         self.__dir = "."
         # one log for each test, grouping all runs informations
-        self.__logName = "ometahtest.log"
+        self.__logName = "ometahrun.log"
         # default location of ometah
         self.__ometah_path = os.path.join('..', os.path.join('ometah', 'ometah'))
         # common dir for all results
         self.__results_dir = "results"
         # real optimum value (min of the optima given for the pb)
-        self.__opt_val = 0
+        self.opt_val = 0
         # success rate
         self.succRate = 0
         # success performance = mean(FES for successful run * #run)/#succRuns
@@ -81,58 +83,60 @@ class Test:
         self.parameters = None
         self.metah = None
 
-    def __init(self, argv, runNumber, logFile):
+    def __init(self, runNumber):
         """ Initialize a Test, which can be sawn as a 'metarun', a set of several runs (default : 25).
         Run runNumber-th Ometah run  with given argv arguments, logFile as the name of the log file.
         Then returns the Interface instance used.
         """
-        import qparser
+        import qparser, os
         import interface
-        intfc = interface.Interface(argv)
-        intfc.setLog(1)
-        intfc.setLogFileName(logFile)
+        intfc = interface.Interface()
+        intfc.setLog(self.__logName)
 
         slog = "\nRun %i :\n" % (runNumber)
         intfc.log(slog)
 
-        fd = intfc.getXmlFromExecOmetah(self.__ometah_path)
+        cmd = "%s %s" % (self.__ometah_path, ''.join(['']+self.__argv[1:]))
+        try:
+            fd = os.popen(cmd)
+        except:
+            intfc.log('ERROR : wrong path to ometah [Interface.getXmlFromExecOmetah]\n')            
+            intfc.fatal('(see log file)')
 
-        """ # TO KEEP XML FILE UNCOMMENT THE FOLLOWING
-        xmlName = 'run%i' % (runNumber)
-        fileOut = intfc.copyToDisk(fd, filename=xmlName)
-        fd.close()
-        fd = open(fileOut, 'r')        
-        """
+        if self._XML_ARCH:
+            xmlName = 'run%i' % (runNumber)
+            fileOut = intfc.copyToDisk(fd, filename=xmlName)
+            fd.close()
+            fd = open(fileOut, 'r')        
         
         if not 'xml-version="1.0"' in fd.readline():
             intfc.log('ERROR : ometah failed to create XML\n')
             intfc.fatal('(see log file)')
 
         # Loading bar        
-        for i in range(self.runsNb):
+        for i in xrange(self.runsNb):
             print '\b\b', # delete previous bar
 
-        for i in range(runNumber):
+        for i in xrange(runNumber):
             print '\b|',  # write as char as runNumber
-        for i in range(self.runsNb - 1 - runNumber):
+        for i in xrange(self.runsNb - 1 - runNumber):
             print '\b-',  # padd with default char
-            
         sys.stdout.flush()
         
         q = qparser.Qparser()
         q.setFd(fd)
     
         # get Test informations, only once (same header for all runs)
-        if self._INFO_PB == 0:
+        if not self._INFO_PB:
             header = q.getHeader()
             self.problem = header.problem
             self.parameters = header.parameters
             self.metah = header.metah
             vlist = [ p.value for p in self.problem.optimum ]
-            self.__opt_val = min(vlist) 
-            self._INFO_PB = 1
+            self.opt_val = min(vlist) 
+            self._INFO_PB = True
             
-        intfc.setPoints(q.getPoints(self.__opt_val + self.problem.accuracy))
+        self.__points.append(q.getPoints(self.opt_val + self.problem.accuracy))
         fd.close()        
 
         return intfc
@@ -142,26 +146,23 @@ class Test:
         """ Make a test, that is running Ometah RunsNb times with the same command line arguments.
         A serialized object of the self instance is created in the test directory """        
         import pickle, qparser
-        # list of the N optimas, have to sort it after
-        self.optima = []
-        # list of sublist, one for each run, containing Point objects
-        self.__points = []
+
         try:
             os.listdir(self.__results_dir)
         except:
             os.mkdir(self.__results_dir)
 
-        print "\nRunning ometah", ''.join(self.argv)
-        for j in range(self.runsNb-1): # to initialize loading bar
+        print "\nRunning ometah", ''.join(self.__argv)
+        for j in xrange(self.runsNb-1): # to initialize loading bar
             print '\b-',
-        for i in range(self.runsNb):
-            intf = self.__init(self.argv, i, self.__logName)
-            self.optima.append(intf.getOptimum())
-            self.__points.append(intf.getPoints())            
+            
+        for i in xrange(self.runsNb):
+            intf = self.__init(i)
+            self.optima.append(self.__getOptimum(i))            
 
-        """ TO KEEP XML UNCOMMENT THE FOLLOWING
-        intf.archiveXml()
-        """        
+        if self._XML_ARCH:
+            intf.archiveXml()        
+        
         (i, ok) = (1, 0)        
         while not ok:
             ok = 1
@@ -175,20 +176,40 @@ class Test:
             except:
                 (i, ok) = (0, i+1)            
         self.__dir = dir
-        vlist = [ x.value for x in self.optima ]
-        slog = "\n----optima results---------\nmean : %f\n std : %f\n\n" \
-               % (r.mean(vlist), r.sd(vlist))
-        intf.log(slog)
 
+        self.__setIterationLists()
+        self.__calculSuccessRates()
+
+        
+        # empty variables for pickle reduction
+        self.__points = []
+        self.__argv = self.__args = None
+        
+        fd = open('TEST', 'w')
+        try:
+            pickle.dump(self,fd)
+        except:
+            intf.fatal('pickle failed [Test.metarun]')
+        fd.close()
+
+        files = ['TEST', self.__logName]
+        if self._XML_ARCH:
+            files.append('xml.tar.gz')
+        for src in files:
+            tar = os.path.join(self.__dir, src)
+            os.rename(src, tar)
+
+    def __setIterationLists(self):
+        """ !!!!!!!!!  CRITIC  -> MODULARISER !!? !!!!!!!!!!! """
+        import qparser
         # one sublist for each iteration, containing all points of the N runs
-
         ###### !!!!!
         # PB : assume that all runs have the same #iteratiosn
         # => PB if optimum found and points stopped
         size = self.parameters.sampleSize
         # initialize the length of s.points
         iters = len(self.__points[0]) / size        
-        for i in range(iters):
+        for i in xrange(iters):
             self.pointsIterations.append([])       
             self.optimaIterations.append([])
         
@@ -211,26 +232,15 @@ class Test:
                 if c == size:
                     self.optimaIterations[it].append(minp)
                     (c, it) = (0, it + 1)                    
+        """ !!!!!!!!!  CRITIC  !!!!!!!!!!! """
 
-        # give succRate & succPerf their value
-        self.__calculSuccessRates()
-
-        # empty large unuseful variables
-        self.__points = []
-        
-        fd = open('TEST', 'w')
-        try:
-            pickle.dump(self,fd)
-        except:
-            int.fatal('pickle failed [Test.metarun]')
-        fd.close()
-        """
-        # TO KEEP XML FILES ADD THIS ONE TO THE LIST 'xml.tar.gz'
-        """
-        for src in ['TEST', self.__logName]:
-            tar = os.path.join(self.__dir, src)
-            os.rename(src, tar)
-        
+    def __getOptimum(self, i):
+        """ Returns the Point object which has the smallest value (minimum) for run i. """
+        optim = self.__points[i][0]
+        for point in self.__points[i]:
+            if point.value < optim.value:
+                optim = point
+        return optim
 
     def __calculSuccessRates(self):
         """ Update succRate & succPerf values, according to the current optima list and problem instance """
@@ -250,15 +260,16 @@ class Test:
     def __success(self, point):
         """ Returns true if the point given matches problem's optima,
         with a precision of problem's accuracy, returns false otherwise """
-        if (point.value - self.__opt_val) > self.problem.accuracy:
+        if (point.value - self.opt_val) > self.problem.accuracy:
             return False
         return True
 
-    
-    def start(self):
-        """ Start the test, making a metarun, which is running Ometah NB_RUN  times with the same command line arguments."""
-        self.__metarun()
-
+    def setXmlArchive(self, bool):
+        """ Set _XML_ARCH var."""
+        if bool:
+            self._XML_ARCH = True
+        else:
+            self._XML_ARCH = False
 
     def setNbRuns(self, n):
         """ Set the number of runs of the test to n. Default value is 25."""
@@ -266,8 +277,8 @@ class Test:
 
     def setArgs(self, args):
         """ Set the arguments of Ometah execution, as a string. Ie give '-p Sphere -e 50'."""
-        self.argv = [''] + [args]
-        self.args = 'ometah ' + ''.join(self.argv)
+        self.__argv = [''] + [args]
+        self.args = 'ometah ' + ''.join(self.__argv)
 
     def setOmetahPath(self, path):
         """ Set the path to Ometah binary file, which is set to '../ometah/ometah' as default value."""
@@ -277,9 +288,10 @@ class Test:
         """ Returns the path of the working directory created, which can then be given to ometahstats.compare function."""
         return str(self.__dir)
 
-    def getOpt(self):
-        """ Returns optimal value. """
-        return self.__opt_val
+    def start(self):
+        """ Start the test, making a metarun, which is running Ometah NB_RUN  times with the same command line arguments."""
+        self.__metarun()
+
 
 if __name__ == '__main__':
     print "This file contains no instructions in main(), please see README for program usage\n"

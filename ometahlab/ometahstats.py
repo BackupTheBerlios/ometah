@@ -36,7 +36,6 @@ except:
     pass
 
 from rpy import *
-import ometahtest
 
 
 def stat(paths):
@@ -252,16 +251,14 @@ class Comparison:
             r.grid(nx=10, ny=40)
         r.dev_off()
     
-    
     def __plot_8(self):
         """ Plot optima and the optimum in their neighborhood plan, PCA used if dimension > 2 """
-
         fileName = os.path.join(self.__dir, 'solutions_space.ps') 
         r.postscript(fileName, paper='letter')            
         for t in self.__tests:        
             if t.problem.dimension < 2:
 
-                (x, y) = (range(len(t.optima)), [])
+                (x, y) = (xrange(len(t.optima)), [])
                 for p in t.optima:
                     y.append(p.coords[0])
                 y.sort()
@@ -286,7 +283,7 @@ class Comparison:
                     a = matrix.PCA()
                     co = [p.coords for p in t.optima]
                     a.setMatrix(co)
-                    for i in range(len(co)):
+                    for i in xrange(len(co)):
                         x.append(a.reduceDim(i,2)[0])
                         y.append(a.reduceDim(i,2)[1])
 
@@ -317,9 +314,9 @@ class Comparison:
         r.postscript(fileName, paper='letter')
         breaks = 10
         
-        for i in range(len(self.__optimas)):
+        for i in xrange(len(self.__optimas)):
             # for current test's optima list, add their error as a list at emlist[i]
-            emlist[i] = [p.value - self.__tests[i].getOpt() for p in self.__optimas[i]]
+            emlist[i] = [p.value - self.__tests[i].opt_val for p in self.__optimas[i]]
             txt = '%s\nOptima error distribution' % self.__tests[i].args
             r.hist(emlist[i], breaks, col=self.__color, main=txt, xlab='Error', ylab='Frequency')
             r.grid(nx=10)
@@ -331,9 +328,7 @@ class Comparison:
         elif len(self.__tests) > 2:
             # use Kruskal-Wallis test
             dic = r.kruskal_test(emlist)
-        
-        # print dic['p.value']
-        
+                
         if dic['p.value'] < limit:
             self.__same_distrib = True
         else:
@@ -390,8 +385,7 @@ class Comparison:
             # Parameters subsection
             W('\\subsection*{Parameters}\n\\begin{description}\n')
             txt = '\t\\item[Runs:] %i \n\t\\item[Sample size:] %s\n\t\\item[Treshold:] %s\n\t\\item[Random seed:] %s\n' \
-                  % (test.runsNb, test.parameters.sampleSize, \
-                     test.parameters.treshold, test.parameters.randomSeed)                        
+                  % (test.runsNb, test.parameters.sampleSize, test.parameters.treshold, test.parameters.randomSeed)                        
             W(txt)
             W('\\end{description}\n')
             # Results subsection

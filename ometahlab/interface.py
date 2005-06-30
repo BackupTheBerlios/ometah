@@ -44,49 +44,17 @@ class Interface:
     """ Interface between ometah output and ometahlab data treatement.
     One interface instance is used for each ometah run, """
     
-    LOG_ON = 0
+    def __init__(self):
+        """ Constructor """
+        pass
 
-    def __init__(self, args):
-        """ Constructor, args is the list of command lines arguments. """
-        self.__argv = [''] + args[1:]
-        self.__defaultFileName = 'metahtest'
-        self.__temp = self.__path = '.'
-        self.__logfile = '%s.log' % (self.__defaultFileName)
-        self.__points = []
-        self.__name = ''
-    
-    def getXmlFromExecOmetah(self, path):
-        """ Execute ometah with given arguments, where ometah's path if path,
-        returns the file objects corresponding to the XML output. """
-        cmd = "%s %s" % (path, ''.join(self.__argv))
-        try:
-            fd = os.popen(cmd)
-        except:
-            self.log('ERROR : wrong path to ometah [Interface.getXmlFromExecOmetah]\n')            
-            self.__fatal('(see log file)')        
-        return fd
-
-    def getXmlFromFile(self, path):
-        """ Open an existing file of XML output located at path and return the fd. """
-        try:
-            fd = open(path, 'r')
-        except:
-            self.log('ERROR : wrong path to XML file [Interface.getXmlFromFile]\n')
-        return fd
-            
     def log(self, astring):
         """ Log the given string in the log file, appending to the end of the file. """    
-        if self.LOG_ON:
-            logf = os.path.join(self.__path, self.__logfile)
-            fd = open(logf, 'a')
-            fd.write(astring)
-            fd.close()
+        fd = open(self.__logfile, 'a')
+        fd.write(astring)
+        fd.close()
     
-    def setLog(self, boolean):
-        """ Turn the log on or off (default : no log). """
-        self.LOG_ON = boolean
-
-    def setLogFileName(self, astring):
+    def setLog(self, astring):
         """ Set the name of the log file as the given string, no extension is added, you should include it in astring."""
         self.__logfile = astring
     
@@ -120,33 +88,10 @@ class Interface:
         except:
             pass
 
-    def setTemp(self, path):
-        """ Set the path to the temporary directory. """
-        self.__temp = path
-
-    def setPoints(self, points):
-        """ Set the list of Point object to be plotted. """
-        self.__points = points
-
-    def getPoints(self):
-        """ Returns the list of Point instances read from XML output. """
-        return self.__points
-
-    def getOptimum(self):
-        """ Returns the Point object which has the smallest value (minimum) in the Point list. """
-        optim = self.__points[0]
-        for point in self.__points:
-            if point.value < optim.value:
-                optim = point
-        slog = 'optimum value : %f\n' % (optim.value)
-        self.log(slog)
-        return optim
-
-    def __fatal(self, mess):
+    def fatal(self, msg):
         import sys
-        print 'FATAL ERROR : %s\n' % mess
-        sys.exit(1)
-
+        print 'FATAL ERROR: %s' % msg
+        sys.exit(-1)
 
 if __name__ == '__main__':
     print "This file contains no instructions in main(), please see README for program usage\n"
