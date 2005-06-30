@@ -6,6 +6,7 @@
 #  Ometahlab is a set of Python scripts to make experiments on Ometah.
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+#  File: demo.py
 #  This module is a set of scripts to show how to use ometahlab,
 #  it should be used directly with $ python demo.py <i>, where i stands
 #  for the index of the script used.
@@ -123,8 +124,8 @@ def main():
         p = [ t.getPath(), u.getPath(), v.getPath() ]
         ometahstats.stat(p)
 
-    elif arg == 4:
-        
+    elif arg == 4:        
+
         print """ Average length script, to have a good preview of ometahlab results, with Rosenbrock problem. """
     
         t = ometahtest.Test()
@@ -185,7 +186,6 @@ def main():
         y.setNbRuns(50)
         y.start()
 
-        # report and plot comparison
         p = [ t.getPath(), u.getPath(), v.getPath(), w.getPath(), x.getPath(), y.getPath()]
         ometahstats.stat(p)
 

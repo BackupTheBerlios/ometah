@@ -37,7 +37,6 @@ def stat(paths):
     """ Generate text report and graphic representation in postscript format,
     comparing the previous Ometah execution which directories' paths are given as a list of strings,
     ometahtest's function getPath can be used to get those strings. See demoscript for usage example."""
-
     c = Comparison(paths)
     c.check()
     c.plot()
@@ -50,14 +49,9 @@ class Comparison:
 
     def __init__(self, paths):
         """ Constructor, paths is a list of strings, which are paths to Ometah executions directories."""
-        import pickle
-        import string
-        import os
-        # each each Test has different parameters
-
+        import pickle, string, os
         # color used in graphic plottings
-        self.__color = 'grey85'
-        
+        self.__color = 'grey85'        
         # list of Test objects, one for each metarun
         self.__tests = []
         # working directory
@@ -66,8 +60,7 @@ class Comparison:
         self.__report = 'REPORT'
         # serialized file name
         self.__serialized = 'TEST'
-
-        # pickle.load serialized objects in paths
+        # load serialized objects in paths
         for p in paths:
             try:
                 q = os.path.join(p, 'TEST')
@@ -79,7 +72,6 @@ class Comparison:
                 self.__fatal(msg)
 
         # initialize optimas and points
-        #
         self.__optimas = []
         for serial in self.__tests:
             self.__optimas.append(serial.optima)
@@ -91,37 +83,25 @@ class Comparison:
         self.__optimaIter = []
         for test in self.__tests:
             self.__optimaIter.append(test.optimaIterations)
-        # Note : each serial.points is a list of sublists, where each
-        # sublist corresponds to an iteration
 
-        # create working directory (comp_%i)
-        i = 1
-        ok = 0
+        # create working directory
+        (i, ok) = (1, 0)
         while not ok:
             ok = 1
-            dir = 'results_%i' % i
-            dir = os.path.join( string.split(paths[0], sep='/')[0], dir)
+            dir = os.path.join( string.split(paths[0], sep='/')[0], 'results_%i' % i)
             try:
                 os.mkdir(dir)
             except:
-                ok = 0
-                i = i + 1
+                (i, ok) = (i+1 ,0)
         self.__dir = dir
 
 
     def check(self):
-        """ Check the coherence of Ometah executions, ie :
-        - same problem
-        - same problem dimensions
-        - same sampleSize
-        - etc...
-        A fatal error or a warning message can be given, whether the divergence is fatal or not."""
-
+        """ Check the coherence of Ometah executions, fatal error or a warning is given."""
         pb = self.__tests[0].problem.key
         dim = self.__tests[0].problem.dimension
         sample = self.__tests[0].parameters.sampleSize
         runsNb = self.__tests[0].runsNb
-
         print ''
         for test in self.__tests:
             if test.problem.key != pb:
@@ -145,7 +125,7 @@ class Comparison:
         """ Plot frequency distribution of optima for each test, that is each Test instance,
         each one having its own sublist of optimas in self.__optimas. We have one optimum for each run of the test. """
         fileName = os.path.join(self.__dir, 'distribution_optima.ps')        
-        breaks = 10 # number of breaks in the histogram, may be reduced if not enough points
+        breaks = 10 # nb breaks in histo, may be reduced if not enough points
         r.postscript(fileName, paper='letter')
         i = 0
         for points in self.__optimas:
@@ -175,7 +155,6 @@ class Comparison:
         
         # make best optima list (minima)
         olist = [(min([p.value for p in points])) for points in self.__optimas ]
-
         # make worst optima list (maxima)
         wlist = [(max([p.value for p in points])) for points in self.__optimas ]
 
@@ -201,7 +180,8 @@ class Comparison:
 
 
     def __plot_4(self):
-        """ For each Test, plot the sequence of iterations (for any run) as a set of quantile boxes. So we have one graphic for each Test. """
+        """ For each Test, plot the sequence of iterations (for any run) as a set of quantile boxes.
+        So we have one graphic for each Test. """
         fileName = os.path.join(self.__dir, 'convergence_points.ps')
         r.postscript(fileName, paper='letter')
         i = 0
@@ -215,7 +195,8 @@ class Comparison:
 
 
     def __plot_5(self):
-        """ Same than plot_4, but instead of showing box for any point of the iteration, we only select the optimum for each run."""
+        """ Same than plot_4, but instead of showing box for any point of the iteration,
+        we only select the optimum for each run."""
         fileName = os.path.join(self.__dir, 'convergence_optima.ps')
         r.postscript(fileName, paper='letter')
         i = 0
@@ -228,7 +209,8 @@ class Comparison:
         r.dev_off()
 
     def __plot_6(self):
-        """ Plot the graph of success rates, considering a Test as a success when the given precision of the problem is reached."""
+        """ Plot the graph of success rates, considering a Test as a success when the given
+        precision of the problem is reached."""
         fileName = os.path.join(self.__dir, 'success_graph.ps')
         r.postscript(fileName, paper='letter')
         slist = []
@@ -241,13 +223,11 @@ class Comparison:
         r.dev_off()        
 
     def __plot_7(self):
-        """ Plot graph of convergences, that is for each Test the view of all runs convergence over iterations."""
+        """ Plot graph of convergences:  for each Test the view of all runs convergence over iterations."""
         import random
         fileName = os.path.join(self.__dir, 'convergence_graph.ps')
         r.postscript(fileName, paper='letter')
         olist = []
-        # to give a color to each run        
-        # new page for each test
         for test in self.__tests:
             # initialize plotting window with first run
             lineType = 1 # cf R, help(par), line type option
@@ -267,18 +247,14 @@ class Comparison:
     
     
     def __plot_8(self):
-        """ Plot optima and the optimum in their neighborhood plan
-        for dimension 2
-        => use ACP when dim > 2 ! """
+        """ Plot optima and the optimum in their neighborhood plan, PCA used if dimension > 2 """
 
         fileName = os.path.join(self.__dir, 'solutions_space.ps') 
         r.postscript(fileName, paper='letter')            
         for t in self.__tests:        
             if t.problem.dimension < 2:
 
-                x = range(len(t.optima))
-                y = []
-
+                (x, y) = (range(len(t.optima)), [])
                 for p in t.optima:
                     y.append(p.coords[0])
                 y.sort()
@@ -291,17 +267,22 @@ class Comparison:
                 opt = t.problem.optimum[0].coords[0]                
                 r.lines(xlimm, [opt, opt], col='black', type='o')
                 r.grid(nx=10, ny=40)
-                
-            elif t.problem.dimension == 2:
-                import matrix
-                a = matrix.ACP()
-                co = [p.coords for p in t.optima]
-                a.setMatrix(co)
-                x = []
-                y = []
-                for i in range(len(co)):
-                    x.append(a.reduceDim(i,2)[0])
-                    y.append(a.reduceDim(i,2)[1])
+
+            else:
+                (x, y) = ([], [])
+                if t.problem.dimension == 2:
+                    for p in t.optima:
+                        x.append(p.coords[0])
+                        y.append(p.coords[1])
+                else:
+                    import matrix
+                    a = matrix.ACP()
+                    co = [p.coords for p in t.optima]
+                    a.setMatrix(co)
+                    for i in range(len(co)):
+                        x.append(a.reduceDim(i,2)[0])
+                        y.append(a.reduceDim(i,2)[1])
+
                 xlimm = [t.problem.min_bound[0].coords[0], t.problem.max_bound[0].coords[0]]
                 ylimm = [t.problem.min_bound[0].coords[1], t.problem.max_bound[0].coords[1]]
                 txt = '%s\nSolutions positions' % t.args
@@ -311,22 +292,7 @@ class Comparison:
                          [t.problem.optimum[0].coords[1]], \
                          bg='black', pch=21)
                 r.grid(nx=10, ny=40)
-            elif t.problem.dimension > 2:
-                # use ACP to fill x and y with principal comp'
-                x = []
-                y = []
-                for p in t.optima:
-                    x.append(p.coords[0])
-                    y.append(p.coords[1])
-                xlimm = [t.problem.min_bound[0].coords[0], t.problem.max_bound[0].coords[0]]
-                ylimm = [t.problem.min_bound[0].coords[1], t.problem.max_bound[0].coords[1]]
-                txt = '%s\nSolutions positions using PCA' % t.args
-                r.plot(x,y, bg='white', pch=21, xlab='X', ylab='Y', \
-                       main=txt, xlim=xlimm, ylim=xlimm)                
-                r.points([t.problem.optimum[0].coords[0]], \
-                         [t.problem.optimum[0].coords[1]], \
-                         bg='black', pch=21)
-                r.grid(nx=10, ny=40)
+           
         r.dev_off()
 
 
@@ -334,25 +300,18 @@ class Comparison:
         """ Plot results as postscript files. """
         ## plot frequency distributions
         self.__plot_1()
-
         ## plot a box for each sublist
-        self.__plot_2()
-        
+        self.__plot_2()        
         ## plot the graph of optimas, selecting the best among #runs of each Test, to finally have one Point for each Test.       
-        self.__plot_3()
-        
+        self.__plot_3()        
         ## plot convergence boxes for all points in iterations
         self.__plot_4()
-
          ## plot convergence boxes for optima points in iterations
-        self.__plot_5()
-        
+        self.__plot_5()        
         ## plot success rates
         self.__plot_6()
-
         ## plot convergence graphs superposed for each run, for each test
         self.__plot_7()
-
         # plot points in plan
         self.__plot_8()
 
@@ -360,56 +319,54 @@ class Comparison:
         """ Write Latex report """
         path = os.path.join(self.__dir, 'report.tex')
         fd = open(path, 'w')
+        W = fd.write
 
-        fd.write('\\documentclass{report}\n\\begin{document}\n')
-        fd.write('\\section*{OMETAHLAB REPORT}\n\\subsection*{Tests}\n') 
+        W('\\documentclass{report}\n\\begin{document}\n')
+        W('\\section*{OMETAHLAB REPORT}\n\\subsection*{Tests}\n') 
         for test in self.__tests:
             txt = '%s\\\\\n' % test.args
-            fd.write(txt)
+            W(txt)
 
         for test in self.__tests:
             txt = '\\section*{%s}\n' % test.args
-            fd.write(txt)
+            W(txt)
             # Problem subsection
-            fd.write('\\subsection*{Problem}\n\\begin{description}\n')
+            W('\\subsection*{Problem}\n\\begin{description}\n')
             txt = '\t\\item[Name:] %s\n\t\\item[Dimension:] %i\n\t\\item[Optimum value:] %s\n' \
                   % (test.problem.name, test.problem.dimension, min([x.value for x in test.problem.optimum]))
-            fd.write(txt)
+            W(txt)
             txt = '\t\\item[Accuracy:] %s\n\\end{description}\n' % test.problem.accuracy
-            fd.write(txt)
+            W(txt)
             # Metaheuristic subsection
-            fd.write('\\subsection*{Metaheuristic}\n\\begin{description}\n')
+            W('\\subsection*{Metaheuristic}\n\\begin{description}\n')
             txt = '\t\\item[Key:] %s \n\t\\item[Name:] %s\n\t\\item[Description:] %s\n\t\\item[Family:] %s\n' \
                   % (test.metah.key, test.metah.name, test.metah.description, test.metah.family)                        
-            fd.write(txt)
-            fd.write('\\end{description}\n')
+            W(txt)
+            W('\\end{description}\n')
             # Parameters subsection
-            fd.write('\\subsection*{Parameters}\n\\begin{description}\n')
+            W('\\subsection*{Parameters}\n\\begin{description}\n')
             txt = '\t\\item[Runs:] %i \n\t\\item[Sample size:] %s\n\t\\item[Treshold:] %s\n\t\\item[Random seed:] %s\n' \
                   % (test.runsNb, test.parameters.sampleSize, \
                      test.parameters.treshold, test.parameters.randomSeed)                        
-            fd.write(txt)
-            fd.write('\\end{description}\n')
+            W(txt)
+            W('\\end{description}\n')
             # Results subsection
             vals = [p.value for p in test.optima]
-            fd.write('\\subsection*{Results}\n\\begin{description}\n')
+            W('\\subsection*{Results}\n\\begin{description}\n')
             txt = '\t\\item[Optima mean value:] %f \n\t\\item[Optima standard deviation:] %f\n' \
                   % (r.mean(vals), r.sd(vals))                        
-            fd.write(txt)
+            W(txt)
             txt = '\t\\item[Optima value found:] %f \n\t\\item[Success rate:] %f\n' \
                   % (min(vals), 100*test.succRate)                        
-            fd.write(txt)            
-            fd.write('\\end{description}\n')
-
-        fd.write('\\end{document}\n')
+            W(txt)            
+            W('\\end{description}\n')
+        
+        W('\\end{document}\n')
         fd.close()
-
-
         
     def getDir(self):
         """ Returns the path of the directory containing files created."""
         return self.__dir
-
 
 
 if __name__ == '__main__':

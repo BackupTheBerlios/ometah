@@ -10,6 +10,7 @@
 #  Ometahlab is a set of Python scripts to make experiments on Ometah.
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+#  File: qparser.py
 #  This file contains an experimental class to read ometah's XML output,
 #  much faster than formal XML parsing with xml module.
 #
@@ -33,7 +34,6 @@
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
-
 try:
     import psyco
     psyco.full()
@@ -44,24 +44,15 @@ import string
 S = string
 
 class Qparser:
-
-    ## !!!!!!!!!!!!!!!!!!!!!!!!
-    ##
-    ## WARNING
-    ## get Header first !!! 'cos offset of file shifted !!!
-    ##
-    ## !!!!!!!!!!!!!!!!!!!!!!!!
+    """ Read the XML output of ometah and get information in appropriate structues.
+    Warning : getHeader must be used BEFORE getPoints, because of sequential reading. """
     
     def __init__(self):
         """ Constructor with the path to ometah"""
-        # list of Point instances
-        self.__points = []
-        # header object
-        self.__header = Header()
-        # file descriptor of ometah output
-        self.__fd = None        
-        # value of a point under which we assum the test as a success, hence points reading is stopped
-        self.__tresh = 1
+        self.__points = []         # list of Point instances
+        self.__header = Header()   # Header object, returned but getHeader
+        self.__fd = None           # file descriptor of ometah output
+        self.__tresh = 1           # value under which test is a success, hence points reading is stopped
         
     def load(self, path):
         """ Execute ometah, returning the file object of its output """
@@ -74,192 +65,131 @@ class Qparser:
     def getPoints(self, treshold):
         """ treshold is the value to go under (or equal) to stop the points reading,
         it's equal to the real optimum value plus the accuracy needed by the pb. """        
-        fd = self.__fd
         self.__tresh = treshold
-        # reach <optimization> element
+        (fd, line) = (self.__fd, '')
+        
+        def f(s):
+            return S.find(line, s) 
+        
         while S.find(fd.readline(), '<optimization>') == -1:
             pass
-        pindex = 0    # counter for Point's indexes
+        
+        # counter for Point's indexes
+        pindex = 0    
         line = fd.readline()
         while 1 == 1:        
-            while S.find(line, '<step class="diversification">') == -1:                
+            while f('<step class="diversification">') == -1:                
                 line = fd.readline()
                 if line == '': # if EOF reached
                     return self.__points
+                
             # 'while' loop left => <step> found
-            fd.readline()      # skip <sample> line
+            fd.readline() # skip <sample>
             line = fd.readline()
-            while S.find(line, '<point>') != -1:
-                stVal = S.find(line,'<values>')
-                enVal = S.find(line,'</values>')
-                value = float(line[stVal+8:enVal])
-                stSol = S.find(line,'<solution>')
-                enSol = S.find(line,'</solution>')
-                solution = [float(x) for x in S.split(line[stSol+10:enSol])]
+            while f('<point>') != -1:
+                value = float(line[f('<values>')+8:f('</values>')])
+                solution = [float(x) for x in S.split(line[f('<solution>')+10:f('</solution>')])]
                 p = Point()
-                p.value = value
-                p.coords = solution
-                p.index = pindex
+                (p.value, p.coords, p.index) = (value, solution, pindex)
                 self.__points.append(p)
 
-                # test if treshold is reached
+                # !!!!! test if treshold is reached !!!!!!!
+                # COMMENT A & B LINES TO AVOID SUCCESS BUG
                 if p.value <= self.__tresh:
-                    print 'end at index', pindex
-                    return self.__points
-                
+                    pass
+                    #print 'end at index', pindex #A
+                    #return self.__points #B
+                    
                 pindex += 1
                 line = fd.readline()
 
         return self.__points
     
     def getHeader(self):
-        """  """
-        fd = self.__fd
+        """ Return Header instance with info from XML file. """
+        (fd, line) = (self.__fd, '')
+        
+        def f(s):
+            return S.find(line, s) 
         
         # PROBLEM
-        #
         PB = self.__header.problem
-        # reach <problem>
         line = fd.readline()
-        while S.find(line, '<problem>') == -1:
+        while f('<problem>') < 0: # reach <problem>
             line = fd.readline()
-
-        # find start and end indexes to get value        
+            
         line = fd.readline()
-        st = S.find(line, '<key>')
-        en = S.find(line, '</key>')
-        PB.key = line[st+5:en]
-
+        PB.key = line[f('<key>')+5:f('</key>')]
         line = fd.readline()
-        st = S.find(line, '<name>')
-        en = S.find(line, '</name>')
-        PB.name = line[st+6:en]
-
+        PB.name = line[f('<name>')+6:f('</name>')]
         line = fd.readline()
-        st = S.find(line, '<description>')
-        en = S.find(line, '</description>')
-        PB.description = line[st+13:en]
-
+        PB.description = line[f('<description>')+13:f('</description>')]
         line = fd.readline()
-        st = S.find(line, '<formula>')
-        en = S.find(line, '</formula>')
-        PB.formula = line[st+9:en]
-
+        PB.formula = line[f('<formula>')+9:f('</formula>')]
         line = fd.readline()
-        st = S.find(line, '<dimension>')
-        en = S.find(line, '</dimension>')
-        PB.dimension = int(line[st+11:en])
-
+        PB.dimension = int(line[f('<dimension>')+11:f('</dimension>')])
         line = fd.readline()
-        st = S.find(line, '<accuracy>')
-        en = S.find(line, '</accuracy>')
-        PB.accuracy = float(line[st+10:en])
+        PB.accuracy = float(line[f('<accuracy>')+10:f('</accuracy>')])
 
         optima = []
-        line = fd.readline() # skip <optimum>
+        fd.readline() # skip <optimum>
         line = fd.readline()
-        while S.find(line, '<point>') != -1:
+        while f('<point>') != -1:
             p = Point()            
-            st = S.find(line,'<values>')
-            en = S.find(line,'</values>')
-            p.value = float(line[st+8:en])
-            st = S.find(line,'<solution>')
-            en = S.find(line,'</solution>')
-            p.coords = [float(x) for x in S.split(line[st+10:en])]
+            p.value = float(line[f('<values>')+8:f('</values>')])
+            p.coords = [float(x) for x in S.split(line[f('<solution>')+10:f('</solution>')])]
             PB.optimum.append(p)
             line = fd.readline()
-         # </optimum> read in last find()
             
         fd.readline() # skip <bounds>
-        # minimum line
         minb = []
         p = Point()
         line = fd.readline()
-        st = S.find(line,'<solution>')
-        en = S.find(line,'</solution>')
-        p.coords = [float(x) for x in S.split(line[st+10:en])]
+        p.coords = [float(x) for x in S.split(line[f('<solution>')+10:f('</solution>')])]
         PB.min_bound.append(p)
-        # maximum line
         maxb = []
         p = Point()
         line = fd.readline()
-        st = S.find(line,'<solution>')
-        en = S.find(line,'</solution>')
-        p.coords = [float(x) for x in S.split(line[st+10:en])]
+        p.coords = [float(x) for x in S.split(line[f('<solution>')+10:f('</solution>')])]
         PB.max_bound.append(p)
 
         fd.readline() # skip </bound>
         line = fd.readline()
-        st = S.find(line, '<reference>')
-        en = S.find(line, '</reference>')
-        PB.reference = line[st+11:en]
+        PB.reference = line[f('<reference>')+11:f('</reference>')]
 
         # METAHEURISTIC
-        #
         M = self.__header.metah
         # reach <metaheuristic>
         line = fd.readline()
-        while S.find(line, '<metaheuristic>') == -1:
+        while f('<metaheuristic>') < 0:
             line = fd.readline()
 
         line = fd.readline()
-        st = S.find(line, '<key>')
-        en = S.find(line, '</key>')
-        M.key = line[st+5:en]
-
+        M.key = line[f('<key>')+5:f('</key>')]
         line = fd.readline()
-        st = S.find(line, '<family>')
-        en = S.find(line, '</family>')
-        M.family = line[st+8:en]
-
+        M.family = line[f('<family>')+8:f('</family>')]
         line = fd.readline()
-        st = S.find(line, '<name>')
-        en = S.find(line, '</name>')
-        M.name = line[st+6:en]
-
+        M.name = line[f('<name>')+6:f('</name>')]
         line = fd.readline()
-        st = S.find(line, '<accronym>')
-        en = S.find(line, '</accronym>')
-        M.acronym = line[st+10:en]
-
+        M.acronym = line[f('<accronym>')+10:f('</accronym>')]
         line = fd.readline()
-        st = S.find(line, '<description>')
-        en = S.find(line, '</description>')
-        M.description = line[st+13:en]
-
+        M.description = line[f('<description>')+13:f('</description>')]
         line = fd.readline()
-        st = S.find(line, '<reference>')
-        en = S.find(line, '</reference>')
-        M.reference = line[st+11:en]
+        M.reference = line[f('<reference>')+11:f('</reference>')]
 
         # PARAMETERS
-        #
         PA = self.__header.parameters
         fd.readline() # skip <parameters>
         line = fd.readline()
-        st = S.find(line, '<value>')
-        en = S.find(line, '</value>')
-        PA.sampleSize = int(line[st+7:en])
-
+        PA.sampleSize = int(line[f('<value>')+7:f('</value>')])
         line = fd.readline()
-        st = S.find(line, '<value>')
-        en = S.find(line, '</value>')
-        PA.maxIterations = line[st+7:en]
-
+        PA.maxIterations = line[f('<value>')+7:f('</value>')]
         line = fd.readline()
-        st = S.find(line, '<value>')
-        en = S.find(line, '</value>')
-        PA.maxEvaluations = line[st+7:en]
-
+        PA.maxEvaluations = line[f('<value>')+7:f('</value>')]
         line = fd.readline()
-        st = S.find(line, '<value>')
-        en = S.find(line, '</value>')
-        PA.treshold = line[st+7:en]
-
+        PA.treshold = line[f('<value>')+7:f('</value>')]
         line = fd.readline()
-        st = S.find(line, '<value>')
-        en = S.find(line, '</value>')
-        PA.randomSeed = line[st+7:en]
+        PA.randomSeed = line[f('<value>')+7:f('</value>')]
 
         return self.__header
         
@@ -281,6 +211,7 @@ class Problem:
     def __init__(self):
         """ Void constructor."""
         pass
+
 
 class Metaheuristic:
     """ Descriptive informations of a metaheuristic. """
@@ -318,7 +249,6 @@ class Header:
     parameters = Parameters()
 
     def __init__(self):
-        """ Void constructor."""
         pass
     
 
@@ -328,10 +258,9 @@ class Point:
     coords = None
     value = None
     error = None
-    index = 0
+    index = None
 
     def __init__(self):
-        """ Point constructor. """
         pass
 
 

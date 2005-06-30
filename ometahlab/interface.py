@@ -6,6 +6,7 @@
 #  Ometahlab is a set of Python scripts to make experiments on Ometah.
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+#  File: interface.py
 #  An Interface is used by a Test of ometah (cf. ometahtest), and should not
 #  be used directly.
 #
@@ -58,7 +59,7 @@ class Interface:
     def getXmlFromExecOmetah(self, path):
         """ Execute ometah with given arguments, where ometah's path if path,
         returns the file objects corresponding to the XML output. """
-        import string # faster here !
+        import string 
         cmd = "%s %s" % (path, string.join(self.__argv))
         try:
             fd = os.popen(cmd)
@@ -94,7 +95,7 @@ class Interface:
     
     def copyToDisk(self, rfd, filename="xml"):
         """ Copy the file opened with rfd to a new file on disk, is used to copy XML output on disk. """
-        filename = filename + '.xml'
+        filename += '.xml'
         xfile = os.path.join(self.__path, filename)
         try:
             wfd = open(xfile, 'w')
