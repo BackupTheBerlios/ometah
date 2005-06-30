@@ -67,8 +67,8 @@ class Test:
         self.__ometah_path = os.path.join('..', os.path.join('ometah', 'ometah'))
         # common dir for all results
         self.__results_dir = "labResults"
-        # precision for success rates calculs
-        self.__precision = 0.001
+        # real optimum value (min of the optima given for the pb)
+        self.__optval = 0
         # success rate
         self.succRate = 0
         # success performance = mean(FES for successful run * #run)/#succRuns
@@ -111,6 +111,7 @@ class Test:
             print '\b|',  # write as char as runNumber
         for i in range(self.runsNb - 1 - runNumber):
             print '\b-',  # padd with default char
+            
         sys.stdout.flush()
         q = qparser.Qparser()
         q.setFd(fd)
@@ -121,9 +122,13 @@ class Test:
             self.problem = header.problem
             self.parameters = header.parameters
             self.metah = header.metah
-            self._INFO_PB = 1    
-        intfc.setPoints(q.getPoints())
+            vlist = [ p.value for p in self.problem.optimum ]
+            self.__opt_val = min(vlist) 
+            self._INFO_PB = 1
+            
+        intfc.setPoints(q.getPoints(self.__opt_val + self.problem.accuracy))
         fd.close()        
+
         return intfc
     
     
@@ -170,6 +175,10 @@ class Test:
         intf.log(slog)
 
         # one sublist for each iteration, containing all points of the N runs
+
+        ###### !!!!!
+        # PB : assume that all runs have the same #iteratiosn
+        # => PB if optimum found and points stopped
 
         size = self.parameters.sampleSize
         # initialize the length of s.points
@@ -230,11 +239,8 @@ class Test:
         
     def __success(self, point):
         """ Returns true if the point given matches problem's optima,
-        with a precision of self.__precision, returns false otherwise """
-        vlist = [ p.value for p in self.problem.optimum ]        
-        realOptimum = min(vlist)
-        optimumFound = point.value
-        if (optimumFound - realOptimum) > self.problem.accuracy:
+        with a precision of problem's accuracy, returns false otherwise """
+        if (point.value - self.__opt_val) > self.problem.accuracy:
             return False
         return True
 

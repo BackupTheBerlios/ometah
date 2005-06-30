@@ -42,7 +42,7 @@ def stat(paths):
     c.check()
     c.plot()
     c.writeLatex()
-    print '\nResults in in %s\n' % c.getDir()
+    print '\nResults in %s\n' % c.getDir()
 
 
 class Comparison:
