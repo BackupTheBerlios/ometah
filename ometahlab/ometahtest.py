@@ -146,12 +146,7 @@ class Test:
         """ Make a test, that is running Ometah RunsNb times with the same command line arguments.
         A serialized object of the self instance is created in the test directory """        
         import cPickle, qparser
-
-        try:
-            os.listdir(self.__results_dir)
-        except:
-            os.mkdir(self.__results_dir)
-
+        
         print "\nRunning ometah", ''.join(self.__argv)
         for j in xrange(self.runsNb-1): # to initialize loading bar
             print '\b-',
