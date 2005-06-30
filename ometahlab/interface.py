@@ -50,8 +50,7 @@ class Interface:
         """ Constructor, args is the list of command lines arguments. """
         self.__argv = [''] + args[1:]
         self.__defaultFileName = 'metahtest'
-        self.__temp = '.'
-        self.__path = '.'
+        self.__temp = self.__path = '.'
         self.__logfile = '%s.log' % (self.__defaultFileName)
         self.__points = []
         self.__name = ''
@@ -59,14 +58,12 @@ class Interface:
     def getXmlFromExecOmetah(self, path):
         """ Execute ometah with given arguments, where ometah's path if path,
         returns the file objects corresponding to the XML output. """
-        import string 
-        cmd = "%s %s" % (path, string.join(self.__argv))
+        cmd = "%s %s" % (path, ''.join(self.__argv))
         try:
             fd = os.popen(cmd)
         except:
             self.log('ERROR : wrong path to ometah [Interface.getXmlFromExecOmetah]\n')            
-            self.__fatal('(see log file)')
-        self.log('ometah execution ... OK\n')
+            self.__fatal('(see log file)')        
         return fd
 
     def getXmlFromFile(self, path):
@@ -147,7 +144,7 @@ class Interface:
 
     def __fatal(self, mess):
         import sys
-        print "FATAL ERROR : " + mess + "\n"
+        print 'FATAL ERROR : %s\n' % mess
         sys.exit(1)
 
 

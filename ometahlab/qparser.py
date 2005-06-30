@@ -36,9 +36,6 @@ try:
 except:
     pass
 
-import string
-S = string
-
 class Qparser:
     """ Read the XML output of ometah and get information in appropriate structues.
     Warning : getHeader must be used BEFORE getPoints, because of sequential reading. """
@@ -48,7 +45,7 @@ class Qparser:
         self.__points = []         # list of Point instances
         self.__header = Header()   # Header object, returned but getHeader
         self.__fd = None           # file descriptor of ometah output
-        self.__tresh = 1           # value under which test is a success, hence points reading is stopped
+        self.__tresh = 0           # value under which test is a success, hence points reading is stopped
         
     def load(self, path):
         """ Execute ometah, returning the file object of its output """
@@ -65,16 +62,16 @@ class Qparser:
         (fd, line) = (self.__fd, '')
         
         def f(s):
-            return S.find(line, s) 
+            return line.find(s) 
         
-        while S.find(fd.readline(), '<optimization>') == -1:
+        while fd.readline().find('<optimization>') < 0:
             pass
         
         # counter for Point's indexes
         pindex = 0    
         line = fd.readline()
         while 1 == 1:        
-            while f('<step class="diversification">') == -1:                
+            while f('<step class="diversification">') < 0:                
                 line = fd.readline()
                 if line == '': # if EOF reached
                     return self.__points
@@ -84,7 +81,7 @@ class Qparser:
             line = fd.readline()
             while f('<point>') != -1:
                 value = float(line[f('<values>')+8:f('</values>')])
-                solution = [float(x) for x in S.split(line[f('<solution>')+10:f('</solution>')])]
+                solution = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
                 p = Point()
                 (p.value, p.coords, p.index) = (value, solution, pindex)
                 self.__points.append(p)
@@ -106,7 +103,7 @@ class Qparser:
         (fd, line) = (self.__fd, '')
         
         def f(s):
-            return S.find(line, s) 
+            return line.find(s) 
         
         # PROBLEM
         PB = self.__header.problem
@@ -133,7 +130,7 @@ class Qparser:
         while f('<point>') != -1:
             p = Point()            
             p.value = float(line[f('<values>')+8:f('</values>')])
-            p.coords = [float(x) for x in S.split(line[f('<solution>')+10:f('</solution>')])]
+            p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
             PB.optimum.append(p)
             line = fd.readline()
             
@@ -141,12 +138,12 @@ class Qparser:
         minb = []
         p = Point()
         line = fd.readline()
-        p.coords = [float(x) for x in S.split(line[f('<solution>')+10:f('</solution>')])]
+        p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
         PB.min_bound.append(p)
         maxb = []
         p = Point()
         line = fd.readline()
-        p.coords = [float(x) for x in S.split(line[f('<solution>')+10:f('</solution>')])]
+        p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
         PB.max_bound.append(p)
 
         fd.readline() # skip </bound>

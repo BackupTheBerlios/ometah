@@ -29,6 +29,12 @@
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
+try:
+    import psyco
+    psyco.full()
+except:
+    pass
+
 from rpy import *
 import ometahtest
 
@@ -39,9 +45,10 @@ def stat(paths):
     ometahtest's function getPath can be used to get those strings. See demoscript for usage example."""
     c = Comparison(paths)
     c.check()
+    print '\nCreating graphics and report...'
     c.plot()
     c.writeLatex()
-    print '\nResults in %s\n' % c.getDir()
+    print 'Results in %s\n' % c.getDir()
 
 
 class Comparison:
@@ -49,7 +56,7 @@ class Comparison:
 
     def __init__(self, paths):
         """ Constructor, paths is a list of strings, which are paths to Ometah executions directories."""
-        import pickle, string, os
+        import pickle, os
         # color used in graphic plottings
         self.__color = 'grey85'        
         # list of Test objects, one for each metarun
@@ -88,7 +95,7 @@ class Comparison:
         (i, ok) = (1, 0)
         while not ok:
             ok = 1
-            dir = os.path.join( string.split(paths[0], sep='/')[0], 'results_%i' % i)
+            dir = os.path.join( paths[0].split('/')[0], 'results_%i' % i)
             try:
                 os.mkdir(dir)
             except:
@@ -296,25 +303,63 @@ class Comparison:
         r.dev_off()
 
 
+    def __plot_9(self):
+        """ Make a non-parametric test over sets of optima errors,
+        Mann-Whitney if 2 tests, Kruskal-Whitney if 3 or more.
+        p.value < 0.05 => no difference
+        p.value > 0.05 => difference
+        Returns True if """
+        import Numeric
+        limit = .05
+        # initialize our matrix with as sublists as tests
+        emlist = [ [] for i in self.__tests ]
+        fileName = os.path.join(self.__dir, 'distribution_errors.ps')        
+        r.postscript(fileName, paper='letter')
+        breaks = 10
+        
+        for i in range(len(self.__optimas)):
+            # for current test's optima list, add their error as a list at emlist[i]
+            emlist[i] = [p.value - self.__tests[i].getOpt() for p in self.__optimas[i]]
+            txt = '%s\nOptima error distribution' % self.__tests[i].args
+            r.hist(emlist[i], breaks, col=self.__color, main=txt, xlab='Error', ylab='Frequency')
+            r.grid(nx=10)
+        r.dev_off()
+
+        if len(self.__tests) == 2:
+            # use Mann-Whitney test
+            dic = r.wilcox_test(Numeric.array(emlist))
+        elif len(self.__tests) > 2:
+            # use Kruskal-Wallis test
+            dic = r.kruskal_test(emlist)
+        
+        # print dic['p.value']
+        
+        if dic['p.value'] < limit:
+            self.__same_distrib = True
+        else:
+            self.__same_distrib = False
+        
     def plot(self):
         """ Plot results as postscript files. """
-        ## plot frequency distributions
+        # frequency distributions
         self.__plot_1()
-        ## plot a box for each sublist
+        # a quantile box for each sublist
         self.__plot_2()        
-        ## plot the graph of optimas, selecting the best among #runs of each Test, to finally have one Point for each Test.       
+        # graph of optimas, selecting the best among #runs of each Test, to finally have one Point for each Test.       
         self.__plot_3()        
-        ## plot convergence boxes for all points in iterations
+        # convergence boxes for all points in iterations
         self.__plot_4()
-         ## plot convergence boxes for optima points in iterations
+        # convergence boxes for optima points in iterations
         self.__plot_5()        
-        ## plot success rates
+        # success rates
         self.__plot_6()
-        ## plot convergence graphs superposed for each run, for each test
+        # convergence graphs superposed for each run, for each test
         self.__plot_7()
-        # plot points in plan
+        # points in plan
         self.__plot_8()
-
+        # optima's error distribution
+        self.__plot_9()
+        
     def writeLatex(self):
         """ Write Latex report """
         path = os.path.join(self.__dir, 'report.tex')
@@ -339,8 +384,7 @@ class Comparison:
             W(txt)
             # Metaheuristic subsection
             W('\\subsection*{Metaheuristic}\n\\begin{description}\n')
-            txt = '\t\\item[Key:] %s \n\t\\item[Name:] %s\n\t\\item[Description:] %s\n\t\\item[Family:] %s\n' \
-                  % (test.metah.key, test.metah.name, test.metah.description, test.metah.family)                        
+            txt = '\t\\item[Key:] %s \n' % (test.metah.key)
             W(txt)
             W('\\end{description}\n')
             # Parameters subsection

@@ -69,7 +69,7 @@ class Test:
         # common dir for all results
         self.__results_dir = "results"
         # real optimum value (min of the optima given for the pb)
-        self.__optval = 0
+        self.__opt_val = 0
         # success rate
         self.succRate = 0
         # success performance = mean(FES for successful run * #run)/#succRuns
@@ -91,20 +91,24 @@ class Test:
         intfc = interface.Interface(argv)
         intfc.setLog(1)
         intfc.setLogFileName(logFile)
-        intfc.log("\n\n---------------------------------------------\n")
-        slog = "[Starting run %i ]" % (runNumber)
+
+        slog = "\nRun %i :\n" % (runNumber)
         intfc.log(slog)
-        intfc.log("\n---------------------------------------------\n\n")
+
         fd = intfc.getXmlFromExecOmetah(self.__ometah_path)
-        xmlName = "run%i" % (runNumber)
+
+        """ # TO KEEP XML FILE UNCOMMENT THE FOLLOWING
+        xmlName = 'run%i' % (runNumber)
         fileOut = intfc.copyToDisk(fd, filename=xmlName)
         fd.close()
         fd = open(fileOut, 'r')        
+        """
         
         if not 'xml-version="1.0"' in fd.readline():
             intfc.log('ERROR : ometah failed to create XML\n')
             intfc.fatal('(see log file)')
-        # Loading bar
+
+        # Loading bar        
         for i in range(self.runsNb):
             print '\b\b', # delete previous bar
 
@@ -114,9 +118,10 @@ class Test:
             print '\b-',  # padd with default char
             
         sys.stdout.flush()
+        
         q = qparser.Qparser()
         q.setFd(fd)
-        
+    
         # get Test informations, only once (same header for all runs)
         if self._INFO_PB == 0:
             header = q.getHeader()
@@ -153,10 +158,11 @@ class Test:
             intf = self.__init(self.argv, i, self.__logName)
             self.optima.append(intf.getOptimum())
             self.__points.append(intf.getPoints())            
+
+        """ TO KEEP XML UNCOMMENT THE FOLLOWING
         intf.archiveXml()
-        
-        i = 1
-        ok = 0
+        """        
+        (i, ok) = (1, 0)        
         while not ok:
             ok = 1
             dir = '%s_%s_d%i_e%s_r%s_%i' \
@@ -167,8 +173,7 @@ class Test:
             try:
                 os.mkdir(dir)
             except:
-                ok = 0
-                i = i + 1
+                (i, ok) = (0, i+1)            
         self.__dir = dir
         vlist = [ x.value for x in self.optima ]
         slog = "\n----optima results---------\nmean : %f\n std : %f\n\n" \
@@ -180,7 +185,6 @@ class Test:
         ###### !!!!!
         # PB : assume that all runs have the same #iteratiosn
         # => PB if optimum found and points stopped
-
         size = self.parameters.sampleSize
         # initialize the length of s.points
         iters = len(self.__points[0]) / size        
@@ -193,8 +197,8 @@ class Test:
         for sublist in self.__points:
             # nb of iterations = nb of points / sample size
             subindex += 1
-            it = 0 # current iteration
-            c = 0
+            #it is current iteration, c counts points until reach sample size
+            c = it = 0             
             minp = qparser.Point()
             minp.value = 1000
             for p in sublist:
@@ -202,12 +206,11 @@ class Test:
                 self.pointsIterations[it].append(p)
                 if p.value < minp.value:
                     minp = p
-                c = c + 1
+                c += 1
                 # when sample size reached, select the optimum for this iteration
                 if c == size:
                     self.optimaIterations[it].append(minp)
-                    it = it + 1
-                    c = 0        
+                    (c, it) = (0, it + 1)                    
 
         # give succRate & succPerf their value
         self.__calculSuccessRates()
@@ -221,9 +224,13 @@ class Test:
         except:
             int.fatal('pickle failed [Test.metarun]')
         fd.close()
-        for src in ['xml.tar.gz', 'TEST', self.__logName]:
+        """
+        # TO KEEP XML FILES ADD THIS ONE TO THE LIST 'xml.tar.gz'
+        """
+        for src in ['TEST', self.__logName]:
             tar = os.path.join(self.__dir, src)
             os.rename(src, tar)
+        
 
     def __calculSuccessRates(self):
         """ Update succRate & succPerf values, according to the current optima list and problem instance """
@@ -233,10 +240,12 @@ class Test:
         for point in self.optima:
             if self.__success(point):
                 success += 1
-                successIndex.append(point.index)                
-        self.succRate = float(success) / float(total)
+                successIndex.append(point.index)
         if success != 0:
+            self.succRate = float(success) / float(total)
             self.succPerf = r.mean(successIndex)*float(total) / float(success)
+        else:
+            self.succRate = 0
         
     def __success(self, point):
         """ Returns true if the point given matches problem's optima,
@@ -265,9 +274,12 @@ class Test:
         self.__ometah_path = path
 
     def getPath(self):
-        """ Return the path of the working directory created, which can then be given to ometahstats.compare function."""
+        """ Returns the path of the working directory created, which can then be given to ometahstats.compare function."""
         return str(self.__dir)
 
+    def getOpt(self):
+        """ Returns optimal value. """
+        return self.__opt_val
 
 if __name__ == '__main__':
     print "This file contains no instructions in main(), please see README for program usage\n"

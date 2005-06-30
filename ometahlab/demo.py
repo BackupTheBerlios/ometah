@@ -33,6 +33,7 @@
 
 try:
     import psyco
+    #psyco.full()
     psyco.full()
 except:
     pass
@@ -57,11 +58,14 @@ def main():
     if arg == 0:
         """ Usage """
         print 'Usage: python demo.py <i>'
-        print 'with i the number of a demo, from 1 to 3, see file content for demos details.'
+        print 'with i the number of a demo, from 1 to 5, see file content for demos details.'
         return
     
     import ometahtest
     import ometahstats    
+    import time
+
+    emit = time.time()
 
     if arg == 1:
         
@@ -170,25 +174,21 @@ def main():
         v.start()
         
         w = ometahtest.Test()
-        w.setArgs('-e 250 -i 150 -p Sphere')
+        w.setArgs('-e 500 -i 150 -p Sphere')
         w.setNbRuns(50)
         w.setOmetahPath('../ometah/ometah')
         w.start()
-        
-        x = ometahtest.Test()
-        x.setArgs('-e 300 -i 200 -p Sphere')
-        x.setNbRuns(50)
-        x.setOmetahPath('../ometah/ometah')
-        x.start()
         
         y = ometahtest.Test()
         y.setArgs('-e 1000 -i 1000 -p Sphere')
         y.setNbRuns(50)
         y.start()
 
-        p = [ t.getPath(), u.getPath(), v.getPath(), w.getPath(), x.getPath(), y.getPath()]
+        p = [ t.getPath(), u.getPath(), v.getPath(), w.getPath(), y.getPath()]
         ometahstats.stat(p)
 
+    print 'Time: ', time.time()-emit
+    
     return
 
 
