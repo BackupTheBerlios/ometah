@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: string.hpp,v 1.3 2005/06/30 12:12:43 nojhan Exp $
+ *  $Id: string.hpp,v 1.4 2005/06/30 13:09:23 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -68,67 +68,14 @@ string print( vector< vector< T > > aMatrix, char * sepCol = ",", char * sepLine
   }
 
   return out.str();
-}
-
-
-//! Make a double vector from a string vector
-/*
-template<template <class T> class V>
-V<double> stringToDouble(V<string> VString)
-{
-
-  double aDouble;
-  V<double> VDouble;
-
-  VDouble.reserve( VString.size() );
-
-  for (unsigned int i=0; i<VString.size(); i++) {
-    aDouble = atof( VString[i].c_str() );
-    VDouble.push_back(aDouble);
-  }
-  return VDouble;
-}
-*/
-
-//! Make a double from a string
-double stringToDouble(string aString)
-{
-  double aDouble;
-
-  aDouble = atof( aString.c_str() );
-
-  return aDouble;
 };
-
-//! Make a double vector from a string, with shortcut options
-/*! 
-  Examples :
-    "1.2,1" => <1.2,1>
-    "3:1.0" => <1.0,1.0,1.0>
-*/
-vector<double> stringToDouble(string aString, string itemSeparator=",", string multiSeparator=":")
-{
-  vector<double> res;
-  
-  // if find a separator
-  if ( aString.find(multiSeparator) < aString.size() ) {
-    vector<double> tempvec = stringToDouble( stringSplit( aString, multiSeparator ) );
-    res.reserve( (int)tempvec[0]);
-
-    for(unsigned int i=0; i<tempvec[0]; i++) {
-        res.push_back(tempvec[1]);
-    }
-  } else {
-    res = stringToDouble( stringSplit( aString, itemSeparator ) );
-  }
-  return res;
-}
 
 
 //! Make a string vector from a string
 /*!
   This version modify directly the vector by reference
  */
+/*
 template<template<class T> class V>
 void stringSplit (string text, string separators, V<string> & words)
 {
@@ -145,27 +92,26 @@ void stringSplit (string text, string separators, V<string> & words)
     start = text.find_first_not_of(separators, stop+1);
   }
 };
+*/
 
 //! Make a string vector from a string
-template<template<class T> class V>
-V<string> stringSplit (string text, string separators)
-{
-  int n = text.length();
-  int start, stop;
- 
-  V<string> words;
+vector<string> stringSplit (string text, string separators);
 
-  start = text.find_first_not_of(separators);
-  while ((start >= 0) && (start < n)) {
-    stop = text.find_first_of(separators, start);
 
-    if ((stop < 0) || (stop > n)) stop = n;
+//! Make a double vector from a string vector
+vector<double> stringToDouble(vector<string> VString);
 
-    words.push_back(text.substr(start, stop - start));
-    start = text.find_first_not_of(separators, stop+1);
-  }
 
-  return words;
-};
+//! Make a double from a string
+double stringToDouble(string aString);
+
+
+//! Make a double vector from a string, with shortcut options
+/*! 
+  Examples :
+    "1.2,1" => <1.2,1>
+    "3:1.0" => <1.0,1.0,1.0>
+*/
+vector<double> stringToDouble_shortcuts(string aString, string itemSeparator=",", string multiSeparator=":");
 
 #endif
