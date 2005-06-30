@@ -256,7 +256,7 @@ class Point:
     """ A point has a set of coordinates, a value, an error relative to the problem's optimum, and an index. """
 
     coords = None
-    value = None
+    value = None    
     error = None
     index = None
 

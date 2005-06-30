@@ -35,7 +35,7 @@ from Numeric import *
 import Numeric
 from LinearAlgebra import *
 
-class ACP:    
+class PCA:    
     """
     Method used for PCA :
       1. Organize your data into column vectors, so you end up with a d \times n matrix, D.
@@ -115,4 +115,7 @@ class ACP:
         """ Returns a list of dim coordinates."""
         Ve = self.__matrix[lineIndex] - self.__means
         return matrixmultiply(self.__eigenv[:dim], Ve)
+
+    def getEigenVectors(self):
+        return self.__eigenv
         

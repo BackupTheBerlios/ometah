@@ -67,7 +67,7 @@ class Test:
         # default location of ometah
         self.__ometah_path = os.path.join('..', os.path.join('ometah', 'ometah'))
         # common dir for all results
-        self.__results_dir = "labResults"
+        self.__results_dir = "results"
         # real optimum value (min of the optima given for the pb)
         self.__optval = 0
         # success rate
