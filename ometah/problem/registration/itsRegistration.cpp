@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.4 2005/06/22 14:08:18 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.5 2005/06/30 13:28:53 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -46,7 +46,7 @@ itsRegistration::itsRegistration()
     setCitation("Unknown");    
     setFormula("${\\displaystyle \\sum_{i=1}^{n}}\\left(I_{1}\\left(i\\right)-I_{2}\\left(i\\right)\\right)^{2}$");
     
-    setDimension(2);
+    setDimension(4);
     
     setBoundsMinimaAll(-1);
     setBoundsMaximaAll(1);
@@ -69,6 +69,14 @@ itsPoint itsRegistration::objectiveFunction(itsPoint point)
 {
     unsigned int rx = (unsigned int) floor( point.getSolution()[0] );
     unsigned int ry = (unsigned int) floor( point.getSolution()[1] );
+
+    // if we ask for a rotation and a zoom
+    if(point.getSolution().size()==4) {
+        const float angle = point.getSolution()[2];
+        const float zoom = point.getSolution()[3];
+    
+        img2 = img2.get_rotate( angle, 0.5f*img2.width, 0.5f*img2.height, zoom, 0 );
+    }
 
     // similarity of the registered images
     double similarity = 0;
@@ -118,13 +126,14 @@ void itsRegistration::resizeImages()
     }
 
     // get the bounds
-    vector<double> bmin, bmax;
+    vector<double> bmin = getBoundsMinima();
+    vector<double> bmax = getBoundsMaxima();
 
-    bmin.push_back( -1*sx );
-    bmin.push_back( -1*sy );
+    bmin[0] = -1*sx;
+    bmin[1] = -1*sy;
 
-    bmax.push_back( sx );
-    bmax.push_back( sy );
+    bmax[0] = sx;
+    bmax[1] = sy;
 
     setBoundsMinima( bmin );
     setBoundsMaxima( bmax );
