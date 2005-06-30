@@ -132,8 +132,7 @@ class Test:
             self.problem = header.problem
             self.parameters = header.parameters
             self.metah = header.metah
-            vlist = [ p.value for p in self.problem.optimum ]
-            self.opt_val = min(vlist) 
+            self.opt_val = min( [ p.value for p in self.problem.optimum ] ) 
             self._INFO_PB = True
             
         self.__points.append(q.getPoints(self.opt_val + self.problem.accuracy))
@@ -148,9 +147,11 @@ class Test:
         import cPickle, qparser
         
         print "\nRunning ometah", ''.join(self.__argv)
-        for j in xrange(self.runsNb-1): # to initialize loading bar
+        # to initialize loading bar
+        for j in xrange(self.runsNb-1): 
             print '\b-',
-            
+
+        # make the runsNb runs
         for i in xrange(self.runsNb):
             intf = self.__init(i)
             self.optima.append(self.__getOptimum(i))            
@@ -202,10 +203,10 @@ class Test:
         # => PB if optimum found and points stopped
         size = self.parameters.sampleSize
         # initialize the length of s.points
-        iters = len(self.__points[0]) / size        
-        for i in xrange(iters):
-            self.pointsIterations.append([])       
-            self.optimaIterations.append([])
+        iters = len(self.__points[0]) / size
+        
+        self.pointsIterations = [ [] for i in xrange(iters) ]
+        self.optimaIterations = [ [] for i in xrange(iters) ]
         
         subindex = -1 # sublist index in followin iteration
         # for each sublist (each run)

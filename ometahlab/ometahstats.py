@@ -42,7 +42,7 @@ def stat(paths):
     """ Generate text report and graphic representation in postscript format,
     comparing the previous Ometah execution which directories' paths are given as a list of strings,
     ometahtest's function getPath can be used to get those strings. See demoscript for usage example."""
-    c = Comparison(paths)
+    c = Stater(paths)
     c.check()
     print '\nCreating graphics and report...'
     c.plot()
@@ -50,7 +50,7 @@ def stat(paths):
     print 'Results in %s\n' % c.getDir()
 
 
-class Comparison:
+class Stater:
     """ A comparison between several Ometah executions (Test instances), giving text and graphical reports. """
 
     def __init__(self, paths):
@@ -69,27 +69,19 @@ class Comparison:
         # load serialized objects in paths
         for p in paths:
             try:
-                q = os.path.join(p, 'TEST')
-                fd = open(q, 'r')
-                s = cPickle.load(fd)
+                s = cPickle.load( open( os.path.join(p, 'TEST'), 'r' ) )
                 self.__tests.append(s)
             except:
                 msg = 'error while loading %s' % q
                 self.__fatal(msg)
 
         # initialize optimas and points
-        self.__optimas = []
-        for serial in self.__tests:
-            self.__optimas.append(serial.optima)
+        self.__optimas = [test.optima for test in self.__tests]
+        self.__pointsIter = [test.pointsIterations for test in self.__tests]
+        self.__optimaIter = [test.optimaIterations for test in self.__tests]
 
-        self.__pointsIter = []
-        for test in self.__tests:
-            self.__pointsIter.append(test.pointsIterations)
-            
-        self.__optimaIter = []
-        for test in self.__tests:
-            self.__optimaIter.append(test.optimaIterations)
 
+        
         # create working directory
         (i, ok) = (1, 0)
         while not ok:
@@ -259,8 +251,8 @@ class Comparison:
             if t.problem.dimension < 2:
 
                 (x, y) = (xrange(len(t.optima)), [])
-                for p in t.optima:
-                    y.append(p.coords[0])
+
+                y = [ p.coords[0] for p in t.optima ]
                 y.sort()
                 
                 xlimm = [0, len(t.optima)]
@@ -275,17 +267,17 @@ class Comparison:
             else:
                 (x, y) = ([], [])
                 if t.problem.dimension == 2:
-                    for p in t.optima:
-                        x.append(p.coords[0])
-                        y.append(p.coords[1])
+                    x = [ p.coords[0] for p in t.optima ]
+                    y = [ p.coords[1] for p in t.optima ]
+                    
                 else:
                     import matrix
                     a = matrix.PCA()
                     co = [p.coords for p in t.optima]
                     a.setMatrix(co)
-                    for i in xrange(len(co)):
-                        x.append(a.reduceDim(i,2)[0])
-                        y.append(a.reduceDim(i,2)[1])
+                    x = [a.reduceDim(i,2)[0] for i in xrange(len(co)) ]
+                    y = [a.reduceDim(i,2)[1] for i in xrange(len(co)) ]
+
 
                 xlimm = [t.problem.min_bound[0].coords[0], t.problem.max_bound[0].coords[0]]
                 ylimm = [t.problem.min_bound[0].coords[1], t.problem.max_bound[0].coords[1]]

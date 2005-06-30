@@ -33,7 +33,6 @@
 
 try:
     import psyco
-    #psyco.full()
     psyco.full()
 except:
     pass
