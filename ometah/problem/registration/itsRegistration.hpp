@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.hpp,v 1.3 2005/06/22 14:08:18 nojhan Exp $
+ *  $Id: itsRegistration.hpp,v 1.4 2005/06/30 13:48:57 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -49,6 +49,9 @@ protected:
     //! The second image
     CImg<unsigned char> img2;
 
+    //! A coefficient to limit the maximum bounds of x/y registration
+    float boundsCoefficient;
+
     //! resize images so that their sizes match
     void resizeImages();
 
@@ -58,6 +61,12 @@ public:
 
     //! Choose the two images
     void setInputImages(string file_static, string file_registered);
+
+    //! Change the bounds coefficient
+    void setBoundsCoefficient(float coef);
+
+    //! Return the bounds coefficient
+    float getBoundsCoefficient();
 };
 
 class itsRegistrationFactory : public itsProblemFactory

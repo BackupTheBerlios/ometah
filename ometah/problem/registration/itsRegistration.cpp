@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.5 2005/06/30 13:28:53 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.6 2005/06/30 13:48:57 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -63,6 +63,8 @@ itsRegistration::itsRegistration()
     pt.setValues(val); // a value of 0
     optim.push_back(pt);
     setOptima(optim);
+    
+    setBoundsCoefficient(0.5);
 }
 
 itsPoint itsRegistration::objectiveFunction(itsPoint point)
@@ -129,11 +131,11 @@ void itsRegistration::resizeImages()
     vector<double> bmin = getBoundsMinima();
     vector<double> bmax = getBoundsMaxima();
 
-    bmin[0] = -1*sx;
-    bmin[1] = -1*sy;
+    bmin[0] = -1*sx*boundsCoefficient;
+    bmin[1] = -1*sy*boundsCoefficient;
 
-    bmax[0] = sx;
-    bmax[1] = sy;
+    bmax[0] = sx*boundsCoefficient;
+    bmax[1] = sy*boundsCoefficient;
 
     setBoundsMinima( bmin );
     setBoundsMaxima( bmax );
@@ -153,6 +155,17 @@ void itsRegistration::setInputImages(string file_static, string file_registered)
     resizeImages();
 }
 
+
+void itsRegistration::setBoundsCoefficient(float coef)
+{
+    this->boundsCoefficient = coef;
+}
+
+
+float itsRegistration::getBoundsCoefficient()
+{
+    return this->boundsCoefficient;
+}
 
 
 itsProblem * itsRegistrationFactory::create()
