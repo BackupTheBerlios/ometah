@@ -276,7 +276,7 @@ class Comparison:
                         y.append(p.coords[1])
                 else:
                     import matrix
-                    a = matrix.ACP()
+                    a = matrix.PCA()
                     co = [p.coords for p in t.optima]
                     a.setMatrix(co)
                     for i in range(len(co)):
