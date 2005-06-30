@@ -145,7 +145,7 @@ class Test:
     def __metarun(self):
         """ Make a test, that is running Ometah RunsNb times with the same command line arguments.
         A serialized object of the self instance is created in the test directory """        
-        import pickle, qparser
+        import cPickle, qparser
 
         try:
             os.listdir(self.__results_dir)
@@ -180,14 +180,13 @@ class Test:
         self.__setIterationLists()
         self.__calculSuccessRates()
 
-        
         # empty variables for pickle reduction
         self.__points = []
         self.__argv = self.__args = None
         
         fd = open('TEST', 'w')
         try:
-            pickle.dump(self,fd)
+            cPickle.dump(self,fd)
         except:
             intf.fatal('pickle failed [Test.metarun]')
         fd.close()

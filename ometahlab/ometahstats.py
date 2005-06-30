@@ -55,7 +55,7 @@ class Comparison:
 
     def __init__(self, paths):
         """ Constructor, paths is a list of strings, which are paths to Ometah executions directories."""
-        import pickle, os
+        import cPickle, os
         # color used in graphic plottings
         self.__color = 'grey85'        
         # list of Test objects, one for each metarun
@@ -71,7 +71,7 @@ class Comparison:
             try:
                 q = os.path.join(p, 'TEST')
                 fd = open(q, 'r')
-                s = pickle.load(fd)
+                s = cPickle.load(fd)
                 self.__tests.append(s)
             except:
                 msg = 'error while loading %s' % q
