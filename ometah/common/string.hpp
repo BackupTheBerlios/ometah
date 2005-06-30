@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: string.hpp,v 1.2 2005/06/24 19:36:51 nojhan Exp $
+ *  $Id: string.hpp,v 1.3 2005/06/30 12:12:43 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -91,7 +91,6 @@ V<double> stringToDouble(V<string> VString)
 */
 
 //! Make a double from a string
-/*
 double stringToDouble(string aString)
 {
   double aDouble;
@@ -100,7 +99,6 @@ double stringToDouble(string aString)
 
   return aDouble;
 };
-*/
 
 //! Make a double vector from a string, with shortcut options
 /*! 
@@ -108,16 +106,13 @@ double stringToDouble(string aString)
     "1.2,1" => <1.2,1>
     "3:1.0" => <1.0,1.0,1.0>
 */
-
-/*
-template<template <class T> class V>
-V<double> stringToDouble(string aString, string itemSeparator=",", string multiSeparator=":")
+vector<double> stringToDouble(string aString, string itemSeparator=",", string multiSeparator=":")
 {
-  V<double> res;
+  vector<double> res;
   
   // if find a separator
   if ( aString.find(multiSeparator) < aString.size() ) {
-    V<double> tempvec = stringToDouble( stringSplit( aString, multiSeparator ) );
+    vector<double> tempvec = stringToDouble( stringSplit( aString, multiSeparator ) );
     res.reserve( (int)tempvec[0]);
 
     for(unsigned int i=0; i<tempvec[0]; i++) {
@@ -128,7 +123,7 @@ V<double> stringToDouble(string aString, string itemSeparator=",", string multiS
   }
   return res;
 }
-*/
+
 
 //! Make a string vector from a string
 /*!
