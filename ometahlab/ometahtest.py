@@ -135,8 +135,8 @@ class Test:
             self.metah = header.metah
             self.opt_val = min( [ p.value for p in self.problem.optimum ] ) 
             self._INFO_PB = True
-        
-        self.__points.append(q.getPoints(self.opt_val + self.problem.accuracy))
+
+        self.__points.append(q.getPoints())
         self.evaluations.append(q.getEvaluations())
         self.optima.append(self.__getOptimum(runb))
         fd.close()
@@ -157,13 +157,9 @@ class Test:
             print '\b-',
 
         # make the runsNb runs
-        map(self.__init, xrange(self.runsNb))
-
-        """
         for i in xrange(self.runsNb):
             intf = self.__init(i)
-        """
-            
+        
         if self._XML_ARCH:
             intf.archiveXml()        
         
@@ -199,14 +195,9 @@ class Test:
             os.rename(src, os.path.join(self.__dir, src) )
 
     def __setIterationLists(self):
-
-        # one sublist for each iteration, containing all points of the N runs
-        ###### !!!!!
-        # PB : assume that all runs have the same #iteratiosn
-        # => PB if optimum found and points stopped
+        """ Defines the iteration lists. """
         
-        size = self.parameters.sampleSize
-        
+        size = self.parameters.sampleSize        
         # initialize the max nb of iterations, some runs may have stopped before reaching max #iter,
         # len(run) is the number of sublists in run, and there is one sublist for each run
         maxiters = max( [ len(run) for run in self.__points ] ) 
@@ -214,15 +205,11 @@ class Test:
         self.pointsIterations = [ [] for i in xrange(maxiters) ]
         self.optimaIterations = [ [] for i in xrange(maxiters) ]
 
-        print 'SIZE :', maxiters
-
         for iter in range(maxiters):
-            for run in self.__points:
-                
+            for run in self.__points:                
                 # find the optimum for the current run in the current iteration
                 minp = qparser.Point()
                 minp.value = 1000
-
                 if len(run) > iter:
                     for point in run[iter]:
                         # add error attribute value
@@ -233,22 +220,6 @@ class Test:
                         self.pointsIterations[iter].append(point)
                     # only add optimum to optimaIterations
                     self.optimaIterations[iter].append(minp)
-
-        # TRONQUER LISTES AVEC DU VIDE "a la fin" ?
-        #
-        # when empty list can occur ?
-        # in qparser, append a [] when "diversification" found.. => normally won't get any empty list,
-        # at least one point (of one run) in those lists
-        # maybe the difference of #points can cause errors in plotttings...
-        try:
-            self.pointsIterations.index([])
-        except:
-            print 'NO EMPTY LIST IN POINTSITER'
-        try:
-            self.optimaIterations.index([])
-        except:
-            print 'NO EMPTY LIST IN OPTIMSITER'
-
 
 
     def __getOptimum(self, i):

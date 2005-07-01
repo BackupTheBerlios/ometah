@@ -56,10 +56,9 @@ class Qparser:
     def setFd(self, fd):
         self.__fd = fd
 
-    def getPoints(self, treshold):
+    def getPoints(self):
         """ treshold is the value to go under (or equal) to stop the points reading,
         it's equal to the real optimum value plus the accuracy needed by the pb. """        
-        self.__tresh = treshold
         (fd, line) = (self.__fd, '')
         
         def f(s):
@@ -67,25 +66,40 @@ class Qparser:
         
         while fd.readline().find('<optimization>') < 0:
             pass
-        
         # counter for Point's indexes
         pindex = 0
         iterindex = 0
         line = fd.readline()
+
+        # first read points in "start" step, to avoid fatal bug if opt found there
+        while f('<step class="start">') < 0:
+            line = fd.readline()
+        fd.readline() # skip <sample>
+        line = fd.readline()
+        self.__points.append([])
+
+        while f('<point>') != -1:
+            p = Point()
+            p.value = float(line[f('<values>')+8:f('</values>')])
+            p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
+            p.index = pindex
+            self.__points[iterindex].append(p)          
+            pindex += 1
+            line = fd.readline()
+        iterindex += 1
+
+        # get current #evaluations
+        while f('<evaluations>') < 0:
+            line = fd.readline()
+        eval = int( line[f('<evaluations>')+13:f('</evaluations>')] )
+        
         while True:        
             while f('<step class="diversification">') < 0:                
 
-                # append self.__points[iterindex]
-                
                 line = fd.readline()
                 if line == '': # if EOF reached
                     # no success reached, max evaluations done
-                    try:
-                        self.__evaluations = eval
-                    except:
-                        import sys
-                        print 'FATAL ERROR: optimum found at start'
-                        sys.exit(1)
+                    self.__evaluations = eval
                     return self.__points
                 
             # 'while' loop left => <step> found
@@ -101,7 +115,6 @@ class Qparser:
                 self.__points[iterindex].append(p)          
                 pindex += 1
                 line = fd.readline()
-
             iterindex += 1
             
             # get current #evaluations
