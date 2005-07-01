@@ -381,9 +381,9 @@ class Stater:
         # optima's error distribution
         self.__plot_9()
         # error convergence for all points
-        #self.__plot_10()
+        self.__plot_10()
         # error convergence for optima
-        #self.__plot_11()
+        self.__plot_11()
 
         
     def writeLatex(self):
