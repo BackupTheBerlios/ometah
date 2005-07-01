@@ -92,13 +92,13 @@ def main():
 
         t = ometahtest.Test()
         t.setArgs('-e 30 -p Ackley -d 10')
-        t.setNbRuns(15)
+        t.setNbRuns(40)
         t.setOmetahPath('../ometah/ometah')
         t.start()
 
         u = ometahtest.Test()
         u.setArgs('-e 60  -p Ackley -d 10')
-        u.setNbRuns(15)
+        u.setNbRuns(40)
         u.setOmetahPath('../ometah/ometah')
         u.start()
     

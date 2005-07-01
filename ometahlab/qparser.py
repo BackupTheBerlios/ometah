@@ -46,6 +46,7 @@ class Qparser:
         self.__header = Header()   # Header object, returned but getHeader
         self.__fd = None           # file descriptor of ometah output
         self.__tresh = 0           # value under which test is a success, hence points reading is stopped
+        self.__evaluations = 0     # effective nb of evaluations done before reaching success.
         
     def load(self, path):
         """ Execute ometah, returning the file object of its output """
@@ -74,6 +75,8 @@ class Qparser:
             while f('<step class="diversification">') < 0:                
                 line = fd.readline()
                 if line == '': # if EOF reached
+                    # no success reached, max evaluations done
+                    self.__evaluations = eval
                     return self.__points
                 
             # 'while' loop left => <step> found
@@ -84,15 +87,29 @@ class Qparser:
                 solution = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
                 p = Point()
                 (p.value, p.coords, p.index) = (value, solution, pindex)
-                self.__points.append(p)
+                self.__points.append(p)                
 
                 if p.value <= self.__tresh:
+                    # go get evaluations number, reach previous line
+                    while f('<evaluations>') < 0:
+                        line = fd.readline()
+                    self.__evaluations = int( line[f('<evaluations>')+13:f('</evaluations>')] )
                     return self.__points 
                     
                 pindex += 1
                 line = fd.readline()
 
+            # get current #evaluations
+            while f('<evaluations>') < 0:
+                line = fd.readline()
+            eval = int( line[f('<evaluations>')+13:f('</evaluations>')] )
+
+        # should not get there
         return self.__points
+
+    def getEvaluations(self):
+        """ Returns """
+        return self.__evaluations
     
     def getHeader(self):
         """ Return Header instance with info from XML file. """
@@ -170,15 +187,15 @@ class Qparser:
         PA = self.__header.parameters
         fd.readline() # skip <parameters>
         line = fd.readline()
-        PA.sampleSize = int(line[f('<value>')+7:f('</value>')])
+        PA.sampleSize = int( line[f('<value>')+7:f('</value>')] )
         line = fd.readline()
-        PA.maxIterations = line[f('<value>')+7:f('</value>')]
+        PA.maxIterations = int( line[f('<value>')+7:f('</value>')] )
         line = fd.readline()
-        PA.maxEvaluations = line[f('<value>')+7:f('</value>')]
+        PA.maxEvaluations = int( line[f('<value>')+7:f('</value>')] )
         line = fd.readline()
-        PA.treshold = line[f('<value>')+7:f('</value>')]
+        PA.treshold = int( line[f('<value>')+7:f('</value>')] )
         line = fd.readline()
-        PA.randomSeed = line[f('<value>')+7:f('</value>')]
+        PA.randomSeed = int( line[f('<value>')+7:f('</value>')] )
 
         return self.__header
         

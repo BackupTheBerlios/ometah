@@ -78,6 +78,8 @@ class Test:
         self.succPerf = 0
         # number of runs for the test
         self.runsNb = 25
+        # list of effective nb of evaluations (size = runsNb)
+        self.evaluations = []
 
         self.problem = None
         self.parameters = None
@@ -134,8 +136,9 @@ class Test:
             self.metah = header.metah
             self.opt_val = min( [ p.value for p in self.problem.optimum ] ) 
             self._INFO_PB = True
-            
+
         self.__points.append(q.getPoints(self.opt_val + self.problem.accuracy))
+        self.evaluations.append(q.getEvaluations())        
         fd.close()        
 
         return intfc
@@ -154,7 +157,7 @@ class Test:
         # make the runsNb runs
         for i in xrange(self.runsNb):
             intf = self.__init(i)
-            self.optima.append(self.__getOptimum(i))            
+            self.optima.append(self.__getOptimum(i))
 
         if self._XML_ARCH:
             intf.archiveXml()        

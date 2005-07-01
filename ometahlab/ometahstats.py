@@ -380,7 +380,7 @@ class Stater:
             W('\\end{description}\n')
             # Parameters subsection
             W('\\subsection*{Parameters}\n\\begin{description}\n')
-            txt = '\t\\item[Runs:] %i \n\t\\item[Sample size:] %s\n\t\\item[Treshold:] %s\n\t\\item[Random seed:] %s\n' \
+            txt = '\t\\item[Runs:] %i \n\t\\item[Sample size:] %i\n\t\\item[Treshold:] %i\n\t\\item[Random seed:] %i\n' \
                   % (test.runsNb, test.parameters.sampleSize, test.parameters.treshold, test.parameters.randomSeed)                        
             W(txt)
             W('\\end{description}\n')
@@ -390,8 +390,8 @@ class Stater:
             txt = '\t\\item[Optima mean value:] %f \n\t\\item[Optima standard deviation:] %f\n' \
                   % (r.mean(vals), r.sd(vals))                        
             W(txt)
-            txt = '\t\\item[Optima value found:] %f \n\t\\item[Success rate:] %f\n' \
-                  % (min(vals), 100*test.succRate)                        
+            txt = '\t\\item[Optima value found:] %f \n\t\\item[Success rate:] %f \n\t\\item[Mean evaluations:] %f\n' \
+                  % (min(vals), 100*test.succRate, r.mean(test.evaluations))                        
             W(txt)            
             W('\\end{description}\n')
         
