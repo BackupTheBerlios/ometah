@@ -162,15 +162,15 @@ class Stater:
         length = len(self.__optimas[0])
         medianIndex = length/2 # integer division, ok with first index = zero
         mlist = [ points[medianIndex].value for points in self.__optimas]
-        r.plot(olist, type='n', main='Bests optima evolution', xlab='Test index', ylab='Optima value')
+        r.plot(olist, type='n', log="y", main='Bests optima evolution', xlab='Test index', ylab='Optima value')
         r.lines(olist, lty='dotted')
         r.points(olist, bg = 'white', pch = 21)
         r.grid(nx=10, ny=40)
-        r.plot(wlist, type='n', main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
+        r.plot(wlist, type='n', log="y", main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
         r.lines(wlist, lty='dotted')
         r.points(wlist, bg ='white', pch = 21)
         r.grid(nx=10, ny=40)
-        r.plot(mlist, type='n', main='Median optima evolution', xlab='Test index', ylab='Optima value')        
+        r.plot(mlist, type='n', log="y", main='Median optima evolution', xlab='Test index', ylab='Optima value')        
         r.lines(mlist, lty='dotted')
         r.points(mlist, bg ='white', pch = 21)
         r.grid(nx=10, ny=40)
@@ -186,7 +186,7 @@ class Stater:
         for metalist in self.__pointsIter:
             vlist = [[p.value for p in points] for points in metalist ]
             txt = '%s\nConvergence of all points' % self.__tests[i].args
-            r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Point value')
+            r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Point value')
             r.grid(nx=10, ny=40)
             i += 1
         r.dev_off()
@@ -201,7 +201,7 @@ class Stater:
         for metalist in self.__optimaIter:
             vlist = [[p.value for p in points] for points in metalist ]
             txt = '%s\nConvergence of optima' % self.__tests[i].args
-            r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Optima value')
+            r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Optima value')
             r.grid(nx=10, ny=40)
             i += 1
         r.dev_off()
@@ -212,8 +212,7 @@ class Stater:
         fileName = os.path.join(self.__dir, 'success_graph.ps')
         r.postscript(fileName, paper='letter')
         slist = []
-        for test in self.__tests:
-            slist.append(test.succRate*100)
+        slist = [t.succRate*100 for t in self.__tests]
         r.plot(slist, type='n', main='Success rate for each test', xlab='Test index', ylab='Rate (%)')
         r.points(slist, pch = 21, type='h')
         r.points(slist, pch = 21)
@@ -327,6 +326,39 @@ class Stater:
                 
         self.__same_distrib = dic['p.value']
 
+
+    def __plot_10(self):
+        """ Convergence graph over iterations : plot median error of each run for a given iteration,
+        using logarithmic scale. """
+        fileName = os.path.join(self.__dir, 'convergence_error_all.ps')
+        r.postscript(fileName, paper='letter')
+        i = 0
+        for list in self.__pointsIter:
+            elist = [[p.error for p in points] for points in list ]
+            errlist = [r.median(list) for list in elist]
+            txt = '%s\nConvergence of error of all points' % self.__tests[i].args
+            r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration', log="y")
+            r.grid(nx=10, ny=40)
+            i += 1
+        r.dev_off()
+
+
+    def __plot_11(self):
+        """ Convergence graph over iterations : plot median error of each run for a given iteration,
+        using logarithmic scale. """
+        fileName = os.path.join(self.__dir, 'convergence_error_opt.ps')
+        r.postscript(fileName, paper='letter')
+        i = 0
+
+        for list in self.__optimaIter:
+            elist = [[p.error for p in points] for points in list ]
+            errlist = [r.median(list) for list in elist]            
+            txt = '%s\nConvergence of error of optima' % self.__tests[i].args
+            r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration', log="y")
+            r.grid(nx=10, ny=40)
+            i += 1
+        r.dev_off()
+        
         
     def plot(self):
         """ Plot results as postscript files. """
@@ -343,11 +375,16 @@ class Stater:
         # success rates
         self.__plot_6()
         # convergence graphs superposed for each run, for each test
-        self.__plot_7()
+        #self.__plot_7()
         # points in plan
         self.__plot_8()
         # optima's error distribution
         self.__plot_9()
+        # error convergence for all points
+        #self.__plot_10()
+        # error convergence for optima
+        #self.__plot_11()
+
         
     def writeLatex(self):
         """ Write Latex report """

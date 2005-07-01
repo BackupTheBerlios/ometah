@@ -71,7 +71,7 @@ class Qparser:
         # counter for Point's indexes
         pindex = 0    
         line = fd.readline()
-        while 1 == 1:        
+        while True:        
             while f('<step class="diversification">') < 0:                
                 line = fd.readline()
                 if line == '': # if EOF reached
@@ -82,20 +82,21 @@ class Qparser:
             # 'while' loop left => <step> found
             fd.readline() # skip <sample>
             line = fd.readline()
+            
             while f('<point>') != -1:
-                value = float(line[f('<values>')+8:f('</values>')])
-                solution = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
                 p = Point()
-                (p.value, p.coords, p.index) = (value, solution, pindex)
-                self.__points.append(p)                
-
+                p.value = float(line[f('<values>')+8:f('</values>')])
+                p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
+                p.index = pindex
+                self.__points.append(p)
+                """
                 if p.value <= self.__tresh:
                     # go get evaluations number, reach previous line
                     while f('<evaluations>') < 0:
                         line = fd.readline()
                     self.__evaluations = int( line[f('<evaluations>')+13:f('</evaluations>')] )
-                    return self.__points 
-                    
+                    return self.__points
+                """                    
                 pindex += 1
                 line = fd.readline()
 
@@ -141,21 +142,21 @@ class Qparser:
         fd.readline() # skip <optimum>
         line = fd.readline()
         while f('<point>') != -1:
-            p = Point()            
+            p = Point()
             p.value = float(line[f('<values>')+8:f('</values>')])
-            p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
+            p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]                                 
             PB.optimum.append(p)
             line = fd.readline()
             
         fd.readline() # skip <bounds>
         minb = []
-        p = Point()
         line = fd.readline()
+        p = Point()
         p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
         PB.min_bound.append(p)
         maxb = []
-        p = Point()
         line = fd.readline()
+        p = Point()
         p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
         PB.max_bound.append(p)
 

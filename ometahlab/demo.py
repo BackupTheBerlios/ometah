@@ -57,7 +57,7 @@ def main():
     if arg == 0:
         """ Usage """
         print 'Usage: python demo.py <i>'
-        print 'with i the number of a demo, from 1 to 5, see file content for demos details.'
+        print 'with i the number of a demo, from 1 to 6, see file content for demos details.'
         return
     
     import ometahtest
@@ -180,6 +180,43 @@ def main():
         
         y = ometahtest.Test()
         y.setArgs('-e 1000 -i 1000 -p Sphere')
+        y.setNbRuns(50)
+        y.start()
+
+        p = [ t.getPath(), u.getPath(), v.getPath(), w.getPath(), y.getPath()]
+        ometahstats.stat(p)
+
+    
+    elif arg == 6:
+
+        print """ Only for high frequency CPU, or patient people, we reach 1000 evaluations
+        for a set of five tests, each one doing 50 runs. """
+        
+        t = ometahtest.Test()
+        t.setArgs('-e 50 -p Schwefel')
+        t.setNbRuns(50)
+        t.setOmetahPath('../ometah/ometah')
+        t.start()
+        
+        u = ometahtest.Test()
+        u.setArgs('-e 100 -p Schwefel -m CEDA')
+        u.setNbRuns(50)
+        u.setOmetahPath('../ometah/ometah')
+        u.start()
+        
+        v = ometahtest.Test()
+        v.setArgs('-e 200 -p Schwefel')
+        v.setNbRuns(50)
+        v.start()
+        
+        w = ometahtest.Test()
+        w.setArgs('-e 500 -i 150 -p Schwefel')
+        w.setNbRuns(50)
+        w.setOmetahPath('../ometah/ometah')
+        w.start()
+        
+        y = ometahtest.Test()
+        y.setArgs('-e 1000 -i 1000 -p Schwefel')
         y.setNbRuns(50)
         y.start()
 

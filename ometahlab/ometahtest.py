@@ -37,7 +37,7 @@ except:
     pass
 
 from rpy import *
-
+import qparser
 
 class Test:
     """ A Test is a set of executions (runs) of the same command line. """
@@ -85,43 +85,42 @@ class Test:
         self.parameters = None
         self.metah = None
 
-    def __init(self, runNumber):
+    def __init(self, runb):
         """ Initialize a Test, which can be sawn as a 'metarun', a set of several runs (default : 25).
-        Run runNumber-th Ometah run  with given argv arguments, logFile as the name of the log file.
+        Run runb-th Ometah run  with given argv arguments, logFile as the name of the log file.
         Then returns the Interface instance used.
         """
-        import qparser, os
+        import os
         import interface
         intfc = interface.Interface()
         intfc.setLog(self.__logName)
 
-        slog = "\nRun %i :\n" % (runNumber)
+        slog = "\nRun %i :\n" % (runb)
         intfc.log(slog)
 
-        cmd = "%s %s" % (self.__ometah_path, ''.join(['']+self.__argv[1:]))
         try:
-            fd = os.popen(cmd)
+            fd = os.popen(self.__argv)
         except:
             intfc.log('ERROR : wrong path to ometah [Interface.getXmlFromExecOmetah]\n')            
             intfc.fatal('(see log file)')
 
         if self._XML_ARCH:
-            xmlName = 'run%i' % (runNumber)
+            xmlName = 'run%i' % (runb)
             fileOut = intfc.copyToDisk(fd, filename=xmlName)
             fd.close()
             fd = open(fileOut, 'r')        
-        
-        if not 'xml-version="1.0"' in fd.readline():
+    
+        if fd.readline().find('xml-version="1.0"') < 0:
             intfc.log('ERROR : ometah failed to create XML\n')
             intfc.fatal('(see log file)')
-
+    
         # Loading bar        
         for i in xrange(self.runsNb):
             print '\b\b', # delete previous bar
 
-        for i in xrange(runNumber):
+        for i in xrange(runb):
             print '\b|',  # write as char as runNumber
-        for i in xrange(self.runsNb - 1 - runNumber):
+        for i in xrange(self.runsNb - 1 - runb):
             print '\b-',  # padd with default char
         sys.stdout.flush()
         
@@ -136,18 +135,21 @@ class Test:
             self.metah = header.metah
             self.opt_val = min( [ p.value for p in self.problem.optimum ] ) 
             self._INFO_PB = True
-
+        
         self.__points.append(q.getPoints(self.opt_val + self.problem.accuracy))
-        self.evaluations.append(q.getEvaluations())        
-        fd.close()        
-
+        self.evaluations.append(q.getEvaluations())
+        self.optima.append(self.__getOptimum(runb))
+        fd.close()
+        
         return intfc
     
     
     def __metarun(self):
         """ Make a test, that is running Ometah RunsNb times with the same command line arguments.
         A serialized object of the self instance is created in the test directory """        
-        import cPickle, qparser
+        import cPickle
+
+        self.__argv = "%s %s" % (self.__ometah_path, ''.join(self.__argv))
         
         print "\nRunning ometah", ''.join(self.__argv)
         # to initialize loading bar
@@ -155,26 +157,28 @@ class Test:
             print '\b-',
 
         # make the runsNb runs
+        map(self.__init, xrange(self.runsNb))
+
+        """
         for i in xrange(self.runsNb):
             intf = self.__init(i)
-            self.optima.append(self.__getOptimum(i))
-
+        """
+            
         if self._XML_ARCH:
             intf.archiveXml()        
         
         (i, ok) = (1, 0)        
         while not ok:
             ok = 1
-            dir = '%s_%s_d%i_e%s_r%s_%i' \
+            self.__dir = '%s_%s_d%i_e%s_r%s_%i' \
                   % (self.problem.name, self.metah.key, \
                      self.problem.dimension, self.parameters.maxEvaluations, \
                      self.parameters.randomSeed, i)
-            dir = os.path.join(self.__results_dir, dir)
+            self.__dir = os.path.join(self.__results_dir, self.__dir)
             try:
-                os.mkdir(dir)
+                os.mkdir(self.__dir)
             except:
                 (i, ok) = (0, i+1)            
-        self.__dir = dir
 
         self.__setIterationLists()
         self.__calculSuccessRates()
@@ -182,24 +186,20 @@ class Test:
         # empty variables for pickle reduction
         self.__points = []
         self.__argv = self.__args = None
-        
-        fd = open('TEST', 'w')
+                
         try:
-            cPickle.dump(self,fd)
+            cPickle.dump(self, open('TEST', 'w'))
         except:
             intf.fatal('pickle failed [Test.metarun]')
-        fd.close()
 
         files = ['TEST', self.__logName]
-        if self._XML_ARCH:
+        if self._XML_ARCH:            
             files.append('xml.tar.gz')
         for src in files:
-            tar = os.path.join(self.__dir, src)
-            os.rename(src, tar)
+            os.rename(src, os.path.join(self.__dir, src) )
 
     def __setIterationLists(self):
 
-        import qparser
         # one sublist for each iteration, containing all points of the N runs
         ###### !!!!!
         # PB : assume that all runs have the same #iteratiosn
@@ -207,28 +207,29 @@ class Test:
         
         size = self.parameters.sampleSize
         # initialize the max nb of iterations, some runs may have stopped before reaching max #iter
-        iters = max( [len(i) / size for i in self.__points ] ) 
+        iters = max( [ len(i) / size for i in self.__points ] ) 
         
         self.pointsIterations = [ [] for i in xrange(iters) ]
         self.optimaIterations = [ [] for i in xrange(iters) ]
-        
-        # for each sublist (each run)
-        for sublist in self.__points:
 
+        
+        for sub in self.__points:
             #it is current iteration, c counts points until reach sample size
-            c = it = 0             
+            c = it = 0
             minp = qparser.Point()
             minp.value = 1000
-            for p in sublist:
+            for p in sub:
                 p.error = p.value - self.opt_val
                 self.pointsIterations[it].append(p)
+
                 if p.value < minp.value:
                     minp = p
                 c += 1
                 # when sample size reached, select the optimum for this iteration
                 if c == size:
                     self.optimaIterations[it].append(minp)
-                    (c, it) = (0, it + 1)                    
+                    (c, it) = (0, it + 1)
+
 
     def __getOptimum(self, i):
         """ Returns the Point object which has the smallest value (minimum) for run i. """
@@ -273,7 +274,7 @@ class Test:
 
     def setArgs(self, args):
         """ Set the arguments of Ometah execution, as a string. Ie give '-p Sphere -e 50'."""
-        self.__argv = [''] + [args]
+        self.__argv = [''] + [args]        
         self.args = 'ometah ' + ''.join(self.__argv)
 
     def setOmetahPath(self, path):
