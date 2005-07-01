@@ -140,7 +140,6 @@ class Test:
         self.evaluations.append(q.getEvaluations())
         self.optima.append(self.__getOptimum(runb))
         fd.close()
-        
         return intfc
     
     
@@ -193,6 +192,7 @@ class Test:
             files.append('xml.tar.gz')
         for src in files:
             os.rename(src, os.path.join(self.__dir, src) )
+            
 
     def __setIterationLists(self):
         """ Defines the iteration lists. """
