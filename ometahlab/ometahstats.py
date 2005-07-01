@@ -418,7 +418,7 @@ class Stater:
             W('\\end{description}\n')
             # Parameters subsection
             W('\\subsection*{Parameters}\n\\begin{description}\n')
-            txt = '\t\\item[Runs:] %i \n\t\\item[Sample size:] %i\n\t\\item[Treshold:] %i\n\t\\item[Random seed:] %i\n' \
+            txt = '\t\\item[Runs:] %i \n\t\\item[Sample size:] %i\n\t\\item[Treshold:] %f\n\t\\item[Random seed:] %i\n' \
                   % (test.runsNb, test.parameters.sampleSize, test.parameters.treshold, test.parameters.randomSeed)                        
             W(txt)
             W('\\end{description}\n')

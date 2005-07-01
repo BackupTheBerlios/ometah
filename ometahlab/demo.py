@@ -72,7 +72,7 @@ def main():
         and a maximum of 60 evaluations, results don't give many information. """
 
         t = ometahtest.Test()
-        t.setArgs('-e 30 -p Ackley')
+        t.setArgs('-e 30 -p Ackley -P 0.01')
         t.setNbRuns(15)
         t.setOmetahPath('../ometah/ometah')
         t.start()
@@ -80,7 +80,7 @@ def main():
         u = ometahtest.Test()
         u.setArgs('-e 60  -p Ackley')
         u.setNbRuns(15)
-        u.setOmetahPath('../ometah/ometah')
+        u.setOmetahPath('../ometah/ometah -P 0.01')
         u.start()
     
         paths = [ t.getPath(), u.getPath() ]
@@ -110,17 +110,17 @@ def main():
         print """ Average length script, to have a good preview of ometahlab results, with Rastrigin problem. """
     
         t = ometahtest.Test()
-        t.setArgs('-e 60 -p Rastrigin -d 2')
+        t.setArgs('-e 60 -p Rastrigin -d 2 -P 0.01')
         t.setNbRuns(30)
         t.start()
     
         u = ometahtest.Test()
-        u.setArgs('-e 120  -p Rastrigin -d 2')
+        u.setArgs('-e 120  -p Rastrigin -d 2 -P 0.01')
         u.setNbRuns(30)
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 240 -i 100 -p Rastrigin -d 2')
+        v.setArgs('-e 240 -i 100 -p Rastrigin -d 2 -P 0.01')
         v.setNbRuns(30)
         v.start()
         

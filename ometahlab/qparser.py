@@ -194,7 +194,7 @@ class Qparser:
         line = fd.readline()
         PA.maxEvaluations = int( line[f('<value>')+7:f('</value>')] )
         line = fd.readline()
-        PA.treshold = int( line[f('<value>')+7:f('</value>')] )
+        PA.treshold = float( line[f('<value>')+7:f('</value>')] )
         line = fd.readline()
         PA.randomSeed = int( line[f('<value>')+7:f('</value>')] )
 
