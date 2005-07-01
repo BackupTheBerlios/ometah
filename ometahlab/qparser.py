@@ -69,29 +69,41 @@ class Qparser:
             pass
         
         # counter for Point's indexes
-        pindex = 0    
+        pindex = 0
+        iterindex = 0
         line = fd.readline()
         while True:        
             while f('<step class="diversification">') < 0:                
+
+                # append self.__points[iterindex]
+                
                 line = fd.readline()
                 if line == '': # if EOF reached
                     # no success reached, max evaluations done
-                    self.__evaluations = eval
+                    try:
+                        self.__evaluations = eval
+                    except:
+                        import sys
+                        print 'FATAL ERROR: optimum found at start'
+                        sys.exit(1)
                     return self.__points
                 
             # 'while' loop left => <step> found
             fd.readline() # skip <sample>
             line = fd.readline()
+            self.__points.append([])
             
             while f('<point>') != -1:
                 p = Point()
                 p.value = float(line[f('<values>')+8:f('</values>')])
                 p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
                 p.index = pindex
-                self.__points.append(p)          
+                self.__points[iterindex].append(p)          
                 pindex += 1
                 line = fd.readline()
 
+            iterindex += 1
+            
             # get current #evaluations
             while f('<evaluations>') < 0:
                 line = fd.readline()

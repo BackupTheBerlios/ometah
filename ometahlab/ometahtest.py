@@ -51,7 +51,7 @@ class Test:
         """ Constructor. """
         # list of the N optimas, have to sort it after
         self.optima = []
-        # list of sublist, one for each run, containing Point objects
+        # list of sublists, one for each run, containing Point objects divided in lists of iterations
         self.__points = []
         # list of Points sorted by iteration, for any points of all runs
         self.pointsIterations = []
@@ -206,37 +206,59 @@ class Test:
         # => PB if optimum found and points stopped
         
         size = self.parameters.sampleSize
-        # initialize the max nb of iterations, some runs may have stopped before reaching max #iter
-        iters = max( [ len(i) / size for i in self.__points ] ) 
         
-        self.pointsIterations = [ [] for i in xrange(iters) ]
-        self.optimaIterations = [ [] for i in xrange(iters) ]
-
+        # initialize the max nb of iterations, some runs may have stopped before reaching max #iter,
+        # len(run) is the number of sublists in run, and there is one sublist for each run
+        maxiters = max( [ len(run) for run in self.__points ] ) 
         
-        for sub in self.__points:
-            #it is current iteration, c counts points until reach sample size
-            c = it = 0
-            minp = qparser.Point()
-            minp.value = 1000
-            for p in sub:
-                p.error = p.value - self.opt_val
-                self.pointsIterations[it].append(p)
+        self.pointsIterations = [ [] for i in xrange(maxiters) ]
+        self.optimaIterations = [ [] for i in xrange(maxiters) ]
 
-                if p.value < minp.value:
-                    minp = p
-                c += 1
-                # when sample size reached, select the optimum for this iteration
-                if c == size:
-                    self.optimaIterations[it].append(minp)
-                    (c, it) = (0, it + 1)
+        print 'SIZE :', maxiters
+
+        for iter in range(maxiters):
+            for run in self.__points:
+                
+                # find the optimum for the current run in the current iteration
+                minp = qparser.Point()
+                minp.value = 1000
+
+                if len(run) > iter:
+                    for point in run[iter]:
+                        # add error attribute value
+                        point.error = point.value - self.opt_val
+                        # add each point to pointsIterations
+                        if point.value < minp.value:
+                            minp = point
+                        self.pointsIterations[iter].append(point)
+                    # only add optimum to optimaIterations
+                    self.optimaIterations[iter].append(minp)
+
+        # TRONQUER LISTES AVEC DU VIDE "a la fin" ?
+        #
+        # when empty list can occur ?
+        # in qparser, append a [] when "diversification" found.. => normally won't get any empty list,
+        # at least one point (of one run) in those lists
+        # maybe the difference of #points can cause errors in plotttings...
+        try:
+            self.pointsIterations.index([])
+        except:
+            print 'NO EMPTY LIST IN POINTSITER'
+        try:
+            self.optimaIterations.index([])
+        except:
+            print 'NO EMPTY LIST IN OPTIMSITER'
+
 
 
     def __getOptimum(self, i):
         """ Returns the Point object which has the smallest value (minimum) for run i. """
-        optim = self.__points[i][0]
-        for point in self.__points[i]:
-            if point.value < optim.value:
-                optim = point
+        optim = self.__points[i][0][0]
+        
+        for iteration in self.__points[i]:
+            for point in iteration:
+                if point.value < optim.value:
+                    optim = point
         return optim
 
     def __calculSuccessRates(self):

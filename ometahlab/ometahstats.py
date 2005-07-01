@@ -139,7 +139,7 @@ class Stater:
         fileName = os.path.join(self.__dir, 'testboxes_optima.ps')
         r.postscript(fileName, paper='letter')
         vlist = [[p.value for p in points ] for points in self.__optimas ]
-        r.boxplot(vlist, style='quantile', col=self.__color, main='Optimas list', xlab='Test index', ylab='')
+        r.boxplot(vlist, style='quantile', log="y", col=self.__color, main='Optimas list', xlab='Test index', ylab='')
         r.grid(nx=10, ny=40)
         r.dev_off()
 
