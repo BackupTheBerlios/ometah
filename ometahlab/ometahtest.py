@@ -195,30 +195,29 @@ class Test:
             os.rename(src, tar)
 
     def __setIterationLists(self):
-        """ !!!!!!!!!  CRITIC  -> MODULARISER !!? !!!!!!!!!!! """
+
         import qparser
         # one sublist for each iteration, containing all points of the N runs
         ###### !!!!!
         # PB : assume that all runs have the same #iteratiosn
         # => PB if optimum found and points stopped
+        
         size = self.parameters.sampleSize
-        # initialize the length of s.points
-        iters = len(self.__points[0]) / size
+        # initialize the max nb of iterations, some runs may have stopped before reaching max #iter
+        iters = max( [len(i) / size for i in self.__points ] ) 
         
         self.pointsIterations = [ [] for i in xrange(iters) ]
         self.optimaIterations = [ [] for i in xrange(iters) ]
         
-        subindex = -1 # sublist index in followin iteration
         # for each sublist (each run)
         for sublist in self.__points:
-            # nb of iterations = nb of points / sample size
-            subindex += 1
+
             #it is current iteration, c counts points until reach sample size
             c = it = 0             
             minp = qparser.Point()
             minp.value = 1000
             for p in sublist:
-                p.error = p.value - self.problem.optimum[0].value
+                p.error = p.value - self.opt_val
                 self.pointsIterations[it].append(p)
                 if p.value < minp.value:
                     minp = p
@@ -227,7 +226,6 @@ class Test:
                 if c == size:
                     self.optimaIterations[it].append(minp)
                     (c, it) = (0, it + 1)                    
-        """ !!!!!!!!!  CRITIC  !!!!!!!!!!! """
 
     def __getOptimum(self, i):
         """ Returns the Point object which has the smallest value (minimum) for run i. """

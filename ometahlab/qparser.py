@@ -86,12 +86,8 @@ class Qparser:
                 (p.value, p.coords, p.index) = (value, solution, pindex)
                 self.__points.append(p)
 
-                # !!!!! test if treshold is reached !!!!!!!
-                # COMMENT A & B LINES TO AVOID SUCCESS BUG
                 if p.value <= self.__tresh:
-                    pass
-                    #print 'end at index', pindex #A
-                    #return self.__points #B
+                    return self.__points 
                     
                 pindex += 1
                 line = fd.readline()

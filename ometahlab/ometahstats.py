@@ -222,14 +222,16 @@ class Stater:
 
     def __plot_7(self):
         """ Plot graph of convergences:  for each Test the view of all runs convergence over iterations."""
-        import random
+
+        """
         fileName = os.path.join(self.__dir, 'convergence_graph.ps')
         r.postscript(fileName, paper='letter')
         olist = []
         for test in self.__tests:
             # initialize plotting window with first run
             lineType = 1 # cf R, help(par), line type option
-            olist = [sub[0].value for sub in test.optimaIterations]
+            it = test.optimaIterations
+            olist = [sub[0].value for sub in it]
             txt = '%s\nConvergence of the runs over iterations' % test.args
             r.plot(olist, type='o', lty=lineType, ylim=[0,0.5], main=txt, ylab='Value', xlab='Run index')            
             # then iter over the runsNb, plotting their graphs
@@ -237,11 +239,13 @@ class Stater:
                 if i < 7:
                     lineType += 1
                 else:
-                    lineType = 0
-                olist = [sub[i].value for sub in test.optimaIterations]
+                    lineType = 0                    
+                olist = [sub[i].value for sub in it[:end]]
+                print i
                 r.lines(olist, type='o', lty=lineType)
             r.grid(nx=10, ny=40)
         r.dev_off()
+        """
     
     def __plot_8(self):
         """ Plot optima and the optimum in their neighborhood plan, PCA used if dimension > 2 """
