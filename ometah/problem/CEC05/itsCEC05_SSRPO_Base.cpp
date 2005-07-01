@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Base.cpp,v 1.2 2005/06/20 13:06:24 jpau Exp $
+ * $Id: itsCEC05_SSRPO_Base.cpp,v 1.3 2005/07/01 13:08:38 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  * Author: Johann Dréo <nojhan@gmail.com>
@@ -301,7 +301,7 @@ itsSphere::itsSphere()
     setBoundsMinimaAll(-100);
     setBoundsMaximaAll(100);
 
-    setAccuracy(0.00001);
+    setAccuracy(0.000001);
     
     vector<itsPoint> optim;
     itsPoint pt;
@@ -357,7 +357,7 @@ itsSchwefel::itsSchwefel()
     setBoundsMinimaAll(-100);
     setBoundsMaximaAll(100);
 
-    setAccuracy(0.00001);
+    setAccuracy(0.000001);
     
     vector<itsPoint> optim;
     itsPoint pt;
