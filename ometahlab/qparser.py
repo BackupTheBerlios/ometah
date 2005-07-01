@@ -88,15 +88,7 @@ class Qparser:
                 p.value = float(line[f('<values>')+8:f('</values>')])
                 p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
                 p.index = pindex
-                self.__points.append(p)
-                """
-                if p.value <= self.__tresh:
-                    # go get evaluations number, reach previous line
-                    while f('<evaluations>') < 0:
-                        line = fd.readline()
-                    self.__evaluations = int( line[f('<evaluations>')+13:f('</evaluations>')] )
-                    return self.__points
-                """                    
+                self.__points.append(p)          
                 pindex += 1
                 line = fd.readline()
 

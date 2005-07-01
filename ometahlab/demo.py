@@ -156,19 +156,19 @@ def main():
         for a set of five tests, each one doing 50 runs. """
         
         t = ometahtest.Test()
-        t.setArgs('-e 50 -p Sphere')
+        t.setArgs('-e 50 -p Sphere ')
         t.setNbRuns(50)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 100 -p Sphere -m CEDA')
+        u.setArgs('-e 100 -p Sphere -m CEDA ')
         u.setNbRuns(50)
         u.setOmetahPath('../ometah/ometah')
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 200 -p Sphere')
+        v.setArgs('-e 200 -p Sphere ')
         v.setNbRuns(50)
         v.start()
         
@@ -193,30 +193,30 @@ def main():
         for a set of five tests, each one doing 50 runs. """
         
         t = ometahtest.Test()
-        t.setArgs('-e 50 -p Schwefel')
+        t.setArgs('-e 50 -p Schwefel  -P 0.000001')
         t.setNbRuns(50)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 100 -p Schwefel -m CEDA')
+        u.setArgs('-e 100 -p Schwefel -m CEDA  -P 0.000001')
         u.setNbRuns(50)
         u.setOmetahPath('../ometah/ometah')
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 200 -p Schwefel')
+        v.setArgs('-e 200 -i 200 -p Schwefel  -P 0.000001')
         v.setNbRuns(50)
         v.start()
         
         w = ometahtest.Test()
-        w.setArgs('-e 500 -i 150 -p Schwefel')
+        w.setArgs('-e 500 -i 300  -p Schwefel  -P 0.000001')
         w.setNbRuns(50)
         w.setOmetahPath('../ometah/ometah')
         w.start()
         
         y = ometahtest.Test()
-        y.setArgs('-e 1000 -i 1000 -p Schwefel')
+        y.setArgs('-e 1000 -i 1000 -p Schwefel  -P 0.000001')
         y.setNbRuns(50)
         y.start()
 
