@@ -69,7 +69,7 @@ def main():
     if arg == 1:
         
         print """ Smallest and fastest script, only two tests run, 15 runs for each one,
-        and a maximum of 64 evaluations, results don't give many information. """
+        and a maximum of 60 evaluations, results don't give many information. """
 
         t = ometahtest.Test()
         t.setArgs('-e 30 -p Ackley')

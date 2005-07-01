@@ -325,10 +325,8 @@ class Stater:
             # use Kruskal-Wallis test
             dic = r.kruskal_test(emlist)
                 
-        if dic['p.value'] < limit:
-            self.__same_distrib = True
-        else:
-            self.__same_distrib = False
+        self.__same_distrib = dic['p.value']
+
         
     def plot(self):
         """ Plot results as postscript files. """
@@ -362,6 +360,9 @@ class Stater:
         for test in self.__tests:
             txt = '%s\\\\\n' % test.args
             W(txt)
+
+        txt = 'Non-parametric test over optima errors:  %f\\\\\n' % self.__same_distrib
+        W(txt)
 
         for test in self.__tests:
             txt = '\\section*{%s}\n' % test.args
