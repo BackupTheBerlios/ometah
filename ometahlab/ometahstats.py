@@ -79,8 +79,6 @@ class Stater:
         self.__optimas = [test.optima for test in self.__tests]
         self.__pointsIter = [test.pointsIterations for test in self.__tests]
         self.__optimaIter = [test.optimaIterations for test in self.__tests]
-
-
         
         # create working directory
         (i, ok) = (1, 0)
@@ -150,12 +148,10 @@ class Stater:
         - median optimum value"""
         fileName = os.path.join(self.__dir, 'graph_optima.ps')        
         r.postscript(fileName, paper='letter')
-        
         # make best optima list (minima)
         olist = [(min([p.value for p in points])) for points in self.__optimas ]
         # make worst optima list (maxima)
         wlist = [(max([p.value for p in points])) for points in self.__optimas ]
-
         # make media optima list (sort and take (len/2)'s index value)        
         [ points.sort() for points in self.__optimas ]
         # all sublist should have the same length, that is NB_RUN

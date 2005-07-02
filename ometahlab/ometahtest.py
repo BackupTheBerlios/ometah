@@ -39,6 +39,7 @@ except:
 from rpy import *
 import qparser
 
+
 class Test:
     """ A Test is a set of executions (runs) of the same command line. """
 
@@ -59,13 +60,13 @@ class Test:
         # each one containing the optimum for each run
         self.optimaIterations = []
         # the initial argv as a list
-        self.__argv = ['']
+        self.__argv = []
         # and as a string
-        self.__args = ''
+        self.args = ''
         # directory where to put report, plottings...
         self.__dir = "."
         # one log for each test, grouping all runs informations
-        self.__logName = "ometahrun.log"
+        self.__logfile = "run.log"
         # default location of ometah
         self.__ometah_path = os.path.join('..', os.path.join('ometah', 'ometah'))
         # common dir for all results
@@ -91,33 +92,27 @@ class Test:
         Then returns the Interface instance used.
         """
         import os
-        import interface
-        intfc = interface.Interface()
-        intfc.setLog(self.__logName)
-
         slog = "\nRun %i :\n" % (runb)
-        intfc.log(slog)
+        self.__log(slog)
 
         try:
             fd = os.popen(self.__argv)
         except:
-            intfc.log('ERROR : wrong path to ometah [Interface.getXmlFromExecOmetah]\n')            
-            intfc.fatal('(see log file)')
+            self.__fatal('can\'t execute ometah, maybe you gave a wrong path, or ometah was not compiled.')
 
         if self._XML_ARCH:
             xmlName = 'run%i' % (runb)
-            fileOut = intfc.copyToDisk(fd, filename=xmlName)
+            fileOut = self.__copyToDisk(fd, filename=xmlName)
             fd.close()
             fd = open(fileOut, 'r')        
-    
+
+        # check that ometah did not return usage infos
         if fd.readline().find('xml-version="1.0"') < 0:
-            intfc.log('ERROR : ometah failed to create XML\n')
-            intfc.fatal('(see log file)')
+            self.__fatal('ometah failed to create XML\n')
     
         # Loading bar        
         for i in xrange(self.runsNb):
             print '\b\b', # delete previous bar
-
         for i in xrange(runb):
             print '\b|',  # write as char as runNumber
         for i in xrange(self.runsNb - 1 - runb):
@@ -139,28 +134,27 @@ class Test:
         self.__points.append(q.getPoints())
         self.evaluations.append(q.getEvaluations())
         self.optima.append(self.__getOptimum(runb))
-        fd.close()
-        return intfc
+        fd.close()        
     
     
     def __metarun(self):
         """ Make a test, that is running Ometah RunsNb times with the same command line arguments.
         A serialized object of the self instance is created in the test directory """        
         import cPickle
-
-        self.__argv = "%s %s" % (self.__ometah_path, ''.join(self.__argv))
         
-        print "\nRunning ometah", ''.join(self.__argv)
+        #print "\nRunning ometah", ''.join(self.__argv)
+        print '\nRunning %s' % self.args
+        
         # to initialize loading bar
         for j in xrange(self.runsNb-1): 
             print '\b-',
 
         # make the runsNb runs
         for i in xrange(self.runsNb):
-            intf = self.__init(i)
+            self.__init(i)
         
         if self._XML_ARCH:
-            intf.archiveXml()        
+            self.__archiveXml()        
         
         (i, ok) = (1, 0)        
         while not ok:
@@ -173,21 +167,22 @@ class Test:
             try:
                 os.mkdir(self.__dir)
             except:
-                (i, ok) = (0, i+1)            
+                (i, ok) = (i+1, 0)            
 
         self.__setIterationLists()
         self.__calculSuccessRates()
 
         # empty variables for pickle reduction
         self.__points = []
-        self.__argv = self.__args = None
+        self.__argv = None
                 
         try:
             cPickle.dump(self, open('TEST', 'w'))
         except:
-            intf.fatal('pickle failed [Test.metarun]')
+            self.__fatal('pickle failed [Test.metarun]')
 
-        files = ['TEST', self.__logName]
+        # move files, including XML if was created
+        files = ['TEST', self.__logfile]
         if self._XML_ARCH:            
             files.append('xml.tar.gz')
         for src in files:
@@ -225,7 +220,6 @@ class Test:
     def __getOptimum(self, i):
         """ Returns the Point object which has the smallest value (minimum) for run i. """
         optim = self.__points[i][0][0]
-        
         for iteration in self.__points[i]:
             for point in iteration:
                 if point.value < optim.value:
@@ -254,6 +248,48 @@ class Test:
             return False
         return True
 
+    def __copyToDisk(self, rfd, filename="xml"):
+        """ Copy the file opened with rfd to a new file on disk, is used to copy XML output on disk. """
+        filename += '.xml'
+        xfile = os.path.join(self.__path, filename)
+        try:
+            wfd = open(xfile, 'w')
+        except:
+            self.log('ERROR : cannot create file, maybe directory does not exists... [Test.copyToDisk]\n')
+        try:
+            wfd.write(rfd.read())
+        except:
+            self.log('ERROR : cannot write file [Test.copyToDisk]\n')
+        wfd.close()
+        return xfile
+
+    def __archiveXml(self):
+        """ Create a compressed tar archive of XML files. """
+        try:
+            import tarfile
+            path = 'xml.tar.gz'
+            tf = tarfile.open(name=path, mode='w:gz')
+            for s in os.listdir(self.__path):
+                if s[-4:] == '.xml':
+                    f = os.path.join(self.__path, s)
+                    tf.add(f)
+                    os.remove(f)
+            tf.close()
+        except:
+            self.__fatal('cannot create XML archive')
+
+
+    def __log(self, astring):
+        """ Log the given string in the log file, appending to the end of the file. """    
+        fd = open(self.__logfile, 'a')
+        fd.write(astring)
+        fd.close()
+
+    def __fatal(self, msg):
+        import sys
+        print 'FATAL ERROR: %s\n' % msg
+        sys.exit(-1)
+
     def setXmlArchive(self, bool):
         """ Set _XML_ARCH var."""
         if bool:
@@ -267,8 +303,8 @@ class Test:
 
     def setArgs(self, args):
         """ Set the arguments of Ometah execution, as a string. Ie give '-p Sphere -e 50'."""
-        self.__argv = [''] + [args]        
-        self.args = 'ometah ' + ''.join(self.__argv)
+        self.args = 'ometah ' + args
+        self.__argv = "%s %s" % (self.__ometah_path, ''.join([''] + [args]))
 
     def setOmetahPath(self, path):
         """ Set the path to Ometah binary file, which is set to '../ometah/ometah' as default value."""

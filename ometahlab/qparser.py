@@ -45,7 +45,7 @@ class Qparser:
         self.__points = []         # list of Point instances
         self.__header = Header()   # Header object, returned but getHeader
         self.__fd = None           # file descriptor of ometah output
-        self.__tresh = 0           # value under which test is a success, hence points reading is stopped
+        self.__tresh = 0          # value under which test is a success, hence points reading is stopped
         self.__evaluations = 0     # effective nb of evaluations done before reaching success.
         
     def load(self, path):
@@ -67,8 +67,7 @@ class Qparser:
         while fd.readline().find('<optimization>') < 0:
             pass
         # counter for Point's indexes
-        pindex = 0
-        iterindex = 0
+        pindex = iterindex = 0
         line = fd.readline()
 
         # first read points in "start" step, to avoid fatal bug if opt found there
