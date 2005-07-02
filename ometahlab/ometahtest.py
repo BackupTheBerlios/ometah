@@ -50,6 +50,7 @@ class Test:
 
     def __init__(self):        
         """ Constructor. """
+        import os
         # list of the N optimas, have to sort it after
         self.optima = []
         # list of sublists, one for each run, containing Point objects divided in lists of iterations
@@ -81,10 +82,16 @@ class Test:
         self.runsNb = 25
         # list of effective nb of evaluations (size = runsNb)
         self.evaluations = []
-
+        
+        try: # create results dir if do not exists
+            os.listdir(self.__results_dir)
+        except:
+            os.mkdir(self.__results_dir)
+        
         self.problem = None
         self.parameters = None
         self.metah = None
+
 
     def __init(self, runb):
         """ Initialize a Test, which can be sawn as a 'metarun', a set of several runs (default : 25).
@@ -133,7 +140,7 @@ class Test:
 
         self.__points.append(q.getPoints())
         self.evaluations.append(q.getEvaluations())
-        self.optima.append(self.__getOptimum(runb))
+        #self.optima.append(self.__getOptimum(runb))
         fd.close()        
     
     
@@ -155,7 +162,7 @@ class Test:
         
         if self._XML_ARCH:
             self.__archiveXml()        
-        
+
         (i, ok) = (1, 0)        
         while not ok:
             ok = 1
@@ -169,11 +176,6 @@ class Test:
             except:
                 (i, ok) = (i+1, 0)            
 
-        self.__setIterationLists()
-        self.__calculSuccessRates()
-
-        # empty variables for pickle reduction
-        self.__points = []
         self.__argv = None
                 
         try:
@@ -189,7 +191,7 @@ class Test:
             os.rename(src, os.path.join(self.__dir, src) )
             
 
-    def __setIterationLists(self):
+    def setIterationLists(self):
         """ Defines the iteration lists. """
         
         size = self.parameters.sampleSize        
@@ -226,7 +228,17 @@ class Test:
                     optim = point
         return optim
 
-    def __calculSuccessRates(self):
+    def setOptimaList(self):
+        """ """
+        for i in xrange(self.runsNb):
+            optim = self.__points[i][0][0]
+            for iteration in self.__points[i]:
+                for point in iteration:
+                    if point.value < optim.value:
+                        optim = point
+            self.optima.append(optim)
+
+    def calculSuccessRates(self):
         """ Update succRate & succPerf values, according to the current optima list and problem instance """
         total = self.runsNb
         success = 0

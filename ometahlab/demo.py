@@ -67,9 +67,6 @@ def main():
     emit = time.time()
 
     if arg == 1:
-        
-        print """ Smallest and fastest script, only two tests run, 15 runs for each one,
-        and a maximum of 60 evaluations, results don't give many information. """
 
         t = ometahtest.Test()
         t.setArgs('-e 30 -p Ackley -P 0.01')
@@ -87,8 +84,6 @@ def main():
         ometahstats.stat(paths)
 
     elif arg == 2:
-        
-        print """ Like first test, but with 3 dimensions. """
 
         t = ometahtest.Test()
         t.setArgs('-e 30 -p Ackley -d 10 -P 0.01 ')
@@ -106,8 +101,6 @@ def main():
         ometahstats.stat(paths)
 
     elif arg == 3:
-        
-        print """ Average length script, to have a good preview of ometahlab results, with Rastrigin problem. """
     
         t = ometahtest.Test()
         t.setArgs('-e 60 -p Rastrigin -d 2 -P 0.01')
@@ -128,8 +121,6 @@ def main():
         ometahstats.stat(p)
 
     elif arg == 4:        
-
-        print """ Average length script, to have a good preview of ometahlab results, with Rosenbrock problem. """
     
         t = ometahtest.Test()
         t.setArgs('-e 60 -p Rosenbrock -d 2 -P 0.01')
@@ -151,10 +142,7 @@ def main():
  
 
     elif arg == 5:
-
-        print """ Only for high frequency CPU, or patient people, we reach 1000 evaluations
-        for a set of five tests, each one doing 50 runs. """
-        
+  
         t = ometahtest.Test()
         t.setArgs('-e 50 -p Sphere -P 0.000001')
         t.setNbRuns(50)
@@ -168,7 +156,7 @@ def main():
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 200 -p Sphere ')
+        v.setArgs('-e 200 -p Sphere -P 0.000001')
         v.setNbRuns(50)
         v.start()
         
@@ -188,35 +176,32 @@ def main():
 
     
     elif arg == 6:
-
-        print """ Only for high frequency CPU, or patient people, we reach 1000 evaluations
-        for a set of five tests, each one doing 50 runs. """
         
         t = ometahtest.Test()
-        t.setArgs('-e 50 -p Schwefel  -P 0.000001')
+        t.setArgs('-e 50 -p Schwefel  -P 0.000001 -d 3')
         t.setNbRuns(50)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 100 -p Schwefel -m CEDA  -P 0.000001')
+        u.setArgs('-e 100 -p Schwefel -m CEDA  -P 0.000001 -d 3')
         u.setNbRuns(50)
         u.setOmetahPath('../ometah/ometah')
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 200 -i 200 -p Schwefel  -P 0.000001')
+        v.setArgs('-e 200 -i 200 -p Schwefel  -P 0.000001 -d 3')
         v.setNbRuns(50)
         v.start()
         
         w = ometahtest.Test()
-        w.setArgs('-e 500 -i 300  -p Schwefel  -P 0.000001')
+        w.setArgs('-e 500 -i 300  -p Schwefel  -P 0.000001 -d 3')
         w.setNbRuns(50)
         w.setOmetahPath('../ometah/ometah')
         w.start()
         
         y = ometahtest.Test()
-        y.setArgs('-e 1000 -i 1000 -p Schwefel  -P 0.000001')
+        y.setArgs('-e 1000 -i 1000 -p Schwefel  -P 0.000001 -d 3')
         y.setNbRuns(50)
         y.start()
 

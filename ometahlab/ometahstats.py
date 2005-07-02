@@ -75,6 +75,12 @@ class Stater:
                 msg = 'error while loading %s' % q
                 self.__fatal(msg)
 
+        # initialize Test's Points lists
+        for test in self.__tests:
+            test.setOptimaList()
+            test.setIterationLists()
+            test.calculSuccessRates()
+
         # initialize optimas and points
         self.__optimas = [test.optima for test in self.__tests]
         self.__pointsIter = [test.pointsIterations for test in self.__tests]
@@ -159,15 +165,15 @@ class Stater:
         medianIndex = length/2 # integer division, ok with first index = zero
         mlist = [ points[medianIndex].value for points in self.__optimas]
         r.plot(olist, type='n', log="y", main='Bests optima evolution', xlab='Test index', ylab='Optima value')
-        r.lines(olist, lty='dotted')
+        r.lines(olist)
         r.points(olist, bg = 'white', pch = 21)
         r.grid(nx=10, ny=40)
         r.plot(wlist, type='n', log="y", main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
-        r.lines(wlist, lty='dotted')
+        r.lines(wlist)
         r.points(wlist, bg ='white', pch = 21)
         r.grid(nx=10, ny=40)
         r.plot(mlist, type='n', log="y", main='Median optima evolution', xlab='Test index', ylab='Optima value')        
-        r.lines(mlist, lty='dotted')
+        r.lines(mlist)
         r.points(mlist, bg ='white', pch = 21)
         r.grid(nx=10, ny=40)
         r.dev_off()
