@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.4 2005/06/30 13:26:56 nojhan Exp $
+ *  $Id: ometah_registration.cpp,v 1.5 2005/07/03 20:54:07 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -342,9 +342,19 @@ try {
 
       cimg_mapXY(img1,x,y) {
         float diff = 0.0;
+          // if we do not try out of bounds
         if ( !(x+rx<0 || x+rx>img1.width || y+ry<0 || y+ry>img1.height)  ) {
-            diff =  (img1(x,y) - img2(x+rx,y+ry)) 
-                  * (img1(x,y) - img2(x+rx,y+ry)) ;
+            // if two null pixels
+            if ( img1(x,y)==0 && img2(x+rx,y+ry)==0 ) {
+                diff = 255;
+            } else {
+                // square error
+                diff =  (img1(x,y) - img2(x+rx,y+ry)) 
+                      * (img1(x,y) - img2(x+rx,y+ry)) ;
+            }
+        } else {
+            // if we are out of bounds => a big difference
+            diff = 255;
         }
         result(x,y) = diff;
       }
