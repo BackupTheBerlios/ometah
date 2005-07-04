@@ -431,6 +431,10 @@ class Stater:
         # error convergence for optima
         self.__plot_11()
 
+
+    def writeTex(self):
+        """ Write Latex report """
+        
         
     def writeLatex(self):
         """ Write Latex report """
@@ -438,22 +442,44 @@ class Stater:
         fd = open(path, 'w')
         W = fd.write
 
-        W('\\documentclass{report}\n\\begin{document}\n')
-        W('\\section*{OMETAHLAB REPORT}\n\\subsection*{Tests}\n') 
+        W('\\documentclass[]{report}\n\\begin{document}\n')
+        W('\\section*{OMETAHLAB REPORT}\n')
+        
         for test in self.__tests:
             txt = '%s\\\\\n' % test.args
             W(txt)
 
+        W('\\\\\n')
+        txt = '\\begin{tabular}[t]{ccccccccc}\n'
+        W(txt)
+        cols = ['Problem', 'Algo', 'Evaluations', 'Precision', 'Optimum', 'Mean', 'Std', 'Success Rate']
+        txt = ''.join(['\\textbf{%s} &' % s for s in cols[:-1]])
+        txt = '%s \\textbf{%s}\\\\\n' % (txt, cols[-1])
+        W(txt)
+
+        for t in self.__tests:
+            vals = [p.value for p in test.optima]
+            vmin = str(min(vals))[:5]
+            vmean = str(r.mean(vals))[:5]
+            vsd = str(r.sd(vals))[:5]
+            suc = str(100*t.succRate)[:5]
+            txt = '%s & %s & %s & %s & %s & %s & %s & %s \\\\\n' % \
+                  (t.problem.name, t.metah.key, t.parameters.maxEvaluations,
+                   t.parameters.treshold, vmin, vmean, vsd, suc)
+            W(txt)
+        W('\\end{tabular}\n')
+
         if len(self.__tests) > 1:
-            txt = 'Non-parametric test over optima errors:  %f\\\\\n' % self.__same_distrib
+            txt = '\n\\paragraph{Non-parametric test over optima errors}\n%f\n' % self.__same_distrib
             W(txt)
 
-        if self.__eigenv != []:
-            W('Eigen vectors:\\\\')
+        if self.__eigenv != []: # <=> if dimension > 2
+            W('\n\\paragraph{Eigen vectors:}\n')
             for e in self.__eigenv:
                 txt = '%s\\\\\n' % (str(e))
                 W(txt)                        
 
+        """
         for test in self.__tests:
             txt = '\\section*{%s}\n' % test.args
             W(txt)
@@ -485,7 +511,8 @@ class Stater:
                   % (min(vals), 100*test.succRate, r.mean(test.evaluations))                        
             W(txt)            
             W('\\end{description}\n')
-        
+
+        """
         W('\\end{document}\n')
         fd.close()
         
