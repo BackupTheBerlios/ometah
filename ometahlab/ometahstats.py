@@ -327,13 +327,20 @@ class Stater:
                     op = t.pb_optimum[0]
                     for p in t.pb_optimum:
                         if p.value < op.value:
-                            op = p                    
+                            op = p
                     xoptim = op.coords[0]
                     yoptim = op.coords[1]
                     xmin = t.pb_min_bound[0].coords[0]
                     ymin = t.pb_min_bound[0].coords[1]
                     xmax = t.pb_max_bound[0].coords[0]
-                    ymax = t.pb_max_bound[0].coords[1]
+                    ymax = t.pb_max_bound[0].coords[1]                    
+                    if max(x) < xmax:
+                        xmax = 0.8 * max(x) + 0.2 * xmax
+                    if max(y) < ymax:
+                        ymax = 0.8 * max(y) + 0.2 * ymax
+
+                    xlimm = [xmin, xmax]
+                    ylimm = [ymin, ymax]
                     
                 else:
                     import matrix
@@ -352,20 +359,19 @@ class Stater:
                     a.setMatrix(co)
                     self.__eigenv.append(a.getEigenVectors())
                 
-                    x = [a.reduceDim(i,2)[0] for i in xrange(len(co) - 3) ]
-                    y = [a.reduceDim(i,2)[1] for i in xrange(len(co) - 3) ]
+                    x = [a.reduceDim(i,2)[0] for i in xrange(len(co) - 1) ]
+                    y = [a.reduceDim(i,2)[1] for i in xrange(len(co) - 1) ]
                     res = a.reduceDim(len(co) - 2, 2)
                     xoptim = res[0]
                     yoptim = res[1]
-                    res = a.reduceDim(len(co) - 3, 2)
-                    xmin = xoptim - 1
-                    ymin = yoptim - 1
-                    res = a.reduceDim(len(co) - 4, 2)
-                    xmax = xoptim + 1
-                    ymax = yoptim + 1
+                    
+                    # add optimum points to point list, if it has an extrema value 
+                    x.append(xoptim)
+                    y.append(yoptim)
 
-                xlimm = [xmin, xmax]
-                ylimm = [ymin, ymax]
+                    xlimm = [min(x), max(x)]
+                    ylimm = [min(y), max(y)]
+                
                 txt = '%s\nSolutions positions' % t.args
                 r.plot(x,y, bg='white', pch=21, xlab='X', ylab='Y', \
                        main=txt, xlim=xlimm, ylim=ylimm)                
