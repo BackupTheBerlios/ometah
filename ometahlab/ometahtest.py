@@ -180,7 +180,13 @@ class Test:
                 (i, ok) = (i+1, 0)            
 
         self.__argv = None
-                
+
+        # copy in Test attributes, because Pickle don't save Point instances
+        # in self.problem.optimum (even with __getState__, deepcopy...)
+        self.pb_optimum = self.problem.optimum
+        self.pb_min_bound = self.problem.min_bound
+        self.pb_max_bound = self.problem.max_bound
+        
         try:
             import copy            
             cPickle.dump( copy.deepcopy(self), open('TEST', 'w'))
@@ -209,7 +215,7 @@ class Test:
         for iter in range(maxiters):
             for run in self.__points:                
                 # find the optimum for the current run in the current iteration
-                minp = qparser.Point()
+                minp = Point()
                 minp.value = 1000
                 if len(run) > iter:
                     for point in run[iter]:
@@ -344,6 +350,80 @@ class Test:
         del d['_Test_argv']
         del d['_Test_logfile']
         return d
+
+
+class Problem:
+    """ Descriptive informations of a problem. """
+
+    key = None
+    name = None
+    description = None
+    formula = None
+    dimension = None
+    optimum = []   # list of Point
+    min_bound = [] # idem
+    max_bound = [] # idem
+    reference = None
+    accuracy = 0.0
+    
+    def __init__(self):
+        """ Void constructor."""
+        pass
+
+
+class Metaheuristic:
+    """ Descriptive informations of a metaheuristic. """
+
+    key = None
+    name = None
+    family = None
+    acronym = None
+    description = None
+    reference = None
+    
+    def __init__(self):
+        """ Void constructor."""
+        pass
+
+
+class Parameters:
+    """ The set of parameters specified into <parameters> elemens in XML output """
+
+    sampleSize = None
+    maxIterations = None
+    maxEvaluations = None
+    treshold = None
+    randomSeed = None
+
+    def __init__(self):
+        """ Void constructor."""
+        pass
+
+
+class Header:
+    """ Additional informations in XML file concerning problem, metaheuristic, and parameters."""
+
+    problem = Problem()
+    metah = Metaheuristic()
+    parameters = Parameters()
+
+    def __init__(self):
+        """ Void constructor."""
+        pass
+    
+
+class Point:
+    """ A point has a set of coordinates, a value, an error relative to the problem's optimum, and an index. """
+
+    coords = None
+    value = None    
+    error = None
+    index = None
+
+    def __init__(self):
+        """ Void constructor."""
+        pass
+
 
 if __name__ == '__main__':
     print "This file contains no instructions in main(), please see README for program usage\n"

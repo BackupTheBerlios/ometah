@@ -101,15 +101,6 @@ class Stater:
                 (i, ok) = (i+1 ,0)
         self.__dir = dir
 
-        """
-        for t in self.__tests:
-            print t.optima[0]
-            print t.problem.optimum
-        """
-        #import sys
-        #sys.exit(3)
-        
-
 
     def check(self):
         """ Check the coherence of Ometah executions, fatal error or a warning is given."""
@@ -280,11 +271,11 @@ class Stater:
                 y.sort()
                 
                 xlimm = [0, len(t.optima)]
-                ylimm = [t.problem.optimum[0].coords[0]-.1, max(y) ]
+                ylimm = [t.pb_optimum[0].coords[0]-.1, max(y) ]
                 txt = '%s\nPoints ordered positions' % t.args
                 r.plot(x, y, xlim=xlimm, ylim=ylimm, xlab = 'Points, from best to worst', ylab='Position', \
                        main=txt, bg='white', pch=21, type='o')
-                opt = t.problem.optimum[0].coords[0]                
+                opt = t.pb_optimum[0].coords[0]                
                 r.lines(xlimm, [opt, opt], col='black', type='o')
                 r.grid(nx=10, ny=40)
 
@@ -295,16 +286,16 @@ class Stater:
                 if t.problem.dimension == 2:
                     x = [ p.coords[0] for p in t.optima ]
                     y = [ p.coords[1] for p in t.optima ]
-                    op = t.problem.optimum[0]
-                    for p in t.problem.optimum:
+                    op = t.pb_optimum[0]
+                    for p in t.pb_optimum:
                         if p.value < op.value:
                             op = p                    
                     xoptim = op.coords[0]
                     yoptim = op.coords[1]
-                    xmin = t.problem.min_bound[0].coords[0]
-                    ymin = t.problem.min_bound[0].coords[1]
-                    xmax = t.problem.max_bound[0].coords[0]
-                    ymax = t.problem.max_bound[0].coords[1]
+                    xmin = t.pb_min_bound[0].coords[0]
+                    ymin = t.pb_min_bound[0].coords[1]
+                    xmax = t.pb_max_bound[0].coords[0]
+                    ymax = t.pb_max_bound[0].coords[1]
                     
                 else:
                     import matrix
@@ -312,10 +303,10 @@ class Stater:
                     # append solution Points
                     co = [p.coords for p in t.optima]
                     # also add bounds and optimum
-                    co.append(t.problem.min_bound[0].coords)
-                    co.append(t.problem.max_bound[0].coords)
-                    op = t.problem.optimum[0]
-                    for p in t.problem.optimum:
+                    co.append(t.pb_min_bound[0].coords)
+                    co.append(t.pb_max_bound[0].coords)
+                    op = t.pb_optimum[0]
+                    for p in t.pb_optimum:
                         if p.value < op.value:
                             op = p
                     co.append(op.coords)
@@ -469,7 +460,7 @@ class Stater:
             # Problem subsection
             W('\\subsection*{Problem}\n\\begin{description}\n')
             txt = '\t\\item[Name:] %s\n\t\\item[Dimension:] %i\n\t\\item[Optimum value:] %s\n' \
-                  % (test.problem.name, test.problem.dimension, min([x.value for x in test.problem.optimum]))
+                  % (test.problem.name, test.problem.dimension, min([x.value for x in test.pb_optimum]))
             W(txt)
             txt = '\t\\item[Accuracy:] %s\n\\end{description}\n' % test.problem.accuracy
             W(txt)

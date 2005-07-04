@@ -42,8 +42,9 @@ class Qparser:
     
     def __init__(self):
         """ Constructor with the path to ometah"""
+        import ometahtest
         self.__points = []         # list of Point instances
-        self.__header = Header()   # Header object, returned but getHeader
+        self.__header = ometahtest.Header()   # Header object, returned but getHeader
         self.__fd = None           # file descriptor of ometah output
         self.__tresh = 0          # value under which test is a success, hence points reading is stopped
         self.__evaluations = 0     # effective nb of evaluations done before reaching success.
@@ -59,6 +60,7 @@ class Qparser:
     def getPoints(self):
         """ treshold is the value to go under (or equal) to stop the points reading,
         it's equal to the real optimum value plus the accuracy needed by the pb. """        
+        import ometahtest
         (fd, line) = (self.__fd, '')
         
         def f(s):
@@ -78,7 +80,7 @@ class Qparser:
         self.__points.append([])
 
         while f('<point>') != -1:
-            p = Point()
+            p = ometahtest.Point()
             p.value = float(line[f('<values>')+8:f('</values>')])
             p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
             p.index = pindex
@@ -107,7 +109,7 @@ class Qparser:
             self.__points.append([])
             
             while f('<point>') != -1:
-                p = Point()
+                p = ometahtest.Point()
                 p.value = float(line[f('<values>')+8:f('</values>')])
                 p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
                 p.index = pindex
@@ -130,6 +132,7 @@ class Qparser:
     
     def getHeader(self):
         """ Return Header instance with info from XML file. """
+        import ometahtest
         (fd, line) = (self.__fd, '')
         
         def f(s):
@@ -158,7 +161,7 @@ class Qparser:
         fd.readline() # skip <optimum>
         line = fd.readline()
         while f('<point>') != -1:
-            p = Point()
+            p = ometahtest.Point()
             p.value = float(line[f('<values>')+8:f('</values>')])
             p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]                                 
             PB.optimum.append(p)
@@ -167,12 +170,12 @@ class Qparser:
         fd.readline() # skip <bounds>
         minb = []
         line = fd.readline()
-        p = Point()
+        p = ometahtest.Point()
         p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
         PB.min_bound.append(p)
         maxb = []
         line = fd.readline()
-        p = Point()
+        p = ometahtest.Point()
         p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]
         PB.max_bound.append(p)
 
@@ -216,79 +219,6 @@ class Qparser:
 
         return self.__header
         
-
-class Problem:
-    """ Descriptive informations of a problem. """
-
-    key = None
-    name = None
-    description = None
-    formula = None
-    dimension = None
-    optimum = []   # list of Point
-    min_bound = [] # idem
-    max_bound = [] # idem
-    reference = None
-    accuracy = 0.0
-    
-    def __init__(self):
-        """ Void constructor."""
-        pass
-
-
-class Metaheuristic:
-    """ Descriptive informations of a metaheuristic. """
-
-    key = None
-    name = None
-    family = None
-    acronym = None
-    description = None
-    reference = None
-    
-    def __init__(self):
-        """ Void constructor."""
-        pass
-
-
-class Parameters:
-    """ The set of parameters specified into <parameters> elemens in XML output """
-
-    sampleSize = None
-    maxIterations = None
-    maxEvaluations = None
-    treshold = None
-    randomSeed = None
-
-    def __init__(self):
-        """ Void constructor."""
-        pass
-
-
-class Header:
-    """ Additional informations in XML file concerning problem, metaheuristic, and parameters."""
-
-    problem = Problem()
-    metah = Metaheuristic()
-    parameters = Parameters()
-
-    def __init__(self):
-        """ Void constructor."""
-        pass
-    
-
-class Point:
-    """ A point has a set of coordinates, a value, an error relative to the problem's optimum, and an index. """
-
-    coords = None
-    value = None    
-    error = None
-    index = None
-
-    def __init__(self):
-        """ Void constructor."""
-        pass
-
 
 if __name__ == '__main__':
     print "This file contains no instructions in main(), please see README for program usage\n"

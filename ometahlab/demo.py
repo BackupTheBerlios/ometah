@@ -210,14 +210,11 @@ def main():
 
     elif arg == 7:
     
-        """
         t = ometahtest.Test()
         t.setArgs('-e 40 -r 13')
-        t.start()
-        print 'path:' , t.getPath()
-        """
+        t.start()    
         
-        p = [ 'results/Ackley_CEDA_d1_e30_r740800_1/',  'results/Ackley_CEDA_d1_e60_r1370275_1/']        
+        p = [t.getPath()]        
         ometahstats.stat(p)
         
     print 'Time: ', time.time()-emit
