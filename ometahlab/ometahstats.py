@@ -78,6 +78,7 @@ class Stater:
             except:
                 msg = 'error while loading test'
                 self.__fatal(msg)
+        self.__LOG = 1
 
         # initialize Test's Points lists
         for test in self.__tests:
@@ -147,7 +148,12 @@ class Stater:
         fileName = os.path.join(self.__dir, 'testboxes_optima.ps')
         r.postscript(fileName, paper='letter')
         vlist = [[p.value for p in points ] for points in self.__optimas ]
-        r.boxplot(vlist, style='quantile', log="y", col=self.__color, main='Optimas list', xlab='Test index', ylab='')
+        try:
+            r.boxplot(vlist, style='quantile', log="y", col=self.__color, main='Optimas list', xlab='Test index', ylab='')
+        except:
+            print 'Cannot use logarithmic scale'
+            self.__LOG = 0
+            r.boxplot(vlist, style='quantile', col=self.__color, main='Optimas list', xlab='Test index', ylab='')
         r.grid(nx=10, ny=40)
         r.dev_off()
 
@@ -168,20 +174,40 @@ class Stater:
         length = len(self.__optimas[0])
         medianIndex = length/2 # integer division, ok with first index = zero
         mlist = [ points[medianIndex].value for points in self.__optimas]
-        r.plot(olist, type='n', log="y", main='Bests optima evolution', xlab='Test index', ylab='Optima value')
-        r.lines(olist)
-        r.points(olist, bg = 'white', pch = 21)
-        r.grid(nx=10, ny=40)
-        r.plot(wlist, type='n', log="y", main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
-        r.lines(wlist)
-        r.points(wlist, bg ='white', pch = 21)
-        r.grid(nx=10, ny=40)
-        r.plot(mlist, type='n', log="y", main='Median optima evolution', xlab='Test index', ylab='Optima value')        
-        r.lines(mlist)
-        r.points(mlist, bg ='white', pch = 21)
-        r.grid(nx=10, ny=40)
 
-        r.matplot(r.cbind(olist, mlist, wlist), log="y", type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
+        try:
+            r.plot(olist, type='n', log="y", main='Bests optima evolution', xlab='Test index', ylab='Optima value')
+            r.lines(olist)
+            r.points(olist, bg = 'white', pch = 21)
+            r.grid(nx=10, ny=40)
+            r.plot(wlist, type='n', log="y", main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
+            r.lines(wlist)
+            r.points(wlist, bg ='white', pch = 21)
+            r.grid(nx=10, ny=40)
+            r.plot(mlist, type='n', log="y", main='Median optima evolution', xlab='Test index', ylab='Optima value')        
+            r.lines(mlist)
+            r.points(mlist, bg ='white', pch = 21)
+            r.grid(nx=10, ny=40)
+
+            r.matplot(r.cbind(olist, mlist, wlist), log="y", type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
+        except:
+            if self.__LOG:
+                self.__LOG = 0
+                print 'Cannot use logarithmic scale'
+            r.plot(olist, type='n', main='Bests optima evolution', xlab='Test index', ylab='Optima value')
+            r.lines(olist)
+            r.points(olist, bg = 'white', pch = 21)
+            r.grid(nx=10, ny=40)
+            r.plot(wlist, type='n', main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
+            r.lines(wlist)
+            r.points(wlist, bg ='white', pch = 21)
+            r.grid(nx=10, ny=40)
+            r.plot(mlist, type='n', main='Median optima evolution', xlab='Test index', ylab='Optima value')        
+            r.lines(mlist)
+            r.points(mlist, bg ='white', pch = 21)
+            r.grid(nx=10, ny=40)
+            r.matplot(r.cbind(olist, mlist, wlist), log="y", type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
+
         r.points(olist, bg ='white', pch = 21, type='o')
         r.points(mlist, bg ='white', pch = 22, type='o', lty='dotted')
         r.points(wlist, bg ='white', pch = 23, type='o', lty='dashed')
@@ -198,7 +224,13 @@ class Stater:
         for metalist in self.__pointsIter:
             vlist = [[p.value for p in points] for points in metalist ]
             txt = '%s\nConvergence of all points' % self.__tests[i].args
-            r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Point value')
+            try:
+                r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Point value')
+            except:
+                if self.__LOG:
+                    self.__LOG = 0
+                    print 'Cannot use logarithmic scale'
+                r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Point value')
             r.grid(nx=10, ny=40)
             i += 1
         r.dev_off()
@@ -213,7 +245,13 @@ class Stater:
         for metalist in self.__optimaIter:
             vlist = [[p.value for p in points] for points in metalist ]
             txt = '%s\nConvergence of optima' % self.__tests[i].args
-            r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Optima value')
+            try:
+                r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Optima value')
+            except:
+                if self.__LOG:
+                    self.__LOG = 0
+                    print 'Cannot use logarithmic scale'
+                r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Optima value')
             r.grid(nx=10, ny=40)
             i += 1
         r.dev_off()
@@ -358,7 +396,7 @@ class Stater:
             # for current test's optima list, add their error as a list at emlist[i]
             emlist[i] = [p.value - self.__tests[i].opt_val for p in self.__optimas[i]]
             txt = '%s\nOptima error distribution' % self.__tests[i].args
-            r.hist(emlist[i], breaks, col=self.__color, main=txt, xlab='Median error', ylab='Frequency')
+            r.hist(emlist[i], breaks, col=self.__color, main=txt, xlab='Error', ylab='Frequency')
             r.grid(nx=10)
         r.dev_off()
 
@@ -383,7 +421,13 @@ class Stater:
             elist = [[p.error for p in points] for points in list ]
             errlist = [r.median(list) for list in elist]
             txt = '%s\nConvergence of error of all points' % self.__tests[i].args
-            r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration', log="y")
+            try:
+                r.plot(errlist, main=txt, type='o', ylab='Median error', xlab='Iteration', log="y")
+            except:
+                if self.__LOG:
+                    self.__LOG = 0
+                    print 'Cannot use logarithmic scale'
+                r.plot(errlist, main=txt, type='o', ylab='Median error', xlab='Iteration')
             r.grid(nx=10, ny=40)
             i += 1
         r.dev_off()
@@ -400,7 +444,13 @@ class Stater:
             elist = [[p.error for p in points] for points in list ]
             errlist = [r.median(list) for list in elist]            
             txt = '%s\nConvergence of error of optima' % self.__tests[i].args
-            r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration', log="y")
+            try:
+                r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration', log="y")
+            except:
+                if self.__LOG:
+                    self.__LOG = 0
+                    print 'Cannot use logarithmic scale'
+                r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration')
             r.grid(nx=10, ny=40)
             i += 1
         r.dev_off()
