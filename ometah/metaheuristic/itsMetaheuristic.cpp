@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.13 2005/07/02 22:15:19 jpau Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.14 2005/07/04 10:15:33 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -84,6 +84,11 @@ itsMetaheuristic::itsMetaheuristic()
   this->logKeys["instanciations"] = 2;
   this->logKeys["iterations"] = 2;
   this->logKeys["sample_steps"] = 3;
+
+  struct timeb * tim;
+  tim=(struct timeb*)malloc(sizeof(tim));
+  ftime(tim);
+  this->seed = tim->millitm;
  
 }
 
@@ -519,12 +524,8 @@ void itsMetaheuristic::initRandom()
   tim=(struct timeb*)malloc(sizeof(tim));
   ftime(tim);
   
-  this->seed = tim->millitm;
+  this->seed = abs((int) this->seed - (int)tim->millitm) + tim->millitm*(tim->time % 100);
   
-#if !WIN32
-  this->seed *= getpid();
-#endif  
-
   srand(this->seed);
 }
 
