@@ -66,13 +66,17 @@ class Stater:
         self.__report = 'REPORT'
         # serialized file name
         self.__serialized = 'TEST'
+        # eigen vectors weight for the tests
+        self.__eigenv = []
         # load serialized objects in paths
         for p in paths:
             try:
-                s = cPickle.load( open( os.path.join(p, 'TEST'), 'r' ) )
+                fd = open( os.path.join(p, 'TEST'), 'r' )
+                s = cPickle.load( fd )
                 self.__tests.append(s)
+                fd.close()
             except:
-                msg = 'error while loading %s' % q
+                msg = 'error while loading test'
                 self.__fatal(msg)
 
         # initialize Test's Points lists
@@ -84,7 +88,7 @@ class Stater:
         # initialize optimas and points
         self.__optimas = [test.optima for test in self.__tests]
         self.__pointsIter = [test.pointsIterations for test in self.__tests]
-        self.__optimaIter = [test.optimaIterations for test in self.__tests]
+        self.__optimaIter = [test.optimaIterations for test in self.__tests]        
         
         # create working directory
         (i, ok) = (1, 0)
@@ -96,6 +100,15 @@ class Stater:
             except:
                 (i, ok) = (i+1 ,0)
         self.__dir = dir
+
+        """
+        for t in self.__tests:
+            print t.optima[0]
+            print t.problem.optimum
+        """
+        #import sys
+        #sys.exit(3)
+        
 
 
     def check(self):
@@ -175,6 +188,12 @@ class Stater:
         r.plot(mlist, type='n', log="y", main='Median optima evolution', xlab='Test index', ylab='Optima value')        
         r.lines(mlist)
         r.points(mlist, bg ='white', pch = 21)
+        r.grid(nx=10, ny=40)
+
+        r.matplot(r.cbind(olist, mlist, wlist), log="y", type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
+        r.points(olist, bg ='white', pch = 21, type='o')
+        r.points(mlist, bg ='white', pch = 22, type='o', lty='dotted')
+        r.points(wlist, bg ='white', pch = 23, type='o', lty='dashed')
         r.grid(nx=10, ny=40)
         r.dev_off()
 
@@ -271,26 +290,59 @@ class Stater:
 
             else:
                 (x, y) = ([], [])
+                
+                
                 if t.problem.dimension == 2:
                     x = [ p.coords[0] for p in t.optima ]
                     y = [ p.coords[1] for p in t.optima ]
+                    op = t.problem.optimum[0]
+                    for p in t.problem.optimum:
+                        if p.value < op.value:
+                            op = p                    
+                    xoptim = op.coords[0]
+                    yoptim = op.coords[1]
+                    xmin = t.problem.min_bound[0].coords[0]
+                    ymin = t.problem.min_bound[0].coords[1]
+                    xmax = t.problem.max_bound[0].coords[0]
+                    ymax = t.problem.max_bound[0].coords[1]
                     
                 else:
                     import matrix
                     a = matrix.PCA()
+                    # append solution Points
                     co = [p.coords for p in t.optima]
+                    # also add bounds and optimum
+                    co.append(t.problem.min_bound[0].coords)
+                    co.append(t.problem.max_bound[0].coords)
+                    op = t.problem.optimum[0]
+                    for p in t.problem.optimum:
+                        if p.value < op.value:
+                            op = p
+                    co.append(op.coords)
+                    
                     a.setMatrix(co)
-                    x = [a.reduceDim(i,2)[0] for i in xrange(len(co)) ]
-                    y = [a.reduceDim(i,2)[1] for i in xrange(len(co)) ]
+                    self.__eigenv.append(a.getEigenVectors())
+                
+                    x = [a.reduceDim(i,2)[0] for i in xrange(len(co) - 3) ]
+                    y = [a.reduceDim(i,2)[1] for i in xrange(len(co) - 3) ]
+                    res = a.reduceDim(len(co) - 2, 2)
+                    xoptim = res[0]
+                    yoptim = res[1]
+                    res = a.reduceDim(len(co) - 3, 2)
+                    xmin = xoptim - 1
+                    ymin = yoptim - 1
+                    res = a.reduceDim(len(co) - 4, 2)
+                    xmax = xoptim + 1
+                    ymax = yoptim + 1
 
-
-                xlimm = [t.problem.min_bound[0].coords[0], t.problem.max_bound[0].coords[0]]
-                ylimm = [t.problem.min_bound[0].coords[1], t.problem.max_bound[0].coords[1]]
+                xlimm = [xmin, xmax]
+                ylimm = [ymin, ymax]
                 txt = '%s\nSolutions positions' % t.args
                 r.plot(x,y, bg='white', pch=21, xlab='X', ylab='Y', \
-                       main=txt, xlim=xlimm, ylim=xlimm)                
-                r.points([t.problem.optimum[0].coords[0]], \
-                         [t.problem.optimum[0].coords[1]], \
+                       main=txt, xlim=xlimm, ylim=ylimm)                
+
+                r.points([xoptim], \
+                         [yoptim], \
                          bg='black', pch=21)
                 r.grid(nx=10, ny=40)
            
@@ -315,7 +367,7 @@ class Stater:
             # for current test's optima list, add their error as a list at emlist[i]
             emlist[i] = [p.value - self.__tests[i].opt_val for p in self.__optimas[i]]
             txt = '%s\nOptima error distribution' % self.__tests[i].args
-            r.hist(emlist[i], breaks, col=self.__color, main=txt, xlab='Error', ylab='Frequency')
+            r.hist(emlist[i], breaks, col=self.__color, main=txt, xlab='Median error', ylab='Frequency')
             r.grid(nx=10)
         r.dev_off()
 
@@ -325,7 +377,8 @@ class Stater:
         elif len(self.__tests) > 2:
             # use Kruskal-Wallis test
             dic = r.kruskal_test(emlist)
-                
+        else: # only one test
+            return
         self.__same_distrib = dic['p.value']
 
 
@@ -400,8 +453,15 @@ class Stater:
             txt = '%s\\\\\n' % test.args
             W(txt)
 
-        txt = 'Non-parametric test over optima errors:  %f\\\\\n' % self.__same_distrib
-        W(txt)
+        if len(self.__tests) > 1:
+            txt = 'Non-parametric test over optima errors:  %f\\\\\n' % self.__same_distrib
+            W(txt)
+
+        if self.__eigenv != []:
+            W('Eigen vectors:\\\\')
+            for e in self.__eigenv:
+                txt = '%s\\\\\n' % (str(e))
+                W(txt)                        
 
         for test in self.__tests:
             txt = '\\section*{%s}\n' % test.args

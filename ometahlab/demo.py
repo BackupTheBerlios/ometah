@@ -86,14 +86,14 @@ def main():
     elif arg == 2:
 
         t = ometahtest.Test()
-        t.setArgs('-e 30 -p Ackley -d 10 -P 0.01 ')
-        t.setNbRuns(40)
+        t.setArgs('-e 30 -p Ackley -d 5 -P 0.01 ')
+        t.setNbRuns(20)
         t.setOmetahPath('../ometah/ometah')
         t.start()
 
         u = ometahtest.Test()
-        u.setArgs('-e 60  -p Ackley -d 10 -P 0.01')
-        u.setNbRuns(40)
+        u.setArgs('-e 60  -p Ackley -d 5 -P 0.01')
+        u.setNbRuns(20)
         u.setOmetahPath('../ometah/ometah')
         u.start()
     
@@ -103,17 +103,17 @@ def main():
     elif arg == 3:
     
         t = ometahtest.Test()
-        t.setArgs('-e 60 -p Rastrigin -d 2 -P 0.01')
+        t.setArgs('-e 60 -p Sphere -d 10 -P 0.01')
         t.setNbRuns(30)
         t.start()
     
         u = ometahtest.Test()
-        u.setArgs('-e 120  -p Rastrigin -d 2 -P 0.01')
+        u.setArgs('-e 120  -p Sphere -d 10 -P 0.01')
         u.setNbRuns(30)
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 240 -i 100 -p Rastrigin -d 2 -P 0.01')
+        v.setArgs('-e 240 -i 100 -p Sphere -d 10 -P 0.01')
         v.setNbRuns(30)
         v.start()
         
@@ -144,30 +144,30 @@ def main():
     elif arg == 5:
   
         t = ometahtest.Test()
-        t.setArgs('-e 50 -p Sphere -P 0.000001')
+        t.setArgs('-e 50 -p Griewank -P 0.000001')
         t.setNbRuns(50)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 100 -p Sphere -m CEDA -P 0.000001')
+        u.setArgs('-e 100 -p Griewank -m CEDA -P 0.000001')
         u.setNbRuns(50)
         u.setOmetahPath('../ometah/ometah')
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 200 -p Sphere -P 0.000001')
+        v.setArgs('-e 200 -p Griewank -P 0.000001')
         v.setNbRuns(50)
         v.start()
         
         w = ometahtest.Test()
-        w.setArgs('-e 500 -i 150 -p Sphere -P 0.000001')
+        w.setArgs('-e 500 -i 150 -p Griewank -P 0.000001')
         w.setNbRuns(50)
         w.setOmetahPath('../ometah/ometah')
         w.start()
         
         y = ometahtest.Test()
-        y.setArgs('-e 1000 -i 1000 -p Sphere -P 0.000001')
+        y.setArgs('-e 1000 -i 1000 -p Griewank -P 0.000001')
         y.setNbRuns(50)
         y.start()
 
@@ -208,6 +208,18 @@ def main():
         p = [ t.getPath(), u.getPath(), v.getPath(), w.getPath(), y.getPath()]
         ometahstats.stat(p)
 
+    elif arg == 7:
+    
+        """
+        t = ometahtest.Test()
+        t.setArgs('-e 40 -r 13')
+        t.start()
+        print 'path:' , t.getPath()
+        """
+        
+        p = [ 'results/Ackley_CEDA_d1_e30_r740800_1/',  'results/Ackley_CEDA_d1_e60_r1370275_1/']        
+        ometahstats.stat(p)
+        
     print 'Time: ', time.time()-emit
     
     return

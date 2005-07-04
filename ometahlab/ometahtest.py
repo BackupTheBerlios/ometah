@@ -92,6 +92,9 @@ class Test:
         self.parameters = None
         self.metah = None
 
+        # set default arguments
+        self.setArgs('')
+
 
     def __init(self, runb):
         """ Initialize a Test, which can be sawn as a 'metarun', a set of several runs (default : 25).
@@ -179,7 +182,8 @@ class Test:
         self.__argv = None
                 
         try:
-            cPickle.dump(self, open('TEST', 'w'))
+            import copy            
+            cPickle.dump( copy.deepcopy(self), open('TEST', 'w'))
         except:
             self.__fatal('pickle failed [Test.metarun]')
 
@@ -330,6 +334,16 @@ class Test:
         """ Start the test, making a metarun, which is running Ometah NB_RUN  times with the same command line arguments."""
         self.__metarun()
 
+    def getDict(self):
+        return self.__dict__
+
+    def __getState__(self):
+        """ Returns the object to pickle, without unused parameters. """
+        import copy
+        d = self.__dict__.copy()
+        del d['_Test_argv']
+        del d['_Test_logfile']
+        return d
 
 if __name__ == '__main__':
     print "This file contains no instructions in main(), please see README for program usage\n"

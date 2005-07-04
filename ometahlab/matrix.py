@@ -107,7 +107,6 @@ class PCA:
         # vectors[0] is eigenvalues, vectors[1] is eigenvectors
         for i in range( len(vectors[1]) ):
             svectors[1][index[i]] = vectors[1][i]
-
         return svectors[1]
 
 

@@ -261,6 +261,7 @@ class Parameters:
     randomSeed = None
 
     def __init__(self):
+        """ Void constructor."""
         pass
 
 
@@ -272,6 +273,7 @@ class Header:
     parameters = Parameters()
 
     def __init__(self):
+        """ Void constructor."""
         pass
     
 
@@ -284,6 +286,7 @@ class Point:
     index = None
 
     def __init__(self):
+        """ Void constructor."""
         pass
 
 
