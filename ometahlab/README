@@ -1,14 +1,17 @@
 
 /--------------
-OMETAHTESTS
+OMETAHLAB
 ---------------/
 
 /---------------------------------------------------------
 Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+http://ometah.berlios.de
 2005
 -----------------------------------------------------------/
 
-Ometahtest is a set of python scripts to study ometah results.
+Ometahlab is a set of python scripts to study ometah results, and is
+part of the project Open Metaheuristic.
+
 Results are plotted with R (http://www.r-project.org).
 
 You must have compiled ometah previously. For that you'll need scons
@@ -22,65 +25,45 @@ configured, the executable file must be in your $PATH variable.
 If you have Psyco installed (http://psyco.sf.net), it is used by the
 script, but otherwise you won't get an error.
 
-Ometahlab and ometah are running on Unix and Windows.
 
-You must have a directory results in ometahlab directory
-
-
-DOCUMENTATION
+DOC
 ----------------------------/
 
-See demo.py file for demo scripts, and help(moduleName) in Python
-interpreter for module documentation. Syntax is very easy and you
-should understand it after looking demo.py.
+Ometahlab use is pretty easy, only take a look at demos in demo.py
+source code, or the following example.
 
+See : 
 
-EXAMPLE
-----------------------------/
+    Examples in demo.py
 
-#!/usr/bin/python
+    >>> help(ometahtest)
 
-try:
-    import psyco
-    psyco.full()
-except:
-    pass
+    >>> help(ometahstats)
 
-# you need to import those 2 modules
-import ometahtest
-import ometahstats
+Short example :
 
-# instance a new test, that is a set of multiple runs 
-# of the same command line
-t = ometahtest.Test()
+      >>> import ometahtest
+      >>> import ometahstats
 
-# give ometah options as a string
-# for options list, see 'ometah --help'
-t.setArgs('-e 100')
+      To create a test (a set of runs):
+      >>> test = ometahtest.Test()
 
-# set the number of times you will run the given command line
-t.setNbRuns(20)
+      Set the arguments (see ometah --usage):
+      >>> test.setArgs('-e 100 -p Rosenbrock -P 0.01')
 
-# start the test, a directory is created containing XML output,
-# and a log of the test.
-t.start()
+      Set the number of runs (default: 25):
+      >>> test.setRuns(40)
 
-# same thing for another test, with a different command line
-u = ometah_test.Test()
-u.setArgs('-e 200')
-u.setNbRuns(20)
-u.start()
+      Set the path to ometah (below is the default value):
+      >>> test.setOmetahPath('../ometah/ometah')
 
-# you'll need to build a list of the path where are stocked the ouputs
-# if you have already done some tests, you can specify the directory
-# explicitely
-# ie : p = ['aPath', 'anotherPath' ]
-# there is no limitation on the list size
-p = [ t.getPath(), u.getPath() ]
+      Start the test:
+      >>> test.start()
 
-# launch the comparison between the given tests,
-ometahstats.stat(p)
-
+      The stat() function takes a list of paths as an argument, you
+      can specify as much paths as you want:
+      >>> ometahstats.stat( [test.getPath()] )
+      
 
 BUGS
 ----------------------------/
