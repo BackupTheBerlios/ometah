@@ -220,20 +220,21 @@ def main():
     elif arg == 8:
 
         t = ometahtest.Test()
-        t.setArgs('-e 1000 -p Schwefel -m CEDA  -P 0.000001 -d 10')
+        t.setArgs('-e 1000 -p Schwefel -m CEDA  -P 0.000001 -d 20')
         t.setNbRuns(20)
         t.setOmetahPath('../ometah/ometah')
         t.start()
-        
+
         u = ometahtest.Test()
-        u.setArgs('-e 3000 -p Schwefel -m CEDA  -P 0.000001 -d 30')
+        u.setArgs('-e 3000 -p Schwefel -m CEDA  -P 0.000001 -d 20')
         u.setNbRuns(20)
         u.setOmetahPath('../ometah/ometah')
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 5000 -i 100 -p Schwefel -m CEDA -P 0.000001 -d 50')
+        v.setArgs('-e 5000 -i 100 -p Schwefel -m CEDA -P 0.000001 -d 20')
         v.setNbRuns(20)
+        v.setOmetahPath('../ometah/ometah')
         v.start()
         
         p = [ t.getPath(), u.getPath(), v.getPath()]

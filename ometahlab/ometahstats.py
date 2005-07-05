@@ -327,9 +327,8 @@ class Stater:
                     # append solution Points
                     co = [p.coords for p in t.optima]
                     # also add bounds and optimum
-                    co.append(t.pb_min_bound[0].coords)
-                    co.append(t.pb_max_bound[0].coords)
                     op = t.pb_optimum[0]
+                    
                     for p in t.pb_optimum:
                         if p.value < op.value:
                             op = p
@@ -343,7 +342,8 @@ class Stater:
                     res = a.reduceDim(len(co) - 2, 2)
                     xoptim = res[0]
                     yoptim = res[1]
-                    
+
+                    del(a)
                     # add optimum points to point list, if it has an extrema value 
                     x.append(xoptim)
                     y.append(yoptim)

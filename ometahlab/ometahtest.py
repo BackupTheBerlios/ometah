@@ -187,6 +187,7 @@ class Test:
 
         # copy in Test attributes, because Pickle don't save Point instances
         # in self.problem.optimum (even with __getState__, deepcopy...)
+        #import copy
         self.pb_optimum = self.problem.optimum
         self.pb_min_bound = self.problem.min_bound
         self.pb_max_bound = self.problem.max_bound
@@ -203,6 +204,7 @@ class Test:
             files.append('xml.tar.gz')
         for src in files:
             os.rename(src, os.path.join(self.__dir, src) )
+        
             
 
     def setIterationLists(self):
@@ -304,7 +306,6 @@ class Test:
         except:
             self.__fatal('cannot create XML archive')
 
-
     def __log(self, astring):
         """ Log the given string in the log file, appending to the end of the file. """    
         fd = open(self.__logfile, 'a')
@@ -343,6 +344,7 @@ class Test:
     def start(self):
         """ Start the test, making a metarun, which is running Ometah NB_RUN  times with the same command line arguments."""
         self.__metarun()
+        del(self)
 
     def getDict(self):
         return self.__dict__
@@ -359,74 +361,64 @@ class Test:
 class Problem:
     """ Descriptive informations of a problem. """
 
-    key = None
-    name = None
-    description = None
-    formula = None
-    dimension = None
-    optimum = []   # list of Point
-    min_bound = [] # idem
-    max_bound = [] # idem
-    reference = None
-    accuracy = 0.0
-    
     def __init__(self):
         """ Void constructor."""
-        pass
+        self.key = None
+        self.name = None
+        self.description = None
+        self.formula = None
+        self.dimension = None
+        self.optimum = []   # list of Point
+        self.min_bound = [] # idem
+        self.max_bound = [] # idem
+        self.reference = None
+        self.accuracy = 0.0    
 
 
 class Metaheuristic:
     """ Descriptive informations of a metaheuristic. """
-
-    key = None
-    name = None
-    family = None
-    acronym = None
-    description = None
-    reference = None
     
     def __init__(self):
         """ Void constructor."""
-        pass
+        self.key = None
+        self.name = None
+        self.family = None
+        self.acronym = None
+        self.description = None
+        self.reference = None    
 
 
 class Parameters:
     """ The set of parameters specified into <parameters> elemens in XML output """
 
-    sampleSize = None
-    maxIterations = None
-    maxEvaluations = None
-    treshold = None
-    randomSeed = None
-
     def __init__(self):
         """ Void constructor."""
-        pass
+        self.sampleSize = None
+        self.maxIterations = None
+        self.maxEvaluations = None
+        self.treshold = None
+        self.randomSeed = None
 
 
 class Header:
     """ Additional informations in XML file concerning problem, metaheuristic, and parameters."""
 
-    problem = Problem()
-    metah = Metaheuristic()
-    parameters = Parameters()
-
     def __init__(self):
         """ Void constructor."""
-        pass
-    
+        self.problem = Problem()
+        self.metah = Metaheuristic()
+        self.parameters = Parameters()
 
+    
 class Point:
     """ A point has a set of coordinates, a value, an error relative to the problem's optimum, and an index. """
 
-    coords = None
-    value = None    
-    error = None
-    index = None
-
     def __init__(self):
         """ Void constructor."""
-        pass
+        self.coords = None
+        self.value = None    
+        self.error = None
+        self.index = None
 
 
 if __name__ == '__main__':

@@ -57,9 +57,16 @@ class PCA:
     def setMatrix(self, M):
         """ Initialize matrices, with list of sublists S,
         with M = list of sublist, one sublist for each observation, containing dimensions coordinates. """
-        S = Numeric.array(M)
+        try:
+            S = Numeric.array(M)
+        except:
+            print 'ERROR'
+            for m in M:
+                print len(m)
+            import sys
+            sys.exit(1)
         self.__matrix = S
-        C = self.__covar()
+        C = self.__covar()        
         self.__eigenv = transpose(self.__orderedEigenvectors(C))
 
     def getMatrix(self):
@@ -91,12 +98,13 @@ class PCA:
             for dim in range(d):
                 N[i][dim] = (M[i][dim] - means[dim])
 
-        # return d*d covariance matrix
+        # return d*d covariance matrix        
         return matrixmultiply( transpose(N), N )
 
     def __orderedEigenvectors(self, A):
         """ Returns the matrix of th eigenvectors ordered by decreasing eigenvalue of A (square)"""        
         (values, vectors, svectors) = (eigenvalues(A), eigenvectors(A), eigenvectors(A))
+
         svalues = sort(values)
         index = array(zeros(len(values)))
 
