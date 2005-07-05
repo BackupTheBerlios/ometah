@@ -269,32 +269,11 @@ class Stater:
         r.grid(nx=10, ny=40)
         r.dev_off()        
 
-    def __plot_7(self):
-        """ Plot graph of convergences:  for each Test the view of all runs convergence over iterations."""
 
-        """
-        fileName = os.path.join(self.__dir, 'convergence_graph.ps')
-        r.postscript(fileName, paper='letter')
-        olist = []
-        for test in self.__tests:
-            # initialize plotting window with first run
-            lineType = 1 # cf R, help(par), line type option
-            it = test.optimaIterations
-            olist = [sub[0].value for sub in it]
-            txt = '%s\nConvergence of the runs over iterations' % test.args
-            r.plot(olist, type='o', lty=lineType, ylim=[0,0.5], main=txt, ylab='Value', xlab='Run index')            
-            # then iter over the runsNb, plotting their graphs
-            for i in range(test.runsNb)[1:]:
-                if i < 7:
-                    lineType += 1
-                else:
-                    lineType = 0                    
-                olist = [sub[i].value for sub in it[:end]]
-                print i
-                r.lines(olist, type='o', lty=lineType)
-            r.grid(nx=10, ny=40)
-        r.dev_off()
-        """
+    def __plot_7(self):
+        """ """
+        pass
+
     
     def __plot_8(self):
         """ Plot optima and the optimum in their neighborhood plan, PCA used if dimension > 2 """
@@ -535,40 +514,6 @@ class Stater:
                 txt = '%s\\\\\n' % (str(e))
                 W(txt)                        
 
-        """
-        for test in self.__tests:
-            txt = '\\section*{%s}\n' % test.args
-            W(txt)
-            # Problem subsection
-            W('\\subsection*{Problem}\n\\begin{description}\n')
-            txt = '\t\\item[Name:] %s\n\t\\item[Dimension:] %i\n\t\\item[Optimum value:] %s\n' \
-                  % (test.problem.name, test.problem.dimension, min([x.value for x in test.pb_optimum]))
-            W(txt)
-            txt = '\t\\item[Accuracy:] %s\n\\end{description}\n' % test.problem.accuracy
-            W(txt)
-            # Metaheuristic subsection
-            W('\\subsection*{Metaheuristic}\n\\begin{description}\n')
-            txt = '\t\\item[Key:] %s \n' % (test.metah.key)
-            W(txt)
-            W('\\end{description}\n')
-            # Parameters subsection
-            W('\\subsection*{Parameters}\n\\begin{description}\n')
-            txt = '\t\\item[Runs:] %i \n\t\\item[Sample size:] %i\n\t\\item[Treshold:] %f\n\t\\item[Random seed:] %i\n' \
-                  % (test.runsNb, test.parameters.sampleSize, test.parameters.treshold, test.parameters.randomSeed)                        
-            W(txt)
-            W('\\end{description}\n')
-            # Results subsection
-            vals = [p.value for p in test.optima]
-            W('\\subsection*{Results}\n\\begin{description}\n')
-            txt = '\t\\item[Optima mean value:] %f \n\t\\item[Optima standard deviation:] %f\n' \
-                  % (r.mean(vals), r.sd(vals))                        
-            W(txt)
-            txt = '\t\\item[Optima value found:] %f \n\t\\item[Success rate:] %f \n\t\\item[Mean evaluations:] %f\n' \
-                  % (min(vals), 100*test.succRate, r.mean(test.evaluations))                        
-            W(txt)            
-            W('\\end{description}\n')
-
-        """
         W('\\end{document}\n')
         fd.close()
         

@@ -102,7 +102,7 @@ class Test:
         Then returns the Interface instance used.
         """
         import os
-        slog = "\nRun %i :\n" % (runb)
+        slog = "%i:\n" % (runb)
         self.__log(slog)
 
         try:
@@ -143,7 +143,11 @@ class Test:
 
         self.__points.append(q.getPoints())
         self.evaluations.append(q.getEvaluations())
-        #self.optima.append(self.__getOptimum(runb))
+        
+        olist = [ min([p.value for p in lis]) for lis in q.getPoints()]
+        slog = '%f\n' % (min(olist))
+        self.__log(slog)
+        
         fd.close()        
     
     

@@ -44,9 +44,9 @@ class Qparser:
         """ Constructor with the path to ometah"""
         import ometahtest
         self.__points = []         # list of Point instances
-        self.__header = ometahtest.Header()   # Header object, returned but getHeader
+        self.__header = None       # Header object, returned but getHeader
         self.__fd = None           # file descriptor of ometah output
-        self.__tresh = 0          # value under which test is a success, hence points reading is stopped
+        self.__tresh = 0           # value under which test is a success, hence points reading is stopped
         self.__evaluations = 0     # effective nb of evaluations done before reaching success.
         
     def load(self, path):
@@ -60,6 +60,10 @@ class Qparser:
     def getPoints(self):
         """ treshold is the value to go under (or equal) to stop the points reading,
         it's equal to the real optimum value plus the accuracy needed by the pb. """        
+        # if was already calculed (meth alr. called)
+        if self.__points != []:
+            return self.__points
+        
         import ometahtest
         (fd, line) = (self.__fd, '')
         
@@ -132,7 +136,12 @@ class Qparser:
     
     def getHeader(self):
         """ Return Header instance with info from XML file. """
+        # if was already calculed (meth alr. called)
+        if self.__header != None:
+            return self.__header
+        
         import ometahtest
+        self.__header = ometahtest.Header()
         (fd, line) = (self.__fd, '')
         
         def f(s):
