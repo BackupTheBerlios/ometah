@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.7 2005/07/03 20:54:07 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.8 2005/07/05 16:26:16 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -89,17 +89,11 @@ itsPoint itsRegistration::objectiveFunction(itsPoint point)
         
           // if we do not try out of bounds
         if ( !(x+rx<0 || x+rx>img1.width || y+ry<0 || y+ry>img1.height)  ) {
-            // if two null pixels
-            if ( img1(x,y)==0 && img2(x+rx,y+ry)==0 ) {
-                diff = 255;
-            } else {
-                // square error
-                diff =  (img1(x,y) - img2(x+rx,y+ry)) 
-                      * (img1(x,y) - img2(x+rx,y+ry)) ;
-            }
+            // square error
+            diff =  (img1(x,y) - img2(x+rx,y+ry)) 
+                  * (img1(x,y) - img2(x+rx,y+ry)) ;
         } else {
-            // if we are out of bounds => a big difference
-            diff = 255;
+            diff = img1(x,y) * img2(x,y);
         }
         
         similarity += diff;
