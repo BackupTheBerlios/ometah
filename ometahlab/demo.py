@@ -144,30 +144,30 @@ def main():
     elif arg == 5:
   
         t = ometahtest.Test()
-        t.setArgs('-e 50 -p Griewank -P 0.000001')
+        t.setArgs('-e 50 -p Griewank -P 0.000001 -d 2')
         t.setNbRuns(50)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 100 -p Griewank -m CEDA -P 0.000001')
+        u.setArgs('-e 100 -p Griewank -m CEDA -P 0.000001 -d 2')
         u.setNbRuns(50)
         u.setOmetahPath('../ometah/ometah')
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 200 -p Griewank -P 0.000001')
+        v.setArgs('-e 200 -p Griewank -P 0.000001 -d 2')
         v.setNbRuns(50)
         v.start()
         
         w = ometahtest.Test()
-        w.setArgs('-e 500 -i 150 -p Griewank -P 0.000001')
+        w.setArgs('-e 500 -i 150 -p Griewank -P 0.000001 -d 2')
         w.setNbRuns(50)
         w.setOmetahPath('../ometah/ometah')
         w.start()
         
         y = ometahtest.Test()
-        y.setArgs('-e 1000 -i 1000 -p Griewank -P 0.000001')
+        y.setArgs('-e 1000 -i 1000 -p Griewank -P 0.000001 -d 2')
         y.setNbRuns(50)
         y.start()
 

@@ -312,12 +312,20 @@ class Stater:
                     xmin = t.pb_min_bound[0].coords[0]
                     ymin = t.pb_min_bound[0].coords[1]
                     xmax = t.pb_max_bound[0].coords[0]
-                    ymax = t.pb_max_bound[0].coords[1]                    
-                    if max(x) < xmax:
-                        xmax = 0.8 * max(x) + 0.2 * xmax
-                    if max(y) < ymax:
-                        ymax = 0.8 * max(y) + 0.2 * ymax
-
+                    ymax = t.pb_max_bound[0].coords[1]
+                    m = max(max(x), xoptim)
+                    if m < xmax:
+                        xmax = 0.8 * m + 0.2 * xmax
+                    m = max(max(y), yoptim)
+                    if m < ymax:
+                        ymax = 0.8 * m + 0.2 * ymax
+                    m = min(min(x), xoptim)
+                    if m > xmin:
+                        xmin = 0.8 * m + 0.2 * xmin
+                    m = min(min(y), yoptim)
+                    if m > ymin:
+                        ymin = 0.8 * m + 0.2 * ymin
+                    
                     xlimm = [xmin, xmax]
                     ylimm = [ymin, ymax]
                     
@@ -326,7 +334,7 @@ class Stater:
                     a = matrix.PCA()
                     # append solution Points
                     co = [p.coords for p in t.optima]
-                    # also add bounds and optimum
+                    # also optimum
                     op = t.pb_optimum[0]
                     
                     for p in t.pb_optimum:
