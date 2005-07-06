@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRandom.hpp,v 1.2 2005/07/06 11:16:02 jpau Exp $
+ *  $Id: itsRandom.hpp,v 1.3 2005/07/06 11:39:43 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -47,9 +47,6 @@ protected:
   //! The maxima parameter for the uniform distribution
   vector<double> parameterUniformMaxima;
 
-  //! The minima parameter for the uniform distribution
-  vector<double> parameterNormalMean;
-
   //! The maxima parameter for the uniform distribution
   vector<vector<double> > parameterNormalVarCovar;
 
@@ -76,15 +73,6 @@ protected:
       
   //! the learning
   void learning();
-      
-  //! Learn the parameters of an uniform distribution
-  void learningUniform(vector< vector<double> > aSample);
-
-  //! Learn the parameters of a normal distribution
-  void learningNormal(vector< vector<double> > aSample);
-
-  //! Draw the sample in the learned normal distribution
-  vector<double> diversificationNormal();
 
 public:
 
@@ -95,23 +83,6 @@ public:
   itsRandom();
 
   ~itsRandom();
-
-  //! Return the distribution
-  string getDistribution();
-  //! Change the distribution
-  void setDistribution(string distribution);
-
-  //! Return the select ratio
-  double getSelectRatio();
-
-  //! Change the select ratio
-  void setSelectRatio( double ratio );
-
-  //! Keep points within bounds
-  void keepBounds();
-  
-  //! Don't keep point within bounds
-  void keepBoundsNot();
 
 };
 

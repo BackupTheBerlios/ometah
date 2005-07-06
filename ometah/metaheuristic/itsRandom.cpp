@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRandom.cpp,v 1.2 2005/07/06 11:16:02 jpau Exp $
+ *  $Id: itsRandom.cpp,v 1.3 2005/07/06 11:39:43 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -48,116 +48,18 @@ itsRandom::itsRandom()
     setAccronym("RAN");
     setDescription("Use random uniform distribution in searching space.");
     setCitation(
-"@InBoo{{Bengoetxea02,"
-"  Author         = {Bengoetxea, E. and Miqu\\'elez, T. and Larra\\~naga, P."
-"                   and Lozano, J. A.},"
-"  Editor         = {Larranaga, P. and Lozano, J. A.},"
-"  Title          = {Estimation of {D}istribution {A}lgorithms, {A} {N}ew"
-"                   {T}ool for {E}volutionary {C}omputation},"
-"  Chapter        = {Experimental Results in Function Optimization with"
-"                   EDAs in Continuous Domain},"
-"  Pages          = {181--194},"
-"  Publisher      = {Kluwer Academic Publishers},"
-"  Series         = {Genetic Algorithms and Evolutionary Computation},"
-"  year           = 2002"
-"}"
+"Unknown"
 );
     setFamily("Random algorithm");
     
-
-    //setDistribution("Uniform");
-    setDistribution("Normal");
-    keepBounds();
-    
-    
-    setSelectRatio(0.5);
-}
-
-
-void itsRandom::learningUniform(vector< vector<double> > aSample)
-{
-    // transpose it so that the row correspond to a dimension, and not a solution
-    vector< vector<double> > transposedSimplifiedSample = transpose(aSample);
-
-    // verify that we have the correct dimension
-    if( transposedSimplifiedSample.size() != (unsigned int)this->problem->getDimension() ) {
-        ostringstream err;
-        err << "ErrorSize: transposed matrix size (" 
-            << transposedSimplifiedSample.size() 
-            << ") does not correspond to problem dimension (" 
-            << this->problem->getDimension() 
-            << ")";
-        throw err.str();
-    }
-
-    // find the minimum and the maximum for each dimension  
-    this->parameterUniformMinima.clear();
-    this->parameterUniformMaxima.clear();
-    for(int dim=0; dim < this->problem->getDimension(); dim++) {
-        // store them
-        this->parameterUniformMinima.push_back( min( aSample[dim] ) );
-        this->parameterUniformMaxima.push_back( max( aSample[dim] ) );
-    }
-}
-
-void itsRandom::learningNormal(vector< vector<double> > aSample)
-{
-    //! mean on each dimension
-    this->parameterNormalMean = mean( transpose(aSample) );
-
-    //! variance covariance matrix
-    this->parameterNormalVarCovar = varianceCovariance(aSample);
 }
 
 
 void itsRandom::learning()
-{
-    vector< vector<double> > simplifiedSample;
-    
-    // for each point, extract the solution vector
-    for(unsigned int i=0; i < getSampleSizeCurrent(); i++) {
-        // put this vector in a matrix
-        simplifiedSample.push_back( sample[i].getSolution() );
-    }
-
-
-    if ( distribution == "Uniform" ) {
-        learningUniform( simplifiedSample );
-    
-    } else if (distribution == "Normal") {  
-        learningNormal( simplifiedSample );
-    
-    } else {
-        learningUniform( simplifiedSample );
-    }
+{ 
+  // No learning.
 }
  
-vector<double> itsRandom::diversificationNormal()
-{
-    vector<double> sol;
-
-    // random in the distribution
-    try {
-        sol = randomNormalMulti(this->parameterNormalMean, this->parameterNormalVarCovar);
-    } catch (const char * s) {
-        this->isInternalStoppingCriterion = true;
-        sol = randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() );
-    }
-
-    // test if is in bounds
-    if( this->isKeepBounds ) {
-        for(int i=0; i < this->problem->getDimension(); i++) {
-            // if < min or > max
-            if( sol[i] < this->problem->boundsMinima()[i] ||
-                sol[i] > this->problem->boundsMaxima()[i] ) {
-                    // redraw in a uniform distribution on bounds
-                    sol = randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() );
-            }
-        }
-    }
-
-    return sol;
-}
 
 void itsRandom::diversification()
 {
@@ -169,16 +71,8 @@ void itsRandom::diversification()
         // draw solution
         itsPoint p;
     
-        if ( distribution == "Uniform" ) {
-            p.setSolution( randomUniform(this->parameterUniformMinima, this->parameterUniformMaxima) );
-        
-        } else if (distribution == "Normal") {  
-            p.setSolution( diversificationNormal() );
-        
-        } else {
-            p.setSolution( randomUniform(this->parameterUniformMinima, this->parameterUniformMaxima) );
-        }
-    
+	p.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
+
         // get values
         sample[i] = evaluate(p);
     }
@@ -186,58 +80,9 @@ void itsRandom::diversification()
 
 void itsRandom::intensification()
 {
-    // sort the sample
-    this->sample = sortOnValues(this->sample,0);
-
-    // get the best points
-    int selectNumber = (int) floor( (double)this->sample.size() * this->selectRatio);
-    printDebug("selectNumber",selectNumber);
-
-    vector<itsPoint> bests(this->sample.begin(), this->sample.begin() + selectNumber );
-    
-    if(bests.size()<=0) {
-        throw "ErrorSize: no more points left after selection";
-    }
-
-    this->sample = bests;
+  // No intensification.
 }
 
-string itsRandom::getDistribution()
-{
-  return this->distribution;
-}
-
-void itsRandom::setDistribution(string distribution)
-{
-  if(distribution == "Uniform") {
-    this->distribution = distribution;
-
-  } else {
-    // The uniform distribution is used by default
-    this->distribution = distribution;
-  }
-}
-
-
-void itsRandom::setSelectRatio( double ratio ) 
-{
-    this->selectRatio = ratio;
-}
-
-double itsRandom::getSelectRatio()
-{
-    return this->selectRatio;
-}
-
-void itsRandom::keepBounds()
-{
-    this->isKeepBounds = true;
-}
-  
-void itsRandom::keepBoundsNot()
-{
-    this->isKeepBounds = false;
-}
 
 itsMetaheuristic* itsRandomFactory::create()
 {
