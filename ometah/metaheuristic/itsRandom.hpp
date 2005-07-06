@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRandom.hpp,v 1.1 2005/07/06 11:05:18 jpau Exp $
+ *  $Id: itsRandom.hpp,v 1.2 2005/07/06 11:16:02 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -23,8 +23,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#ifndef RANDOM
-#define RANDOM
+#ifndef RANDOMETAH
+#define RANDOMETAH
  
 #include "itsMetaheuristic.hpp"
 

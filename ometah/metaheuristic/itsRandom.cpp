@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRandom.cpp,v 1.1 2005/07/06 11:05:18 jpau Exp $
+ *  $Id: itsRandom.cpp,v 1.2 2005/07/06 11:16:02 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -43,10 +43,10 @@ itsRandom::~itsRandom()
 
 itsRandom::itsRandom()
 {
-    setName("Continuous Estimation of Distribution Algorithm");
-    setKey("CEDA");
-    setAccronym("CEDA");
-    setDescription("An estimation of distribution algorithm");
+    setName("Random algorithm");
+    setKey("RAN");
+    setAccronym("RAN");
+    setDescription("Use random uniform distribution in searching space.");
     setCitation(
 "@InBoo{{Bengoetxea02,"
 "  Author         = {Bengoetxea, E. and Miqu\\'elez, T. and Larra\\~naga, P."
@@ -62,7 +62,7 @@ itsRandom::itsRandom()
 "  year           = 2002"
 "}"
 );
-    setFamily("Estimation of Distribution Algorithm");
+    setFamily("Random algorithm");
     
 
     //setDistribution("Uniform");
