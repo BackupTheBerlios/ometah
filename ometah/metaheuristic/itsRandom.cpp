@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRandom.cpp,v 1.3 2005/07/06 11:39:43 jpau Exp $
+ *  $Id: itsRandom.cpp,v 1.4 2005/07/06 12:01:24 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -44,14 +44,11 @@ itsRandom::~itsRandom()
 itsRandom::itsRandom()
 {
     setName("Random algorithm");
-    setKey("RAN");
-    setAccronym("RAN");
+    setKey("RA");
+    setAccronym("RA");
     setDescription("Use random uniform distribution in searching space.");
-    setCitation(
-"Unknown"
-);
-    setFamily("Random algorithm");
-    
+    setCitation("Unknown");
+    setFamily("Random algorithm");    
 }
 
 
@@ -70,9 +67,7 @@ void itsRandom::diversification()
     for( unsigned int i=0; i < getSampleSize(); i++) {
         // draw solution
         itsPoint p;
-    
 	p.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
-
         // get values
         sample[i] = evaluate(p);
     }

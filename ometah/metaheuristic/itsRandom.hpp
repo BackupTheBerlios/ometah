@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRandom.hpp,v 1.3 2005/07/06 11:39:43 jpau Exp $
+ *  $Id: itsRandom.hpp,v 1.4 2005/07/06 12:01:24 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -23,8 +23,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#ifndef RANDOMETAH
-#define RANDOMETAH
+#ifndef RANDOM_ALGO
+#define RANDOM_ALGO
  
 #include "itsMetaheuristic.hpp"
 
@@ -32,37 +32,6 @@ using namespace std;
 
 class itsRandom : public itsMetaheuristic
 {
-protected:
-  //! The probability density function in used
-  /*!
-    Either :
-      - Uniform
-      - Normal
-  */
-  string distribution;
-
-  //! The minima parameter for the uniform distribution
-  vector<double> parameterUniformMinima;
-
-  //! The maxima parameter for the uniform distribution
-  vector<double> parameterUniformMaxima;
-
-  //! The maxima parameter for the uniform distribution
-  vector<vector<double> > parameterNormalVarCovar;
-
-  //! The select ratio
-  /*!
-    A number in [0,1] telling what proportion of points
-    should be selected in the intensification phase
-  */
-  double selectRatio;
-
-  //! Bounds respect
-  /*! 
-      If false, allow points to go out of bounds, 
-      if true points are kept within bounds
-  */
-  bool isKeepBounds;
   
 protected:
   //! the intensification is a the a method
@@ -79,7 +48,7 @@ public:
   //! Constructor
   /*!
     Here are set default values for attributes
-   */
+  */
   itsRandom();
 
   ~itsRandom();
