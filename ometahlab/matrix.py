@@ -103,9 +103,18 @@ class PCA:
 
     def __orderedEigenvectors(self, A):
         """ Returns the matrix of th eigenvectors ordered by decreasing eigenvalue of A (square)"""        
-        (values, vectors, svectors) = (eigenvalues(A), eigenvectors(A), eigenvectors(A))
+
+        #(values, vectors, svectors) = (eigenvalues(A), eigenvectors(A), eigenvectors(A))
+
+        values = eigenvalues(A)
+        vectors = [[abs(val) for val in vec] for vec in eigenvectors(A) ]
+        svectors = [[abs(val) for val in vec] for vec in eigenvectors(A) ]
+
+        # sometimes we can have a complex value for large dimensions (>= 30)        
+        values = [abs(val) for val in values]
 
         svalues = sort(values)
+
         index = array(zeros(len(values)))
 
         for i in range( len(values) ):
@@ -115,6 +124,7 @@ class PCA:
         # vectors[0] is eigenvalues, vectors[1] is eigenvectors
         for i in range( len(vectors[1]) ):
             svectors[1][index[i]] = vectors[1][i]
+
         return svectors[1]
 
 

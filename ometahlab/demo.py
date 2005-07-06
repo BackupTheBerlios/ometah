@@ -57,7 +57,7 @@ def main():
     if arg == 0:
         """ Usage """
         print 'Usage: python demo.py <i>'
-        print 'with i the number of a demo, from 1 to 6, see file content for demos details.'
+        print 'with i the number of a demo, from 1 to 11, see file content for demos details.'
         return
     
     import ometahtest
@@ -69,13 +69,13 @@ def main():
     if arg == 1:
 
         t = ometahtest.Test()
-        t.setArgs('-e 30 -p Ackley -P 0.01')
+        t.setArgs('-e 30 -p Ackley -P 0.01 -d 30')
         t.setNbRuns(15)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 60  -p Ackley -P 0.01')
+        u.setArgs('-e 60  -p Ackley -P 0.01 -d 30')
         u.setNbRuns(15)
         u.setOmetahPath('../ometah/ometah')
         u.start()
@@ -294,6 +294,23 @@ def main():
         w.start()
 
         p = [ u.getPath(), v.getPath(), w.getPath()]
+        ometahstats.stat(p)
+
+
+    elif arg == 11:         
+        
+        u = ometahtest.Test()
+        u.setArgs('-e 100 -i 200 -p Griewank -m RAN -s 10 -P 0.01 -d 3')
+        u.setNbRuns(40)
+        u.setOmetahPath('../ometah/ometah')
+        u.start()
+        
+        v = ometahtest.Test()
+        v.setArgs('-e 200 -i 200 -p Griewank -m CEDA -s 10 -P 0.01 -d 3')
+        v.setNbRuns(40)
+        v.start()
+
+        p = [ u.getPath(), v.getPath()]
         ometahstats.stat(p)
 
         
