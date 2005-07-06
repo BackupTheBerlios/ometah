@@ -7,8 +7,9 @@
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 #  File : ometahtest.py
-#  This module contains the Test class, which corresponds to a set of ometah
-#  executions with the same command line arguments.
+#  This is the main module of ometahlab, used to create, configure, and launch a test,
+#  which is a set of several runs. It also contains the classes of the entities used
+#  in a test.
 #
 ###
 #
@@ -41,7 +42,8 @@ import qparser
 
 
 class Test:
-    """ A Test is a set of executions (runs) of the same command line. """
+    """ A Test is a set of executions (runs) of the same command line. Before calling start()
+    method, you can configure the arguments (setArgs) and the number of runs (setRuns)."""
 
     # turned to 1 when problem string updated
     _INFO_PB = False
@@ -208,7 +210,7 @@ class Test:
             
 
     def setIterationLists(self):
-        """ Defines the iteration lists. """
+        """ Defines the iteration lists, used by ometahstats. """
         
         size = self.parameters.sampleSize        
         # initialize the max nb of iterations, some runs may have stopped before reaching max #iter,
@@ -245,7 +247,7 @@ class Test:
         return optim
 
     def setOptimaList(self):
-        """ """
+        """ Defines the list of optima, used by ometahstats."""
         for i in xrange(self.runsNb):
             optim = self.__points[i][0][0]
             for iteration in self.__points[i]:
@@ -318,7 +320,8 @@ class Test:
         sys.exit(-1)
 
     def setXmlArchive(self, bool):
-        """ Set _XML_ARCH var."""
+        """ If bool is True, XML archives of each run will be saved in a gzipped tarball archive.
+        Default value is False."""
         if bool:
             self._XML_ARCH = True
         else:
@@ -389,7 +392,7 @@ class Metaheuristic:
 
 
 class Parameters:
-    """ The set of parameters specified into <parameters> elemens in XML output """
+    """ The set of parameters specified into <parameters> elements in XML output """
 
     def __init__(self):
         """ Void constructor."""

@@ -173,7 +173,6 @@ def main():
 
         p = [ t.getPath(), u.getPath(), v.getPath(), w.getPath(), y.getPath()]
         ometahstats.stat(p)
-
     
     elif arg == 6:
         
@@ -239,7 +238,6 @@ def main():
         
         p = [ t.getPath(), u.getPath(), v.getPath()]
         ometahstats.stat(p)
-
 
     elif arg == 9:
 

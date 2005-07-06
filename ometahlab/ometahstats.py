@@ -297,9 +297,7 @@ class Stater:
                 r.grid(nx=10, ny=40)
 
             else:
-                (x, y) = ([], [])
-                
-                
+                (x, y) = ([], [])                                
                 if t.problem.dimension == 2:
                     x = [ p.coords[0] for p in t.optima ]
                     y = [ p.coords[1] for p in t.optima ]
@@ -475,10 +473,6 @@ class Stater:
         self.__plot_11()
 
 
-    def writeTex(self):
-        """ Write Latex report """
-        
-        
     def writeLatex(self):
         """ Write Latex report """
         path = os.path.join(self.__dir, 'report.tex')
