@@ -1,9 +1,9 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConscript,v 1.1 2005/06/18 06:30:28 nojhan Exp $
-#  Copyright : Université Paris 12 Val-de-Marne
-#              (61 avenue du GÃ©nÃ©ral de Gaulle, 94010, CrÃ©teil, France)
-#  Author : Johann DrÃ©o <nojhan@gmail.com>
+#  $Id: SConscript,v 1.2 2005/07/06 11:05:18 jpau Exp $
+#  Copyright : UniversitÃÂ© Paris 12 Val-de-Marne
+#              (61 avenue du GÃÂÃÂ©nÃÂÃÂ©ral de Gaulle, 94010, CrÃÂÃÂ©teil, France)
+#  Author : Johann DrÃÂÃÂ©o <nojhan@gmail.com>
 ################################################################################
 
 # This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 
 Import('env')
 
-metaheuristic = ['itsMetaheuristic.cpp','itsEstimationOfDistribution.cpp']
+metaheuristic = ['itsMetaheuristic.cpp','itsEstimationOfDistribution.cpp', 'itsRandom.cpp']
 dependencies = ["../common/random.cpp","../common/string.cpp","../common/itsPoint.cpp", \
     "../problem/itsProblem.cpp","../communication/itsCommunicationClient.cpp"]
 
