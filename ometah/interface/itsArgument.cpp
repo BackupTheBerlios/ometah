@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.8 2005/06/30 12:09:51 nojhan Exp $
+ *  $Id: itsArgument.cpp,v 1.9 2005/07/07 14:26:25 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -112,7 +112,7 @@ void itsArgumentParser::searchEndFlags()
     throw VERSION;  
   }
   if (this->defArg("-h", "--help", "show help", false, "", "") ||
-      this->defArg("-u", "--usage", "show help", false, "", "")){
+      this->defArg("-u", "--usage", "show usage informations", false, "", "")){
     throw USAGE;
   }
 }

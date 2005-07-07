@@ -1,9 +1,9 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConscript,v 1.3 2005/07/07 14:26:25 jpau Exp $
-#  Copyright : UniversitÃƒÂƒÃ‚Â© Paris 12 Val-de-Marne
-#              (61 avenue du GÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©nÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©ral de Gaulle, 94010, CrÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©teil, France)
-#  Author : Johann DrÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©o <nojhan@gmail.com>
+#  $Id: SConscript,v 1.1 2005/07/07 14:26:25 jpau Exp $
+#  Copyright : UniversitÃƒÂƒÃ‚Â© Paris 12 Val-de-Marne
+#              (61 avenue du GÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©nÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©ral de Gaulle, 94010, CrÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©teil, France)
+#  Author : Johann DrÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©o <nojhan@gmail.com>
 ################################################################################
 
 # This program is free software; you can redistribute it and/or
@@ -23,11 +23,10 @@
 
 Import('env')
 
-metaheuristic = ['itsMetaheuristic.cpp']
+sampling = ['itsGridSampling.cpp']
 
-dependencies = ["../common/random.cpp","../common/string.cpp","../common/itsPoint.cpp", \
-    "../problem/itsProblem.cpp","../communication/itsCommunicationClient.cpp"]
+dependencies = [ "../../common/random.cpp","../../common/string.cpp","../../common/itsPoint.cpp", \
+    "../../problem/itsProblem.cpp","../../communication/itsCommunicationClient.cpp",
+    "../itsMetaheuristic.cpp"]
 
-env.StaticLibrary('metaheuristic',metaheuristic+dependencies)
-
-SConscript(['estimation/SConscript', 'random/SConscript', 'sampling/SConscript'])
+env.StaticLibrary('sampling',sampling+dependencies)

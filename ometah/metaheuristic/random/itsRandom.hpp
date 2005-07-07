@@ -1,7 +1,7 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.4 2005/07/07 14:26:25 jpau Exp $
+ *  $Id: itsRandom.hpp,v 1.1 2005/07/07 14:26:25 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
- *  Author : Johann Dréo <nojhan@gmail.com>
+ *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
 
@@ -23,36 +23,42 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#include <hash_map.h>
-#include <string>
-#include <iostream>
-#include <fstream>
-
-// common stuff
-#include "../common/logic.hpp"
-#include "../common/itsSet.hpp"
-#include "../common/string.hpp"
-
-// basic classes
-#include "../metaheuristic/itsMetaheuristic.hpp"
-#include "../problem/itsProblem.hpp"
-#include "../communication/itsCommunicationClient.hpp"
-#include "../communication/itsCommunicationServer.hpp"
-
-// metaheuristics
-#include "../metaheuristic/estimation/itsEstimationOfDistribution.hpp"
-#include "../metaheuristic/random/itsRandom.hpp"
-#include "../metaheuristic/sampling/itsGridSampling.hpp"
-
-// problems
-#include "../problem/CEC05/itsCEC05_SSRPO_Base.hpp"
-
-// communication
-#include "../communication/itsCommunicationServer_embedded.hpp"
-#include "../communication/itsCommunicationClient_embedded.hpp"
-
-// interfaces
-#include "itsArgument.hpp"
-
+#ifndef RANDOM_ALGO
+#define RANDOM_ALGO
+ 
+#include "../itsMetaheuristic.hpp"
 
 using namespace std;
+
+class itsRandom : public itsMetaheuristic
+{
+  
+protected:
+  //! the intensification is a the a method
+  void intensification();
+      
+  //! the diversification
+  void diversification();
+      
+  //! the learning
+  void learning();
+
+public:
+
+  //! Constructor
+  /*!
+    Here are set default values for attributes
+  */
+  itsRandom();
+
+  ~itsRandom();
+
+};
+
+class itsRandomFactory : public itsMetaheuristicFactory
+{
+public:
+    itsMetaheuristic* create();
+};
+
+#endif
