@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.3 2005/07/08 11:14:16 jpau Exp $
+ *  $Id: itsGridSampling.cpp,v 1.4 2005/07/08 11:22:42 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -53,7 +53,7 @@ itsGridSampling::itsGridSampling()
   setCitation("Unknown");
   setFamily("Sampling algorithm");  
 
-  this->isInternalStoppingCriterion = true;
+  // this->isInternalStoppingCriterion = true;
 }
 
 void itsGridSampling::learning(){
@@ -69,10 +69,6 @@ void itsGridSampling::setPointsPerDim(int res)
 
 void itsGridSampling::diversification(){
 
-  itsPoint p;
-  for ( unsigned i=0; i < getSampleSize(); i++){
-    solutions[i] = p;
-  }
 
   unsigned dim = this->problem->getDimension();
 
@@ -139,13 +135,8 @@ void itsGridSampling::recEval( vector<double> partialPoint )
       partialPoint[n] = i;
      
       // recursive call 
-      if ( ! isStoppingCriteria() ) {
-	
-	cout << "CONTINUE" << endl;
+      if ( ! isStoppingCriteria() ) {      
 	recEval( partialPoint );
-      }
-      else {
-	cout << "END" << endl;
       }
     }
   }

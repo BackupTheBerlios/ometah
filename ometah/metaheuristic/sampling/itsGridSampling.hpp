@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.hpp,v 1.3 2005/07/08 11:14:16 jpau Exp $
+ *  $Id: itsGridSampling.hpp,v 1.4 2005/07/08 11:22:42 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -36,26 +36,15 @@ class itsGridSampling : public itsMetaheuristic
 protected:
 
   
-  //! current optimum
-  itsPoint bestPoint;
-
-  //! best point value
-  double bestValue;
-  
   //! number of points in each dimension
   int pointsPerDim;
   
   //! resolutions
   vector<double> resolutions;
 
-  //! buffer for solutions
-  vector<itsPoint> solutions;
-
   //! max and min coord for each dimension.
   vector<double> maxs;
   vector<double> mins;
-
-  
 
   //! the intensification is a the a method
   void intensification();
