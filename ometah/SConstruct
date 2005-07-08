@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.4 2005/07/07 14:26:24 jpau Exp $
+#  $Id: SConstruct,v 1.5 2005/07/08 08:47:26 jpau Exp $
 #  Copyright : Universit� Paris 12 Val-de-Marne
 #              (61 avenue du Général de Gaulle, 94010, Créteil, France)
 #  Author : Johann Dréo <nojhan@gmail.com>
@@ -51,7 +51,8 @@ dir_lib = ['problem/CEC05', \
            'problem/registration', \
 	   'metaheuristic/estimation', \
 	   'metaheuristic/random',
-	   'metaheuristic/sampling']
+	   'metaheuristic/sampling',
+	   'metaheuristic/neldermead']
            #'interface/registration',
 
 
@@ -84,6 +85,6 @@ else:
 
 # standard interface
 ometah = env.Program( target = 'ometah', source = 'interface/ometah.cpp', \
-    LIBS=['common','communication','metaheuristic','problem','problem_CEC05','interface', 'estimation', 'random', 'sampling'] )
+    LIBS=['common','communication','metaheuristic','problem','problem_CEC05','interface', 'estimation', 'random', 'sampling', 'neldermead'] )
 
 Default(ometah)
