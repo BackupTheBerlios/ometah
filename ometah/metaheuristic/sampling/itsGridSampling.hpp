@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.hpp,v 1.2 2005/07/08 07:44:11 jpau Exp $
+ *  $Id: itsGridSampling.hpp,v 1.3 2005/07/08 11:14:16 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -36,8 +36,8 @@ class itsGridSampling : public itsMetaheuristic
 protected:
 
   
-  //! best point coordinates
-  vector<double> bestPoint;
+  //! current optimum
+  itsPoint bestPoint;
 
   //! best point value
   double bestValue;
@@ -55,7 +55,7 @@ protected:
   vector<double> maxs;
   vector<double> mins;
 
-  unsigned solIndex;
+  
 
   //! the intensification is a the a method
   void intensification();
@@ -65,7 +65,6 @@ protected:
       
   //! the learning
   void learning();
-  
     
   //! Recursive function over dimensions.
   void recEval( vector<double> partialPoint );

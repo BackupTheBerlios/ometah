@@ -1,8 +1,8 @@
 /***************************************************************************
- *  $Id: itsNelderMead.hpp,v 1.1 2005/07/08 08:48:20 jpau Exp $
+ *  $Id: itsNelderMead.hpp,v 1.2 2005/07/08 11:14:16 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
- *  Author : Johann Dréo <nojhan@gmail.com>
+ *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
 
 /*  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
@@ -34,15 +34,59 @@ class itsNelderMead : public itsMetaheuristic
 {
 
 protected:
-  //! the intensification is a the a method
+
+  //! sample points sorted according to their values, from best to worst
+  vector<itsPoint> sortedSample;
+
+  // transformations coefficients :
+  
+  //! reflection 
+  float reflection;
+
+  //! expansion
+  float expansion;
+
+  //! contraction
+  float contraction;
+
+  // simplexes after transformation
+
+  //! reflection simplex
+  vector<itsPoint> reflectionSimplex;
+
+  //! expansion simplex
+  vector<itsPoint> expansionSimplex;
+
+  //! contraction simplex
+  vector<itsPoint> contractionSimplex;
+
+protected:
+
+  //! the intensification phase
   void intensification();
       
-  //! the diversification
+  //! the diversification, ie the algo itself
   void diversification();
       
   //! the learning
   void learning();
-      
+
+  //! return best point's solution in given dimension
+  double bestSolution(int dimension);
+
+  //! make transformation for a point coordinate
+  double transfo(float, double);
+
+  //! sort current sample in sortedSample vector
+  void sortSample();
+
+  //! return the coordinates of the transformed point
+  itsPoint getTransformedPoint(itsPoint point, float coef);
+
+  void makeReflectionSimplex();
+  void makeExpansionSimplex();
+  void makeContractionSimplex();
+  
 public:
 
   //! Constructor

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.2 2005/07/08 07:44:11 jpau Exp $
+ *  $Id: itsGridSampling.cpp,v 1.3 2005/07/08 11:14:16 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -51,7 +51,9 @@ itsGridSampling::itsGridSampling()
   setAccronym("GS");
   setDescription("Regular sampling search.");
   setCitation("Unknown");
-  setFamily("Sampling algorithm");    
+  setFamily("Sampling algorithm");  
+
+  this->isInternalStoppingCriterion = true;
 }
 
 void itsGridSampling::learning(){
@@ -67,79 +69,41 @@ void itsGridSampling::setPointsPerDim(int res)
 
 void itsGridSampling::diversification(){
 
-  if ( solutions.size() == 0 ) {
-
-    unsigned i;
-    for( i=0; i < getSampleSize(); i++) {
-      // draw solution
-      itsPoint p;
-      p.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
-      // get values
-      sample[i] = evaluate(p);
-    }
-    // initialize solutions
-    for ( i=0; i < getSampleSize(); i++){
-      itsPoint p;
-      solutions.push_back(p);
-    }
+  itsPoint p;
+  for ( unsigned i=0; i < getSampleSize(); i++){
+    solutions[i] = p;
   }
-  else
-    {
-      itsPoint p;
-      for ( unsigned i=0; i < getSampleSize(); i++){
-	solutions[i] = p;
-      }
-      solIndex = 0;
+
+  unsigned dim = this->problem->getDimension();
+
+  // initialize maxs and mins vectors, giving min and max bounds for each dim
+  for (unsigned i = 0; i < dim; i++) {
+    maxs.push_back(this->problem->boundsMaxima()[i]);
+    mins.push_back(this->problem->boundsMinima()[i]);
+  }
+
+  // if pointsperDim non initialized
+  if(pointsPerDim == -1) {
+
+    // points ~ nb evalautions
+    int pointsNb = this->evaluationsMaxNumber;    
+    pointsPerDim = (int)floor( pow( (double)pointsNb, 1/(double)dim ) );
+  }
+
+  // resolutions
+  resolutions.reserve( dim );
+
+  double k;
   
-      // min and max coordinates buffers
-      double minCo, maxCo;
+  for( unsigned i=0; i < dim; i++ ) {
 
-      unsigned dim = this->problem->getDimension();
-
-      // initialize maxs and mins vectors
-      for (unsigned i = 0; i < dim; i++) {
-	minCo = this->problem->boundsMaxima()[i];
-	maxCo = this->problem->boundsMinima()[i];
-	// loop over sample
-	for (unsigned j = 0; j < getSampleSize(); j++) {
-
-	  if (sample[j].getSolution()[i] < minCo)
-	    minCo = sample[j].getSolution()[i];
-      
-	  if (sample[j].getSolution()[i] > maxCo)
-	    maxCo = sample[j].getSolution()[i];
-	}
-	maxs.push_back( maxCo );
-	mins.push_back( minCo );
-      }
-
-      // if pointsperDim non initialized
-      if(pointsPerDim == -1) {
-
-	int pointsNb = getSampleSize();
-    
-	pointsPerDim = (int)floor( pow( (double)pointsNb, 1/(double)dim ) );
-      }
-
-      // resolutions
-      resolutions.reserve( dim );
-
-      double k;
+    k = ( maxs[i] - mins[i] ) / (pointsPerDim);
+    resolutions.push_back( k );
+  }
   
-      for( unsigned i=0; i < dim; i++ ) {
-
-	k = ( maxs[i] - mins[i] ) / (pointsPerDim);
-	resolutions.push_back( k );
-      }
+  vector<double> partialPoint;
   
-      vector<double> partialPoint;
-  
-      recEval( partialPoint );
-  
-      for ( unsigned i=0; i < solutions.size(); i++) {
-	sample[i] = solutions[i];
-      }
-    }
+  recEval( partialPoint );
 }
 
 
@@ -159,9 +123,9 @@ void itsGridSampling::recEval( vector<double> partialPoint )
     // add the point to our sample buffer
     itsPoint p;
     p.setSolution( partialPoint );
-    solutions[solIndex] = ( evaluate(p) );
-    
-    solIndex ++;
+    sample.push_back( evaluate(p) );
+
+    evaluationsNumber ++;
     
   } 
   else { // vector not fully filled
@@ -174,10 +138,14 @@ void itsGridSampling::recEval( vector<double> partialPoint )
       // change current coordinate value
       partialPoint[n] = i;
      
-      // to avoid over flow
-      if (solIndex < getSampleSize()) {
-	 // recursive call
+      // recursive call 
+      if ( ! isStoppingCriteria() ) {
+	
+	cout << "CONTINUE" << endl;
 	recEval( partialPoint );
+      }
+      else {
+	cout << "END" << endl;
       }
     }
   }

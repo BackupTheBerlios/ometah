@@ -1,8 +1,8 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.1 2005/07/08 08:48:20 jpau Exp $
+ *  $Id: itsNelderMead.cpp,v 1.2 2005/07/08 11:14:16 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
- *  Author : Johann Dréo <nojhan@gmail.com>
+ *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
 
 /*  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
@@ -49,13 +49,17 @@ itsNelderMead::itsNelderMead()
     setDescription("Nelder-Mead search algorithm.");
     setCitation("");
     setFamily("Geometric algorithm.");
+
+    reflection = 1.0;
+    expansion = 2.0;
+    contraction = 0.5;
 }
 
 
 
 void itsNelderMead::learning()
 {
-
+  // keep empty for this algo
 }
  
 
@@ -66,9 +70,52 @@ void itsNelderMead::diversification()
 
 void itsNelderMead::intensification()
 {
+  // keep empty for this algo
+}
+
+
+double itsNelderMead::bestSolution(int dimension)
+{
+  return 0;
+}
+
+void sortSample()
+{
 
 }
 
+double itsNelderMead::transfo(float coef, double x) 
+{
+  return 2;
+}
+
+
+itsPoint getTransformedPoint(itsPoint point, float coef)
+{
+  vector<double> newSol;
+  /*
+  for(unsigned i = 0; i < point.getSolution().size() ; i++) {
+    newSol.push_back( transfo(coef, point.getSolution()[i] ) );
+  }
+  */
+  itsPoint p;
+  return p;
+}
+
+void itsNelderMead::makeReflectionSimplex()
+{
+
+}
+
+void itsNelderMead::makeExpansionSimplex()
+{
+
+}
+
+void itsNelderMead::makeContractionSimplex()
+{
+
+}
 
 itsMetaheuristic* itsNelderMeadFactory::create()
 {
