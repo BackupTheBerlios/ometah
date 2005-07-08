@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.hpp,v 1.2 2005/07/08 11:14:16 jpau Exp $
+ *  $Id: itsNelderMead.hpp,v 1.3 2005/07/08 13:24:27 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -71,11 +71,8 @@ protected:
   //! the learning
   void learning();
 
-  //! return best point's solution in given dimension
-  double bestSolution(int dimension);
-
-  //! make transformation for a point coordinate
-  double transfo(float, double);
+  //! return the minimum value of a point of the vector
+  double simplexOptimum(vector<itsPoint>);
 
   //! sort current sample in sortedSample vector
   void sortSample();

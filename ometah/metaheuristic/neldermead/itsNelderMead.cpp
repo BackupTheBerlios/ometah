@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.2 2005/07/08 11:14:16 jpau Exp $
+ *  $Id: itsNelderMead.cpp,v 1.3 2005/07/08 13:24:27 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -65,7 +65,22 @@ void itsNelderMead::learning()
 
 void itsNelderMead::diversification()
 {
-
+  makeReflectionSimplex();
+  double minR = simplexOptimum( reflectionSimplex);
+  if ( sortedSample[0].getValues()[0] <= minR) {
+    makeContractionSimplex();
+    sample = contractionSimplex;
+  }
+  else {
+    makeExpansionSimplex();
+    double minE = simplexOptimum( reflectionSimplex);
+    if (( sortedSample[0].getValues()[0] > minR) && ( minR > minE)) {
+      sample = expansionSimplex;
+    }
+    else {
+      sample = reflectionSimplex;
+    }      
+  }
 }
 
 void itsNelderMead::intensification()
@@ -73,48 +88,67 @@ void itsNelderMead::intensification()
   // keep empty for this algo
 }
 
-
-double itsNelderMead::bestSolution(int dimension)
+double itsNelderMead::simplexOptimum( vector<itsPoint> points)
 {
-  return 0;
+  double v = points[0].getValues()[0];
+  for(unsigned i = 0; i< points.size(); i++) {
+    if ( points[i].getValues()[0] < v )
+      v = points[i].getValues()[0];
+  }
+  return v;
 }
 
-void sortSample()
+// !!!!  TODO !!!!! TRI !
+void itsNelderMead::sortSample()
 {
-
+  for (unsigned i; i < sample.size(); i++) {
+    sortedSample.push_back(sample[i]);
+  }
 }
 
-double itsNelderMead::transfo(float coef, double x) 
-{
-  return 2;
-}
 
-
-itsPoint getTransformedPoint(itsPoint point, float coef)
+itsPoint itsNelderMead::getTransformedPoint(itsPoint point, float coef)
 {
   vector<double> newSol;
-  /*
+  double best, newCo;
+  
   for(unsigned i = 0; i < point.getSolution().size() ; i++) {
-    newSol.push_back( transfo(coef, point.getSolution()[i] ) );
+    
+    best = sortedSample[0].getSolution()[i];
+    newCo = best - coef * ( point.getSolution()[i] - best );
+    newSol.push_back( newCo );
   }
-  */
+  
   itsPoint p;
-  return p;
+  p.setSolution(newSol);
+  return evaluate (p);
 }
 
 void itsNelderMead::makeReflectionSimplex()
 {
 
+  for(unsigned i=0; i < sortedSample.size() ; i++) {
+    
+    reflectionSimplex.push_back( getTransformedPoint(sortedSample[i], reflection) );
+  }
 }
 
 void itsNelderMead::makeExpansionSimplex()
 {
 
+  for(unsigned i=0; i < sortedSample.size() ; i++) {
+    
+    reflectionSimplex.push_back( getTransformedPoint(sortedSample[i], expansion) );
+  }
 }
 
 void itsNelderMead::makeContractionSimplex()
 {
 
+  for(unsigned i=0; i < sortedSample.size() ; i++) {
+    
+    reflectionSimplex.push_back( getTransformedPoint(sortedSample[i], contraction) );
+  }
 }
 
 itsMetaheuristic* itsNelderMeadFactory::create()

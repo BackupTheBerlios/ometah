@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.4 2005/07/08 11:22:42 jpau Exp $
+ *  $Id: itsGridSampling.cpp,v 1.5 2005/07/08 13:24:27 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -58,12 +58,6 @@ itsGridSampling::itsGridSampling()
 
 void itsGridSampling::learning(){
 
-}
-
-
-void itsGridSampling::setPointsPerDim(int res)
-{
-  pointsPerDim = res;
 }
 
 
