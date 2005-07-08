@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.8 2005/07/07 14:26:25 jpau Exp $
+ *  $Id: ometah.cpp,v 1.9 2005/07/08 08:21:32 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -225,19 +225,40 @@ int main(int argc, char ** argv)
    *  Choose the items
    */
     
-  try {
-    setMetaheuristic.choose(argumentParser.getStringValue("--metah"));
-    setProblem.choose(argumentParser.getStringValue("--problem"));
-    setCommunicationClient.choose(argumentParser.getStringValue("--com-client"));
-    setCommunicationServer.choose(argumentParser.getStringValue("--com-server"));
-  }
-  catch (const char * s){
-    cerr << s;
-    return -1;
-  }
+  
+  setMetaheuristic.choose(argumentParser.getStringValue("--metah"));
+  setProblem.choose(argumentParser.getStringValue("--problem"));
+  setCommunicationClient.choose(argumentParser.getStringValue("--com-client"));
+  setCommunicationServer.choose(argumentParser.getStringValue("--com-server"));
+
 
   if (VERBOSE)
     clog << "items chosen" << endl;
+
+
+  /*
+   * Check that given metah and problem exist 
+   */
+  char ok = 0;
+  for (unsigned i = 0; i < setMetaheuristic.getKeyList().size() ; i++) {
+    if ( setMetaheuristic.getKeyList()[i]  == argumentParser.getStringValue("--metah"))
+      ok = 1;
+  }
+  if (!ok) {
+    cerr << "Given metaheuristic does not exist." << endl;
+    return -1;
+  }
+  
+  for (unsigned i = 0; i < setProblem.getKeyList().size() ; i++) {
+    if ( setProblem.getKeyList()[i]  == argumentParser.getStringValue("--problem"))
+      ok = 1;
+  }
+  if (!ok) {
+    cerr << "Given problem does not exist." << endl;
+    return -1;
+  }
+   
+
 
 
   /*
