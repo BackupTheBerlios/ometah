@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.7 2005/07/07 14:26:25 jpau Exp $
+ *  $Id: ometah_registration.cpp,v 1.8 2005/07/08 08:23:04 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -190,15 +190,21 @@ int main(int argc, char ** argv)
   /* 
    *  Choose the items
    */
-    
-  try {
-    setMetaheuristic.choose(argumentParser.getStringValue("--metah"));
+  setMetaheuristic.choose(argumentParser.getStringValue("--metah"));
+ 
+  /*
+   * Check that given metah exists 
+   */
+  char ok = 0;
+  for (unsigned i = 0; i < setMetaheuristic.getKeyList().size() ; i++) {
+    if ( setMetaheuristic.getKeyList()[i]  == argumentParser.getStringValue("--metah"))
+      ok = 1;
   }
-  catch (const char * s){
-    cerr << s;
+  if (!ok) {
+    cerr << "Given metaheuristic does not exist." << endl;
     return -1;
   }
-
+  
 
   /*
    *  Links
