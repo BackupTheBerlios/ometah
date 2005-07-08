@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.hpp,v 1.1 2005/07/07 14:26:25 jpau Exp $
+ *  $Id: itsGridSampling.hpp,v 1.2 2005/07/08 07:44:11 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -55,7 +55,7 @@ protected:
   vector<double> maxs;
   vector<double> mins;
 
-  int solIndex;
+  unsigned solIndex;
 
   //! the intensification is a the a method
   void intensification();

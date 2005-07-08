@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.1 2005/07/07 14:26:25 jpau Exp $
+ *  $Id: itsGridSampling.cpp,v 1.2 2005/07/08 07:44:11 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -85,7 +85,6 @@ void itsGridSampling::diversification(){
   }
   else
     {
-
       itsPoint p;
       for ( unsigned i=0; i < getSampleSize(); i++){
 	solutions[i] = p;
@@ -129,7 +128,7 @@ void itsGridSampling::diversification(){
   
       for( unsigned i=0; i < dim; i++ ) {
 
-	k = ( maxs[i] - mins[i] ) / (pointsPerDim-1);
+	k = ( maxs[i] - mins[i] ) / (pointsPerDim);
 	resolutions.push_back( k );
       }
   
@@ -144,9 +143,7 @@ void itsGridSampling::diversification(){
 }
 
 
-
 void itsGridSampling::intensification(){
-
 }
 
 
@@ -157,12 +154,13 @@ void itsGridSampling::recEval( vector<double> partialPoint )
 {  
   int n = partialPoint.size();  
 
-  if( n >= this->problem->getDimension() ) { // if vector is built
+  if(( n >= this->problem->getDimension() )) { // if vector is built
     
     // add the point to our sample buffer
     itsPoint p;
     p.setSolution( partialPoint );
     solutions[solIndex] = ( evaluate(p) );
+    
     solIndex ++;
     
   } 
@@ -175,8 +173,12 @@ void itsGridSampling::recEval( vector<double> partialPoint )
     for( double i = mins[n]; i <= maxs[n]; i += resolutions[n] ) {
       // change current coordinate value
       partialPoint[n] = i;
-      // recursive call
-      recEval( partialPoint );
+     
+      // to avoid over flow
+      if (solIndex < getSampleSize()) {
+	 // recursive call
+	recEval( partialPoint );
+      }
     }
   }
 }
