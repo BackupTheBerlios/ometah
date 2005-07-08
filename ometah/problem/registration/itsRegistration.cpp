@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.8 2005/07/05 16:26:16 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.9 2005/07/08 09:39:19 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -64,7 +64,7 @@ itsRegistration::itsRegistration()
     optim.push_back(pt);
     setOptima(optim);
     
-    setBoundsCoefficient(0.2);
+    setBoundsCoefficient(0.3);
 }
 
 itsPoint itsRegistration::objectiveFunction(itsPoint point)
@@ -82,22 +82,26 @@ itsPoint itsRegistration::objectiveFunction(itsPoint point)
 
     // similarity of the registered images
     double similarity = 0;
+
+    // number of pixels concerned
+    int pixelNumber = ( img1.width - rx ) * ( img1.height - ry );
     
     // loop over X and Y
     cimg_mapXY(img1,x,y) {
         double diff = 0.0;
         
           // if we do not try out of bounds
-        if ( !(x+rx<0 || x+rx>img1.width || y+ry<0 || y+ry>img1.height)  ) {
+        if ( !(x-rx<0 || x-rx>img1.width || y-ry<0 || y-ry>img1.height)  ) {
             // square error
-            diff =  (img1(x,y) - img2(x+rx,y+ry)) 
-                  * (img1(x,y) - img2(x+rx,y+ry)) ;
-        } else {
-            diff = img1(x,y) * img2(x,y);
+            diff =  (img1(x,y) - img2(x-rx,y-ry)) 
+                  * (img1(x,y) - img2(x-rx,y-ry)) ;
         }
         
         similarity += diff;
     }
+
+    // the average similarity for a pixel
+    similarity = similarity / (double)pixelNumber;
 
     vector<double> val(1,similarity);
     point.setValues( val );
