@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.3 2005/07/08 13:24:27 jpau Exp $
+ *  $Id: itsNelderMead.cpp,v 1.4 2005/07/08 13:53:22 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -53,6 +53,7 @@ itsNelderMead::itsNelderMead()
     reflection = 1.0;
     expansion = 2.0;
     contraction = 0.5;
+
 }
 
 
@@ -65,13 +66,31 @@ void itsNelderMead::learning()
 
 void itsNelderMead::diversification()
 {
+
+  if (sortedSample.size() == 0) {
+    itsPoint p;
+    for (unsigned i = 0; i < getSampleSize(); i++) {
+      sortedSample.push_back(p);      
+    }
+  }
+
+  cout << "DIVERSIFICATION!" << endl;
+  sortSample();
+  cout << "SORTED" << endl;
   makeReflectionSimplex();
-  double minR = simplexOptimum( reflectionSimplex);
+  cout << "MRDONE" << endl;
+
+  double minR = simplexOptimum( reflectionSimplex );
+
+  cout << "OPDONE" << endl;
+
   if ( sortedSample[0].getValues()[0] <= minR) {
     makeContractionSimplex();
     sample = contractionSimplex;
+     cout << "A1" << endl;
   }
   else {
+    cout << "A2" << endl;
     makeExpansionSimplex();
     double minE = simplexOptimum( reflectionSimplex);
     if (( sortedSample[0].getValues()[0] > minR) && ( minR > minE)) {
@@ -101,8 +120,8 @@ double itsNelderMead::simplexOptimum( vector<itsPoint> points)
 // !!!!  TODO !!!!! TRI !
 void itsNelderMead::sortSample()
 {
-  for (unsigned i; i < sample.size(); i++) {
-    sortedSample.push_back(sample[i]);
+  for (unsigned i = 0; i < sample.size(); i++) {
+    sortedSample[i] = sample[i];
   }
 }
 
@@ -121,21 +140,26 @@ itsPoint itsNelderMead::getTransformedPoint(itsPoint point, float coef)
   
   itsPoint p;
   p.setSolution(newSol);
+  cout << "P" << p.getSolution()[0]  << endl;
   return evaluate (p);
 }
 
 void itsNelderMead::makeReflectionSimplex()
 {
 
+  cout << "SORTED SIZE: " << sortedSample.size() << endl;
+  cout << "SMAPLE SIZE: " << sample.size() << endl;
+
   for(unsigned i=0; i < sortedSample.size() ; i++) {
     
     reflectionSimplex.push_back( getTransformedPoint(sortedSample[i], reflection) );
   }
+  cout << "RSIMPLEX SIZE: " << reflectionSimplex.size() << endl;
 }
 
 void itsNelderMead::makeExpansionSimplex()
 {
-
+  
   for(unsigned i=0; i < sortedSample.size() ; i++) {
     
     reflectionSimplex.push_back( getTransformedPoint(sortedSample[i], expansion) );
