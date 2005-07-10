@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.5 2005/06/30 12:09:51 nojhan Exp $
+ *  $Id: itsArgument.hpp,v 1.6 2005/07/10 09:35:38 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -116,6 +116,12 @@ protected:
 
   //! From a supposed flag, short or long, returns true if is a known argument flag
   bool isAnArgument(string flag);
+
+  //! Longest long-flag 
+  unsigned int sizeMax_FlagLong;
+  
+  //! Longest default value
+  unsigned int sizeMax_DefaultValue;
 
 public:
   

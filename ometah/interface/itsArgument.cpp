@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.9 2005/07/07 14:26:25 jpau Exp $
+ *  $Id: itsArgument.cpp,v 1.10 2005/07/10 09:35:38 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -103,6 +103,9 @@ itsArgumentParser::itsArgumentParser(int argc, vector<string> argv)
 {
   this->argv = argv;
   this->argc = argc;
+
+  sizeMax_DefaultValue = 0;
+  sizeMax_FlagLong = 0;
 }
 
 
@@ -144,7 +147,7 @@ bool itsArgumentParser::defArg(string flagShort, string flagLong, string usage,
 	}      
       }
       else { // no value associated => arg has boolean value
-	value = "true";
+        value = "true";
       }
       found = true;
     }
@@ -153,6 +156,14 @@ bool itsArgumentParser::defArg(string flagShort, string flagLong, string usage,
  
   itsArgument newArgument(flagShort, flagLong, usage, hasValue, type, value, defaultVal);
   arguments.push_back(newArgument);
+
+  // check for the longest strings
+  if ( flagLong.size() > this->sizeMax_FlagLong ) {
+      sizeMax_FlagLong = flagLong.size();
+  }
+  if ( defaultVal.size() > this->sizeMax_DefaultValue ) {
+      sizeMax_DefaultValue = defaultVal.size();
+  }
 
   return found;
 }
@@ -232,18 +243,29 @@ void itsArgumentParser::usage()
 
   cout << "Usage: " << this->argv.at(0) << " [options]" <<  endl; 
   cout << "Options:" << endl;
-  printf(" %s   %13s\t%s\n", "Short","Long         ","Description" );
+
+  ostringstream format;
+  format << " %s,\t%" << sizeMax_FlagLong << "s %-" << sizeMax_DefaultValue << "s\t%s";
+  printf( format.str().c_str(), "Short","Long", "Default","Description\n" );
 
   vector<itsArgument>::iterator iter;
   iter = this->arguments.begin();
+
   while (iter != this->arguments.end()){
-    printf(" %s, %13s\t%s", iter->getShortKey().c_str(), 
-	   iter->getLongKey().c_str(), iter->getUsage().c_str());
-    if (iter->getHasValue()){
-      printf(", default : %s", iter->getDefault().c_str());
-    }
-    printf("\n");
-    iter++;
+      string aDefaultValue = "";
+      if (iter->getHasValue()){
+          aDefaultValue = "(" + iter->getDefault() + ")";
+      }
+      
+      printf(format.str().c_str(), 
+          iter->getShortKey().c_str(), 
+          iter->getLongKey().c_str(),
+          aDefaultValue.c_str(),
+          iter->getUsage().c_str() 
+      );
+    
+      printf("\n");
+      iter++;
   }  
 }
 
