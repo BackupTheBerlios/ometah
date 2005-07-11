@@ -69,13 +69,13 @@ def main():
     if arg == 1:
 
         t = ometahtest.Test()
-        t.setArgs('-e 30 -p Ackley -P 0.01 -d 30')
+        t.setArgs('-e 30 -p Ackley -P 0.01 -d 30 -m GS --precision -1')
         t.setNbRuns(15)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 60  -p Ackley -P 0.01 -d 30')
+        u.setArgs('-e 60  -p Ackley -P 0.01 -d 30 -m GS --precision -1')
         u.setNbRuns(15)
         u.setOmetahPath('../ometah/ometah')
         u.start()
@@ -86,18 +86,24 @@ def main():
     elif arg == 2:
 
         t = ometahtest.Test()
-        t.setArgs('-e 30 -p Ackley -d 5 -P 0.01 ')
+        t.setArgs('-e 200 -p Sphere -d 2 -P 0.00001 -m CEDA')
         t.setNbRuns(20)
         t.setOmetahPath('../ometah/ometah')
         t.start()
 
         u = ometahtest.Test()
-        u.setArgs('-e 60  -p Ackley -d 5 -P 0.01')
+        u.setArgs('-e 200  -p Sphere -d 2 -P 0.00001 -m RA')
         u.setNbRuns(20)
         u.setOmetahPath('../ometah/ometah')
         u.start()
+
+        v = ometahtest.Test()
+        v.setArgs('-e 200  -p Sphere -d 2 -P 0.00001 -m GS')
+        v.setNbRuns(20)
+        v.setOmetahPath('../ometah/ometah')
+        v.start()
     
-        paths = [ t.getPath(), u.getPath() ]
+        paths = [ t.getPath(), u.getPath(), v.getPath() ]
         ometahstats.stat(paths)
 
     elif arg == 3:

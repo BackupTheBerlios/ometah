@@ -206,7 +206,7 @@ class Stater:
             r.lines(mlist)
             r.points(mlist, bg ='white', pch = 21)
             r.grid(nx=10, ny=40)
-            r.matplot(r.cbind(olist, mlist, wlist), log="y", type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
+            r.matplot(r.cbind(olist, mlist, wlist), type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
 
         r.points(olist, bg ='white', pch = 21, type='o')
         r.points(mlist, bg ='white', pch = 22, type='o', lty='dotted')
@@ -230,7 +230,7 @@ class Stater:
                 if self.__LOG:
                     self.__LOG = 0
                     print 'Cannot use logarithmic scale'
-                r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Point value')
+                r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Point value')
             r.grid(nx=10, ny=40)
             i += 1
         r.dev_off()
