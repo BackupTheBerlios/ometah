@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.5 2005/07/08 13:24:27 jpau Exp $
+ *  $Id: itsGridSampling.cpp,v 1.6 2005/07/11 14:11:32 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -43,73 +43,79 @@ itsGridSampling::~itsGridSampling()
 {
 }
 
+
+void itsGridSampling::intensification()
+{
+}
+
+void itsGridSampling::initialization()
+{
+}
+
+void itsGridSampling::learning()
+{
+}
+
 itsGridSampling::itsGridSampling()  
 {
   pointsPerDim = -1;
-  setName("Regular sampling search.");
+  setName("Regular sampling");
   setKey("GS");
   setAccronym("GS");
   setDescription("Regular sampling search.");
   setCitation("Unknown");
   setFamily("Sampling algorithm");  
 
-  // this->isInternalStoppingCriterion = true;
 }
 
-void itsGridSampling::learning(){
-
-}
-
-
-void itsGridSampling::diversification(){
+void itsGridSampling::diversification()
+{
 
 
-  unsigned dim = this->problem->getDimension();
+  unsigned int dim = this->problem->getDimension();
 
   // initialize maxs and mins vectors, giving min and max bounds for each dim
-  for (unsigned i = 0; i < dim; i++) {
+  for (unsigned int i = 0; i < dim; i++ ) {
     maxs.push_back(this->problem->boundsMaxima()[i]);
     mins.push_back(this->problem->boundsMinima()[i]);
   }
 
   // if pointsperDim non initialized
-  if(pointsPerDim == -1) {
+  if (pointsPerDim == -1) {
 
-    // points ~ nb evalautions
-    int pointsNb = this->evaluationsMaxNumber;    
+    // points ~ nb evaluations
+    int pointsNb = this->getSampleSize();
     pointsPerDim = (int)floor( pow( (double)pointsNb, 1/(double)dim ) );
   }
 
   // resolutions
   resolutions.reserve( dim );
-
-  double k;
   
-  for( unsigned i=0; i < dim; i++ ) {
+  for( unsigned int i=0; i < dim; i++ ) {
 
-    k = ( maxs[i] - mins[i] ) / (pointsPerDim);
+    double k = ( maxs[i] - mins[i] ) / (pointsPerDim);
     resolutions.push_back( k );
   }
   
   vector<double> partialPoint;
-  
-  recEval( partialPoint );
-}
+  pointConstruction( partialPoint );
 
-
-void itsGridSampling::intensification(){
+  // only one iteration needed
+  this->isInternalStoppingCriterion = true;
 }
 
 
 /*
   Recursive evaluation of points over dimensions.
 */
-void itsGridSampling::recEval( vector<double> partialPoint )
+void itsGridSampling::pointConstruction( vector<double> & partialPoint )
 {  
   int n = partialPoint.size();  
 
   if(( n >= this->problem->getDimension() )) { // if vector is built
     
+    printDebug("GSpoint",print(partialPoint));
+  
     // add the point to our sample buffer
     itsPoint p;
     p.setSolution( partialPoint );
@@ -117,8 +123,7 @@ void itsGridSampling::recEval( vector<double> partialPoint )
 
     evaluationsNumber ++;
     
-  } 
-  else { // vector not fully filled
+  } else { // vector not fully filled
     
     // add a dimension
     partialPoint.push_back( 0 );
@@ -130,7 +135,7 @@ void itsGridSampling::recEval( vector<double> partialPoint )
      
       // recursive call 
       if ( ! isStoppingCriteria() ) {      
-	recEval( partialPoint );
+        pointConstruction( partialPoint );
       }
     }
   }

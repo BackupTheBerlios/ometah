@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.hpp,v 1.5 2005/07/08 13:24:27 jpau Exp $
+ *  $Id: itsGridSampling.hpp,v 1.6 2005/07/11 14:11:32 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -46,17 +46,20 @@ protected:
   vector<double> maxs;
   vector<double> mins;
 
-  //! the intensification is a the a method
+  //! the initialization must be empty
+  void initialization();
+      
+  //! the intensification is not used
   void intensification();
       
-  //! the diversification
+  //! the diversification phase is the only one used
   void diversification();
       
-  //! the learning
+  //! the learning is not used
   void learning();
     
   //! Recursive function over dimensions.
-  void recEval( vector<double> partialPoint );
+  void pointConstruction( vector<double> & partialPoint );
   
   //! Start algorithm.
   void start_algo();
@@ -79,4 +82,3 @@ public:
 };
 
 #endif
-
