@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.6 2005/07/11 14:11:32 nojhan Exp $
+ *  $Id: itsGridSampling.cpp,v 1.7 2005/07/11 14:37:00 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -71,6 +71,8 @@ itsGridSampling::itsGridSampling()
 void itsGridSampling::diversification()
 {
 
+  while ( ! sample.empty() )
+    sample.erase( sample.begin() );
 
   unsigned int dim = this->problem->getDimension();
 
