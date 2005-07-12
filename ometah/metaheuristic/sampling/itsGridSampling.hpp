@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.hpp,v 1.7 2005/07/12 13:11:26 jpau Exp $
+ *  $Id: itsGridSampling.hpp,v 1.8 2005/07/12 19:38:43 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -68,7 +68,7 @@ protected:
   void learning();
     
   //! Recursive function over dimensions.
-  void pointConstruction( vector<double> & partialPoint );
+  void pointConstruction( vector<double> partialPoint );
   
   //! Start algorithm.
   void start_algo();

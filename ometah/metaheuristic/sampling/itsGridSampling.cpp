@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.10 2005/07/12 18:46:28 nojhan Exp $
+ *  $Id: itsGridSampling.cpp,v 1.11 2005/07/12 19:38:43 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -105,7 +105,7 @@ void itsGridSampling::diversification()
 /*
   Recursive evaluation of points over dimensions.
 */
-void itsGridSampling::pointConstruction( vector<double> & partialPoint )
+void itsGridSampling::pointConstruction( vector<double> partialPoint )
 {  
   int n = partialPoint.size();  
 
