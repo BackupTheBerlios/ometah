@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.7 2005/06/22 12:13:23 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.8 2005/07/12 18:48:33 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -51,14 +51,14 @@ itsProblem::itsProblem()
   setAccuracy(0.1);
 
   // A fake optimum
-  vector<itsPoint> optim;
+  /*vector<itsPoint> optim;
   itsPoint pt;
   vector<double> sol(getDimension(),0);
   pt.setSolution(sol); // a vector of 0
   vector<double> val(1,0);
   pt.setValues(val); // a value of 0
   optim.push_back(pt);
-  setOptima(optim);
+  setOptima(optim);*/
 }
 
 string itsProblem::getName() 
@@ -125,19 +125,23 @@ string itsProblem::getInformations()
   msg << "Dimension" << sep << getDimension() << endl;
   
 
-  // print vectors of the optimums
-  for(unsigned int i=0;i<getOptima().size();i++) {
-      if(getOptima().size()>1) {
-          msg << "Optimum " << i << sep;
-      } else {
-          msg << "Optimum " << sep;
+  if ( getOptima().size() <= 0 ) {
+      msg << "Optimum Unknown" << endl;
+  } else {
+      // print vectors of the optimums
+      for(unsigned int i=0;i<getOptima().size();i++) {
+          if(getOptima().size()>1) {
+              msg << "Optimum " << i << sep;
+          } else {
+              msg << "Optimum " << sep;
+          }
+          msg << "<";
+          print(getOptima()[i].getValues()," ",&msg);
+          msg << "> @ <";
+          print(getOptima()[i].getSolution()," ",&msg);
+          msg << ">";
+          msg << endl;
       }
-      msg << "<";
-      print(getOptima()[i].getValues()," ",&msg);
-      msg << "> @ <";
-      print(getOptima()[i].getSolution()," ",&msg);
-      msg << ">";
-      msg << endl;
   }
 
   // print vectors of bounds
@@ -171,20 +175,24 @@ string itsProblem::getInformations_XML()
   msg << "<accuracy>" << getAccuracy() << "</accuracy>" << endl;
   
 
-  // print vectors of the optimums
   msg << "<optimums>" << endl;
-  for(unsigned int i=0;i<getOptima().size();i++) { 
-      if(getOptima().size()>1) {
-          msg << "<point id=\"" << i << "\">" << "<values>";
-      } else {
-          msg << "<point>" << "<values>";
-      }
+  if ( getOptima().size() <= 0 ) {
+      msg << "Unknown";
+  } else {
+      // print vectors of the optimums
+      for(unsigned int i=0;i<getOptima().size();i++) { 
+          if(getOptima().size()>1) {
+              msg << "<point id=\"" << i << "\">" << "<values>";
+          } else {
+              msg << "<point>" << "<values>";
+          }
+          
+          print(getOptima()[i].getValues()," ",&msg);
+          msg << "</values>" << "<solution>";
+          print(getOptima()[i].getSolution()," ",&msg);
+          msg << "</solution>" << "</point>" << endl;
       
-      print(getOptima()[i].getValues()," ",&msg);
-      msg << "</values>" << "<solution>";
-      print(getOptima()[i].getSolution()," ",&msg);
-      msg << "</solution>" << "</point>" << endl;
-  
+      }
   }
   msg << "</optimums>" << endl;
 
@@ -219,13 +227,15 @@ string itsProblem::getInformations_XML()
 
 vector<itsPoint> itsProblem::getOptima()
 {
-    // if the optimum does not correspond to dimension
-    if( this->optima[0].getSolutionDimension() == 1 ) {
-    
-        // we duplicate its solutions to match the dimension
-        for( unsigned int i=0; i < this->optima.size(); i++ ) {
-            vector<double> sol(getDimension(), this->optima[i].getSolution()[0] );
-            this->optima[i].setSolution(sol);
+    if ( this->optima.size() > 0 ) {
+        // if the optimum does not correspond to dimension
+        if( this->optima[0].getSolutionDimension() == 1 ) {
+        
+            // we duplicate its solutions to match the dimension
+            for( unsigned int i=0; i < this->optima.size(); i++ ) {
+                vector<double> sol(getDimension(), this->optima[i].getSolution()[0] );
+                this->optima[i].setSolution(sol);
+            }
         }
     }
 
