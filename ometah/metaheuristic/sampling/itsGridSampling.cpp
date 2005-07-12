@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.7 2005/07/11 14:37:00 jpau Exp $
+ *  $Id: itsGridSampling.cpp,v 1.8 2005/07/12 11:24:26 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -87,7 +87,12 @@ void itsGridSampling::diversification()
 
     // points ~ nb evaluations
     int pointsNb = this->getSampleSize();
-    pointsPerDim = (int)floor( pow( (double)pointsNb, 1/(double)dim ) );
+    double ppd = pow( (double)pointsNb, 1/(double)dim );
+    if ( ( ppd - (int)floor(ppd) ) < 0.5 )
+      pointsPerDim = (int)floor( ppd );
+    else
+      pointsPerDim = (int)floor( ppd ) + 1;
+    cout << "PPDIM " << pointsPerDim << endl;
   }
 
   // resolutions
