@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.6 2005/07/10 09:35:38 nojhan Exp $
+ *  $Id: itsArgument.hpp,v 1.7 2005/07/12 12:48:57 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -135,6 +135,9 @@ public:
   void searchEndFlags();
 
   //! Define an option of the program, affecting default value if not specified in command line
+  /*!
+   *  Returns true if the given argument was found in command line.
+   */
   bool defArg(string flagShort, string flagLong, string usage, 
                bool hasValue=false, string type="", string valueDefault="");
   

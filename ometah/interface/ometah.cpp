@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.10 2005/07/08 13:24:27 jpau Exp $
+ *  $Id: ometah.cpp,v 1.11 2005/07/12 12:48:57 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -60,6 +60,9 @@ int main(int argc, char ** argv)
   factoryMetaheuristics = new itsNelderMeadFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
+  factoryMetaheuristics = new itsSimpleGenFactory;
+  setMetaheuristic.add( factoryMetaheuristics->create() );
+  
   
   /*
    *  Problems part
@@ -67,29 +70,28 @@ int main(int argc, char ** argv)
     
   // the factory for problems
   itsProblemFactory* factoryProblems;
-    
-  // add Rosenbrock
-  factoryProblems = new itsRosenbrockFactory;
-  setProblem.add( factoryProblems->create() );
+
   // add Ackley
   factoryProblems = new itsAckleyFactory;
   setProblem.add( factoryProblems->create() );
+  // add Griewank
+  factoryProblems = new itsGriewankFactory;
+  setProblem.add( factoryProblems->create() );   
   // add Rastrigin
   factoryProblems = new itsRastriginFactory;
   setProblem.add( factoryProblems->create() );
-  // add Weierstrass
-  factoryProblems = new itsWeierstrassFactory;
-  setProblem.add( factoryProblems->create() );
-  // add Griewank
-  factoryProblems = new itsGriewankFactory;
-  setProblem.add( factoryProblems->create() );
-  // add Sphere
-  factoryProblems = new itsSphereFactory;
+  // add Rosenbrock
+  factoryProblems = new itsRosenbrockFactory;
   setProblem.add( factoryProblems->create() );
   // add Schwefel
   factoryProblems = new itsSchwefelFactory;
   setProblem.add( factoryProblems->create() );
-    
+  // add Sphere
+  factoryProblems = new itsSphereFactory;
+  setProblem.add( factoryProblems->create() );
+  // add Weierstrass
+  factoryProblems = new itsWeierstrassFactory;
+  setProblem.add( factoryProblems->create() );    
     
   /*
    *  Communication part

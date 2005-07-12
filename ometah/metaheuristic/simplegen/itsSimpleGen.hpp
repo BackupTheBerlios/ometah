@@ -1,7 +1,7 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.6 2005/07/12 12:48:57 jpau Exp $
+ *  $Id: itsSimpleGen.hpp,v 1.1 2005/07/12 12:48:57 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
- *  Author : Johann Dréo <nojhan@gmail.com>
+ *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
 
@@ -23,38 +23,57 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#include <hash_map.h>
-#include <string>
-#include <iostream>
-#include <fstream>
-
-// common stuff
-#include "../common/logic.hpp"
-#include "../common/itsSet.hpp"
-#include "../common/string.hpp"
-
-// basic classes
-#include "../metaheuristic/itsMetaheuristic.hpp"
-#include "../problem/itsProblem.hpp"
-#include "../communication/itsCommunicationClient.hpp"
-#include "../communication/itsCommunicationServer.hpp"
-
-// metaheuristics
-#include "../metaheuristic/estimation/itsEstimationOfDistribution.hpp"
-#include "../metaheuristic/random/itsRandom.hpp"
-#include "../metaheuristic/sampling/itsGridSampling.hpp"
-#include "../metaheuristic/neldermead/itsNelderMead.hpp"
-#include "../metaheuristic/simplegen/itsSimpleGen.hpp"
-
-// problems
-#include "../problem/CEC05/itsCEC05_SSRPO_Base.hpp"
-
-// communication
-#include "../communication/itsCommunicationServer_embedded.hpp"
-#include "../communication/itsCommunicationClient_embedded.hpp"
-
-// interfaces
-#include "itsArgument.hpp"
-
+#ifndef SIMPLE_GEN
+#define SIMPLE_GEN
+ 
+#include "../itsMetaheuristic.hpp"
 
 using namespace std;
+
+class itsSimpleGen : public itsMetaheuristic
+{
+
+protected:
+
+  //! probability of mutation for a child
+  float mutProba;
+
+  //! number of children at each generation (~ nb of parents selected)
+
+protected:
+
+  //! the intensification
+  void intensification();
+      
+  //! the diversification, select the bests among parents and children
+  void diversification();
+      
+  //! the learning, which creates the children
+  void learning();
+
+  //! return a vector of two children
+  vector<itsPoint> makeChildren(itsPoint father, itsPoint mother);
+
+  //! returns the muted form of a point
+  itsPoint mutation(itsPoint point);
+  
+  
+public:
+
+  //! Constructor
+  /*!
+    Here are set default values for attributes
+  */
+  itsSimpleGen();
+
+  ~itsSimpleGen();
+
+};
+
+class itsSimpleGenFactory : public itsMetaheuristicFactory
+{
+public:
+    itsMetaheuristic* create();
+};
+
+#endif
