@@ -1,8 +1,9 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.9 2005/07/12 13:11:25 jpau Exp $
+ *  $Id: itsGridSampling.cpp,v 1.10 2005/07/12 18:46:28 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+ *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
 
 /*  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
@@ -29,24 +30,6 @@
 
 using namespace std;
 
-
-itsGridSampling::~itsGridSampling()
-{
-}
-
-
-void itsGridSampling::intensification()
-{
-}
-
-void itsGridSampling::initialization()
-{
-}
-
-void itsGridSampling::learning()
-{
-}
-
 itsGridSampling::itsGridSampling()  
 {
   pointsPerDim = -1;
@@ -56,14 +39,17 @@ itsGridSampling::itsGridSampling()
   setDescription("Regular sampling search.");
   setCitation("Unknown");
   setFamily("Sampling algorithm");  
-
 }
 
-void itsGridSampling::diversification()
+itsGridSampling::~itsGridSampling()
 {
+}
 
-  while ( ! sample.empty() )
-    sample.erase( sample.begin() );
+
+void itsGridSampling::initialization()
+{
+  itsMetaheuristic::initialization();
+  this->sample.resize(0);
 
   unsigned int dim = this->problem->getDimension();
 
@@ -83,7 +69,7 @@ void itsGridSampling::diversification()
       pointsPerDim = (int)floor( ppd );
     else
       pointsPerDim = (int)floor( ppd ) + 1;
-    cout << "PPDIM " << pointsPerDim << endl;
+    //cout << "PPDIM " << pointsPerDim << endl;
   }
 
   // resolutions
@@ -100,6 +86,19 @@ void itsGridSampling::diversification()
 
   // only one iteration needed
   this->isInternalStoppingCriterion = true;
+
+}
+
+void itsGridSampling::learning()
+{
+}
+
+void itsGridSampling::intensification()
+{
+}
+
+void itsGridSampling::diversification()
+{
 }
 
 
@@ -112,13 +111,14 @@ void itsGridSampling::pointConstruction( vector<double> & partialPoint )
 
   if(( n >= this->problem->getDimension() )) { // if vector is built
     
-    printDebug("GSpoint",print(partialPoint));
-  
     // add the point to our sample buffer
     itsPoint p;
     p.setSolution( partialPoint );
-    sample.push_back( evaluate(p) );
+    p = evaluate(p);
+    sample.push_back( p );
 
+    printDebug("GSpoint", print( p.getSolution() ) + " " + print( p.getValues() ) );
+  
     evaluationsNumber ++;
     
   } else { // vector not fully filled
