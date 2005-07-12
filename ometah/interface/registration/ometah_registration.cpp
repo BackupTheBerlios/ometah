@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.10 2005/07/12 14:09:34 jpau Exp $
+ *  $Id: ometah_registration.cpp,v 1.11 2005/07/12 15:10:16 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -47,8 +47,8 @@
 #include "../../metaheuristic/estimation/itsEstimationOfDistribution.hpp"
 #include "../../metaheuristic/random/itsRandom.hpp"
 #include "../../metaheuristic/sampling/itsGridSampling.hpp"
-#include "../metaheuristic/neldermead/itsNelderMead.hpp"
-#include "../metaheuristic/simplegenetic/itsSimpleGenetic.hpp"
+#include "../../metaheuristic/neldermead/itsNelderMead.hpp"
+#include "../../metaheuristic/simplegenetic/itsSimpleGenetic.hpp"
 
 // problems
 #include "../../problem/registration/itsRegistration.hpp"
