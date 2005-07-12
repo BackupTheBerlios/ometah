@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.9 2005/07/08 09:39:19 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.10 2005/07/12 18:49:17 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -55,14 +55,16 @@ itsRegistration::itsRegistration()
 
     // The registration problem has no fixe optimum
     // But we need to fix one for the output
+    /*
     vector<itsPoint> optim;
     itsPoint pt;
-    vector<double> sol(getDimension(),0);
+    vector<double> sol(getDimension(),-1);
     pt.setSolution(sol); // a vector of 0
-    vector<double> val(1,0);
+    vector<double> val(1,-2);
     pt.setValues(val); // a value of 0
     optim.push_back(pt);
     setOptima(optim);
+    */
     
     setBoundsCoefficient(0.3);
 }
