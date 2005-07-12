@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.11 2005/07/12 12:48:57 jpau Exp $
+ *  $Id: ometah.cpp,v 1.12 2005/07/12 14:09:34 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -60,7 +60,7 @@ int main(int argc, char ** argv)
   factoryMetaheuristics = new itsNelderMeadFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
-  factoryMetaheuristics = new itsSimpleGenFactory;
+  factoryMetaheuristics = new itsSimpleGeneticFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
   

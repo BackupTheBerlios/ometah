@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.9 2005/07/12 12:48:57 jpau Exp $
+ *  $Id: ometah_registration.cpp,v 1.10 2005/07/12 14:09:34 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -48,7 +48,7 @@
 #include "../../metaheuristic/random/itsRandom.hpp"
 #include "../../metaheuristic/sampling/itsGridSampling.hpp"
 #include "../metaheuristic/neldermead/itsNelderMead.hpp"
-#include "../metaheuristic/simplegen/itsSimpleGen.hpp"
+#include "../metaheuristic/simplegenetic/itsSimpleGenetic.hpp"
 
 // problems
 #include "../../problem/registration/itsRegistration.hpp"
@@ -93,7 +93,7 @@ int main(int argc, char ** argv)
   factoryMetaheuristics = new itsNelderMeadFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
-  factoryMetaheuristics = new itsSimpleGenFactory;
+  factoryMetaheuristics = new itsSimpleGeneticFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
   

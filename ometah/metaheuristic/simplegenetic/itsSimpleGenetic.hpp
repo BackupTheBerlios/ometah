@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.hpp,v 1.1 2005/07/12 14:04:02 jpau Exp $
+ *  $Id: itsSimpleGenetic.hpp,v 1.2 2005/07/12 14:09:35 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -40,7 +40,7 @@
 
 using namespace std;
 
-class itsSimpleGen : public itsMetaheuristic
+class itsSimpleGenetic : public itsMetaheuristic
 {
 
 protected:
@@ -77,13 +77,13 @@ public:
   /*!
     Here are set default values for attributes
   */
-  itsSimpleGen();
+  itsSimpleGenetic();
 
-  ~itsSimpleGen();
+  ~itsSimpleGenetic();
 
 };
 
-class itsSimpleGenFactory : public itsMetaheuristicFactory
+class itsSimpleGeneticFactory : public itsMetaheuristicFactory
 {
 public:
     itsMetaheuristic* create();

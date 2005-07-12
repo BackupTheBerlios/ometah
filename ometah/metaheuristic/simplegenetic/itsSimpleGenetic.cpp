@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.1 2005/07/12 14:04:02 jpau Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.2 2005/07/12 14:09:35 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -24,16 +24,16 @@
  */
 
 
-#include "itsSimpleGen.hpp"
+#include "itsSimpleGenetic.hpp"
 
 
 using namespace std;
 
-itsSimpleGen::~itsSimpleGen()
+itsSimpleGenetic::~itsSimpleGenetic()
 {
 }
 
-itsSimpleGen::itsSimpleGen()
+itsSimpleGenetic::itsSimpleGenetic()
 {
     setName("Simple genetic algorithm");
     setKey("SG");
@@ -47,7 +47,7 @@ itsSimpleGen::itsSimpleGen()
 }
 
 
-void itsSimpleGen::learning()
+void itsSimpleGenetic::learning()
 { 
   // sample already sorted, when diversification was done before
   for (unsigned i = 0; i<(unsigned)(getSampleSize() * coefCreation); i+= 2) {
@@ -60,7 +60,7 @@ void itsSimpleGen::learning()
 }
  
 
-void itsSimpleGen::diversification()
+void itsSimpleGenetic::diversification()
 {
   
   // if generation was done (every time except first one)
@@ -75,14 +75,14 @@ void itsSimpleGen::diversification()
   }
 }
 
-void itsSimpleGen::intensification()
+void itsSimpleGenetic::intensification()
 {
   // No intensification.
 }
 
 
 
-vector<itsPoint> itsSimpleGen::makeChildren(itsPoint father, itsPoint mother)
+vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother)
 {
 
   float proba;
@@ -103,7 +103,7 @@ vector<itsPoint> itsSimpleGen::makeChildren(itsPoint father, itsPoint mother)
   for (int i=0; i<this->problem->getDimension(); i++) {
 
     // for boy
-    proba = random01();
+    proba = 0; //random01();
     if ( proba <= 0.3333 ) {
       bsol.push_back( fsol[i] );
     }
@@ -115,7 +115,7 @@ vector<itsPoint> itsSimpleGen::makeChildren(itsPoint father, itsPoint mother)
     }
 
     // and girl
-    proba = (float)random01();   
+    proba = 0; // (float)random01();   
     if ( proba <= 0.3333 ) {
       gsol.push_back( fsol[i] );
     }
@@ -134,9 +134,9 @@ vector<itsPoint> itsSimpleGen::makeChildren(itsPoint father, itsPoint mother)
 }
 
 
-itsPoint itsSimpleGen::mutation(itsPoint point)
+itsPoint itsSimpleGenetic::mutation(itsPoint point)
 {
-  float proba = (double)random01();
+  float proba = 0; //(double)random01();
   
   if ( proba < 0.5 ) {
     itsPoint p;  
@@ -149,7 +149,7 @@ itsPoint itsSimpleGen::mutation(itsPoint point)
 }
   
 
-itsMetaheuristic* itsSimpleGenFactory::create()
+itsMetaheuristic* itsSimpleGeneticFactory::create()
 {
-    return new itsSimpleGen;
+    return new itsSimpleGenetic;
 }
