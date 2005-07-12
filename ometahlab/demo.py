@@ -69,13 +69,13 @@ def main():
     if arg == 1:
 
         t = ometahtest.Test()
-        t.setArgs('-e 30 -p Ackley -P 0.01 -d 30 -m GS --precision -1')
+        t.setArgs('-e 100 -p Ackley -P 0.01 -d 30 -m CEDA --precision -1')
         t.setNbRuns(15)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 60  -p Ackley -P 0.01 -d 30 -m GS --precision -1')
+        u.setArgs('-e 100  -p Ackley -P 0.01 -d 30 -m NM --precision -1')
         u.setNbRuns(15)
         u.setOmetahPath('../ometah/ometah')
         u.start()
