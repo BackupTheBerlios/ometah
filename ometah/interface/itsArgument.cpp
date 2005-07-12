@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.11 2005/07/12 12:48:57 jpau Exp $
+ *  $Id: itsArgument.cpp,v 1.12 2005/07/12 15:07:47 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -165,7 +165,7 @@ bool itsArgumentParser::defArg(string flagShort, string flagLong, string usage,
       sizeMax_FlagLong = flagLong.size();
   }
   if ( defaultVal.size() > this->sizeMax_DefaultValue ) {
-      sizeMax_DefaultValue = defaultVal.size();
+      sizeMax_DefaultValue = defaultVal.size() + 2; // +2 stands for the parenthesis
   }
 
   return found;
@@ -248,7 +248,7 @@ void itsArgumentParser::usage()
   cout << "Options:" << endl;
 
   ostringstream format;
-  format << " %s,\t%" << sizeMax_FlagLong << "s %-" << sizeMax_DefaultValue << "s\t%s";
+  format << " %s,\t%" << sizeMax_FlagLong << "s %-" << sizeMax_DefaultValue << "s %s";
   printf( format.str().c_str(), "Short","Long", "Default","Description\n" );
 
   vector<itsArgument>::iterator iter;
