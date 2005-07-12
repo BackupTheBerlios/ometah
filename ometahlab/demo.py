@@ -52,21 +52,32 @@ def main():
     if len(argv) > 1:
         arg = int(argv[1])
     else:
-        arg = 0
+        arg = -1
 
-    if arg == 0:
+    if arg == -1:
         """ Usage """
         print 'Usage: python demo.py <i>'
-        print 'with i the number of a demo, from 1 to 11, see file content for demos details.'
+        print 'with i the number of a demo, from 0 to 11, see file content for demos details.'
         return
     
     import ometahtest
     import ometahstats    
     import time
 
-    emit = time.time()
+    emit = time.time()    
 
-    if arg == 1:
+    if arg == 0:
+
+        t = ometahtest.Test()
+        t.setArgs('-e 100 -p Ackley -P 0.01 -m GS --precision -1')
+        t.setNbRuns(15)
+        t.setOmetahPath('../ometah/ometah')
+        t.start()
+
+        paths = [ t.getPath() ]
+        ometahstats.stat(paths)
+
+    elif arg == 1:
 
         t = ometahtest.Test()
         t.setArgs('-e 100 -p Ackley -P 0.01 -d 30 -m CEDA --precision -1')
