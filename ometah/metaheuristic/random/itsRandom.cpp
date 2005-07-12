@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRandom.cpp,v 1.1 2005/07/07 14:26:25 jpau Exp $
+ *  $Id: itsRandom.cpp,v 1.2 2005/07/12 13:11:25 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -23,17 +23,10 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-#include <sstream>
+
 
 #include "itsRandom.hpp"
-#include "../../common/matrix.hpp"
-#include "../../common/random.hpp"
-#include "../../common/itsPoint.hpp"
-#include "../../common/string.hpp"
+
 
 using namespace std;
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGen.hpp,v 1.1 2005/07/12 12:48:57 jpau Exp $
+ *  $Id: itsSimpleGen.hpp,v 1.2 2005/07/12 13:11:26 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -26,7 +26,17 @@
 #ifndef SIMPLE_GEN
 #define SIMPLE_GEN
  
+ 
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
 #include "../itsMetaheuristic.hpp"
+#include "../../common/matrix.hpp"
+#include "../../common/random.hpp"
+#include "../../common/itsPoint.hpp"
+#include "../../common/string.hpp"
 
 using namespace std;
 

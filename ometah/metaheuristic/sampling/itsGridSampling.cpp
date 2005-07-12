@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.8 2005/07/12 11:24:26 jpau Exp $
+ *  $Id: itsGridSampling.cpp,v 1.9 2005/07/12 13:11:25 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -24,17 +24,8 @@
  */
  
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-#include <sstream>
-
 #include "itsGridSampling.hpp"
-#include "../../common/matrix.hpp"
-#include "../../common/random.hpp"
-#include "../../common/itsPoint.hpp"
-#include "../../common/string.hpp"
+
 
 using namespace std;
 
