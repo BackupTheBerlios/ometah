@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.3 2005/07/12 14:43:55 jpau Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.4 2005/07/12 15:00:41 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -42,7 +42,7 @@ itsSimpleGenetic::itsSimpleGenetic()
     setCitation("Unknown");
     setFamily("Genetic algorithm");    
 
-    mutProba = 0.1;
+    mutProba = 0.2;
     coefCreation = 0.8;
 }
 
@@ -105,12 +105,10 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
     // for boy
     proba = rand() / RAND_MAX; //random01();
     if ( proba <= 0.3333 ) {
-      //bsol.push_back( fsol[i] );
-      bsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
+      bsol.push_back( fsol[i] );
     }
     else if ( proba >= 0.6666 ) {
-      //bsol.push_back( msol[i] );
-      bsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
+      bsol.push_back( msol[i] );
     }
     else {
       bsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
@@ -119,12 +117,10 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
     // and girl
     proba = rand() / RAND_MAX; // (float)random01();   
     if ( proba <= 0.3333 ) {
-      //gsol.push_back( fsol[i] );
-      gsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
+      gsol.push_back( fsol[i] );
     }
     else if ( proba >= 0.6666 ) {
-      //gsol.push_back( msol[i] );
-      gsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
+      gsol.push_back( msol[i] );      
     }
     else {
       gsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
@@ -144,14 +140,19 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
 // TODO !
 itsPoint itsSimpleGenetic::mutation(itsPoint point)
 {
-  float proba = rand() / RAND_MAX; //(double)random01();
+  float proba = rand() / RAND_MAX;
   
-  if ( proba < 0.5 ) {
-    itsPoint p;  
+  if ( proba > mutProba ) {
+    // no mutation
     return evaluate (point);
   }
   else {
-    itsPoint p;
+    if ( proba < mutProba/(float)2 ) {
+      // proba 1/2 of a full mutation
+      point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
+      return evaluate (point);
+    }
+    // proba 1/2 of a partial mutation
     return evaluate (point);
   }
 }

@@ -1,5 +1,5 @@
  /***************************************************************************
- *  $Id: random.hpp,v 1.2 2005/07/12 14:04:02 jpau Exp $
+ *  $Id: random.hpp,v 1.3 2005/07/12 15:00:40 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -35,7 +35,7 @@
 template<class T>
 T random01()
 {
-  return (T)rand()/RAND_MAX;
+  return (T) (rand()/RAND_MAX);
 }
 
 //! Draw a random number in a normal probability density function
