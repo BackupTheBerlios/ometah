@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.hpp,v 1.2 2005/07/12 14:09:35 jpau Exp $
+ *  $Id: itsSimpleGenetic.hpp,v 1.3 2005/07/12 14:43:55 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -32,6 +32,7 @@
 #include <algorithm>
 #include <cmath>
 #include <sstream>
+#include <stdlib.h>
 #include "../itsMetaheuristic.hpp"
 #include "../../common/matrix.hpp"
 #include "../../common/random.hpp"

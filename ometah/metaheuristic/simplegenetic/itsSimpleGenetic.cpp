@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.2 2005/07/12 14:09:35 jpau Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.3 2005/07/12 14:43:55 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -103,29 +103,36 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
   for (int i=0; i<this->problem->getDimension(); i++) {
 
     // for boy
-    proba = 0; //random01();
+    proba = rand() / RAND_MAX; //random01();
     if ( proba <= 0.3333 ) {
-      bsol.push_back( fsol[i] );
+      //bsol.push_back( fsol[i] );
+      bsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
     }
     else if ( proba >= 0.6666 ) {
-      bsol.push_back( msol[i] );
+      //bsol.push_back( msol[i] );
+      bsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
     }
     else {
       bsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
     }
 
     // and girl
-    proba = 0; // (float)random01();   
+    proba = rand() / RAND_MAX; // (float)random01();   
     if ( proba <= 0.3333 ) {
-      gsol.push_back( fsol[i] );
+      //gsol.push_back( fsol[i] );
+      gsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
     }
     else if ( proba >= 0.6666 ) {
-      gsol.push_back( msol[i] );
+      //gsol.push_back( msol[i] );
+      gsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
     }
     else {
       gsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
     }    
   }
+
+  boy.setSolution( bsol );
+  girl.setSolution( bsol );
 
   vector<itsPoint> v;
   v.push_back( mutation(boy) );
@@ -134,17 +141,18 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
 }
 
 
+// TODO !
 itsPoint itsSimpleGenetic::mutation(itsPoint point)
 {
-  float proba = 0; //(double)random01();
+  float proba = rand() / RAND_MAX; //(double)random01();
   
   if ( proba < 0.5 ) {
     itsPoint p;  
-    return p;
+    return evaluate (point);
   }
   else {
     itsPoint p;
-    return p;
+    return evaluate (point);
   }
 }
   
