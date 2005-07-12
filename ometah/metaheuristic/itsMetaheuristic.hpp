@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.10 2005/07/08 13:24:27 jpau Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.11 2005/07/12 18:47:44 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -70,7 +70,7 @@ protected:
   virtual void learning() {};
       
   //! The initialization phase
-  void initialization();
+  virtual void initialization();
 
   //! Test if a stopping criteria have been reached
   bool isStoppingCriteria();
