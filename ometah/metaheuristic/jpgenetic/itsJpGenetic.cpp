@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.2 2005/07/13 14:33:24 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.3 2005/07/13 14:53:17 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -130,7 +130,6 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
   // if current optimal point, make a mutation
   if ( evaluate(point).getValues()[0] == sample[0].getValues()[0] ) {
     proba = 0;
-    cout << "MUTE\n";
   }
   else
     proba = drand48();
