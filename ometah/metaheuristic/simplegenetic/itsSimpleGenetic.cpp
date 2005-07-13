@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.5 2005/07/13 08:56:25 jpau Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.6 2005/07/13 09:56:48 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -50,6 +50,12 @@ itsSimpleGenetic::itsSimpleGenetic()
 
 void itsSimpleGenetic::learning()
 { 
+  
+  // if is first call
+  if (getEvaluationNumber() == getSampleSize()) {
+    sample = sortOnValues(sample, 0);
+    cout << "HELO\n";
+  }
   // sample already sorted, when diversification was done before
   for (unsigned i = 0; i<(unsigned)(getSampleSize() * coefCreation); i+= 2) {
 
@@ -64,19 +70,13 @@ void itsSimpleGenetic::learning()
 void itsSimpleGenetic::diversification()
 {
   
-  // if generation was done (every time except first one)
-  if ( getSampleSizeCurrent() > getSampleSize() ) {
-    vector<itsPoint> sortedSample = sortOnValues(sample, 0);
-    // darwinist selection
-    vector<itsPoint> v;
-    sample = v;
-    for(unsigned i=0; i<getSampleSize(); i++) {
-      sample.push_back(sortedSample[i]);
-    }    
-  }
-  else { // sort the initial sample
-    sample = sortOnValues(sample, 0);
-  }
+  vector<itsPoint> sortedSample = sortOnValues(sample, 0);
+  // darwinist selection
+  vector<itsPoint> v;
+  sample = v;
+  for(unsigned i=0; i<getSampleSize(); i++) {
+    sample.push_back(sortedSample[i]);
+  }            
 }
 
 void itsSimpleGenetic::intensification()
@@ -148,7 +148,16 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
 
 itsPoint itsSimpleGenetic::mutation(itsPoint point)
 {
-  float proba = (float)rand() / RAND_MAX;
+
+  float proba;
+
+  // if current optimal point, make a mutation
+  if ( evaluate(point).getValues()[0] == sample[0].getValues()[0] ) {
+    proba = 0;
+    cout << "MUTE\n";
+  }
+  else
+    proba = (float)rand() / RAND_MAX;
     
   if ( proba > mutProba ) {
     // no mutation
@@ -177,7 +186,6 @@ itsPoint itsSimpleGenetic::mutation(itsPoint point)
       coef = (float)rand() / RAND_MAX;
 
       // calcul new coordinate, and check if its into bounds
-
       if ( proba < 0.3333 ){
 	buf = psol[i] * coef;	
 	if ( buf > mins[i] )
