@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.4 2005/07/12 15:00:41 jpau Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.5 2005/07/13 08:56:25 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -43,6 +43,7 @@ itsSimpleGenetic::itsSimpleGenetic()
     setFamily("Genetic algorithm");    
 
     mutProba = 0.2;
+    totalMutProba = 0.3;
     coefCreation = 0.8;
 }
 
@@ -66,12 +67,15 @@ void itsSimpleGenetic::diversification()
   // if generation was done (every time except first one)
   if ( getSampleSizeCurrent() > getSampleSize() ) {
     vector<itsPoint> sortedSample = sortOnValues(sample, 0);
-    // select the getSampleSize bests points among all points
+    // darwinist selection
     vector<itsPoint> v;
     sample = v;
     for(unsigned i=0; i<getSampleSize(); i++) {
       sample.push_back(sortedSample[i]);
     }    
+  }
+  else { // sort the initial sample
+    sample = sortOnValues(sample, 0);
   }
 }
 
@@ -82,10 +86,11 @@ void itsSimpleGenetic::intensification()
 
 
 
+// directly use proba insteand of "else if ()..; else if" ??
 vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother)
 {
 
-  float proba;
+  float proba, alpha;
 
   itsPoint boy;
   itsPoint girl;
@@ -103,28 +108,32 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
   for (int i=0; i<this->problem->getDimension(); i++) {
 
     // for boy
-    proba = rand() / RAND_MAX; //random01();
-    if ( proba <= 0.3333 ) {
-      bsol.push_back( fsol[i] );
-    }
-    else if ( proba >= 0.6666 ) {
-      bsol.push_back( msol[i] );
-    }
-    else {
-      bsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
-    }
+    proba = (float)rand() / RAND_MAX;
 
+    if ( proba < 0.2 )
+      alpha = 1;
+    else if ( proba < 0.4 )
+      alpha = 0.75;
+    else if ( proba < 0.6 )
+      alpha = 0.5;
+    else if ( proba < 0.8 )
+      alpha = 0.25;
+    else
+      alpha = 0;      
+    bsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
     // and girl
-    proba = rand() / RAND_MAX; // (float)random01();   
-    if ( proba <= 0.3333 ) {
-      gsol.push_back( fsol[i] );
-    }
-    else if ( proba >= 0.6666 ) {
-      gsol.push_back( msol[i] );      
-    }
-    else {
-      gsol.push_back( ( (double)(fsol[i] + msol[i] ) / (double) 2) );
-    }    
+    proba = (float)rand() / RAND_MAX;
+    if ( proba < 0.2 )
+      alpha = 1;
+    else if ( proba < 0.4 )
+      alpha = 0.75;
+    else if ( proba < 0.6 )
+      alpha = 0.5;
+    else if ( proba < 0.8 )
+      alpha = 0.25;
+    else
+      alpha = 0;      
+    gsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
   }
 
   boy.setSolution( bsol );
@@ -137,22 +146,57 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
 }
 
 
-// TODO !
 itsPoint itsSimpleGenetic::mutation(itsPoint point)
 {
-  float proba = rand() / RAND_MAX;
-  
+  float proba = (float)rand() / RAND_MAX;
+    
   if ( proba > mutProba ) {
     // no mutation
     return evaluate (point);
   }
   else {
-    if ( proba < mutProba/(float)2 ) {
-      // proba 1/2 of a full mutation
+    if ( proba < mutProba * totalMutProba ) {
+      // full mutation = new randomized point
       point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
       return evaluate (point);
     }
-    // proba 1/2 of a partial mutation
+    // partial mutation
+    // CAUTION : don't go beyond search space limits
+    vector<double> npsol;
+    vector<double> psol;
+    vector<double> mins;
+    vector<double> maxs;
+    mins = this->problem->boundsMinima();
+    maxs = this->problem->boundsMaxima();
+    psol = point.getSolution();
+    float coef;
+    double buf;
+    for ( int i=0; i<this->problem->getDimension(); i++) {
+      // P(up) = P(down) = P(no change) = 0.3
+      proba = (float)rand() / RAND_MAX;
+      coef = (float)rand() / RAND_MAX;
+
+      // calcul new coordinate, and check if its into bounds
+
+      if ( proba < 0.3333 ){
+	buf = psol[i] * coef;	
+	if ( buf > mins[i] )
+	  npsol.push_back( buf );
+	else
+	  npsol.push_back( psol[i] );
+      }
+      else if ( proba < 0.6666 ) {
+	buf = psol[i] * ( 1 / coef );
+	if ( buf < maxs[i] )
+	  npsol.push_back( buf );
+	else
+	  npsol.push_back( psol[i] );
+      }     
+      else {
+	npsol.push_back( psol[i] );
+      }
+    }
+    point.setSolution( npsol );
     return evaluate (point);
   }
 }

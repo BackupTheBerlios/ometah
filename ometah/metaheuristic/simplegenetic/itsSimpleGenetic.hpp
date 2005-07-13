@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.hpp,v 1.3 2005/07/12 14:43:55 jpau Exp $
+ *  $Id: itsSimpleGenetic.hpp,v 1.4 2005/07/13 08:56:25 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -49,10 +49,13 @@ protected:
   //! probability of mutation for a child
   float mutProba;
 
+  //! when mutation needed, probability of this mutation to be total
+  float totalMutProba;
+
   //! fraction of the sample which is selected for procreation
+  // ~ number of children born
   float coefCreation;
 
-  //! number of children at each generation (~ nb of parents selected)
 
 protected:
 
@@ -65,10 +68,10 @@ protected:
   //! the learning, which creates the children
   void learning();
 
-  //! return a vector of two children
+  //! return a vector of two children, make genetic crossings
   vector<itsPoint> makeChildren(itsPoint father, itsPoint mother);
 
-  //! returns the muted form of a point
+  //! returns the muted form of a point, when its coordinates found from parents'
   itsPoint mutation(itsPoint point);
   
   
