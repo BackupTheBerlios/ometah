@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.1 2005/07/13 12:51:26 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.2 2005/07/13 14:33:24 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -42,7 +42,7 @@ itsJpGenetic::itsJpGenetic()
     setCitation("Unknown");
     setFamily("Genetic algorithm");    
 
-    mutationProba = 0.2;
+    mutationProba = 0.5;
     totalMutationProba = 0.3;
     selectionCoef = 0.8;
 }
@@ -54,7 +54,6 @@ void itsJpGenetic::learning()
   // if is first call
   if (getEvaluationNumber() == getSampleSize()) {
     sample = sortOnValues(sample, 0);
-    cout << "HELO\n";
   }
   // sample already sorted, when diversification was done before
   for (unsigned i = 0; i<(unsigned)(getSampleSize() * selectionCoef); i+= 2) {

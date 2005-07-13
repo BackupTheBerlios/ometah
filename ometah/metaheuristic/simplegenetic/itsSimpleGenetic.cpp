@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.7 2005/07/13 12:51:26 jpau Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.8 2005/07/13 14:33:25 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -44,44 +44,53 @@ itsSimpleGenetic::itsSimpleGenetic()
 
     mutationProba = 0.2;
     totalMutationProba = 0.3;
-    selectionCoef = 0.8;
+    selectionCoef = 0.5;
 }
 
 
 void itsSimpleGenetic::learning()
 { 
-  
-  // if is first call
-  if (getEvaluationNumber() == getSampleSize()) {
-    sample = sortOnValues(sample, 0);
-    cout << "HELO\n";
-  }
-  // sample already sorted, when diversification was done before
-  for (unsigned i = 0; i<(unsigned)(getSampleSize() * selectionCoef); i+= 2) {
+  // reproduction 
+ 
+  // if not is first call
+  if ( getEvaluationNumber() != getSampleSize() ) {
 
-    vector<itsPoint> v;
-    v = makeChildren(sample[i], sample[i+1]);
-    sample.push_back( v[0] );
-    sample.push_back( v[1] );
+    unsigned size = getSampleSizeCurrent();
+
+    // sample already sorted, when diversification was done before
+    for (unsigned i = 0; i<size; i+= 2) {
+
+      vector<itsPoint> v;
+      v = makeChildren(sample[i], sample[i+1]);
+      sample.push_back( v[0] );
+      if ( i+1 < size)
+	sample.push_back( v[1] );
+    }
   }
 }
  
 
 void itsSimpleGenetic::diversification()
 {
+  // mutation
   
-  vector<itsPoint> sortedSample = sortOnValues(sample, 0);
-  // darwinist selection
-  vector<itsPoint> v;
-  sample = v;
   for(unsigned i=0; i<getSampleSize(); i++) {
-    sample.push_back(sortedSample[i]);
-  }            
+    
+    sample[i] = mutation( sample[i] );
+  }
 }
 
 void itsSimpleGenetic::intensification()
 {
-  // No intensification.
+  // selection
+
+  vector<itsPoint> sortedSample = sortOnValues(sample, 0);
+  // darwinist selection
+  vector<itsPoint> v;
+  sample = v;
+  for(unsigned i=0; i< (int) getSampleSize() * selectionCoef; i++) {
+    sample.push_back(sortedSample[i]);
+  }
 }
 
 
@@ -117,8 +126,8 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
   girl.setSolution( gsol );
 
   vector<itsPoint> v;
-  v.push_back( mutation(boy) );
-  v.push_back( mutation(girl) );
+  v.push_back( evaluate(boy) );
+  v.push_back( evaluate(girl) );
   return v;
 }
 
@@ -131,7 +140,6 @@ itsPoint itsSimpleGenetic::mutation(itsPoint point)
   // if current optimal point, make a mutation
   if ( evaluate(point).getValues()[0] == sample[0].getValues()[0] ) {
     proba = 0;
-    cout << "MUTE\n";
   }
   else
     proba = drand48();
