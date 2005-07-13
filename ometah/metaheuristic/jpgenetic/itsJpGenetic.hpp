@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.hpp,v 1.5 2005/07/13 12:51:26 jpau Exp $
+ *  $Id: itsJpGenetic.hpp,v 1.1 2005/07/13 12:51:26 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -23,14 +23,16 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#ifndef ITSNELDERMEAD
-#define ITSNELDERMEAD
-
+#ifndef JP_GEN
+#define JP_GEN
+ 
+ 
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <cmath>
 #include <sstream>
+#include <stdlib.h>
 #include "../itsMetaheuristic.hpp"
 #include "../../common/matrix.hpp"
 #include "../../common/random.hpp"
@@ -39,77 +41,55 @@
 
 using namespace std;
 
-class itsNelderMead : public itsMetaheuristic
+class itsJpGenetic : public itsMetaheuristic
 {
 
 protected:
 
-  //! sample points sorted according to their values, from best to worst
-  vector<itsPoint> sortedSample;
+  //! probability of mutation for a child
+  float mutationProba;
 
-  // transformations coefficients :
-  
-  //! reflection 
-  float reflection;
+  // mutationProba !
 
-  //! expansion
-  float expansion;
+  //! when mutation needed, probability of this mutation to be total
+  float totalMutationProba;
 
-  //! contraction
-  float contraction;
+  //! fraction of the sample which is selected for procreation
+  // ~ number of children born
+  float selectionCoef;
 
-  // simplexes after transformation
-
-  //! reflection simplex
-  vector<itsPoint> reflectionSimplex;
-
-  //! expansion simplex
-  vector<itsPoint> expansionSimplex;
-
-  //! contraction simplex
-  vector<itsPoint> contractionSimplex;
 
 protected:
 
-  //! the intensification phase
+  //! the intensification
   void intensification();
       
-  //! the diversification, ie the algo itself
+  //! the diversification, select the bests among parents and children
   void diversification();
       
-  //! the learning
+  //! the learning, which creates the children
   void learning();
 
-  //! return the minimum value of a point of the vector
-  double simplexOptimum(vector<itsPoint> points);
+  //! return a vector of two children, make genetic crossings
+  vector<itsPoint> makeChildren(itsPoint father, itsPoint mother);
 
-  //! sort current sample in sortedSample vector
-  void sortSample();
-
-  //! return the coordinates of the transformed point
-  itsPoint getTransformedPoint(itsPoint point, float coef);
-
-
-  //! !!!!!!!!!!!!!!
-  void makeReflectionSimplex();
-
-  void makeExpansionSimplex();
-
-  void makeContractionSimplex();
+  //! returns the muted form of a point, when its coordinates found from parents'
+  itsPoint mutation(itsPoint point);
+  
   
 public:
 
   //! Constructor
   /*!
     Here are set default values for attributes
-   */
-  itsNelderMead();
+  */
+  itsJpGenetic();
 
-  ~itsNelderMead();
+  ~itsJpGenetic();
 
 };
 
-class itsNelderMeadFactory : public itsMetaheuristicFactory
+class itsJpGeneticFactory : public itsMetaheuristicFactory
 {
 public:
     itsMetaheuristic* create();

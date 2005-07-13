@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.hpp,v 1.4 2005/07/13 08:56:25 jpau Exp $
+ *  $Id: itsSimpleGenetic.hpp,v 1.5 2005/07/13 12:51:26 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -47,14 +47,16 @@ class itsSimpleGenetic : public itsMetaheuristic
 protected:
 
   //! probability of mutation for a child
-  float mutProba;
+  float mutationProba;
+
+  // mutationProba !
 
   //! when mutation needed, probability of this mutation to be total
-  float totalMutProba;
+  float totalMutationProba;
 
   //! fraction of the sample which is selected for procreation
   // ~ number of children born
-  float coefCreation;
+  float selectionCoef;
 
 
 protected:

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.7 2005/07/13 12:51:26 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.1 2005/07/13 12:51:26 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -17,28 +17,28 @@
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
- *
+ *  
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
 
-#include "itsSimpleGenetic.hpp"
+#include "itsJpGenetic.hpp"
 
 
 using namespace std;
 
-itsSimpleGenetic::~itsSimpleGenetic()
+itsJpGenetic::~itsJpGenetic()
 {
 }
 
-itsSimpleGenetic::itsSimpleGenetic()
+itsJpGenetic::itsJpGenetic()
 {
-    setName("Simple genetic algorithm");
-    setKey("SGEN");
-    setAccronym("SGEN");
-    setDescription("Create several generations of points, using crossing and mutations");
+    setName("JP genetic algorithm");
+    setKey("JGEN");
+    setAccronym("JGEN");
+    setDescription("Experimental genetic algorithm");
     setCitation("Unknown");
     setFamily("Genetic algorithm");    
 
@@ -48,7 +48,7 @@ itsSimpleGenetic::itsSimpleGenetic()
 }
 
 
-void itsSimpleGenetic::learning()
+void itsJpGenetic::learning()
 { 
   
   // if is first call
@@ -67,7 +67,7 @@ void itsSimpleGenetic::learning()
 }
  
 
-void itsSimpleGenetic::diversification()
+void itsJpGenetic::diversification()
 {
   
   vector<itsPoint> sortedSample = sortOnValues(sample, 0);
@@ -79,7 +79,7 @@ void itsSimpleGenetic::diversification()
   }            
 }
 
-void itsSimpleGenetic::intensification()
+void itsJpGenetic::intensification()
 {
   // No intensification.
 }
@@ -87,7 +87,7 @@ void itsSimpleGenetic::intensification()
 
 
 // directly use proba insteand of "else if ()..; else if" ??
-vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother)
+vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
 {
   double alpha;
 
@@ -123,7 +123,7 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
 }
 
 
-itsPoint itsSimpleGenetic::mutation(itsPoint point)
+itsPoint itsJpGenetic::mutation(itsPoint point)
 {
 
   float proba;
@@ -188,7 +188,7 @@ itsPoint itsSimpleGenetic::mutation(itsPoint point)
 }
   
 
-itsMetaheuristic* itsSimpleGeneticFactory::create()
+itsMetaheuristic* itsJpGeneticFactory::create()
 {
-    return new itsSimpleGenetic;
+    return new itsJpGenetic;
 }

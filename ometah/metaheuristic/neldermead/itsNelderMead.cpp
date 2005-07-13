@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.6 2005/07/12 13:11:25 jpau Exp $
+ *  $Id: itsNelderMead.cpp,v 1.7 2005/07/13 12:51:26 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -34,17 +34,16 @@ itsNelderMead::~itsNelderMead()
 
 itsNelderMead::itsNelderMead()
 {
-    setName("Nelder-Mead search algorithm.");
-    setKey("NM");
-    setAccronym("NM");
-    setDescription("Nelder-Mead search algorithm.");
+    setName("Nelder-Mead search");
+    setKey("NMS");
+    setAccronym("NMS");
+    setDescription("Nelder-Mead search algorithm");
     setCitation("");
-    setFamily("Geometric algorithm.");
+    setFamily("Geometric algorithm");
 
     reflection = 1.0;
     expansion = 2.0;
     contraction = 0.5;
-
 }
 
 
