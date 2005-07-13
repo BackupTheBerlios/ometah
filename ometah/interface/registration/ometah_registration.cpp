@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.12 2005/07/13 12:51:25 jpau Exp $
+ *  $Id: ometah_registration.cpp,v 1.13 2005/07/13 15:32:07 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -153,6 +153,9 @@ int main(int argc, char ** argv)
     argumentParser.defArg("-o", "--output", 
 			  "output of the results" ,true, "string", "");
               
+              
+    argumentParser.defArg("-c", "--bounds-coefficient", 
+			  "x and y bounds ratio from the image size" ,true, "double", "0.06");
     argumentParser.defArg("-a", "--affine", 
 			  "perform a affine registration (x+y+rotation+zoom)" ,false);
     argumentParser.defArg("-t", "--bounds-rotation", 
@@ -241,6 +244,8 @@ int main(int argc, char ** argv)
   communicationClient.initialization( parameters );
 
   setMetaheuristic.item()->setLogLevel(argumentParser.getIntValue("--verbose"));
+  
+  problem.setBoundsCoefficient( (float)argumentParser.getDoubleValue("--bounds-coefficient") );
   
   if ( argumentParser.isAsked("--affine") ) {
       problem.setDimension(4);
