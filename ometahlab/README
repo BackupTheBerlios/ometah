@@ -52,7 +52,7 @@ Short example :
       >>> test.setArgs('-e 100 -p Rosenbrock -P 0.01')
 
       Set the number of runs (default: 25):
-      >>> test.setRuns(40)
+      >>> test.setNbRuns(40)
 
       Set the path to ometah (below is the default value):
       >>> test.setOmetahPath('../ometah/ometah')
