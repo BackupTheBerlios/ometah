@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.9 2005/07/13 12:51:25 jpau Exp $
+#  $Id: SConstruct,v 1.10 2005/07/14 08:03:30 nojhan Exp $
 #  Copyright : Universit� Paris 12 Val-de-Marne
 #              (61 avenue du Général de Gaulle, 94010, Créteil, France)
 #  Author : Johann Dréo <nojhan@gmail.com>
@@ -84,12 +84,12 @@ else:
     ometah_registration = env.Program( target = 'ometah_registration', \
         source = 'interface/registration/ometah_registration.cpp', \
         LIBS=['problem_registration','common','communication','metaheuristic','interface', \
-            'sampling', 'random', 'estimation', 'neldermead', 'simplegenetic', 'jpgenetic'] )
+            'sampling', 'estimation', 'neldermead', 'simplegenetic'] )
 
 # standard interface
 ometah = env.Program( target = 'ometah', source = 'interface/ometah.cpp', \
     LIBS=['common','communication','metaheuristic','problem','problem_CEC05','interface', \
-          'estimation', 'random', 'sampling', 'neldermead',
-	  'simplegenetic', 'jpgenetic'] )
+          'estimation', 'random', 'sampling', 'neldermead', \
+          'simplegenetic'] ) #, 'jpgenetic'] )
 
 Default(ometah)
