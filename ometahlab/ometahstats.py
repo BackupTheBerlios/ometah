@@ -112,7 +112,7 @@ class Stater:
         print ''
         for test in self.__tests:
             if test.problem.key != pb:
-                self.__fatal('tests have different problems.')
+                self.__warning('tests have different problems.')
             elif test.problem.dimension != dim:
                 self.__warning('tests have different problem dimensions.')
             elif test.parameters.sampleSize != sample:
@@ -411,7 +411,7 @@ class Stater:
         for list in self.__pointsIter:
             elist = [[p.error for p in points] for points in list ]
             errlist = [r.median(list) for list in elist]
-            txt = '%s\nConvergence of error of all points' % self.__tests[i].args
+            txt = '%s\nConvergence of median error of all points' % self.__tests[i].args
             try:
                 r.plot(errlist, main=txt, type='o', ylab='Median error', xlab='Iteration', log="y")
             except:
@@ -434,7 +434,7 @@ class Stater:
         for list in self.__optimaIter:
             elist = [[p.error for p in points] for points in list ]
             errlist = [r.median(list) for list in elist]            
-            txt = '%s\nConvergence of error of optima' % self.__tests[i].args
+            txt = '%s\nConvergence of median error of optima' % self.__tests[i].args
             try:
                 r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration', log="y")
             except:
