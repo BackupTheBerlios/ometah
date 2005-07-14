@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.11 2005/07/13 15:30:52 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.12 2005/07/14 08:08:00 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -86,7 +86,7 @@ itsPoint itsRegistration::objectiveFunction(itsPoint point)
     double similarity = 0;
 
     // number of pixels concerned
-    int pixelNumber = ( img1.width - rx ) * ( img1.height - ry );
+    //int pixelNumber = ( img1.width - rx ) * ( img1.height - ry );
     
     // loop over X and Y
     cimg_mapXY(img1,x,y) {
