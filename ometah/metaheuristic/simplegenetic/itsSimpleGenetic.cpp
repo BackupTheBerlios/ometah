@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.9 2005/07/13 14:53:17 jpau Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.10 2005/07/14 08:05:33 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -74,7 +74,7 @@ void itsSimpleGenetic::diversification()
 {
   // mutation
   
-  for(unsigned i= (int)getSampleSize() * selectionCoef; i<getSampleSize(); i++) {
+  for(unsigned int i= (int)floor(getSampleSize() * selectionCoef); i<getSampleSize(); i++) {
     
     sample[i] = mutation( sample[i] );
   }
