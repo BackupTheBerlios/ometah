@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.4 2005/07/15 08:11:37 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.1 2005/07/15 16:53:45 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -42,7 +42,7 @@ itsJpGenetic::itsJpGenetic()
     setCitation("Unknown");
     setFamily("Genetic algorithm");    
 
-    mutationProba = 0.5;
+    mutationProba = 0.7;
     totalMutationProba = 0.5;
     selectionCoef = 0.5;
 }
@@ -99,7 +99,7 @@ void itsJpGenetic::intensification()
 // directly use proba insteand of "else if ()..; else if" ??
 vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
 {
-  double alpha;
+  double alpha, buf;
 
   itsPoint boy;
   itsPoint girl;
@@ -122,6 +122,7 @@ vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
     alpha = drand48();
     gsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
   }
+
     
   boy.setSolution( bsol );
   girl.setSolution( gsol );

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.hpp,v 1.1 2005/07/13 12:51:26 jpau Exp $
+ *  $Id: itsJpGenetic.hpp,v 1.1 2005/07/15 16:53:45 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>

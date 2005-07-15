@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.10 2005/07/14 08:05:33 nojhan Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.1 2005/07/15 16:52:33 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -42,8 +42,7 @@ itsSimpleGenetic::itsSimpleGenetic()
     setCitation("Unknown");
     setFamily("Genetic algorithm");    
 
-    mutationProba = 0.2;
-    totalMutationProba = 0.3;
+    mutationProba = 0.5;
     selectionCoef = 0.5;
 }
 
@@ -61,7 +60,10 @@ void itsSimpleGenetic::learning()
     for (unsigned i = 0; i<size; i+= 2) {
 
       vector<itsPoint> v;
-      v = makeChildren(sample[i], sample[i+1]);
+      if ( i+1 < size)
+	v = makeChildren(sample[i], sample[i+1]);
+      else
+	v = makeChildren(sample[i], sample[0]);
       sample.push_back( v[0] );
       if ( i+1 < size)
 	sample.push_back( v[1] );
@@ -74,7 +76,8 @@ void itsSimpleGenetic::diversification()
 {
   // mutation
   
-  for(unsigned int i= (int)floor(getSampleSize() * selectionCoef); i<getSampleSize(); i++) {
+  // only make mutation on newly created points
+  for(unsigned i= (unsigned)(getSampleSize() * selectionCoef); i<getSampleSize(); i++) {
     
     sample[i] = mutation( sample[i] );
   }
@@ -149,48 +152,9 @@ itsPoint itsSimpleGenetic::mutation(itsPoint point)
     return evaluate (point);
   }
   else {
-    if ( proba < mutationProba * totalMutationProba ) {
-      // full mutation = new randomized point
-      point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
-      return evaluate (point);
-    }
-    // partial mutation
-    // CAUTION : don't go beyond search space limits
-    vector<double> npsol;
-    vector<double> psol;
-    vector<double> mins;
-    vector<double> maxs;
-    mins = this->problem->boundsMinima();
-    maxs = this->problem->boundsMaxima();
-    psol = point.getSolution();
-    float coef;
-    double buf;
-    for ( int i=0; i<this->problem->getDimension(); i++) {
-      
-      // P(up) = P(down) = P(no change) = 0.3
-      proba = drand48();
-      coef = drand48();
 
-      // calcul new coordinate, and check if its into bounds
-      if ( proba < 0.3333 ){
-	buf = psol[i] * coef;	
-	if ( buf > mins[i] )
-	  npsol.push_back( buf );
-	else
-	  npsol.push_back( psol[i] );
-      }
-      else if ( proba < 0.6666 ) {
-	buf = psol[i] * ( 1 / coef );
-	if ( buf < maxs[i] )
-	  npsol.push_back( buf );
-	else
-	  npsol.push_back( psol[i] );
-      }     
-      else {
-	npsol.push_back( psol[i] );
-      }
-    }
-    point.setSolution( npsol );
+    // full mutation = new randomized point
+    point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
     return evaluate (point);
   }
 }
