@@ -232,7 +232,7 @@ class Test:
                 if len(run) > iter:
                     for point in run[iter]:
                         # add error attribute value
-                        if opt_val != 'Unknown':
+                        if self.opt_val != 'Unknown':
                             point.error = point.value - self.opt_val                        
                         
                         # add each point to pointsIterations

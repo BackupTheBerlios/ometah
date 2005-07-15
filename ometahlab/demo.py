@@ -160,7 +160,23 @@ def main():
         paths = [ v.getPath(), w.getPath(), z.getPath(), a.getPath() ]
         ometahstats.stat(paths)
 
+    elif arg == -5:
 
+        v = ometahtest.Test()
+        v.setArgs('-e 500 -p Rosenbrock -P 0.00001 -d 10 -m JGEN -s 20')
+        v.setNbRuns(25)
+        v.setOmetahPath('../ometah/ometah')
+        v.start()
+        
+        w = ometahtest.Test()
+        w.setArgs('-e 500  -p Rosenbrock -P 0.00001 -d 10 -m CEDA -s 20')
+        w.setNbRuns(25)
+        w.setOmetahPath('../ometah/ometah')
+        w.start()
+
+        paths = [ v.getPath(), w.getPath() ]
+        ometahstats.stat(paths)
+        
     elif arg == -2:
 
         t = ometahtest.Test()
