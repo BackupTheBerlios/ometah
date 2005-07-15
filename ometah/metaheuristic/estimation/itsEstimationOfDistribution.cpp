@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.2 2005/07/12 13:11:25 jpau Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.3 2005/07/15 17:02:52 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -133,7 +133,8 @@ vector<double> itsEstimationOfDistribution::diversificationNormal()
         sol = randomNormalMulti(this->parameterNormalMean, this->parameterNormalVarCovar);
     } catch (const char * s) {
         this->isInternalStoppingCriterion = true;
-        sol = randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() );
+        // redraw in a uniform distribution within the hypercube of the sample
+        sol = randomUniform( getSampleSolutionsMin(), getSampleSolutionsMax() );
     }
 
     // test if is in bounds
