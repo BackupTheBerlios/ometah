@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.14 2005/07/04 10:15:33 jpau Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.15 2005/07/15 17:04:58 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -555,4 +555,24 @@ double itsMetaheuristic::getValueMin()
 void itsMetaheuristic::setValueMin(double val)
 {
     this->valueThreshold = val;
+}
+
+vector<vector<double> > itsMetaheuristic::getSampleSolutions()
+{
+  vector<vector<double> > coords;
+
+  for( unsigned int i=0; i < this->sample.size(); i++ ) {
+      coords.push_back( this->sample[i].getSolution() );
+  }
+  return coords;
+}
+
+vector<double> itsMetaheuristic::getSampleSolutionsMin()
+{
+  return mins( getSampleSolutions() );
+}
+
+vector<double> itsMetaheuristic::getSampleSolutionsMax()
+{
+  return maxs( getSampleSolutions() );
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.11 2005/07/12 18:47:44 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.12 2005/07/15 17:04:58 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -45,6 +45,7 @@
 #include "../communication/itsCommunicationClient.hpp"
 
 #include "../common/random.hpp"
+#include "../common/matrix.hpp"
 #include "../common/string.hpp"
 #include "../common/itsPoint.hpp"
 #include "../problem/itsProblem.hpp"
@@ -298,6 +299,16 @@ public:
   */
   void setSampleSize(unsigned int size);
 
+  //! Return only the coordinates part of the sample
+  vector<vector<double> > getSampleSolutions();
+
+  //! Return the minimums coordinates of the population
+  vector<double> getSampleSolutionsMin();
+
+  //! Return the maximums coordinates of the population
+  vector<double> getSampleSolutionsMax();
+  
+  
   //! Return the maximum iterations number
   unsigned int getIterationsMaxNumber();
   //! Change the  maximum iterations number
