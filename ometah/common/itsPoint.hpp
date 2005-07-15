@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.hpp,v 1.2 2005/06/16 08:55:11 nojhan Exp $
+ * $Id: itsPoint.hpp,v 1.3 2005/07/15 17:09:22 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  * Author :  Walid TFAILI <tfaili@univ-paris12.fr>
@@ -71,9 +71,10 @@ bool isValueGreater(itsPoint p1, itsPoint p2, int dimension=0);
 //! Check if a point has an equal value than another one for a given dimension
 bool isValueEqual(itsPoint p1, itsPoint p2, int dimension=0);
 
+
 //! Sort a vector on values for a given dimension
 /*!
-    It uses a merge sorting algorithm
+    It uses a quicksort algorithm
 */
 vector<itsPoint> sortOnValues(vector<itsPoint> vec, int dimension);
 

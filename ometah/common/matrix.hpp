@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.2 2005/06/24 19:36:51 nojhan Exp $
+ *  $Id: matrix.hpp,v 1.3 2005/07/15 17:09:22 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -380,6 +380,32 @@ typename T::value_type min(T aVector, unsigned int begin=0, unsigned int during=
   }
   
   return aMin;
+}
+
+//! Find the minimums values of a matrix, by column
+template<class T>
+vector<T> mins(vector<vector< T > > aMatrix) 
+{
+  vector<T> mins;
+
+  for( unsigned int i=0; i < aMatrix.size(); i++ ) {
+    mins.push_back( min(aMatrix[i]) );
+  }
+  
+  return mins;
+}
+
+//! Find the maximums values of a matrix, by column
+template<class T>
+vector<T> maxs(vector<vector< T > > aMatrix) 
+{
+  vector<T> maxs;
+
+  for( unsigned int i=0; i < aMatrix.size(); i++ ) {
+    maxs.push_back( max(aMatrix[i]) );
+  }
+  
+  return maxs;
 }
 
 //! Find the maximum value of a vector
