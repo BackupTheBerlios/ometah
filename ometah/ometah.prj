@@ -9,7 +9,7 @@ Blabla<PROJECT_DESCRIPTION_END>
 <CONFIG_LIBS_END>
 <CONFIG_HEADERS_START>
 /***************************************************************************
- *  $Id: ometah.prj,v 1.3 2005/06/19 13:01:33 nojhan Exp $
+ *  $Id: ometah.prj,v 1.4 2005/07/15 17:13:06 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -75,6 +75,7 @@ anjuta.program.arguments=
 preferences.build.option.jobs=0
 preferences.build.option.silent=0
 preferences.build.option.autosave=1
+preferences.anjuta.make.options=ometah_registration
 preferences.make=scons
 preferences.build.option.keep.going=1
 preferences.build.option.warn.undef=0
@@ -83,8 +84,8 @@ preferences.indent.opening=1
 preferences.autoformat.disable=0
 preferences.indent.automatic=1
 preferences.use.tabs=0
-preferences.indent.size=4
-preferences.tabsize=4
+preferences.indent.size=2
+preferences.tabsize=2
 preferences.indent.closing=1
 
 module.include.name=.
@@ -92,7 +93,6 @@ module.include.type=
 module.include.files=\
 	problem/itsProblem.hpp\
 	metaheuristic/itsMetaheuristic.hpp\
-	metaheuristic/itsEstimationOfDistribution.hpp\
 	common/random.hpp\
 	common/itsPoint.hpp\
 	common/itsSet.hpp\
@@ -109,14 +109,16 @@ module.include.files=\
 	interface/ometah.hpp\
 	interface/itsArgument.hpp\
 	problem/CEC05/itsCEC05_SSRPO_Problems.hpp\
-	problem/registration/itsRegistration.hpp
+	problem/registration/itsRegistration.hpp\
+	metaheuristic/random/itsRandom.hpp\
+	metaheuristic/sampling/itsGridSampling.hpp\
+	metaheuristic/estimation/itsEstimationOfDistribution.hpp
 
 module.source.name=.
 module.source.type=
 module.source.files=\
 	problem/itsProblem.cpp\
 	metaheuristic/itsMetaheuristic.cpp\
-	metaheuristic/itsEstimationOfDistribution.cpp\
 	common/random.cpp\
 	common/logic.cpp\
 	common/geometry.cpp\
@@ -142,7 +144,10 @@ module.source.files=\
 	metaheuristic/SConscript\
 	problem/SConscript\
 	problem/CEC05/SConscript\
-	problem/registration/SConscript
+	problem/registration/SConscript\
+	metaheuristic/random/itsRandom.cpp\
+	metaheuristic/sampling/itsGridSampling.cpp\
+	metaheuristic/estimation/itsEstimationOfDistribution.cpp
 
 module.pixmap.name=.
 module.pixmap.type=
