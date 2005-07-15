@@ -456,9 +456,7 @@ class Stater:
         # convergence boxes for all points in iterations
         self.__plot_4()
         # convergence boxes for optima points in iterations
-        self.__plot_5()        
-        # points in plan
-        self.__plot_8()
+        self.__plot_5()
 
         # if a test does not have optimum given, return
         # (cos we won't have information on error for following plots)
@@ -468,6 +466,8 @@ class Stater:
             
         # success rates
         self.__plot_6()
+        # points in plan
+        self.__plot_8()
         # optima's error distribution
         self.__plot_9()
         # error convergence for all points
