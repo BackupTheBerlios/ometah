@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.3 2005/07/13 14:53:17 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.4 2005/07/15 08:11:37 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -43,46 +43,57 @@ itsJpGenetic::itsJpGenetic()
     setFamily("Genetic algorithm");    
 
     mutationProba = 0.5;
-    totalMutationProba = 0.3;
-    selectionCoef = 0.8;
+    totalMutationProba = 0.5;
+    selectionCoef = 0.5;
 }
 
 
 void itsJpGenetic::learning()
 { 
-  
-  // if is first call
-  if (getEvaluationNumber() == getSampleSize()) {
-    sample = sortOnValues(sample, 0);
-  }
-  // sample already sorted, when diversification was done before
-  for (unsigned i = 0; i<(unsigned)(getSampleSize() * selectionCoef); i+= 2) {
+  // reproduction
 
-    vector<itsPoint> v;
-    v = makeChildren(sample[i], sample[i+1]);
-    sample.push_back( v[0] );
-    sample.push_back( v[1] );
+  // if not is first call
+  if ( getEvaluationNumber() != getSampleSize() ) {
+
+    unsigned size = getSampleSizeCurrent();
+
+    // sample already sorted, when diversification was done before
+    for (unsigned i = 0; i<size; i+= 2) {
+
+      vector<itsPoint> v;
+      if ( i+1 < size)
+	v = makeChildren(sample[i], sample[i+1]);
+      else
+	v = makeChildren(sample[i], sample[0]);
+      sample.push_back( v[0] );
+      if ( i+1 < size)
+	sample.push_back( v[1] );
+    }
   }
 }
  
 
 void itsJpGenetic::diversification()
 {
-  
-  vector<itsPoint> sortedSample = sortOnValues(sample, 0);
-  // darwinist selection
-  vector<itsPoint> v;
-  sample = v;
-  for(unsigned i=0; i<getSampleSize(); i++) {
-    sample.push_back(sortedSample[i]);
-  }            
+  // only make mutation on newly created points
+  for(unsigned i= (unsigned)( getSampleSize() * selectionCoef); i<getSampleSize(); i++) {
+    
+    sample[i] = mutation( sample[i] );
+  }       
 }
 
 void itsJpGenetic::intensification()
 {
-  // No intensification.
-}
+  // selection
 
+  vector<itsPoint> sortedSample = sortOnValues(sample, 0);
+  // darwinist selection
+  vector<itsPoint> v;
+  sample = v;
+  for(unsigned i=0; i< (int) getSampleSize() * selectionCoef; i++) {
+    sample.push_back(sortedSample[i]);
+  }
+}
 
 
 // directly use proba insteand of "else if ()..; else if" ??
@@ -116,8 +127,8 @@ vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
   girl.setSolution( gsol );
 
   vector<itsPoint> v;
-  v.push_back( mutation(boy) );
-  v.push_back( mutation(girl) );
+  v.push_back( evaluate(boy) );
+  v.push_back( evaluate(girl) );
   return v;
 }
 
@@ -144,6 +155,7 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
       point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
       return evaluate (point);
     }
+    else {
     // partial mutation
     // CAUTION : don't go beyond search space limits
     vector<double> npsol;
@@ -182,6 +194,7 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
     }
     point.setSolution( npsol );
     return evaluate (point);
+    }
   }
 }
   
