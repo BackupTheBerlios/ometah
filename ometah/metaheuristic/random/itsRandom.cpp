@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRandom.cpp,v 1.2 2005/07/12 13:11:25 jpau Exp $
+ *  $Id: itsRandom.cpp,v 1.3 2005/07/15 17:08:12 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -60,7 +60,7 @@ void itsRandom::diversification()
     for( unsigned int i=0; i < getSampleSize(); i++) {
         // draw solution
         itsPoint p;
-	p.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
+        p.setSolution( randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() ) );
         // get values
         sample[i] = evaluate(p);
     }
