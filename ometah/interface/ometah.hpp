@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.9 2005/07/14 08:03:43 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.10 2005/07/15 16:48:52 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -44,8 +44,9 @@
 #include "../metaheuristic/random/itsRandom.hpp"
 #include "../metaheuristic/sampling/itsGridSampling.hpp"
 #include "../metaheuristic/neldermead/itsNelderMead.hpp"
-#include "../metaheuristic/simplegenetic/itsSimpleGenetic.hpp"
-//#include "../metaheuristic/jpgenetic/itsJpGenetic.hpp"
+
+#include "../metaheuristic/genetic/itsSimpleGenetic.hpp"
+#include "../metaheuristic/genetic/itsJpGenetic.hpp"
 
 // problems
 #include "../problem/CEC05/itsCEC05_SSRPO_Base.hpp"
