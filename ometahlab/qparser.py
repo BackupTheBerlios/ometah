@@ -169,12 +169,15 @@ class Qparser:
         optima = []
         fd.readline() # skip <optimum>
         line = fd.readline()
-        while f('<point>') != -1:
-            p = ometahtest.Point()
-            p.value = float(line[f('<values>')+8:f('</values>')])
-            p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]                                 
-            PB.optimum.append(p)
-            line = fd.readline()
+
+        # if we have an optimum
+        if f('Unknown') == -1:            
+            while f('<point>') != -1:
+                p = ometahtest.Point()
+                p.value = float(line[f('<values>')+8:f('</values>')])
+                p.coords = [float(x) for x in line[f('<solution>')+10:f('</solution>')].split()]                                 
+                PB.optimum.append(p)
+                line = fd.readline()
             
         fd.readline() # skip <bounds>
         minb = []

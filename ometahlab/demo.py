@@ -101,20 +101,63 @@ def main():
         ometahstats.stat(paths)
 
     elif arg == -3:
+        # KEEP
 
         t = ometahtest.Test()
-        t.setArgs('-e 100 -p Rosenbrock -P 0.00001 -d 2  -m SGEN')
-        t.setNbRuns(15)
+        t.setArgs('-e 300 -p Rastrigin -P 0.00001 -d 2 -m SGEN -s 20')
+        t.setNbRuns(30)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 100  -p Rosenbrock -P 0.00001 -d 2 -m JGEN')
-        u.setNbRuns(15)
+        u.setArgs('-e 300  -p Rastrigin -P 0.00001 -d 2 -m JGEN -s 20')
+        u.setNbRuns(30)
         u.setOmetahPath('../ometah/ometah')
         u.start()
+
+        z = ometahtest.Test()
+        z.setArgs('-e 300  -p Rastrigin -P 0.00001 -d 2 -m CEDA -s 20')
+        z.setNbRuns(30)
+        z.setOmetahPath('../ometah/ometah')
+        z.start()
+
+        a = ometahtest.Test()
+        a.setArgs('-e 300  -p Rastrigin -P 0.00001 -d 2 -m NMS -s 20')
+        a.setNbRuns(30)
+        a.setOmetahPath('../ometah/ometah')
+        a.start()
+         
+        paths = [ t.getPath(), u.getPath(), z.getPath(), a.getPath() ]
+        ometahstats.stat(paths)
+
+    elif arg == -4:
+        # KEEP
         
-        paths = [ t.getPath(), u.getPath() ]
+        v = ometahtest.Test()
+        v.setArgs('-e 300 -p Griewank -P 0.00001 -d 2 -m SGEN -s 20')
+        v.setNbRuns(30)
+        v.setOmetahPath('../ometah/ometah')
+        v.start()
+        
+        w = ometahtest.Test()
+        w.setArgs('-e 300  -p Griewank -P 0.00001 -d 2 -m JGEN -s 20')
+        w.setNbRuns(30)
+        w.setOmetahPath('../ometah/ometah')
+        w.start()
+
+        z = ometahtest.Test()
+        z.setArgs('-e 300  -p Griewank -P 0.00001 -d 2 -m CEDA -s 20')
+        z.setNbRuns(30)
+        z.setOmetahPath('../ometah/ometah')
+        z.start()
+
+        a = ometahtest.Test()
+        a.setArgs('-e 300  -p Griewank -P 0.00001 -d 2 -m NMS -s 20')
+        a.setNbRuns(30)
+        a.setOmetahPath('../ometah/ometah')
+        a.start()
+        
+        paths = [ v.getPath(), w.getPath(), z.getPath(), a.getPath() ]
         ometahstats.stat(paths)
 
 

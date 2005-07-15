@@ -140,7 +140,11 @@ class Test:
             self.problem = header.problem
             self.parameters = header.parameters
             self.metah = header.metah
-            self.opt_val = min( [ p.value for p in self.problem.optimum ] ) 
+            # if one ore more optimum are given, take the min value
+            if len(self.problem.optimum) != 0: 
+                self.opt_val = min( [ p.value for p in self.problem.optimum ] )
+            else:
+                self.opt_val = 'Unknown'
             self._INFO_PB = True
 
         self.__points.append(q.getPoints())
@@ -228,7 +232,9 @@ class Test:
                 if len(run) > iter:
                     for point in run[iter]:
                         # add error attribute value
-                        point.error = point.value - self.opt_val
+                        if opt_val != 'Unknown':
+                            point.error = point.value - self.opt_val                        
+                        
                         # add each point to pointsIterations
                         if point.value < minp.value:
                             minp = point

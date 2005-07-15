@@ -84,7 +84,10 @@ class Stater:
         for test in self.__tests:
             test.setOptimaList()
             test.setIterationLists()
-            test.calculSuccessRates()
+
+            # if optimum is known, calcul success rate
+            if test.opt_val != 'Unknown':
+                test.calculSuccessRates()
 
         # initialize optimas and points
         self.__optimas = [test.optima for test in self.__tests]
@@ -268,11 +271,6 @@ class Stater:
         r.points(slist, pch = 21)
         r.grid(nx=10, ny=40)
         r.dev_off()        
-
-
-    def __plot_7(self):
-        """ """
-        pass
 
     
     def __plot_8(self):
@@ -459,12 +457,17 @@ class Stater:
         self.__plot_4()
         # convergence boxes for optima points in iterations
         self.__plot_5()        
-        # success rates
-        self.__plot_6()
-        # convergence graphs superposed for each run, for each test
-        #self.__plot_7()
         # points in plan
         self.__plot_8()
+
+        # if a test does not have optimum given, return
+        # (cos we won't have information on error for following plots)
+        for test in self.__tests:
+            if test.opt_val == 'Unknown':
+                return 0
+            
+        # success rates
+        self.__plot_6()
         # optima's error distribution
         self.__plot_9()
         # error convergence for all points
