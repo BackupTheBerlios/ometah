@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.hpp,v 1.2 2005/07/12 13:11:25 jpau Exp $
+ *  $Id: itsEstimationOfDistribution.hpp,v 1.3 2005/07/18 13:47:01 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -80,7 +80,13 @@ protected:
 protected:
   //! the intensification is a the a method
   void intensification();
-      
+
+  //! selection of the best points
+  /*!
+    uses the selectRatio parameter
+  */
+  void selection();
+
   //! the diversification
   void diversification();
       

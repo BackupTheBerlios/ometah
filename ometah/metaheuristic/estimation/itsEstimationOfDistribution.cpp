@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.3 2005/07/15 17:02:52 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.4 2005/07/18 13:47:01 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -177,7 +177,7 @@ void itsEstimationOfDistribution::diversification()
     }
 }
 
-void itsEstimationOfDistribution::intensification()
+void itsEstimationOfDistribution::selection()
 {
     // sort the sample
     this->sample = sortOnValues(this->sample,0);
@@ -193,6 +193,11 @@ void itsEstimationOfDistribution::intensification()
     }
 
     this->sample = bests;
+}
+
+void itsEstimationOfDistribution::intensification()
+{
+  selection();
 }
 
 string itsEstimationOfDistribution::getDistribution()
