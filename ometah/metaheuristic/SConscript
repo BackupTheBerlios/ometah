@@ -1,9 +1,9 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConscript,v 1.8 2005/07/15 16:48:52 jpau Exp $
-#  Copyright : UniversitÃƒÂƒÃ‚Â© Paris 12 Val-de-Marne
-#              (61 avenue du GÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©nÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©ral de Gaulle, 94010, CrÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©teil, France)
-#  Author : Johann DrÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â©o <nojhan@gmail.com>
+#  $Id: SConscript,v 1.9 2005/07/18 13:48:34 nojhan Exp $
+#  Copyright : Université Paris 12 Val-de-Marne
+#              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+#  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
 
 # This program is free software; you can redistribute it and/or
