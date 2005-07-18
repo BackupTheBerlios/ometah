@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.hpp,v 1.1 2005/07/15 16:53:45 jpau Exp $
+ *  $Id: itsJpGenetic.hpp,v 1.2 2005/07/18 14:58:11 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -58,6 +58,8 @@ protected:
   // ~ number of children born
   float selectionCoef;
 
+  //! reduction of multiplicative coef in mutation
+  float reduction;
 
 protected:
 

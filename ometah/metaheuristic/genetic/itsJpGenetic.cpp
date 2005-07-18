@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.2 2005/07/18 13:00:39 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.3 2005/07/18 14:58:11 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -45,6 +45,7 @@ itsJpGenetic::itsJpGenetic()
     mutationProba = 0.7;
     totalMutationProba = 0.5;
     selectionCoef = 0.5;
+    reduction = 0.5;
 }
 
 
@@ -176,14 +177,14 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
 
       // calcul new coordinate, and check if its into bounds
       if ( proba < 0.3333 ){
-	buf = psol[i] * coef;	
+	buf = psol[i] * coef * reduction;	
 	if ( buf > mins[i] )
 	  npsol.push_back( buf );
 	else
 	  npsol.push_back( psol[i] );
       }
       else if ( proba < 0.6666 ) {
-	buf = psol[i] * ( 1 / coef );
+	buf = psol[i] * ( 1 - coef ) * reduction;
 	if ( buf < maxs[i] )
 	  npsol.push_back( buf );
 	else
