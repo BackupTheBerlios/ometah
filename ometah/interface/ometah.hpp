@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.10 2005/07/15 16:48:52 jpau Exp $
+ *  $Id: ometah.hpp,v 1.11 2005/07/18 13:46:15 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -41,6 +41,7 @@
 
 // metaheuristics
 #include "../metaheuristic/estimation/itsEstimationOfDistribution.hpp"
+#include "../metaheuristic/estimation/itsHybridEstimationOfDistribution.hpp"
 #include "../metaheuristic/random/itsRandom.hpp"
 #include "../metaheuristic/sampling/itsGridSampling.hpp"
 #include "../metaheuristic/neldermead/itsNelderMead.hpp"

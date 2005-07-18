@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.15 2005/07/18 08:12:33 jpau Exp $
+ *  $Id: ometah.cpp,v 1.16 2005/07/18 13:46:15 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -51,6 +51,9 @@ int main(int argc, char ** argv)
   factoryMetaheuristics = new itsEstimationOfDistributionFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
+  factoryMetaheuristics = new itsHybridEstimationOfDistributionFactory;
+  setMetaheuristic.add( factoryMetaheuristics->create() );
+  
   factoryMetaheuristics = new itsRandomFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
