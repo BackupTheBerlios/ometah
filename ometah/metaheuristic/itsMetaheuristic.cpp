@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.15 2005/07/15 17:04:58 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.16 2005/07/18 13:22:58 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -206,6 +206,25 @@ void itsMetaheuristic::start()
 
   *outProcessResult << "</optimization>" << endl;
 }
+
+
+void itsMetaheuristic::startSilent()
+{
+  //initialization();  // WARNING : INITIALIZATION PHASE IS NOT CALLED !
+  // no iterations has been computed
+  iterationsCurrent=0;
+
+  // while no stopping criterion reached
+  while( !isStoppingCriteria() ) {
+    learning(); // Learning phase
+    diversification(); // Diversification phase
+    intensification(); // Intensification phase
+    
+    // one more iteration
+    iterationsCurrent++;
+  }
+}
+
 
 void itsMetaheuristic::parameterParse()
 { }

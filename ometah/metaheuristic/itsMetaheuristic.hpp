@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.12 2005/07/15 17:04:58 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.13 2005/07/18 13:22:58 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -226,8 +226,15 @@ public:
   //! The pointer to the problem
   itsCommunicationClient* problem;
 
-  //! start executing a Metaheuristic
+  //! Start executing a metaheuristic
   void start();
+
+  //! Start a metaheuristic in silent mode
+  /*! 
+    WARNING : contrary to start(), startSilent() does not
+    call initialization() as a first step !
+  */
+  void startSilent();
       
   //! Take a point and evaluate its values
   itsPoint evaluate(itsPoint p);
