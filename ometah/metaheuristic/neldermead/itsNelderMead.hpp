@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.hpp,v 1.5 2005/07/13 12:51:26 jpau Exp $
+ *  $Id: itsNelderMead.hpp,v 1.6 2005/07/18 12:32:39 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -71,6 +71,9 @@ protected:
 
 protected:
 
+  //! initialization phase
+  void initialization();
+
   //! the intensification phase
   void intensification();
       
@@ -79,6 +82,9 @@ protected:
       
   //! the learning
   void learning();
+
+  //! Init a simplex from a base point and a vector af lengths for the edges
+  void initSimplexFromBasePoint(itsPoint basePoint, vector<double> edgesLengths);
 
   //! return the minimum value of a point of the vector
   double simplexOptimum(vector<itsPoint> points);

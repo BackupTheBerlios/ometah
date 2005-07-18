@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.7 2005/07/13 12:51:26 jpau Exp $
+ *  $Id: itsNelderMead.cpp,v 1.8 2005/07/18 12:32:39 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -39,13 +39,90 @@ itsNelderMead::itsNelderMead()
     setAccronym("NMS");
     setDescription("Nelder-Mead search algorithm");
     setCitation("");
-    setFamily("Geometric algorithm");
+    setFamily("Local search");
 
     reflection = 1.0;
     expansion = 2.0;
     contraction = 0.5;
 }
 
+void itsNelderMead::initSimplexFromBasePoint(itsPoint basePoint, vector<double> edgesLengths)
+{
+  // empty simplex
+  vector<itsPoint> plex;
+  for( int i=0; i < this->problem->getDimension() + 1; i++ ) {
+    itsPoint p;
+    vector<double> v(this->problem->getDimension(), 0.0);
+    p.setSolution( v );
+    plex.push_back( p );
+  }
+
+  // on number of vertex
+  for( int i=0; i < this->problem->getDimension(); i++ ) {
+    // plex[dim][i] = basePoint[i]
+    vector<double> v = plex[this->problem->getDimension()].getSolution();
+    v[i] = basePoint.getSolution()[i];
+    plex[this->problem->getDimension()].setSolution( v );
+  
+    for( int j=0; j < this->problem->getDimension(); j++) {
+      // plex[i][j] = basePoint[j]
+      vector<double> w = plex[i].getSolution();
+      w[j] = basePoint.getSolution()[j];
+      
+      if ( i == j ) {
+      // plex[i][j] = basePoint[j] + edges[i]
+        w[j] += edgesLengths[i];
+      }
+      plex[i].setSolution( w );
+    }
+  }
+
+  // evaluations
+  for( unsigned int i=0; i<getSampleSize(); i++ ) {
+    itsPoint p = evaluate( plex[i] );
+    sample[i] = p;
+  }
+}
+
+void itsNelderMead::initialization()
+{
+  // reduce the sample size to the dimension + 1
+  setSampleSize( this->problem->getDimension() + 1 );
+
+
+  itsPoint p;
+
+  // p in the center of the search space
+  /*p.setSolution( 
+    addition( 
+      getBoundsMinima(), 
+      multiply(
+        addition( 
+          getBoundsMinima(), 
+          getBoundsMaxima() ), 
+        0.5 
+      ) 
+    ) 
+  );*/
+
+  // p a random point
+  p.setSolution( randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() ) );
+
+  // edges length = search space lengths / n^e root of dimensions
+  /*vector<double> edges = 
+    multiply(
+      substraction(
+        getBoundsMaxima(),
+        getBoundsMinima()
+      ),
+      1 / pow( getSampleSize(), 1 / getDimension() )
+    );*/
+    
+  // random edges lengths
+  vector<double> edges = randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() );
+  
+  initSimplexFromBasePoint( p, edges );
+}
 
 
 void itsNelderMead::learning()
