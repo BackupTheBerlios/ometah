@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.1 2005/07/15 16:53:45 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.2 2005/07/18 13:00:39 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -99,7 +99,7 @@ void itsJpGenetic::intensification()
 // directly use proba insteand of "else if ()..; else if" ??
 vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
 {
-  double alpha, buf;
+  double alpha;
 
   itsPoint boy;
   itsPoint girl;
