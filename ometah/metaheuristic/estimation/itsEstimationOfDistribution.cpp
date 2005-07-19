@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.4 2005/07/18 13:47:01 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.5 2005/07/19 09:19:06 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -154,11 +154,14 @@ vector<double> itsEstimationOfDistribution::diversificationNormal()
 
 void itsEstimationOfDistribution::diversification()
 {
+    // get the best point
+    itsPoint optim = getOptimum();
+
     // reinit all
     setSampleSize( getSampleSize() );
 
     // draw each point in an hyper cube
-    for( unsigned int i=0; i < getSampleSize(); i++) {
+    for( unsigned int i=1; i < getSampleSize(); i++) { // i=1 because we always keep the best point if the sample is sorted
         // draw solution
         itsPoint p;
     
@@ -175,6 +178,9 @@ void itsEstimationOfDistribution::diversification()
         // get values
         sample[i] = evaluate(p);
     }
+  
+    // keep the best point
+    sample[0] = optim;
 }
 
 void itsEstimationOfDistribution::selection()
