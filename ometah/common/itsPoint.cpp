@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.cpp,v 1.2 2005/06/16 08:55:11 nojhan Exp $
+ * $Id: itsPoint.cpp,v 1.3 2005/07/19 09:15:52 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  * Author : Johann Dréo <nojhan@gmail.com>
@@ -66,6 +66,14 @@ unsigned int itsPoint::getValuesNumber()
 
 bool isValueSmaller(itsPoint p1, itsPoint p2, int dimension)
 {
+    if ( p1.getValues().size() <= 0 || p2.getValues().size() <= 0 ) {
+      ostringstream msg;
+      msg << "ErrorSize: point has no value" 
+          << "(p1: " << p1.getValues().size() 
+          << " values, p2: " << p2.getValues().size()
+          << " values)";
+      throw msg.str().c_str();
+    }
     return (p1.getValues()[dimension] < p2.getValues()[dimension]);
 }
 
