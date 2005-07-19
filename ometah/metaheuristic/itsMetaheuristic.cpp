@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.16 2005/07/18 13:22:58 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.17 2005/07/19 09:21:50 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -450,6 +450,9 @@ itsPoint itsMetaheuristic::evaluate(itsPoint p)
 
 itsPoint itsMetaheuristic::getOptimum()
 {
+    if( getSampleSizeCurrent() <= 0 ) {
+      throw "ErrorSize: null sample size";
+    }
     // FIXME : check if it is faster to use the sorting function
     itsPoint optimum = sample[0];
     for(unsigned int i=1; i<getSampleSizeCurrent(); i++) {
@@ -580,7 +583,7 @@ vector<vector<double> > itsMetaheuristic::getSampleSolutions()
 {
   vector<vector<double> > coords;
 
-  for( unsigned int i=0; i < this->sample.size(); i++ ) {
+  for( unsigned int i=0; i < getSampleSizeCurrent(); i++ ) {
       coords.push_back( this->sample[i].getSolution() );
   }
   return coords;
@@ -588,10 +591,12 @@ vector<vector<double> > itsMetaheuristic::getSampleSolutions()
 
 vector<double> itsMetaheuristic::getSampleSolutionsMin()
 {
-  return mins( getSampleSolutions() );
+  vector<vector<double> > temp = getSampleSolutions();
+  return mins( transpose( temp ) );
 }
 
 vector<double> itsMetaheuristic::getSampleSolutionsMax()
 {
-  return maxs( getSampleSolutions() );
+  vector<vector<double> > temp = getSampleSolutions();
+  return maxs( transpose( temp ) );
 }
