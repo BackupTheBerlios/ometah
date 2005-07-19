@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.17 2005/07/19 09:21:50 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.18 2005/07/19 14:01:49 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -72,6 +72,7 @@ itsMetaheuristic::itsMetaheuristic()
   this->outDebug = &cerr;
 
   this->iterationsCurrent=0;
+  this->evaluationsNumber=0;
 
   this->isInternalStoppingCriterion = false;
 
