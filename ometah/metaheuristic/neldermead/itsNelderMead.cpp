@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.8 2005/07/18 12:32:39 nojhan Exp $
+ *  $Id: itsNelderMead.cpp,v 1.9 2005/07/19 14:00:55 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -48,6 +48,9 @@ itsNelderMead::itsNelderMead()
 
 void itsNelderMead::initSimplexFromBasePoint(itsPoint basePoint, vector<double> edgesLengths)
 {
+  // reduce the sample size to the dimension + 1
+  setSampleSize( this->problem->getDimension() + 1 );
+
   // empty simplex
   vector<itsPoint> plex;
   for( int i=0; i < this->problem->getDimension() + 1; i++ ) {
@@ -78,7 +81,7 @@ void itsNelderMead::initSimplexFromBasePoint(itsPoint basePoint, vector<double> 
   }
 
   // evaluations
-  for( unsigned int i=0; i<getSampleSize(); i++ ) {
+  for( unsigned int i=0; i<getSampleSizeCurrent(); i++ ) {
     itsPoint p = evaluate( plex[i] );
     sample[i] = p;
   }
@@ -86,10 +89,6 @@ void itsNelderMead::initSimplexFromBasePoint(itsPoint basePoint, vector<double> 
 
 void itsNelderMead::initialization()
 {
-  // reduce the sample size to the dimension + 1
-  setSampleSize( this->problem->getDimension() + 1 );
-
-
   itsPoint p;
 
   // p in the center of the search space
@@ -133,7 +132,6 @@ void itsNelderMead::learning()
 
 void itsNelderMead::diversification()
 {
-
   if (sortedSample.size() == 0) {
     itsPoint p;
     for (unsigned i = 0; i < getSampleSize(); i++) {
