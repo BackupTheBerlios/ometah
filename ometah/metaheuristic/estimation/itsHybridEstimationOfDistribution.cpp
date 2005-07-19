@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridEstimationOfDistribution.cpp,v 1.1 2005/07/18 13:47:01 nojhan Exp $
+ *  $Id: itsHybridEstimationOfDistribution.cpp,v 1.2 2005/07/19 13:59:58 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -36,12 +36,18 @@ itsHybridEstimationOfDistribution::itsHybridEstimationOfDistribution()
   setFamily("Estimation of Distribution Algorithm");
 
   setIntensificationMethod("selection-simplex");
+
+  setSimplexEvaluations( -1 );
 }
 
 
 void itsHybridEstimationOfDistribution::simplex()
 {
-  setSimplexEvaluations( (int)floor( pow( (this->problem->getDimension() + 1 ), 2.0 ) ) );
+  // if no given NMS evaluations number
+  if( getSimplexEvaluations() == -1 ) {
+    //setSimplexEvaluations( (int)floor( pow( (this->problem->getDimension() + 1 ), 2.0 ) ) );
+    setSimplexEvaluations( this->problem->getDimension() + 10 );
+  }
   
   for( unsigned int i=0; i < getSampleSizeCurrent(); i++ ) {
     itsNelderMead nms;
