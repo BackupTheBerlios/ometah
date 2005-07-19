@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.18 2005/07/19 14:01:49 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.19 2005/07/19 16:55:36 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -585,7 +585,11 @@ vector<vector<double> > itsMetaheuristic::getSampleSolutions()
   vector<vector<double> > coords;
 
   for( unsigned int i=0; i < getSampleSizeCurrent(); i++ ) {
+    // if the solution is defined 
+    // (not the case if we change the size of the sample in early diversification stage)
+    if ( this->sample[i].getSolution().size() != 0 ) {
       coords.push_back( this->sample[i].getSolution() );
+    }
   }
   return coords;
 }
@@ -593,11 +597,33 @@ vector<vector<double> > itsMetaheuristic::getSampleSolutions()
 vector<double> itsMetaheuristic::getSampleSolutionsMin()
 {
   vector<vector<double> > temp = getSampleSolutions();
-  return mins( transpose( temp ) );
+  temp = transpose( temp );
+  
+  vector<double> vec = mins( temp );
+
+  if( vec.size() != (unsigned)this->problem->getDimension() ) {
+    ostringstream msg;
+    msg << "ErrorSize: sample solutions size (" << vec.size()
+        << ") does not match dimension (" << this->problem->getDimension() << ")";
+    throw msg.str().c_str();
+  }
+
+  return vec;
 }
 
 vector<double> itsMetaheuristic::getSampleSolutionsMax()
 {
   vector<vector<double> > temp = getSampleSolutions();
-  return maxs( transpose( temp ) );
+  temp = transpose( temp );
+  
+  vector<double> vec = maxs( temp );
+
+  if( vec.size() != (unsigned)this->problem->getDimension() ) {
+    ostringstream msg;
+    msg << "ErrorSize: sample solutions size (" << vec.size()
+        << ") does not match dimension (" << this->problem->getDimension() << ")";
+    throw msg.str().c_str();
+  }
+
+  return vec;
 }
