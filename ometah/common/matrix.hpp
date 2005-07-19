@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.4 2005/07/19 09:16:31 nojhan Exp $
+ *  $Id: matrix.hpp,v 1.5 2005/07/19 16:54:30 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -216,6 +216,13 @@ T transpose( T &mat)
   unsigned int iSize=mat.size();
   unsigned int jSize=mat[0].size();
 
+  if ( iSize == 0 || jSize == 0 ) { 
+    ostringstream msg;
+    msg << "ErrorSize: matrix not defined "
+        << "(iSize:" << iSize << ", jSize:" << jSize << ")";
+    throw msg.str().c_str();
+  }
+
   typename T::value_type  aVector;
   T newMat;
 
@@ -223,6 +230,14 @@ T transpose( T &mat)
 
   for (j=0; j<jSize; j++) {
     for(i=0; i<iSize; i++) {
+      
+      if ( mat[i].size() != jSize ) { 
+        ostringstream msg;
+        msg << "ErrorSize: matrix not defined "
+            << "(iSize:" << iSize << ", jSize:" << jSize << ", matrix[" << i << "].size:" << mat[i].size() << ")";
+        throw msg.str().c_str();
+      }
+
       aVector.push_back(mat[i][j]);
     }//j
 
@@ -251,7 +266,7 @@ vector<T> mean( vector<vector<T> > mat)
 
 //! Calculate the mean of a vector
 template<class T>
-T mean( vector<T> aVector, int begin=0, int during=0)
+T mean( vector<T> aVector, unsigned int begin=0, unsigned int during=0)
 {
   if (during==0) {
     during = aVector.size() - begin; // if no end : take all
@@ -323,15 +338,23 @@ U varianceCovariance( U pop, bool onRow = true)
 
 //! Calculate the sum of a vector
 template<class T>
-T sum(vector<T> aVector, int begin=0, int during=0)
+T sum(vector<T> aVector, unsigned int begin=0, unsigned int during=0)
 {
+  if ( begin > aVector.size() || during > aVector.size() ) {
+    ostringstream msg;
+    msg << "ErrorSize: parameters are out of vector bounds "
+        << "(begin:" << begin << ", during:" << during
+        << ", size:" << aVector.size() << ")";
+    throw msg.str().c_str();
+  }
+
   if (during==0) {
     during = aVector.size() - begin;
   }
 
   T aSum=0;
 
-  for (int j=begin; j<during; j++) {
+  for (unsigned int j=begin; j<during; j++) {
     aSum = aSum + aVector[j]; // sum
   }//for (j)
 
@@ -341,8 +364,16 @@ T sum(vector<T> aVector, int begin=0, int during=0)
 
 //! Calculate the standard deviation of a vector
 template<class T>
-T stdev(vector<T> aVector, int begin=0, int during=0)
+T stdev(vector<T> aVector, unsigned int begin=0, unsigned int during=0)
 {
+  if ( begin > aVector.size() || during > aVector.size() ) {
+    ostringstream msg;
+    msg << "ErrorSize: parameters are out of vector bounds "
+        << "(begin:" << begin << ", during:" << during
+        << ", size:" << aVector.size() << ")";
+    throw msg.str().c_str();
+  }
+
   if (during==0) {
     during = aVector.size() - begin;
   }
@@ -367,6 +398,14 @@ T stdev(vector<T> aVector, int begin=0, int during=0)
 template<class T>
 typename T::value_type min(T aVector, unsigned int begin=0, unsigned int during=0)
 {
+  if ( begin > aVector.size() || during > aVector.size() ) {
+    ostringstream msg;
+    msg << "ErrorSize: parameters are out of vector bounds "
+        << "(begin:" << begin << ", during:" << during
+        << ", size:" << aVector.size() << ")";
+    throw msg.str().c_str();
+  }
+
   if (during==0) {
     during = aVector.size() - begin;
   }
@@ -412,6 +451,14 @@ vector<T> maxs(vector<vector< T > > aMatrix)
 template<class T>
 typename T::value_type max(T aVector, unsigned int begin=0, unsigned int during=0)
 {
+  if ( begin > aVector.size() || during > aVector.size() ) {
+    ostringstream msg;
+    msg << "ErrorSize: parameters are out of vector bounds "
+        << "(begin:" << begin << ", during:" << during
+        << ", size:" << aVector.size() << ")";
+    throw msg.str().c_str();
+  }
+
   if (during==0) {
     during = aVector.size() - begin;
   }
