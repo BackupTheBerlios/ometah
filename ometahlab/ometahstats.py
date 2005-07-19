@@ -499,7 +499,7 @@ class Stater:
 
         for t in self.__tests:
             vals = [p.value for p in t.optima]
-            vmin = str(min(vals))[:5]
+            vmin = str( ( "%.6f" % ( min(vals)) ) )[:10]
             vmean = str(r.mean(vals))[:5]
             vsd = str(r.sd(vals))[:5]
             suc = str(100*t.succRate)[:5]
