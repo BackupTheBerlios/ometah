@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: geometry.hpp,v 1.1 2005/06/13 09:04:58 nojhan Exp $
+ *  $Id: geometry.hpp,v 1.2 2005/07/20 13:52:30 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -23,6 +23,10 @@
  
 #ifndef GEOMETRY
 #define GEOMETRY
+
+#include <vector>
+
+using namespace std;
 
 #define E  2.7182818284590452353602874713526625
 #define PI 3.1415926535897932384626433832795029
@@ -100,10 +104,10 @@ T pol2rec(T & polVec)
 }
 
 //! Calculate the eucilidan distance between two vectors with n dimensions
-template<class T, class U>
-T distanceEuclidian(U & vecA, U & vecB)
+template<class T>
+T distanceEuclidian(vector<T> vecA, vector<T> vecB)
 {
-  U squares; 
+  vector<T> squares; 
   squares.reserve( vecA.size() );
 
   for(unsigned int i=0; i<vecA.size(); i++) {
