@@ -1,5 +1,5 @@
  /***************************************************************************
- *  $Id: random.hpp,v 1.4 2005/07/20 09:51:45 nojhan Exp $
+ *  $Id: random.hpp,v 1.5 2005/07/20 13:53:02 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -27,10 +27,12 @@
 
 #include <cmath>
 #include <sstream>
+#include <vector>
 
 // for PI :
 #include "geometry.hpp" 
 
+using namespace std;
 
 //! Draw a random number between 0 and 1
 template<class T>
@@ -131,17 +133,31 @@ T randomNormalMulti( T means, U varcovar )
 
 //! Draw a random vector in a hyper cube
 template<class T>
-T randomUniform( T mins, T maxs )
+vector<T> randomUniform( vector<T> mins, vector<T> maxs )
 {
-  T res;
+  vector<T> res;
 
   for(unsigned int i=0; i<mins.size(); i++) {
-      typename T::value_type r;
+      T r;
       r = (maxs[i]-mins[i])* 
-          (typename T::value_type)rand()/RAND_MAX
+          (T)rand()/RAND_MAX
           + mins[i];
           res.push_back(r);
     }
+
+  return res;
+}
+
+
+//! Draw a random vector in a hyper cube
+template<class T>
+T randomUniform( T min, T max )
+{
+  T res;
+
+      res = (max-min)* 
+            (T)rand()/RAND_MAX
+            + min;
 
   return res;
 }
