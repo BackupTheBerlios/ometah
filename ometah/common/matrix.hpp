@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.5 2005/07/19 16:54:30 nojhan Exp $
+ *  $Id: matrix.hpp,v 1.6 2005/07/20 09:51:24 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -511,6 +511,44 @@ T absolute(T aVector)
   }
     
   return aVector;
+}
+
+
+template<class T>
+vector<T> gravityCenter( vector<vector<T> > points, vector<T> weights )
+{
+
+  // if we have only one weight, we use it for all items
+  if ( weights.size() == 1 ) {
+    for ( unsigned int i=1; i < points[0].size(); i++ ) {
+      weights.push_back( weights[0] );
+    }
+  }
+
+  // if sizes does not match : error
+  if ( points[0].size() != weights.size() ) {
+    ostringstream msg;
+    msg << "ErrorSize: "
+        << "points[0] size (" << points[0].size() << ")" 
+        << " does not match weights size (" << weights.size() << ")";
+    throw msg.str().c_str();
+  }
+
+  T weightsSum = sum(weights);
+
+  vector<vector< T > > pointsT = transpose( points );
+
+  vector<T> gravity;
+
+  for ( unsigned int i=0; i < pointsT.size(); i++ ) { // dimensions
+    T g = 0;
+    for ( unsigned int j=0; j < pointsT[i].size(); j++ ) { // points
+      g += ( pointsT[i][j] * weights[j] ) / weightsSum;
+    }
+    gravity.push_back( g );
+  }
+  
+  return gravity;
 }
 
 #endif // MATRIX
