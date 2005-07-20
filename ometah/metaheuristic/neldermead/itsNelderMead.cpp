@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.9 2005/07/19 14:00:55 nojhan Exp $
+ *  $Id: itsNelderMead.cpp,v 1.10 2005/07/20 13:54:04 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -196,6 +196,9 @@ itsPoint itsNelderMead::getTransformedPoint(itsPoint point, float coef)
     newCo = best - coef * ( point.getSolution()[i] - best );
     newSol.push_back( newCo );
   }
+
+  // force the simplex to stay in bounds
+  forceBounds( newSol, this->problem->boundsMinima(), this->problem->boundsMaxima() );
   
   itsPoint p;
   p.setSolution(newSol);
