@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.15 2005/07/15 16:48:52 jpau Exp $
+ *  $Id: ometah_registration.cpp,v 1.16 2005/07/20 08:11:39 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -45,6 +45,7 @@
 
 // metaheuristics
 #include "../../metaheuristic/estimation/itsEstimationOfDistribution.hpp"
+#include "../../metaheuristic/estimation/itsHybridEstimationOfDistribution.hpp"
 #include "../../metaheuristic/sampling/itsGridSampling.hpp"
 #include "../../metaheuristic/neldermead/itsNelderMead.hpp"
 
@@ -83,7 +84,9 @@ int main(int argc, char ** argv)
   // add the estimation of distribution algorithm
   factoryMetaheuristics = new itsEstimationOfDistributionFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
-;
+
+  factoryMetaheuristics = new itsHybridEstimationOfDistributionFactory;
+  setMetaheuristic.add( factoryMetaheuristics->create() );
 
   factoryMetaheuristics = new itsSamplingFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
