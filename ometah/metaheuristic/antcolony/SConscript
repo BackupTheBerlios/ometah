@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConscript,v 1.10 2005/07/20 13:55:59 nojhan Exp $
+#  $Id: SConscript,v 1.1 2005/07/20 13:55:29 nojhan Exp $
 #  Copyright : Université Paris 12 Val-de-Marne
 #              (61 avenue du Général de Gaulle, 94010, Créteil, France)
 #  Author : Johann Dréo <nojhan@gmail.com>
@@ -23,13 +23,10 @@
 
 Import('env')
 
-metaheuristic = ['itsMetaheuristic.cpp']
+antcolony = ['itsHybridContinuousInteractingAntColony.cpp']
 
-dependencies = ["../common/random.cpp","../common/string.cpp","../common/itsPoint.cpp", \
-    "../problem/itsProblem.cpp","../communication/itsCommunicationClient.cpp"]
+dependencies = ["../../common/random.cpp","../../common/string.cpp","../../common/itsPoint.cpp", \
+    "../../problem/itsProblem.cpp","../../communication/itsCommunicationClient.cpp",
+    "../itsMetaheuristic.cpp", "../neldermead/itsNelderMead.cpp"]
 
-env.StaticLibrary('metaheuristic',metaheuristic+dependencies)
-
-SConscript(['estimation/SConscript', 'random/SConscript',
-'sampling/SConscript', 'neldermead/SConscript',
-'genetic/SConscript', 'antcolony/SConscript'])
+env.StaticLibrary('antcolony',antcolony+dependencies)

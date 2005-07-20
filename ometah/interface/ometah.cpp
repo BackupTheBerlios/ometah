@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.16 2005/07/18 13:46:15 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.17 2005/07/20 13:53:36 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -67,6 +67,9 @@ int main(int argc, char ** argv)
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
   factoryMetaheuristics = new itsJpGeneticFactory;
+  setMetaheuristic.add( factoryMetaheuristics->create() );
+  
+  factoryMetaheuristics = new itsHybridContinuousInteractingAntColonyFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
   

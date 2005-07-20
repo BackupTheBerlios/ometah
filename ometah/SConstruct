@@ -1,9 +1,9 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.11 2005/07/15 16:48:51 jpau Exp $
+#  $Id: SConstruct,v 1.12 2005/07/20 13:55:59 nojhan Exp $
 #  Copyright : Université Paris 12 Val-de-Marne
-#              (61 avenue du GÃ©nÃ©ral de Gaulle, 94010, CrÃ©teil, France)
-#  Author : Johann DrÃ©o <nojhan@gmail.com>
+#              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+#  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
 
 # This program is free software; you can redistribute it and/or
@@ -53,7 +53,8 @@ dir_lib = ['problem/CEC05', \
            'metaheuristic/random', \
            'metaheuristic/sampling', \
            'metaheuristic/neldermead', \
-           'metaheuristic/genetic']
+           'metaheuristic/genetic', \
+           'metaheuristic/antcolony']
            #'interface/registration',
 
 
@@ -78,7 +79,6 @@ SConscript( [ l+'/SConscript' for l in dir_main ] )
 # registration interface must have the CImg library available
 if have_cimg == False:
     print "You must have the CImg.h library installed to build ometah_registration"
-    Exit(1)
 else:
     ometah_registration = env.Program( target = 'ometah_registration', \
         source = 'interface/registration/ometah_registration.cpp', \
@@ -88,8 +88,7 @@ else:
 # standard interface
 ometah = env.Program( target = 'ometah', source = 'interface/ometah.cpp', \
     LIBS=['common','communication','metaheuristic','problem','problem_CEC05','interface', \
-          'estimation', 'random', 'sampling', 'neldermead',
-	  'genetic'] )
+          'estimation', 'random', 'sampling', 'neldermead','antcolony', 'genetic'] )
 
 
 Default(ometah)
