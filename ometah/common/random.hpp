@@ -1,5 +1,5 @@
  /***************************************************************************
- *  $Id: random.hpp,v 1.3 2005/07/12 15:00:40 jpau Exp $
+ *  $Id: random.hpp,v 1.4 2005/07/20 09:51:45 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -26,6 +26,7 @@
 #define RANDOM
 
 #include <cmath>
+#include <sstream>
 
 // for PI :
 #include "geometry.hpp" 
@@ -181,5 +182,33 @@ U randomHyperSphereBiased(U & center, T  radius)
   return res;
 
 }
+
+template<class T>
+T noiseUniform(T aVector, T noiseAmplitude)
+{
+  // if we have only one amplitude, we use it for all items
+  if ( noiseAmplitude.size() == 1 ) {
+    for ( unsigned int i=1; i < aVector.size(); i++ ) {
+      noiseAmplitude.push_back( noiseAmplitude[0] );
+    }
+  }
+
+  // if sizes does not match : error
+  if ( aVector.size() != noiseAmplitude.size() ) {
+    ostringstream msg;
+    msg << "ErrorSize: "
+        << "vector size (" << aVector.size() << ")" 
+        << " does not match noise size (" << noiseAmplitude.size() << ")";
+    throw msg.str().c_str();
+  }
+  
+  // add the noise to the vector
+  for ( unsigned int i =0; i < aVector.size(); i++ ) {
+    aVector[i] = aVector[i] + randomUniform( -1 * noiseAmplitude[i] / 2, noiseAmplitude[i] / 2 );
+  }
+
+  return aVector;
+}
+
 
 #endif
