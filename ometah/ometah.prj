@@ -9,7 +9,7 @@ Blabla<PROJECT_DESCRIPTION_END>
 <CONFIG_LIBS_END>
 <CONFIG_HEADERS_START>
 /***************************************************************************
- *  $Id: ometah.prj,v 1.5 2005/07/18 13:48:34 nojhan Exp $
+ *  $Id: ometah.prj,v 1.6 2005/07/20 08:14:44 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -112,7 +112,8 @@ module.include.files=\
 	metaheuristic/random/itsRandom.hpp\
 	metaheuristic/sampling/itsGridSampling.hpp\
 	metaheuristic/estimation/itsEstimationOfDistribution.hpp\
-	metaheuristic/neldermead/itsNelderMead.hpp
+	metaheuristic/neldermead/itsNelderMead.hpp\
+	metaheuristic/estimation/itsHybridEstimationOfDistribution.hpp
 
 module.source.name=.
 module.source.type=
@@ -149,7 +150,8 @@ module.source.files=\
 	metaheuristic/sampling/itsGridSampling.cpp\
 	metaheuristic/estimation/itsEstimationOfDistribution.cpp\
 	metaheuristic/neldermead/itsNelderMead.cpp\
-	metaheuristic/estimation/SConscript
+	metaheuristic/estimation/SConscript\
+	metaheuristic/estimation/itsHybridEstimationOfDistribution.cpp
 
 module.pixmap.name=.
 module.pixmap.type=
