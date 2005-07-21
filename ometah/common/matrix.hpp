@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.6 2005/07/20 09:51:24 nojhan Exp $
+ *  $Id: matrix.hpp,v 1.7 2005/07/21 14:09:05 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -39,7 +39,7 @@ bool isInBounds( T aVector, T mins, T maxs)
       return false;
     // too high
     }else if( aVector[i] > maxs[i] ){
-      return true;
+      return false;
     }
   }
   return true;
@@ -520,16 +520,16 @@ vector<T> gravityCenter( vector<vector<T> > points, vector<T> weights )
 
   // if we have only one weight, we use it for all items
   if ( weights.size() == 1 ) {
-    for ( unsigned int i=1; i < points[0].size(); i++ ) {
+    for ( unsigned int i=1; i < points.size(); i++ ) {
       weights.push_back( weights[0] );
     }
   }
 
   // if sizes does not match : error
-  if ( points[0].size() != weights.size() ) {
+  if ( points.size() != weights.size() ) {
     ostringstream msg;
     msg << "ErrorSize: "
-        << "points[0] size (" << points[0].size() << ")" 
+        << "points size (" << points.size() << ")" 
         << " does not match weights size (" << weights.size() << ")";
     throw msg.str().c_str();
   }
