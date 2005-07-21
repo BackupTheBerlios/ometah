@@ -195,42 +195,36 @@ class Stater:
             r.plot(olist, type='n', main='Bests optima evolution', xlab='Test index', ylab='Optima value')
             r.lines(olist)
             r.points(olist, bg = 'white', pch = 21)
+            r.grid(nx=10, ny=40)
+            r.plot(wlist, type='n', main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
+            r.lines(wlist)
+            r.points(wlist, bg ='white', pch = 21, lty='dashed')
+            r.grid(nx=10, ny=40)
+            r.plot(mlist, type='n', main='Median optima evolution', xlab='Test index', ylab='Optima value')        
+            r.lines(mlist)
+            r.points(mlist, bg ='white', pch = 21, lty='dotted')
+            r.grid(nx=10, ny=40)
+            r.matplot(r.cbind(olist, mlist, wlist), type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
+
         else:
             r.plot(olist, type='n', log="y", main='Bests optima evolution', xlab='Test index', ylab='Optima value')
             r.lines(olist)
             r.points(olist, bg = 'white', pch = 21)
-        try:
- 
             r.grid(nx=10, ny=40)
             r.plot(wlist, type='n', log="y", main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
             r.lines(wlist)
-            r.points(wlist, bg ='white', pch = 21)
+            r.points(wlist, bg ='white', pch = 21, lty='dashed')
             r.grid(nx=10, ny=40)
             r.plot(mlist, type='n', log="y", main='Median optima evolution', xlab='Test index', ylab='Optima value')        
             r.lines(mlist)
-            r.points(mlist, bg ='white', pch = 21)
+            r.points(mlist, bg ='white', pch = 21, lty='dotted')
             r.grid(nx=10, ny=40)
-
             r.matplot(r.cbind(olist, mlist, wlist), log="y", type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
-        except:
-            if self.__LOG:
-                self.__LOG = 0
-                print 'Cannot use logarithmic scale 1'
-
-            r.grid(nx=10, ny=40)
-            r.plot(wlist, type='n', main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
-            r.lines(wlist)
-            r.points(wlist, bg ='white', pch = 21)
-            r.grid(nx=10, ny=40)
-            r.plot(mlist, type='n', main='Median optima evolution', xlab='Test index', ylab='Optima value')        
-            r.lines(mlist)
-            r.points(mlist, bg ='white', pch = 21)
-            r.grid(nx=10, ny=40)
-            r.matplot(r.cbind(olist, mlist, wlist), type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
 
         r.points(olist, bg ='white', pch = 21, type='o')
         r.points(mlist, bg ='white', pch = 22, type='o', lty='dotted')
         r.points(wlist, bg ='white', pch = 23, type='o', lty='dashed')
+
         r.grid(nx=10, ny=40)
         r.dev_off()
 
