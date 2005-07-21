@@ -151,12 +151,20 @@ class Stater:
         fileName = os.path.join(self.__dir, 'testboxes_optima.ps')
         r.postscript(fileName, paper='letter')
         vlist = [[p.value for p in points ] for points in self.__optimas ]
-        try:
-            r.boxplot(vlist, style='quantile', log="y", col=self.__color, main='Optimas list', xlab='Test index', ylab='')
-        except:
-            print 'Cannot use logarithmic scale'
-            self.__LOG = 0
+
+        zero = False
+        for v in vlist:
+            if 0 in v:
+                zero = True
+        if zero:
             r.boxplot(vlist, style='quantile', col=self.__color, main='Optimas list', xlab='Test index', ylab='')
+        else:
+            try:
+                r.boxplot(vlist, style='quantile', log="y", col=self.__color, main='Optimas list', xlab='Test index', ylab='')
+            except:
+                print 'Cannot use logarithmic scale 0'
+                self.__LOG = 0
+                r.boxplot(vlist, style='quantile', col=self.__color, main='Optimas list', xlab='Test index', ylab='')
         r.grid(nx=10, ny=40)
         r.dev_off()
 
@@ -178,10 +186,21 @@ class Stater:
         medianIndex = length/2 # integer division, ok with first index = zero
         mlist = [ points[medianIndex].value for points in self.__optimas]
 
-        try:
+        # to avoid crash when a value = 0
+        zero = False
+        # only consider bests
+        if 0 in olist:
+            zero = True
+        if zero:
+            r.plot(olist, type='n', main='Bests optima evolution', xlab='Test index', ylab='Optima value')
+            r.lines(olist)
+            r.points(olist, bg = 'white', pch = 21)
+        else:
             r.plot(olist, type='n', log="y", main='Bests optima evolution', xlab='Test index', ylab='Optima value')
             r.lines(olist)
             r.points(olist, bg = 'white', pch = 21)
+        try:
+ 
             r.grid(nx=10, ny=40)
             r.plot(wlist, type='n', log="y", main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
             r.lines(wlist)
@@ -196,10 +215,8 @@ class Stater:
         except:
             if self.__LOG:
                 self.__LOG = 0
-                print 'Cannot use logarithmic scale'
-            r.plot(olist, type='n', main='Bests optima evolution', xlab='Test index', ylab='Optima value')
-            r.lines(olist)
-            r.points(olist, bg = 'white', pch = 21)
+                print 'Cannot use logarithmic scale 1'
+
             r.grid(nx=10, ny=40)
             r.plot(wlist, type='n', main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
             r.lines(wlist)
@@ -227,13 +244,20 @@ class Stater:
         for metalist in self.__pointsIter:
             vlist = [[p.value for p in points] for points in metalist ]
             txt = '%s\nConvergence of all points' % self.__tests[i].args
-            try:
-                r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Point value')
-            except:
-                if self.__LOG:
-                    self.__LOG = 0
-                    print 'Cannot use logarithmic scale'
+            zero = False
+            for l in vlist:
+                if 0 in l:
+                    zero = True
+            if zero:
                 r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Point value')
+            else:
+                try:
+                    r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Point value')
+                except:
+                    if self.__LOG:
+                        self.__LOG = 0
+                        print 'Cannot use logarithmic scale 2'
+                    r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Point value')
             r.grid(nx=10, ny=40)
             i += 1
         r.dev_off()
@@ -248,13 +272,20 @@ class Stater:
         for metalist in self.__optimaIter:
             vlist = [[p.value for p in points] for points in metalist ]
             txt = '%s\nConvergence of optima' % self.__tests[i].args
-            try:
-                r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Optima value')
-            except:
-                if self.__LOG:
-                    self.__LOG = 0
-                    print 'Cannot use logarithmic scale'
+            zero = False
+            for v in vlist:
+                if 0 in v:
+                    zero = True
+            if zero:
                 r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Optima value')
+            else:
+                try:
+                    r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Optima value')
+                except:
+                    if self.__LOG:
+                        self.__LOG = 0
+                        print 'Cannot use logarithmic scale 3'
+                    r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Optima value')
             r.grid(nx=10, ny=40)
             i += 1
         r.dev_off()
@@ -415,7 +446,7 @@ class Stater:
             except:
                 if self.__LOG:
                     self.__LOG = 0
-                    print 'Cannot use logarithmic scale'
+                    print 'Cannot use logarithmic scale 4'
                 r.plot(errlist, main=txt, type='o', ylab='Median error', xlab='Iteration')
             r.grid(nx=10, ny=40)
             i += 1
@@ -438,7 +469,7 @@ class Stater:
             except:
                 if self.__LOG:
                     self.__LOG = 0
-                    print 'Cannot use logarithmic scale'
+                    print 'Cannot use logarithmic scale 5'
                 r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration')
             r.grid(nx=10, ny=40)
             i += 1
@@ -449,15 +480,19 @@ class Stater:
         """ Plot results as postscript files. """
         # frequency distributions
         self.__plot_1()
+        print "####### 1"
         # a quantile box for each sublist
-        self.__plot_2()        
+        self.__plot_2()
+        print "####### 2"
         # graph of optimas, selecting the best among #runs of each Test, to finally have one Point for each Test.       
-        self.__plot_3()        
+        self.__plot_3()
+        print "####### 3"
         # convergence boxes for all points in iterations
         self.__plot_4()
+        print "####### 4"
         # convergence boxes for optima points in iterations
         self.__plot_5()
-
+        print "####### 5"
         # if a test does not have optimum given, return
         # (cos we won't have information on error for following plots)
         for test in self.__tests:
@@ -466,14 +501,19 @@ class Stater:
             
         # success rates
         self.__plot_6()
+        print "####### 6"
         # points in plan
         self.__plot_8()
+        print "####### 8"
         # optima's error distribution
         self.__plot_9()
+        print "####### 9"
         # error convergence for all points
         self.__plot_10()
+        print "####### 10"
         # error convergence for optima
         self.__plot_11()
+        print "####### 11"
 
 
     def writeLatex(self):
