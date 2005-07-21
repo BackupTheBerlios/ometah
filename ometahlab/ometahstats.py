@@ -480,19 +480,14 @@ class Stater:
         """ Plot results as postscript files. """
         # frequency distributions
         self.__plot_1()
-        print "####### 1"
         # a quantile box for each sublist
         self.__plot_2()
-        print "####### 2"
         # graph of optimas, selecting the best among #runs of each Test, to finally have one Point for each Test.       
         self.__plot_3()
-        print "####### 3"
         # convergence boxes for all points in iterations
         self.__plot_4()
-        print "####### 4"
         # convergence boxes for optima points in iterations
         self.__plot_5()
-        print "####### 5"
         # if a test does not have optimum given, return
         # (cos we won't have information on error for following plots)
         for test in self.__tests:
@@ -501,19 +496,15 @@ class Stater:
             
         # success rates
         self.__plot_6()
-        print "####### 6"
         # points in plan
         self.__plot_8()
-        print "####### 8"
         # optima's error distribution
         self.__plot_9()
-        print "####### 9"
         # error convergence for all points
         self.__plot_10()
-        print "####### 10"
         # error convergence for optima
         self.__plot_11()
-        print "####### 11"
+
 
 
     def writeLatex(self):
