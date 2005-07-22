@@ -42,9 +42,11 @@ def stat(paths):
     """ Generate text report and graphic representation in postscript format,
     comparing the previous Ometah execution which directories' paths are given as a list of strings,
     ometahtest's function getPath can be used to get those strings. See demoscript for usage example."""
+    print '\n\nInitialization of data structures...'
     c = Stater(paths)
+    print 'Checking tests...'
     c.check()
-    print '\nCreating graphics and report...'
+    print 'Creating graphics and report...'
     c.plot()
     c.writeLatex()
     print 'Results in %s\n' % c.getDir()
@@ -112,7 +114,6 @@ class Stater:
         dim = self.__tests[0].problem.dimension
         sample = self.__tests[0].parameters.sampleSize
         runsNb = self.__tests[0].runsNb
-        print ''
         for test in self.__tests:
             if test.problem.key != pb:
                 self.__warning('tests have different problems.')
@@ -456,7 +457,11 @@ class Stater:
 
         for list in self.__optimaIter:
             elist = [[p.error for p in points] for points in list ]
-            errlist = [r.median(list) for list in elist]            
+            try:
+                errlist = [r.median(list) for list in elist]
+            except:
+                print 'Error in plot_11 calculating medians list'
+                return 0
             txt = '%s\nConvergence of median error of optima' % self.__tests[i].args
             try:
                 r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration', log="y")

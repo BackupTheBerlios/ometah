@@ -66,13 +66,13 @@ def main():
     if arg == 0:
         
         u = ometahtest.Test()
-        u.setArgs('-e 200 -i 100 -p Schwefel -P 0.00001 -d 1 -m JGEN')
+        u.setArgs('-e 200  -p Schwefel -P 0.00001 -d 1 -m JGEN')
         u.setNbRuns(25)
         u.setOmetahPath('../ometah/ometah')
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 200  -i 100 -p Schwefel -P 0.00001 -d 1 -m SGEN')
+        v.setArgs('-e 200  -p Schwefel -P 0.00001 -d 1 -m SGEN')
         v.setNbRuns(25)
         v.setOmetahPath('../ometah/ometah')
         v.start()
@@ -83,38 +83,38 @@ def main():
     elif arg == 1:
 
         t = ometahtest.Test()
-        t.setArgs('-e 100 -p Rastrigin -P 0.01 -d 2 -m CEDA -s 10')
-        t.setNbRuns(20)
+        t.setArgs('-e 100  -p Griewank -P 0.01 -d 10 -m CEDA -s 10')
+        t.setNbRuns(25)
         t.setOmetahPath('../ometah/ometah')
         t.start()
         
         u = ometahtest.Test()
-        u.setArgs('-e 100 -p Rastrigin -P 0.01 -d 2 -m CHEDA -s 10')
-        u.setNbRuns(20)
+        u.setArgs('-e 100  -p Griewank -P 0.01 -d 10 -m CHEDA -s 10')
+        u.setNbRuns(25)
         u.setOmetahPath('../ometah/ometah')
         u.start()
 
         z = ometahtest.Test()
-        z.setArgs('-e 100  -p Rastrigin -P 0.01 -d 2 -m HCIAC -s 10')
-        z.setNbRuns(20)
+        z.setArgs('-e 100  -p Griewank -P 0.01 -d 10 -m HCIAC -s 10')
+        z.setNbRuns(25)
         z.setOmetahPath('../ometah/ometah')
         z.start()
 
         a = ometahtest.Test()
-        a.setArgs('-e 100  -p Rastrigin -P 0.01 -d 2 -m JGEN -s 10')
-        a.setNbRuns(20)
+        a.setArgs('-e 100  -p Griewank -P 0.01 -d 10 -m JGEN -s 10')
+        a.setNbRuns(25)
         a.setOmetahPath('../ometah/ometah')
         a.start()
 
         c = ometahtest.Test()
-        c.setArgs('-e 100  -p Rastrigin -P 0.01 -d 2 -m NMS -s 10')
-        c.setNbRuns(20)
+        c.setArgs('-e 100  -p Griewank -P 0.01 -d 10 -m NMS -s 10')
+        c.setNbRuns(25)
         c.setOmetahPath('../ometah/ometah')
         c.start()
 
         b = ometahtest.Test()
-        b.setArgs('-e 100  -p Rastrigin -P 0.01 -d 2 -m SGEN -s 10')
-        b.setNbRuns(20)
+        b.setArgs('-e 100  -p Griewank -P 0.01 -d 10 -m SGEN -s 10')
+        b.setNbRuns(25)
         b.setOmetahPath('../ometah/ometah')
         b.start()        
          
@@ -152,43 +152,67 @@ def main():
 
     elif arg == 3:
 
-        t = ometahtest.Test()
-        t.setArgs('-e 100 -p Griewank -P 0.01 -d 2 -m CEDA -s 20')
-        t.setNbRuns(25)
-        t.setOmetahPath('../ometah/ometah')
-        t.start()        
+        a = ometahtest.Test()
+        a.setArgs('-e 200 -p Rastrigin -P 0.01 -d 3 -m CEDA -s 20')
+        a.setNbRuns(25)
+        a.setOmetahPath('../ometah/ometah')
+        a.start()        
 
-        v = ometahtest.Test()
-        v.setArgs('-e 100 -p Griewank -P 0.01 -d 2 -m CHEDA -s 20')
-        v.setNbRuns(25)
-        v.setOmetahPath('../ometah/ometah')
-        v.start()
+        b = ometahtest.Test()
+        b.setArgs('-e 200 -p Rastrigin -P 0.01 -d 3 -m CHEDA -s 20')
+        b.setNbRuns(25)
+        b.setOmetahPath('../ometah/ometah')
+        b.start()
+
+        c = ometahtest.Test()
+        c.setArgs('-e 200 -p Rastrigin -P 0.01 -d 3 -m HCIAC -s 20')
+        c.setNbRuns(25)
+        c.setOmetahPath('../ometah/ometah')
+        c.start()
         
-        w = ometahtest.Test()
-        w.setArgs('-e 100  -p Rosenbrock -P 0.01 -d 2 -m NMS -s 20')
-        w.setNbRuns(25)
-        w.setOmetahPath('../ometah/ometah')
-        w.start()
+        d = ometahtest.Test()
+        d.setArgs('-e 200 -p Rastrigin -P 0.01 -d 3 -m JGEN -s 20')
+        d.setNbRuns(25)
+        d.setOmetahPath('../ometah/ometah')
+        d.start()
 
-        paths = [ t.getPath(), v.getPath(), w.getPath() ]
+        e = ometahtest.Test()
+        e.setArgs('-e 200 -p Rastrigin -P 0.01 -d 3 -m NMS -s 20')
+        e.setNbRuns(25)
+        e.setOmetahPath('../ometah/ometah')
+        e.start()        
+        
+        f = ometahtest.Test()
+        f.setArgs('-e 200 -p Rastrigin -P 0.01 -d 3 -m RA -s 20')
+        f.setNbRuns(25)
+        f.setOmetahPath('../ometah/ometah')
+        f.start()
+        
+        g = ometahtest.Test()
+        g.setArgs('-e 200  -p Rastrigin -P 0.01 -d 3 -m SGEN -s 20')
+        g.setNbRuns(25)
+        g.setOmetahPath('../ometah/ometah')
+        g.start()
+
+        paths = [ a.getPath(), b.getPath(), c.getPath(), d.getPath(), e.getPath(), f.getPath(), g.getPath() ]
         ometahstats.stat(paths)
 
     elif arg == 4:
 
         t = ometahtest.Test()
-        t.setArgs('-e 500 -p Ackley -P 0.01 -d 10 -m NMS -s 20')
+        t.setArgs('-e 500 -i 200 -p Ackley -P 0.01 -d 10 -m NMS -s 20')
         t.setNbRuns(25)
         t.setOmetahPath('../ometah/ometah')
         t.start()        
 
         v = ometahtest.Test()
-        v.setArgs('-e 500 -p Ackley -P 0.01 -d 10 -m JGEN -s 20')
+        v.setArgs('-e 500 -i 200 -p Ackley -P 0.01 -d 10 -m JGEN -s 20')
         v.setNbRuns(25)
         v.setOmetahPath('../ometah/ometah')
         v.start()
         
         w = ometahtest.Test()
-        w.setArgs('-e 500  -p Ackley -P 0.01 -d 10 -m CEDA -s 20')
+        w.setArgs('-e 500 -i 200 -p Ackley -P 0.01 -d 10 -m HCIAC -s 20')
         w.setNbRuns(25)
         w.setOmetahPath('../ometah/ometah')
         w.start()
@@ -200,17 +224,17 @@ def main():
     elif arg == 5:
     
         t = ometahtest.Test()
-        t.setArgs('-e 220 -p Sphere -d 10 -P 0.00001 -m CEDA')
+        t.setArgs('-e 220 -p Sphere -d 3 -P 0.00001 -m CEDA')
         t.setNbRuns(30)
         t.start()
     
         u = ometahtest.Test()
-        u.setArgs('-e 220  -p Sphere -d 10 -P 0.00001 -m HCIAC')
+        u.setArgs('-e 220  -p Sphere -d 3 -P 0.00001 -m HCIAC')
         u.setNbRuns(30)
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 220 -i 100 -p Sphere -d 10 -P 0.00001 -m JGEN')
+        v.setArgs('-e 220 -i 100 -p Sphere -d 3 -P 0.00001 -m JGEN')
         v.setNbRuns(30)
         v.start()
         
