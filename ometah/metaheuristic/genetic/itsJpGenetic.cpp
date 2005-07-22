@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.4 2005/07/22 08:19:00 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.5 2005/07/22 11:11:51 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -57,7 +57,6 @@ void itsJpGenetic::learning()
   if ( getEvaluationNumber() != getSampleSize() ) {
 
     unsigned size = getSampleSizeCurrent();
-
     // sample already sorted, when diversification was done before
     for (unsigned i = 0; i<size; i+= 2) {
 
@@ -97,19 +96,14 @@ void itsJpGenetic::intensification()
 }
 
 
-// directly use proba insteand of "else if ()..; else if" ??
+
 vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
 {
   double alpha;
-
-  itsPoint boy;
-  itsPoint girl;
+  itsPoint boy, girl;
 
   // solutions vectors for father, mother, boy and girl
-  vector<double> fsol;
-  vector<double> msol;
-  vector<double> bsol;
-  vector<double> gsol;
+  vector<double> fsol, msol, bsol, gsol;
 
   fsol = father.getSolution();
   msol = mother.getSolution();
@@ -122,15 +116,14 @@ vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
     bsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
     alpha = drand48();
     gsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
-  }
-
-    
+  }    
   boy.setSolution( bsol );
   girl.setSolution( gsol );
 
   vector<itsPoint> v;
   v.push_back( evaluate(boy) );
   v.push_back( evaluate(girl) );
+  
   return v;
 }
 
@@ -139,10 +132,12 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
 {
 
   float proba;
-
-  // if current optimal point, make a mutation
+  vector<double> npsol, psol;
+  double coef, buf;
+  
+  // if current optimal point, make a partial mutation
   if ( evaluate(point).getValues()[0] == sample[0].getValues()[0] ) {
-    proba = 0;
+    proba = mutationProba * totalMutationProba;
   }
   else
     proba = drand48();
@@ -152,50 +147,42 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
     return evaluate (point);
   }
   else {
-    if ( proba < mutationProba * totalMutationProba ) {
+    if ( proba <= mutationProba * totalMutationProba ) {
       // full mutation = new randomized point
       point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
       return evaluate (point);
     }
-    else {
-    // partial mutation
-    // CAUTION : don't go beyond search space limits
-    vector<double> npsol;
-    vector<double> psol;
-    vector<double> mins;
-    vector<double> maxs;
-    mins = this->problem->boundsMinima();
-    maxs = this->problem->boundsMaxima();
-    psol = point.getSolution();
-    float coef;
-    double buf;
-    for ( int i=0; i<this->problem->getDimension(); i++) {
-      
-      // P(up) = P(down) = P(no change) = 0.3
-      proba = drand48();
-      coef = drand48();
+    else {  // partial mutation
 
-      // calcul new coordinate, and check if its into bounds
-      if ( proba < 0.3333 ){
-	buf = psol[i] * coef * reduction;	
-	if ( buf > mins[i] )
-	  npsol.push_back( buf );
-	else
+      psol = point.getSolution();
+
+      for ( int i=0; i<this->problem->getDimension(); i++) {
+      
+	// P(up) = P(down) = P(no change) = 0.3
+	proba = drand48();
+	coef = drand48();
+
+	// calcul new coordinate, and check if its into bounds
+	if ( proba < 0.3333 ){
+	  buf = psol[i] * coef * reduction;	
+	  if ( buf > this->problem->boundsMinima()[i] )
+	    npsol.push_back( buf );
+	  else
+	    npsol.push_back( psol[i] );
+	}
+	else if ( proba < 0.6666 ) {
+	  buf = psol[i] * ( 1 - coef ) * reduction;
+	  if ( buf < this->problem->boundsMaxima()[i] )
+	    npsol.push_back( buf );
+	  else
+	    npsol.push_back( psol[i] );
+	}     
+	else {
 	  npsol.push_back( psol[i] );
+	}
       }
-      else if ( proba < 0.6666 ) {
-	buf = psol[i] * ( 1 - coef ) * reduction;
-	if ( buf < maxs[i] )
-	  npsol.push_back( buf );
-	else
-	  npsol.push_back( psol[i] );
-      }     
-      else {
-	npsol.push_back( psol[i] );
-      }
-    }
-    point.setSolution( npsol );
-    return evaluate (point);
+      point.setSolution( npsol );
+      return evaluate (point);
     }
   }
 }

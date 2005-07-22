@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.1 2005/07/15 16:52:33 jpau Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.2 2005/07/22 11:11:51 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -55,7 +55,6 @@ void itsSimpleGenetic::learning()
   if ( getEvaluationNumber() != getSampleSize() ) {
 
     unsigned size = getSampleSizeCurrent();
-
     // sample already sorted, when diversification was done before
     for (unsigned i = 0; i<size; i+= 2) {
 
@@ -102,15 +101,10 @@ void itsSimpleGenetic::intensification()
 vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother)
 {
   double alpha;
-
-  itsPoint boy;
-  itsPoint girl;
+  itsPoint boy, girl;
 
   // solutions vectors for father, mother, boy and girl
-  vector<double> fsol;
-  vector<double> msol;
-  vector<double> bsol;
-  vector<double> gsol;
+  vector<double> fsol, msol, bsol, gsol;
 
   fsol = father.getSolution();
   msol = mother.getSolution();
@@ -127,7 +121,6 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
     
   boy.setSolution( bsol );
   girl.setSolution( gsol );
-
   vector<itsPoint> v;
   v.push_back( evaluate(boy) );
   v.push_back( evaluate(girl) );
@@ -152,7 +145,6 @@ itsPoint itsSimpleGenetic::mutation(itsPoint point)
     return evaluate (point);
   }
   else {
-
     // full mutation = new randomized point
     point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
     return evaluate (point);
