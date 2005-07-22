@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.3 2005/07/18 14:58:11 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.4 2005/07/22 08:19:00 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -43,7 +43,7 @@ itsJpGenetic::itsJpGenetic()
     setFamily("Genetic algorithm");    
 
     mutationProba = 0.7;
-    totalMutationProba = 0.5;
+    totalMutationProba = 0.4;
     selectionCoef = 0.5;
     reduction = 0.5;
 }
