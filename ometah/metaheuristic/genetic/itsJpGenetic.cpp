@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.5 2005/07/22 11:11:51 jpau Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.6 2005/07/22 12:45:36 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -53,22 +53,23 @@ void itsJpGenetic::learning()
 { 
   // reproduction
 
+  // bests with bests, etc.
   // if not is first call
   if ( getEvaluationNumber() != getSampleSize() ) {
 
-    unsigned size = getSampleSizeCurrent();
-    // sample already sorted, when diversification was done before
-    for (unsigned i = 0; i<size; i+= 2) {
+  unsigned size = getSampleSizeCurrent();
+  // sample already sorted, when diversification was done before
+  for (unsigned i = 0; i < size; i+= 2) {
 
-      vector<itsPoint> v;
-      if ( i+1 < size)
-	v = makeChildren(sample[i], sample[i+1]);
-      else
-	v = makeChildren(sample[i], sample[0]);
-      sample.push_back( v[0] );
-      if ( i+1 < size)
-	sample.push_back( v[1] );
-    }
+  vector<itsPoint> v;
+  if ( i+1 < size)
+  v = makeChildren(sample[i], sample[i+1]);
+  else
+  v = makeChildren(sample[i], sample[0]);
+  sample.push_back( v[0] );
+  if ( i+1 < size)
+  sample.push_back( v[1] );
+  }
   }
 }
  
@@ -136,8 +137,8 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
   double coef, buf;
   
   // if current optimal point, make a partial mutation
-  if ( evaluate(point).getValues()[0] == sample[0].getValues()[0] ) {
-    proba = mutationProba * totalMutationProba;
+  if ( evaluate(point).getValues()[0] > sample[0].getValues()[0] ) {
+    proba = mutationProba * drand48(); // force mutation
   }
   else
     proba = drand48();
@@ -147,7 +148,7 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
     return evaluate (point);
   }
   else {
-    if ( proba <= mutationProba * totalMutationProba ) {
+    if ( proba < mutationProba * totalMutationProba ) {
       // full mutation = new randomized point
       point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
       return evaluate (point);
