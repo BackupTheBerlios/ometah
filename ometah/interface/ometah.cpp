@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.17 2005/07/20 13:53:36 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.18 2005/07/22 08:44:28 jpau Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -172,9 +172,9 @@ int main(int argc, char ** argv)
     argumentParser.defArg("-D", "--debug", 
 			  "debug key" ,true, "string", "");
     argumentParser.defArg("-i", "--iterations", 
-			  "maximum number of iterations" ,true, "int", "10");
+			  "maximum number of iterations" ,true, "int", "10000");
     argumentParser.defArg("-e", "--evaluations", 
-			  "maximum number of evaluations" ,true, "int", "1000");
+			  "maximum number of evaluations" ,true, "int", "110");
     argumentParser.defArg("-P", "--precision", 
 			  "minimum value to reach" ,true, "double", "0.0");
     argumentParser.defArg("-s", "--sample-size", 
