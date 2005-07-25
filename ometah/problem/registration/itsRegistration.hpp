@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.hpp,v 1.4 2005/06/30 13:48:57 nojhan Exp $
+ *  $Id: itsRegistration.hpp,v 1.5 2005/07/25 09:37:57 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -43,12 +43,6 @@ protected:
     //! The file name of the second input image
     string inputImage_registered;
 
-    //! The first image
-    CImg<unsigned char> img1;
-
-    //! The second image
-    CImg<unsigned char> img2;
-
     //! A coefficient to limit the maximum bounds of x/y registration
     float boundsCoefficient;
 
@@ -56,6 +50,14 @@ protected:
     void resizeImages();
 
 public:
+
+    //! The first image
+    CImg<unsigned char> img1;
+
+    //! The second image
+    CImg<unsigned char> img2;
+  
+
     itsRegistration();
     itsPoint objectiveFunction(itsPoint point);
 
