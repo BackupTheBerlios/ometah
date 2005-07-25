@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.18 2005/07/20 14:06:03 nojhan Exp $
+ *  $Id: ometah_registration.cpp,v 1.19 2005/07/25 09:36:50 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -63,6 +63,235 @@
 #include "../itsArgument.hpp"
 
 using namespace std;
+using namespace cimg_library;
+
+
+
+// global variables are evil
+float global_Smooth = 0;
+float global_Precision = 0.9;
+bool global_PerformFlow = false;
+itsRegistration problemRegistration;
+
+
+/*******************************************************************************
+* optical flow functions
+*******************************************************************************/
+
+CImg<> opticalFlowMono_Reg(const CImg<>& I1, const CImg<>& I2, const CImg<>& u0,
+                           float smooth, float precision) 
+{
+
+  CImg<> u = u0.get_resize(I1.width,I1.height,1,2,3),dI(u);
+  CImg_3x3(I,float);
+					   
+  float dt = 2;
+  float Ep = 1e20f;
+
+  // premières dérivées de I2
+  cimg_map3x3(I2,x,y,0,0,I) {
+    dI(x,y,0) = 0.5f*(Inc-Ipc);
+    dI(x,y,1) = 0.5f*(Icn-Icp);
+  }
+
+  // boucle principale EDP
+  for (unsigned int iter=0; iter<100000; iter++) {
+    //std::fprintf(stderr,"\r- Iteration %d - E = %g",iter,Ep); fflush(stderr);
+    cerr << "\rOptical Flow : Iteration: " << iter << " / Ep:" << Ep;
+    cerr.flush();
+    const float Eold = Ep;
+    Ep = 0;
+	  
+    cimg_3mapXY(u,x,y) {
+         
+      const float X = x + u(x,y,0);
+      const float Y = y + u(x,y,1);
+      
+      const float deltaI = (float)(I2.linear_pix2d(X,Y) - I1(x,y));
+      
+      float tmpf = 0;
+      
+      cimg_mapV(u,k) {
+        const float ux  = 0.5f*(u(_nx,y,k)-u(_px,y,k));
+        const float uy  = 0.5f*(u(x,_ny,k)-u(x,_py,k));
+        
+        u(x,y,k) = (float)( u(x,y,k) +
+                              dt*(
+                                  -deltaI*dI.linear_pix2d(X,Y,k) +
+                                  smooth* ( u(_nx,y,k) + u(_px,y,k) + u(x,_ny,k) + u(x,_py,k) )
+                                  )
+                              )/(1+4*smooth*dt);
+        
+        tmpf += ux*ux + uy*uy;
+      }
+      
+      Ep += deltaI*deltaI + smooth * tmpf;
+    }
+	
+	
+    if (fabs(Eold-Ep)<precision) break;
+    if (Eold<Ep) dt*=0.5;
+  }
+  return u;
+}
+
+
+
+/*******************************************************************************
+* end local search for classes
+*******************************************************************************/
+
+
+CImg<unsigned char> makeRegisteredImage( CImg<unsigned char> imgOrigin, int rx, int ry, double rotation=0, double zoom=1 )
+{
+  CImg<unsigned char> imgResult = imgOrigin;
+
+  imgOrigin = imgOrigin.get_rotate( rotation, 0.5f*imgOrigin.width, 0.5f*imgOrigin.height, zoom, 0 );
+
+  cimg_mapXY(imgResult,x,y) {
+      // if we do not try out of bounds
+    if ( !(x+rx<0 || x+rx>imgOrigin.width || y+ry<0 || y+ry>imgOrigin.height)  ) {
+      imgResult(x,y) = imgOrigin(x+rx,y+ry);
+    } else {
+      imgResult(x,y) = 0;
+    }
+  }
+
+  return imgResult;
+}
+
+
+// Multiline macros are evil too
+/*inline
+void end_Reg()*/
+
+#define END_REG() \
+  if ( global_PerformFlow ) { \
+    vector<double> sol = this->getOptimum().getSolution(); \
+    int rx = (int) floor(sol[0]); \
+    int ry = (int) floor(sol[1]); \
+    double rotation, zoom; \
+    if ( sol.size() == 4 ) { \
+      rotation = sol[2]; \
+      zoom = sol[3]; \
+    } else { \
+      rotation = 0; \
+      zoom = 1; \
+    } \
+    CImg<> img3 = makeRegisteredImage(problemRegistration.img2, rx, ry, rotation, zoom); \
+    problemRegistration.img2 = opticalFlowMono_Reg(  \
+                                               problemRegistration.img1,  \
+                                               img3, img3, \
+                                               global_Smooth, global_Precision ); \
+    itsPoint p = evaluate( getOptimum() ); \
+    setSampleSize( 1 ); \
+    sample[0] = p; \
+  } else  \
+  (void)0
+
+
+// CEDA
+class itsEstimationOfDistribution_Reg : public itsEstimationOfDistribution
+{
+public: 
+    void end() { END_REG(); }
+};
+
+class itsEstimationOfDistributionFactory_Reg : public itsEstimationOfDistributionFactory
+{
+public:
+    itsMetaheuristic* create() {return new itsEstimationOfDistribution_Reg;}
+};
+
+
+// CHEDA
+class itsHybridEstimationOfDistribution_Reg: public itsHybridEstimationOfDistribution
+{
+public: 
+    void end() { END_REG(); }
+};
+
+class itsHybridEstimationOfDistributionFactory_Reg : public itsHybridEstimationOfDistributionFactory
+{
+public:
+    itsMetaheuristic* create() {return new itsHybridEstimationOfDistribution_Reg;}
+};
+
+
+// GS
+class itsGridSampling_Reg: public itsGridSampling
+{
+public: 
+    void end() { END_REG(); }
+};
+
+class itsSamplingFactory_Reg : public itsSamplingFactory
+{
+public:
+    itsMetaheuristic* create() {return new itsGridSampling_Reg;}
+};
+
+
+// NMS
+class itsNelderMead_Reg : public itsNelderMead
+{
+public: 
+    void end() { END_REG(); }
+};
+
+class itsNelderMeadFactory_Reg : public itsNelderMeadFactory
+{
+public:
+    itsMetaheuristic* create() {return new itsNelderMead_Reg;}
+};
+
+
+//SGEN
+class itsSimpleGenetic_Reg : public itsSimpleGenetic
+{
+public: 
+    void end() { END_REG(); }
+};
+
+class itsSimpleGeneticFactory_Reg : public itsSimpleGeneticFactory
+{
+public:
+    itsMetaheuristic* create() {return new itsSimpleGenetic_Reg;}
+};
+
+
+// JGEN
+class itsJpGenetic_Reg : public itsJpGenetic
+{
+public: 
+    void end() { END_REG(); }
+};
+
+class itsJpGeneticFactory_Reg : public itsJpGeneticFactory
+{
+public:
+    itsMetaheuristic* create() {return new itsJpGenetic_Reg;}
+};
+
+
+//HCIAC
+class itsHybridContinuousInteractingAntColony_Reg : public itsHybridContinuousInteractingAntColony
+{
+public: 
+    void end() { END_REG(); }
+};
+
+class itsHybridContinuousInteractingAntColonyFactory_Reg : public itsHybridContinuousInteractingAntColonyFactory
+{
+public:
+    itsMetaheuristic* create() {return new itsHybridContinuousInteractingAntColony_Reg;}
+};
+
+
+
+/*******************************************************************************
+* interface
+*******************************************************************************/
 
 
 int main(int argc, char ** argv)
@@ -70,7 +299,6 @@ int main(int argc, char ** argv)
 
   // differents sets of objects
   itsSet<itsMetaheuristic*> setMetaheuristic;
-  itsRegistration problem;
   itsCommunicationClient_embedded communicationClient;
   itsCommunicationServer_embedded communicationServer;
 
@@ -83,25 +311,25 @@ int main(int argc, char ** argv)
   itsMetaheuristicFactory* factoryMetaheuristics;
 
   // add the estimation of distribution algorithm
-  factoryMetaheuristics = new itsEstimationOfDistributionFactory;
+  factoryMetaheuristics = new itsEstimationOfDistributionFactory_Reg;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
-  factoryMetaheuristics = new itsHybridEstimationOfDistributionFactory;
+  factoryMetaheuristics = new itsHybridEstimationOfDistributionFactory_Reg;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
-  factoryMetaheuristics = new itsSamplingFactory;
+  factoryMetaheuristics = new itsSamplingFactory_Reg;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
-  factoryMetaheuristics = new itsNelderMeadFactory;
+  factoryMetaheuristics = new itsNelderMeadFactory_Reg;
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
-  factoryMetaheuristics = new itsSimpleGeneticFactory;
+  factoryMetaheuristics = new itsSimpleGeneticFactory_Reg;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
-  factoryMetaheuristics = new itsJpGeneticFactory;
+  factoryMetaheuristics = new itsJpGeneticFactory_Reg;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
-  factoryMetaheuristics = new itsHybridContinuousInteractingAntColonyFactory;
+  factoryMetaheuristics = new itsHybridContinuousInteractingAntColonyFactory_Reg;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
   
@@ -110,7 +338,7 @@ int main(int argc, char ** argv)
    *  Problems part
    */
     
-  problem = itsRegistration();
+  //problem = itsRegistration();
     
     
   /*
@@ -176,6 +404,9 @@ int main(int argc, char ** argv)
 			  "input image" ,true, "string", "");
     argumentParser.defArg("-w", "--save-registered-image", 
 			  "output the registered image in a file" ,true, "string", "");
+        
+    argumentParser.defArg("-f", "--optical-flow", 
+			  "perform a terminal mono-scale optical flow, with the given precision" ,true, "double", "0.9");
   }
   catch(const char * s) {
     cerr << s;
@@ -240,7 +471,7 @@ int main(int argc, char ** argv)
   communicationClient.problem = & communicationServer;
 
   // server -> problem
-  communicationServer.problem = & problem;
+  communicationServer.problem = & problemRegistration;
 
 
   /*
@@ -253,10 +484,10 @@ int main(int argc, char ** argv)
 
   setMetaheuristic.item()->setLogLevel(argumentParser.getIntValue("--verbose"));
   
-  problem.setBoundsCoefficient( (float)argumentParser.getDoubleValue("--bounds-coefficient") );
+  problemRegistration.setBoundsCoefficient( (float)argumentParser.getDoubleValue("--bounds-coefficient") );
   
   if ( argumentParser.isAsked("--affine") ) {
-      problem.setDimension(4);
+      problemRegistration.setDimension(4);
       
       vector<double> bounds_rotation = stringToDouble_shortcuts( argumentParser.getStringValue("--bounds-rotation") );
       vector<double> bounds_zoom = stringToDouble_shortcuts( argumentParser.getStringValue("--bounds-zoom") );
@@ -273,11 +504,11 @@ int main(int argc, char ** argv)
       maxs.push_back( bounds_rotation[1] );
       maxs.push_back( bounds_zoom[1] );
   
-      problem.setBoundsMinima(mins);
-      problem.setBoundsMaxima(maxs);
+      problemRegistration.setBoundsMinima(mins);
+      problemRegistration.setBoundsMaxima(maxs);
   
   } else {
-      problem.setDimension(2);
+      problemRegistration.setDimension(2);
   }
     
   /*
@@ -291,7 +522,7 @@ int main(int argc, char ** argv)
 
   // parameters
 try {
-  problem.setInputImages(
+  problemRegistration.setInputImages(
     argumentParser.getStringValue("--image-static"),
     argumentParser.getStringValue("--image-registered")
   );
@@ -312,6 +543,14 @@ try {
   // (overloaded method exists with an unsigned parameter as seed)
   setMetaheuristic.item()->initRandom( argumentParser.getIntValue("--random-seed") );
   
+  
+  if ( argumentParser.isAsked("--optical-flow") ) {
+    global_PerformFlow = true;
+    global_Precision = argumentParser.getDoubleValue("--optical-flow");
+    // FIXME ########################################################################################"
+  }
+  
+
   // Starting the optimization
   
   ostream * pout;
@@ -332,7 +571,7 @@ try {
   
   *pout << "<? xml-version=\"1.0\" encoding=\"iso-8859-15\" ?>" << endl;
   *pout << "<ometah>" << endl;
-  *pout << problem.getInformations_XML() << endl;
+  *pout << problemRegistration.getInformations_XML() << endl;
   *pout << setMetaheuristic.item()->getInformations_XML() << endl;
   
   try {
@@ -354,8 +593,7 @@ try {
   if( outfile.is_open() ) {
       outfile.close();
   }
-
-
+  
   // output the registered image in a file
   if ( argumentParser.getStringValue("--save-registered-image") != "" ) {
       
@@ -370,7 +608,7 @@ try {
       const unsigned int ry = (int) floor( optimum.getSolution()[1] );
 
       float angle, zoom;
-      if ( problem.getDimension() == 4 ) {
+      if ( problemRegistration.getDimension() == 4 ) {
           angle = (float) optimum.getSolution()[2];
           zoom = (float) optimum.getSolution()[3];
           img2 = img2.get_rotate( angle, 0.5f*img2.width, 0.5f*img2.height, zoom, 0 );
