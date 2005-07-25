@@ -147,7 +147,7 @@ def main():
         a.setOmetahPath('../ometah/ometah')
         a.start()
         
-        paths = [ v.getPath(), w.getPath() ]
+        paths = [ v.getPath(), w.getPath(), z.getPath(), a.getPath()  ]
         ometahstats.stat(paths)
 
     elif arg == 3:
@@ -163,7 +163,7 @@ def main():
         b.setNbRuns(25)
         b.setOmetahPath('../ometah/ometah')
         b.start()
-
+        
         c = ometahtest.Test()
         c.setArgs('-e 200 -p Rastrigin -P 0.01 -d 3 -m HCIAC -s 20')
         c.setNbRuns(25)
@@ -187,7 +187,7 @@ def main():
         f.setNbRuns(25)
         f.setOmetahPath('../ometah/ometah')
         f.start()
-        
+
         g = ometahtest.Test()
         g.setArgs('-e 200  -p Rastrigin -P 0.01 -d 3 -m SGEN -s 20')
         g.setNbRuns(25)
@@ -224,17 +224,17 @@ def main():
     elif arg == 5:
     
         t = ometahtest.Test()
-        t.setArgs('-e 220 -p Sphere -d 3 -P 0.00001 -m CEDA')
+        t.setArgs('-e 220 -p Sphere -d 10 -P 0.00001 -m CEDA')
         t.setNbRuns(30)
         t.start()
     
         u = ometahtest.Test()
-        u.setArgs('-e 220  -p Sphere -d 3 -P 0.00001 -m HCIAC')
+        u.setArgs('-e 220  -p Sphere -d 10 -P 0.00001 -m HCIAC')
         u.setNbRuns(30)
         u.start()
         
         v = ometahtest.Test()
-        v.setArgs('-e 220 -i 100 -p Sphere -d 3 -P 0.00001 -m JGEN')
+        v.setArgs('-e 220 -p Sphere -d 10 -P 0.00001 -m JGEN')
         v.setNbRuns(30)
         v.start()
         

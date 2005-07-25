@@ -394,11 +394,8 @@ class Stater:
 
 
     def __plot_9(self):
-        """ Make a non-parametric test over sets of optima errors,
-        Mann-Whitney if 2 tests, Kruskal-Whitney if 3 or more.
-        p.value < 0.05 => no difference
-        p.value > 0.05 => difference
-        Returns True if """
+        """ Create graph of distribution errors, and make non-parametric over ALL tests
+        ( see np_test() for n-p test over 2 tests )"""
         import Numeric
         limit = .05
         # initialize our matrix with as sublists as tests
@@ -425,6 +422,15 @@ class Stater:
             return
         self.__same_distrib = dic['p.value']
 
+
+    def np_test(self, testIndex1, testIndex2):
+        """ Return non-parametric test """
+        import Numeric
+        tests = [ testIndex1, testIndex2 ]
+        for i in tests:
+            tlist = [ p.value - self.__tests[i].opt_val for p in self.__optimas[i] ]
+        return r.wilcox_test(Numeric.array(tlist))['p.value']
+        
 
     def __plot_10(self):
         """ Convergence graph over iterations : plot median error of each run for a given iteration,
@@ -491,8 +497,7 @@ class Stater:
         # (cos we won't have information on error for following plots)
         for test in self.__tests:
             if test.opt_val == 'Unknown':
-                return 0
-            
+                return 0            
         # success rates
         self.__plot_6()
         # points in plan
@@ -540,8 +545,15 @@ class Stater:
         W('\\end{tabular}\n')
 
         if len(self.__tests) > 1:
-            txt = '\n\\paragraph{Non-parametric test over optima errors}\n%f\n' % self.__same_distrib
+            txt = '\n\\paragraph{Non-parametric test on optima error over all tests}\n%f\n' % self.__same_distrib
             W(txt)
+
+        W('\n\\paragraph{Non parametric tests on optima error over for tests pairs}')
+        for i in xrange(len(self.__tests)):
+            for j in xrange(len(self.__tests)):
+                if ( i < j ):
+                    txt = '\n( %d, %d)\\\\\n%f\\\\' % ( i, j, self.np_test(i, j) )
+                    W(txt)
 
         if self.__eigenv != []: # <=> if dimension > 2
             W('\n\\paragraph{Eigen vectors:}\n')
