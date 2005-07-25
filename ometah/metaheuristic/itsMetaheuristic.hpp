@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.13 2005/07/18 13:22:58 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.14 2005/07/25 09:37:31 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -235,6 +235,14 @@ public:
     call initialization() as a first step !
   */
   void startSilent();
+  
+  //! Called at the end of the start() method
+  /*! 
+    Use this method if you want to add a terminal
+    process after the optimization (for example a 
+    terminal local search).
+  */
+  virtual void end();
       
   //! Take a point and evaluate its values
   itsPoint evaluate(itsPoint p);

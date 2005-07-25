@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.19 2005/07/19 16:55:36 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.20 2005/07/25 09:37:31 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
@@ -198,8 +198,10 @@ void itsMetaheuristic::start()
     iterationsCurrent++;
   
   }
-  
+
   printLog("steps","end");
+  end();
+
   printLog("optimum", "optimum "+print( getOptimum().getValues() ) ); // FIXME : print the solution too
 
   // print the result
@@ -224,8 +226,14 @@ void itsMetaheuristic::startSilent()
     // one more iteration
     iterationsCurrent++;
   }
+  
+  end();
 }
 
+
+void itsMetaheuristic::end()
+{
+}
 
 void itsMetaheuristic::parameterParse()
 { }
