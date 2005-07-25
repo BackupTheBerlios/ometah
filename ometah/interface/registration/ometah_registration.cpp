@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.19 2005/07/25 09:36:50 nojhan Exp $
+ *  $Id: ometah_registration.cpp,v 1.20 2005/07/25 14:54:39 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -97,7 +97,7 @@ CImg<> opticalFlowMono_Reg(const CImg<>& I1, const CImg<>& I2, const CImg<>& u0,
   // boucle principale EDP
   for (unsigned int iter=0; iter<100000; iter++) {
     //std::fprintf(stderr,"\r- Iteration %d - E = %g",iter,Ep); fflush(stderr);
-    cerr << "\rOptical Flow : Iteration: " << iter << " / Ep:" << Ep;
+    cerr << "OpticalFlow: Iteration: " << iter << " / Ep: " << Ep << endl;
     cerr.flush();
     const float Eold = Ep;
     Ep = 0;
@@ -129,7 +129,10 @@ CImg<> opticalFlowMono_Reg(const CImg<>& I1, const CImg<>& I2, const CImg<>& u0,
     }
 	
 	
-    if (fabs(Eold-Ep)<precision) break;
+    if (fabs(Eold-Ep)<precision) {
+      cerr << "OpticalFlow: End, Eold: " << Eold << " Ep: " << Ep << " |Eold-Ep|: " << fabs(Eold-Ep) << endl;
+      break;
+    }
     if (Eold<Ep) dt*=0.5;
   }
   return u;
@@ -618,7 +621,7 @@ try {
         float diff = 0.0;
           // if we do not try out of bounds
         if ( !(x+rx<0 || x+rx>img1.width || y+ry<0 || y+ry>img1.height)  ) {
-            diff = img1(x,y) + img2(x+rx,y+ry);
+            diff = 0.3*img1(x,y) + 0.6*img2(x+rx,y+ry);
         }
         result(x,y) = diff;
       }
