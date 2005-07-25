@@ -30,11 +30,6 @@
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
-try:
-    import psyco
-    psyco.full()
-except:
-    pass
 
 class Qparser:
     """ Read the XML output of ometah and get information in appropriate structues.
