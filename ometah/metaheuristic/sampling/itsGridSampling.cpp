@@ -1,7 +1,6 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.11 2005/07/12 19:38:43 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: itsGridSampling.cpp,v 1.12 2005/11/04 17:28:19 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/

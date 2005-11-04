@@ -1,8 +1,7 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConscript,v 1.10 2005/07/20 13:55:59 nojhan Exp $
-#  Copyright : Université Paris 12 Val-de-Marne
-#              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+#  $Id: SConscript,v 1.11 2005/11/04 17:28:13 nojhan Exp $
+#  Copyright : Free Software Foundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
 

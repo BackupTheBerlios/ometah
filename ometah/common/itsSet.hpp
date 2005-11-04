@@ -1,8 +1,8 @@
 /***************************************************************************
- * $Id: itsSet.hpp,v 1.1 2005/06/13 09:04:58 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
- * Author: Walid TFAILI <tfaili@univ-paris12.fr>, Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+ * $Id: itsSet.hpp,v 1.2 2005/11/04 17:28:12 nojhan Exp $
+ *  Copyright : Free Software Foundation
+ * Author: Walid TFAILI <tfaili@univ-paris12.fr>
+ * Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
 
 /*

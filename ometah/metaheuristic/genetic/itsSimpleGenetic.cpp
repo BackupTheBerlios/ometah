@@ -1,7 +1,6 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.2 2005/07/22 11:11:51 jpau Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: itsSimpleGenetic.cpp,v 1.3 2005/11/04 17:28:13 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
 

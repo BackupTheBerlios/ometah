@@ -1,7 +1,6 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.6 2005/07/22 12:45:36 jpau Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: itsJpGenetic.cpp,v 1.7 2005/11/04 17:28:13 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
 

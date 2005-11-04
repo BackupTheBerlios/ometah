@@ -1,7 +1,6 @@
 /***************************************************************************
- *  $Id: itsNelderMead.hpp,v 1.7 2005/07/18 13:47:36 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: itsNelderMead.hpp,v 1.8 2005/11/04 17:28:19 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
 

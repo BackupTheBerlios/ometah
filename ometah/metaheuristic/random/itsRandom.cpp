@@ -1,7 +1,6 @@
 /***************************************************************************
- *  $Id: itsRandom.cpp,v 1.3 2005/07/15 17:08:12 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: itsRandom.cpp,v 1.4 2005/11/04 17:28:19 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
 

@@ -1,7 +1,6 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.20 2005/07/25 09:37:31 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: itsMetaheuristic.cpp,v 1.21 2005/11/04 17:28:13 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/

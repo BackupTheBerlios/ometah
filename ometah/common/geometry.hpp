@@ -1,7 +1,6 @@
 /***************************************************************************
- *  $Id: geometry.hpp,v 1.2 2005/07/20 13:52:30 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: geometry.hpp,v 1.3 2005/11/04 17:28:12 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
 

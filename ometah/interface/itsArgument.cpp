@@ -1,7 +1,6 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.12 2005/07/12 15:07:47 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: itsArgument.cpp,v 1.13 2005/11/04 17:28:12 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/

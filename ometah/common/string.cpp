@@ -1,7 +1,6 @@
 /***************************************************************************
- *  $Id: string.cpp,v 1.2 2005/06/30 13:09:23 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: string.cpp,v 1.3 2005/11/04 17:28:12 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
 

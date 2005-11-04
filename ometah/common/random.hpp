@@ -1,7 +1,6 @@
  /***************************************************************************
- *  $Id: random.hpp,v 1.5 2005/07/20 13:53:02 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: random.hpp,v 1.6 2005/11/04 17:28:12 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
 

@@ -1,7 +1,6 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.7 2005/07/21 14:09:05 nojhan Exp $
- *  Copyright : Université Paris 12 Val-de-Marne
- *              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+ *  $Id: matrix.hpp,v 1.8 2005/11/04 17:28:12 nojhan Exp $
+ *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
 
