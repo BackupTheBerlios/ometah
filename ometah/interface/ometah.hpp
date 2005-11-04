@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.13 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.14 2005/11/04 21:36:21 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -60,6 +60,5 @@
 
 // interfaces
 #include "itsArgument.hpp"
-
 
 using namespace std;

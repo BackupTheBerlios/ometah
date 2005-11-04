@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.8 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: itsArgument.hpp,v 1.9 2005/11/04 21:36:21 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -30,8 +30,7 @@
 
 #include "../common/logic.hpp"
 
-
-#define VERSION "Open Metaheuristic - 2005"
+#define VERSION "0.2.2"
 #define USAGE "usage" // string value doesn't matter
 
 using namespace std;
