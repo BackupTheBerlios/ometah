@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: string.hpp,v 1.5 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: string.hpp,v 1.6 2005/11/04 17:56:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -39,7 +39,7 @@ void print( T aVector, char * aSeparator=",", ostream * outer)
   for( unsigned int i=1; i<aVector.size(); i++ ) {
     *outer << aSeparator << aVector[i];
   }
-};
+}
 
 //! Print a vector
 template<class T>
@@ -53,7 +53,7 @@ string print( T aVector, char * aSeparator="," )
   }
 
   return out.str();
-};
+}
 
 //! Print a matrix
 template<class T>
@@ -67,7 +67,7 @@ string print( vector< vector< T > > aMatrix, char * sepCol = ",", char * sepLine
   }
 
   return out.str();
-};
+}
 
 
 //! Make a string vector from a string
