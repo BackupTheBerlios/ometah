@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.8 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: matrix.hpp,v 1.9 2005/11/04 20:57:33 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -24,6 +24,7 @@
 #define MATRIX
 
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
