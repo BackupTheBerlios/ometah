@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.15 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.16 2005/11/04 18:00:21 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -433,6 +433,7 @@ public:
   //! base method for instanciation in the abstract factory 
   virtual itsMetaheuristic* create() =0;
 
+  virtual ~itsMetaheuristicFactory() =0;
 };
    
 #endif

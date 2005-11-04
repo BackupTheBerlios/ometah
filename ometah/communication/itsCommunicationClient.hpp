@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient.hpp,v 1.2 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: itsCommunicationClient.hpp,v 1.3 2005/11/04 18:00:20 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -66,7 +66,7 @@ public:
 class itsCommunicationClientFactory
 {
 public:
-    //virtual ~itsCommunicationClientFactory() {};
+    virtual ~itsCommunicationClientFactory() =0;
     //itsCommunicationClientFactory() {};
     
     virtual itsCommunicationClient * create() =0;

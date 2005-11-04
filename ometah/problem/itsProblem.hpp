@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.4 2005/11/04 17:28:19 nojhan Exp $
+ *  $Id: itsProblem.hpp,v 1.5 2005/11/04 18:00:21 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -214,6 +214,8 @@ class itsProblemFactory
 public:
   //! Base method for instanciation in the abstract factory
   virtual itsProblem* create() =0;// const = 0;
+
+  virtual ~itsProblemFactory() =0;
 };
 
 #endif
