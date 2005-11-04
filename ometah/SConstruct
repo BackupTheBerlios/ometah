@@ -1,8 +1,7 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.13 2005/07/20 14:06:14 nojhan Exp $
-#  Copyright : Université Paris 12 Val-de-Marne
-#              (61 avenue du Général de Gaulle, 94010, Créteil, France)
+#  $Id: SConstruct,v 1.14 2005/11/04 16:23:17 nojhan Exp $
+#  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
 
@@ -89,6 +88,12 @@ else:
 ometah = env.Program( target = 'ometah', source = 'interface/ometah.cpp', \
     LIBS=['common','communication','metaheuristic','problem','problem_CEC05','interface', \
           'estimation', 'random', 'sampling', 'neldermead','antcolony', 'genetic'] )
+
+
+# simple example
+ometah_example_simple = env.Program( target = 'example', source = 'interface/example_simple.cpp', \
+    LIBS=['common','communication','metaheuristic','problem','problem_CEC05', \
+          'estimation'] )
 
 
 Default(ometah)
