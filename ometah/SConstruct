@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.14 2005/11/04 16:23:17 nojhan Exp $
+#  $Id: SConstruct,v 1.15 2005/11/05 10:43:06 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -22,6 +22,10 @@
 # 02111-1307 USA
 
 
+################################################################################
+# Environment
+################################################################################
+
 # flags for optimization, use them in production
 foptim = '-fcaller-saves -fcse-follow-jumps -fcse-skip-blocks  \
           -felide-constructors -fexpensive-optimizations -ffast-math \
@@ -36,32 +40,66 @@ fcheck = '-Wall -ansi -pedantic -Wimplicit \
 fdebug = '-ggdb'
 
 # more flags
-fsup = '-Wno-deprecated'
-
-# base directories
-dir_main = ['common',        \
-            'communication', \
-            'metaheuristic', \
-            'problem',       \
-            'interface']
-
-# additionnal directories
-dir_lib = ['problem/CEC05', \
-           'problem/registration', \
-           'metaheuristic/estimation', \
-           'metaheuristic/random', \
-           'metaheuristic/sampling', \
-           'metaheuristic/neldermead', \
-           'metaheuristic/genetic', \
-           'metaheuristic/antcolony']
-           #'interface/registration',
-
+fsup = '-Wno-deprecated -ffast-math'
 
 # setting the environnement
-env = Environment(CCFLAGS = " ".join( [fcheck,fdebug,fsup] ), LIBPATH = dir_main+dir_lib )
+env = Environment(CCFLAGS = " ".join( [fcheck,fdebug,fsup] ) )
 
 
+################################################################################
+# Source files
+################################################################################
+
+# Common
+common = ['itsPoint.cpp','geometry.cpp','itsSet.cpp','logic.cpp','matrix.cpp', \
+          'random.cpp','string.cpp']
+common = [ 'common/'+i for i in common]
+          
+# Interface
+interface = ['itsArgument.cpp']
+interface = [ 'interface/'+i for i in interface]
+
+# Problems
+problem = ['itsProblem.cpp']
+problem = [ 'problem/'+i for i in problem]
+
+cec = ['itsCEC05_SSRPO_Base.cpp', 'itsCEC05_SSRPO_Problems.cpp']
+cec = [ 'problem/CEC05/'+i for i in cec]
+
+# Communication
+communication = ['itsCommunication.cpp', \
+                'itsCommunicationClient.cpp', 'itsCommunicationServer.cpp', \
+                'itsCommunicationClient_embedded.cpp', 'itsCommunicationServer_embedded.cpp']
+communication = [ 'communication/'+i for i in communication]
+
+# Metaheuristic
+
+metaheuristic = ['itsMetaheuristic.cpp']
+metaheuristic = [ 'metaheuristic/'+i for i in metaheuristic]
+
+estimation = ['itsEstimationOfDistribution.cpp','itsHybridEstimationOfDistribution.cpp']
+estimation = [ 'metaheuristic/estimation/'+i for i in estimation]
+
+sampling = ['itsGridSampling.cpp']
+sampling = [ 'metaheuristic/sampling/'+i for i in sampling]
+
+random = ['itsRandom.cpp']
+random = [ 'metaheuristic/random/'+i for i in random]
+
+neldermead = ['itsNelderMead.cpp']
+neldermead = [ 'metaheuristic/neldermead/'+i for i in neldermead]
+
+genetic = ['itsJpGenetic.cpp', 'itsSimpleGenetic.cpp']
+genetic = [ 'metaheuristic/genetic/'+i for i in genetic]
+
+antcolony = ['itsHybridContinuousInteractingAntColony.cpp']
+antcolony = [ 'metaheuristic/antcolony/'+i for i in antcolony]
+
+
+################################################################################
 # Configuration
+################################################################################
+
 conf = Configure(env)
 have_cimg = False
 if conf.CheckCXXHeader('CImg.h'):
@@ -69,31 +107,37 @@ if conf.CheckCXXHeader('CImg.h'):
 env = conf.Finish()
 
 
-# other SConscript files
-Export('env')
-SConscript( [ l+'/SConscript' for l in dir_main ] )
+################################################################################
+# Targets
+################################################################################
 
-
-# targets
 # registration interface must have the CImg library available
-if have_cimg == False:
-    print "You must have the CImg.h library installed to build ometah_registration"
-else:
-    ometah_registration = env.Program( target = 'ometah_registration', \
-        source = 'interface/registration/ometah_registration.cpp', \
-        LIBS=['problem_registration','common','communication','metaheuristic','interface', \
-            'sampling', 'estimation', 'neldermead', 'antcolony', 'genetic'] )
+#~ if have_cimg == False:
+    #~ print "You must have the CImg.h library installed to build ometah registration"
+#~ else:
+    #~ registration = ['problem/registration/itsRegistration.cpp']
 
+    #~ #library flags for CImg library
+    #~ #fcimg = '-ffast-math' #-I/usr/X11R6/include -L/usr/X11R6/lib -lX11 -lpthread'
+    #~ #env_registration = env.Copy()
+    #~ #env_registration.Append( CCFLAGS = " "+fcimg )
+  
+    #~ problem = ['itsRegistration.cpp']
+    #~ oregistration = env.Program( target = 'oregistration', \
+        #~ source = ['interface/registration/ometah_registration.cpp'] \
+        #~ + registration + common + communication + metaheuristic + interface \
+        #~ + sampling + estimation + neldermead + antcolony + genetic )
+
+
+# shared library
+shared = env.SharedLibrary( target = 'ometah', \
+    source = common + communication + metaheuristic + problem + cec + interface \
+    + estimation + random + sampling + neldermead + antcolony + genetic )
+    
 # standard interface
-ometah = env.Program( target = 'ometah', source = 'interface/ometah.cpp', \
-    LIBS=['common','communication','metaheuristic','problem','problem_CEC05','interface', \
-          'estimation', 'random', 'sampling', 'neldermead','antcolony', 'genetic'] )
-
+ometah = env.Program( target = 'ometah', source = ['interface/ometah.cpp'], LIBS='ometah', LIBPATH='.') 
 
 # simple example
-ometah_example_simple = env.Program( target = 'example', source = 'interface/example_simple.cpp', \
-    LIBS=['common','communication','metaheuristic','problem','problem_CEC05', \
-          'estimation'] )
-
+example = env.Program( target = 'example', source = ['interface/example_simple.cpp'], LIBS='ometah', LIBPATH='.') 
 
 Default(ometah)

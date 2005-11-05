@@ -9,7 +9,7 @@ Blabla<PROJECT_DESCRIPTION_END>
 <CONFIG_LIBS_END>
 <CONFIG_HEADERS_START>
 /***************************************************************************
- *  $Id: ometah.prj,v 1.10 2005/11/04 21:36:20 nojhan Exp $
+ *  $Id: ometah.prj,v 1.11 2005/11/05 10:43:06 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -75,6 +75,7 @@ anjuta.program.arguments=
 preferences.build.option.jobs=0
 preferences.build.option.silent=0
 preferences.build.option.autosave=1
+preferences.anjuta.make.options=registration
 preferences.make=scons
 preferences.build.option.keep.going=1
 preferences.build.option.warn.undef=0
@@ -158,7 +159,12 @@ module.source.files=\
 	metaheuristic/antcolony/itsHybridContinuousInteractingAntColony.cpp\
 	metaheuristic/genetic/itsJpGenetic.cpp\
 	metaheuristic/genetic/itsSimpleGenetic.cpp\
-	interface/example_simple.cpp
+	interface/example_simple.cpp\
+	metaheuristic/antcolony/SConscript\
+	metaheuristic/genetic/SConscript\
+	metaheuristic/neldermead/SConscript\
+	metaheuristic/random/SConscript\
+	metaheuristic/sampling/SConscript
 
 module.pixmap.name=.
 module.pixmap.type=
