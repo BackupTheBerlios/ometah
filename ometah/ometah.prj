@@ -9,7 +9,7 @@ Blabla<PROJECT_DESCRIPTION_END>
 <CONFIG_LIBS_END>
 <CONFIG_HEADERS_START>
 /***************************************************************************
- *  $Id: ometah.prj,v 1.11 2005/11/05 10:43:06 nojhan Exp $
+ *  $Id: ometah.prj,v 1.12 2005/11/05 10:47:09 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -143,28 +143,15 @@ module.source.files=\
 	problem/CEC05/itsCEC05_SSRPO_Problems.cpp\
 	problem/registration/itsRegistration.cpp\
 	interface/registration/ometah_registration.cpp\
-	common/SConscript\
-	communication/SConscript\
-	interface/SConscript\
-	metaheuristic/SConscript\
-	problem/SConscript\
-	problem/CEC05/SConscript\
-	problem/registration/SConscript\
 	metaheuristic/random/itsRandom.cpp\
 	metaheuristic/sampling/itsGridSampling.cpp\
 	metaheuristic/estimation/itsEstimationOfDistribution.cpp\
 	metaheuristic/neldermead/itsNelderMead.cpp\
-	metaheuristic/estimation/SConscript\
 	metaheuristic/estimation/itsHybridEstimationOfDistribution.cpp\
 	metaheuristic/antcolony/itsHybridContinuousInteractingAntColony.cpp\
 	metaheuristic/genetic/itsJpGenetic.cpp\
 	metaheuristic/genetic/itsSimpleGenetic.cpp\
-	interface/example_simple.cpp\
-	metaheuristic/antcolony/SConscript\
-	metaheuristic/genetic/SConscript\
-	metaheuristic/neldermead/SConscript\
-	metaheuristic/random/SConscript\
-	metaheuristic/sampling/SConscript
+	interface/example_simple.cpp
 
 module.pixmap.name=.
 module.pixmap.type=
@@ -183,34 +170,7 @@ module.doc.type=
 module.doc.files=\
 	COPYING\
 	AUTHORS\
-	README\
-	doc/coding_guidelines/coding_guidelines.html\
-	doc/coding_guidelines/node1.html\
-	doc/coding_guidelines/node2.html\
-	doc/coding_guidelines/node3.html\
-	doc/coding_guidelines/node4.html\
-	doc/coding_guidelines/node5.html\
-	doc/coding_guidelines/node6.html\
-	doc/coding_guidelines/node7.html\
-	doc/coding_guidelines/node8.html\
-	doc/coding_guidelines/node9.html\
-	doc/coding_guidelines/node10.html\
-	doc/coding_guidelines/node11.html\
-	doc/coding_guidelines/index.html\
-	doc/roadmap/roadmap.html\
-	doc/roadmap/node1.html\
-	doc/roadmap/node2.html\
-	doc/roadmap/node3.html\
-	doc/roadmap/node4.html\
-	doc/roadmap/node5.html\
-	doc/roadmap/node6.html\
-	doc/roadmap/index.html\
-	doc/user_guide/user_guide.html\
-	doc/user_guide/node1.html\
-	doc/user_guide/node2.html\
-	doc/user_guide/node3.html\
-	doc/user_guide/node4.html\
-	doc/user_guide/index.html
+	README
 
 module.po.files=
 
