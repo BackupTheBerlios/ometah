@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.19 2005/11/08 15:14:17 nojhan Exp $
+#  $Id: SConstruct,v 1.20 2005/11/08 15:27:41 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -40,7 +40,7 @@ fcheck = '-Wall -ansi -pedantic -Wimplicit \
 fdebug = '-ggdb'
 
 # more flags
-fsup = '-Wno-deprecated -ffast-math'
+fsup = '-Wno-deprecated'
 
 # setting the environnement
 env = Environment()
@@ -49,13 +49,13 @@ env = Environment()
 opts = Options()
 opts.AddOptions( \
     BoolOption('static', 'Build a static version',0), \
-    BoolOption('debug', 'Compile with the debug informations',1) \
+    BoolOption('debug', 'Compile with the debug informations',0) \
 )
 opts.Update(env)
 
 flags=""
 if env['debug']==1:
-    flags = " ".join( [fcheck,fsup,fdebug] )
+    flags = " ".join( [fcheck,fdebug,fsup] )
 else:
     flags = " ".join( [fcheck,fsup] )
 
