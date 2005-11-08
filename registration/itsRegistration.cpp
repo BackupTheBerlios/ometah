@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.cpp,v 1.1 2005/11/05 21:14:02 nojhan Exp $
+ *  $Id: itsRegistration.cpp,v 1.2 2005/11/08 16:45:27 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -38,6 +38,8 @@ using namespace cimg_library;
 
 itsRegistration::itsRegistration()
 {
+	setObjectiveFunction("similarity"); // similarity or mutual
+	
     // informations 
     setName("Image registration");
     setKey("Registration");
@@ -68,18 +70,12 @@ itsRegistration::itsRegistration()
     setBoundsCoefficient(0.06);
 }
 
-itsPoint itsRegistration::objectiveFunction(itsPoint point)
+
+itsPoint itsRegistration::objectiveFunction_similarity(itsPoint point)
 {
+	
     unsigned int rx = (unsigned int) floor( point.getSolution()[0] );
     unsigned int ry = (unsigned int) floor( point.getSolution()[1] );
-
-    // if we ask for a rotation and a zoom
-    if(point.getSolution().size()==4) {
-        const float angle = point.getSolution()[2];
-        const float zoom = point.getSolution()[3];
-    
-        img2 = img2.get_rotate( angle, 0.5f*img2.width, 0.5f*img2.height, zoom, 0 );
-    }
 
     // similarity of the registered images
     double similarity = 0;
@@ -106,6 +102,30 @@ itsPoint itsRegistration::objectiveFunction(itsPoint point)
 
     vector<double> val(1,similarity);
     point.setValues( val );
+
+	return point;
+}
+
+itsPoint itsRegistration::objectiveFunction_mutual(itsPoint point)
+{
+	return objectiveFunction_similarity(point);
+}
+
+itsPoint itsRegistration::objectiveFunction(itsPoint point)
+{
+    // if we ask for a rotation and a zoom
+    if(point.getSolution().size()==4) {
+        const float angle = point.getSolution()[2];
+        const float zoom = point.getSolution()[3];
+    
+        img2 = img2_initial.get_rotate( angle, 0.5f*img2_initial.width, 0.5f*img2_initial.height, zoom, 0 );
+    }
+	
+	if (objectiveFunction_choice=="similarity") {
+		point = objectiveFunction_similarity(point);
+	} else {
+		point = objectiveFunction_mutual(point);
+	}
 
     return point;
 }
@@ -146,6 +166,9 @@ void itsRegistration::resizeImages()
 
     setBoundsMinima( bmin );
     setBoundsMaxima( bmax );
+	
+	// store img2
+	img2_initial = img2;
 }
 
 
@@ -174,6 +197,16 @@ float itsRegistration::getBoundsCoefficient()
     return this->boundsCoefficient;
 }
 
+void itsRegistration::setObjectiveFunction(string name)
+{
+	if(name=="similarity" || name=="mutual") {
+		objectiveFunction_choice = name;
+	} else {
+		ostringstream msg;
+		msg << "Error: unknown objective function (" << name << ")";
+		throw msg.str().c_str();
+	}
+}
 
 itsProblem * itsRegistrationFactory::create()
 {

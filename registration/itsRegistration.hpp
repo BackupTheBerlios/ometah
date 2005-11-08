@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRegistration.hpp,v 1.1 2005/11/05 21:14:02 nojhan Exp $
+ *  $Id: itsRegistration.hpp,v 1.2 2005/11/08 16:45:27 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -30,6 +30,8 @@
 #include <ometah/common/itsPoint.hpp>
 #include <ometah/problem/itsProblem.hpp>
  
+#include<string>
+ 
 using namespace cimg_library;
 
 
@@ -45,8 +47,22 @@ protected:
     //! A coefficient to limit the maximum bounds of x/y registration
     float boundsCoefficient;
 
-    //! resize images so that their sizes match
+    //! Resize images so that their sizes match
     void resizeImages();
+
+	//! Objective function used
+	string objectiveFunction_choice;
+
+    //! Temporary image for img2 to be rotated
+    CImg<unsigned char> img2_initial;
+
+protected:
+	//! Compute the similarity
+    itsPoint objectiveFunction_similarity(itsPoint point);
+
+	//! Compute the mutual information
+    itsPoint objectiveFunction_mutual(itsPoint point);
+
 
 public:
 
@@ -55,9 +71,12 @@ public:
 
     //! The second image
     CImg<unsigned char> img2;
-  
 
+  
+	//! Constructor
     itsRegistration();
+
+	//! The objective function
     itsPoint objectiveFunction(itsPoint point);
 
     //! Choose the two images
@@ -68,6 +87,9 @@ public:
 
     //! Return the bounds coefficient
     float getBoundsCoefficient();
+	
+	//! Choose the objective function to use
+	void setObjectiveFunction(string name);
 };
 
 class itsRegistrationFactory : public itsProblemFactory
