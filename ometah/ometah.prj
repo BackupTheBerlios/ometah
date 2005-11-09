@@ -9,7 +9,7 @@ Blabla<PROJECT_DESCRIPTION_END>
 <CONFIG_LIBS_END>
 <CONFIG_HEADERS_START>
 /***************************************************************************
- *  $Id: ometah.prj,v 1.12 2005/11/05 10:47:09 nojhan Exp $
+ *  $Id: ometah.prj,v 1.13 2005/11/09 10:53:03 nojhan Exp $
  *  Copyright : Université Paris 12 Val-de-Marne
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -75,7 +75,6 @@ anjuta.program.arguments=
 preferences.build.option.jobs=0
 preferences.build.option.silent=0
 preferences.build.option.autosave=1
-preferences.anjuta.make.options=registration
 preferences.make=scons
 preferences.build.option.keep.going=1
 preferences.build.option.warn.undef=0
@@ -141,8 +140,6 @@ module.source.files=\
 	problem/CEC05/itsCEC05_SSRPO_Base.cpp\
 	interface/itsArgument.cpp\
 	problem/CEC05/itsCEC05_SSRPO_Problems.cpp\
-	problem/registration/itsRegistration.cpp\
-	interface/registration/ometah_registration.cpp\
 	metaheuristic/random/itsRandom.cpp\
 	metaheuristic/sampling/itsGridSampling.cpp\
 	metaheuristic/estimation/itsEstimationOfDistribution.cpp\

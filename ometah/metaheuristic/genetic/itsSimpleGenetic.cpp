@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.3 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.4 2005/11/09 10:53:03 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -112,9 +112,9 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
   // ~ find a point with uniform proba in hypercube of parents coords.
   for (int i=0; i<this->problem->getDimension(); i++) {
 
-    alpha = drand48();
+    alpha = rand();
     bsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
-    alpha = drand48();
+    alpha = rand();
     gsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
   }
     
@@ -137,7 +137,7 @@ itsPoint itsSimpleGenetic::mutation(itsPoint point)
     proba = 0;
   }
   else
-    proba = drand48();
+    proba = rand();
     
   if ( proba > mutationProba ) {
     // no mutation

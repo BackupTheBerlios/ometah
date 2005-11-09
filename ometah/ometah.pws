@@ -30,9 +30,6 @@ RunInTerminal=true
 [Project State]
 clean before build=false
 
-[filelist]
-0=/home/nojhan/travail/openMetaheuristic/source/ometah/SConstruct
-
 [Project Tree]
 0=0
 1=0:0

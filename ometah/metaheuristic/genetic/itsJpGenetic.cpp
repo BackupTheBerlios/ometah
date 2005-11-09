@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.7 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.8 2005/11/09 10:53:03 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -112,9 +112,9 @@ vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
   // ~ find a point with uniform proba in hypercube of parents coords.
   for (int i=0; i<this->problem->getDimension(); i++) {
 
-    alpha = drand48();
+    alpha = rand();
     bsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
-    alpha = drand48();
+    alpha = rand();
     gsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
   }    
   boy.setSolution( bsol );
@@ -137,10 +137,10 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
   
   // if current optimal point, make a partial mutation
   if ( evaluate(point).getValues()[0] > sample[0].getValues()[0] ) {
-    proba = mutationProba * drand48(); // force mutation
+    proba = mutationProba * rand(); // force mutation
   }
   else
-    proba = drand48();
+    proba = rand();
     
   if ( proba > mutationProba ) {
     // no mutation
@@ -159,8 +159,8 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
       for ( int i=0; i<this->problem->getDimension(); i++) {
       
 	// P(up) = P(down) = P(no change) = 0.3
-	proba = drand48();
-	coef = drand48();
+	proba = rand();
+	coef = rand();
 
 	// calcul new coordinate, and check if its into bounds
 	if ( proba < 0.3333 ){
