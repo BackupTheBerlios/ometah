@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.21 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.22 2005/11/10 09:48:01 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -252,9 +252,11 @@ bool itsMetaheuristic::isStoppingCriteria()
     return true;
   
   // if the minimum value has been reached
-  } else if (getOptimum().getValues()[0] <= getValueMin() ) {
-    printLog("steps","Minimum value reached");
-    return true;
+  } else if (getSampleSizeCurrent()>0) { // if we have a sample
+    if (getOptimum().getValues()[0] <= getValueMin() ) {
+      printLog("steps","Minimum value reached");
+      return true;
+    }
   
   // if we reach some internal stopping criterion
   } else if (isInternalStoppingCriterion) {
