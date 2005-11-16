@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.20 2005/11/08 15:27:41 nojhan Exp $
+#  $Id: SConstruct,v 1.21 2005/11/16 18:33:27 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -70,7 +70,6 @@ scons [options...] [name=val...] [targets...]
 Targets: 
 scons ometah: build the main interface
 scons example: build a simple example interface
-scons shared: build the shared library version alone (you must set the static option to 0)
 scons install: install the files
 
 Flags:""" + \
@@ -148,17 +147,18 @@ antcolony = [ 'metaheuristic/antcolony/'+i for i in antcolony]
 ################################################################################
 
 if env['static']==1:
+    # static library
+    lib = env.StaticLibrary( target = 'ometah', \
+        source = common + communication + metaheuristic + problem + cec + interface \
+        + estimation + random + sampling + neldermead + antcolony + genetic )
+        
     # static interface
     Execute(Delete('ometah'))
-    ometah = env.Program( target = 'ometah', source = ['interface/ometah.cpp'] \
-        + common + communication + metaheuristic + problem + cec + interface \
-        + estimation + random + sampling + neldermead + antcolony + genetic )
+    ometah = env.Program( target = 'ometah', source = ['interface/ometah.cpp'], LIBS='ometah', LIBPATH='.' )
         
     # simple example
     Execute(Delete('example'))
-    example = env.Program( target = 'example', source = ['interface/example_simple.cpp'] \
-        + common + communication + metaheuristic + problem + cec + interface \
-        + estimation + neldermead ) 
+    example = env.Program( target = 'example', source = ['interface/example_simple.cpp'], LIBS='ometah', LIBPATH='.' ) 
 
     # installation
     env.Install('/usr/local/bin', ometah)
@@ -166,7 +166,7 @@ if env['static']==1:
     
 else:
     # shared library
-    shared = env.SharedLibrary( target = 'ometah', \
+    lib = env.SharedLibrary( target = 'ometah', \
         source = common + communication + metaheuristic + problem + cec + interface \
         + estimation + random + sampling + neldermead + antcolony + genetic )
         
@@ -179,7 +179,7 @@ else:
     example = env.Program( target = 'example', source = ['interface/example_simple.cpp'], LIBS='ometah', LIBPATH='.') 
 
     # installation
-    env.Install('/usr/lib', shared)
+    env.Install('/usr/lib', lib)
     env.Install('/usr/local/bin', ometah)
     env.Alias('install', '/usr/lib')
     env.Alias('install', '/usr/local/bin')
