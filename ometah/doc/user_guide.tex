@@ -1,10 +1,33 @@
 %% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[frenchb]{article}
-\usepackage[OT1]{fontenc}
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
+\usepackage{float}
+\usepackage{graphicx}
 
 \makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}
+\floatname{algorithm}{Algorithm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+ \newenvironment{lyxcode}
+   {\begin{list}{}{
+     \setlength{\rightmargin}{\leftmargin}
+     \setlength{\listparindent}{0pt}% needed for AMS classes
+     \raggedright
+     \setlength{\itemsep}{0pt}
+     \setlength{\parsep}{0pt}
+     \normalfont\ttfamily}%
+    \item[]}
+   {\end{list}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{babel}
+
 \usepackage{babel}
 \makeatother
 \begin{document}
@@ -12,6 +35,169 @@
 \title{User guide}
 
 \maketitle
+
+\section{Open Metaheuristic modules}
+
+The Open metaheuristics library is separated in several modules:
+
+\begin{description}
+\item [ometah:]the core of the library and the main command line interface,
+\item [ometahlab:]a set of scripts for algorithms tests and graphical outputs,
+\item [registration:]a example of application (rigid registration of images).
+\end{description}
+
+\section{Main user interface}
+
+The current command line options can be listed by typing:
+
+\begin{lyxcode}
+ometah~-{}-help
+\end{lyxcode}
+
+\subsection{Basic features}
+
+
+\subsection{Advanced features}
+
+
+\section{Code structure}
+
+
+\subsection{Framework}
+
+
+\subsubsection{Adaptive Learning Search}
+
+In oMetah, metaheuristics are considered as adaptive learning searches
+(ALS). The basic steps of such iterative algorithms are shown on the
+algorithm~\ref{alg:ALS_base}.
+
+%
+\begin{algorithm}
+
+\caption{\label{alg:ALS_base}Adaptive Learning Search basic algorithm.}
+
+\begin{description}
+\item [Initialize]a sample (a set of points);
+\item [Iterate]until stopping criteria:
+
+\begin{description}
+\item [Using]a sample of the objective function;
+\item [Learning:]the algorithm extracts {}``interesting'' informations
+from the sample;
+\item [Diversification:]it searches for new solutions;
+\item [Intensification:]it searches to improve the existing sample;
+\item [Replace]the previous sample with the new one.
+\end{description}
+\item [End]~
+\end{description}
+
+\end{algorithm}
+
+
+
+\subsubsection{Components}
+
+The framework is composed of three main component: \emph{metaheuristics},
+\emph{problems} and \emph{communication}. In order to facilitate an
+easy connection with third party softwares, metaheuristics and problems
+are separated. Metaheuristics are asking problems the value(s) of
+a point through a communication interface. The communication component
+follows a client/server design, permiting to use several communication
+protocols. 
+
+%
+\begin{figure}
+\begin{center}\includegraphics[%
+  scale=0.4]{ometah_communication.pdf}\end{center}
+
+
+\caption{\label{cap:UML-communication}UML diagram of relationships between
+metaheuristics and problems in \emph{oMetah}.}
+\end{figure}
+
+
+
+\subsubsection{Classes}
+
+The structure of the framework follows two design patterns: the \emph{template}
+and the \emph{abstract factory}. The abstract factory is only used
+in the main interface, to facilitate the manipulation of several instances
+of different classes into a single container. The template pattern
+is used in the three main component of the framework.
+
+
+\paragraph{Creating classes with the template}
+
+The Template Method is a quite simple behavioral pattern, it only
+consists in defining the skeleton of an algorithm, while allowing
+subclasses to define particular steps of the algorithm. It can be
+used for the metaheuristics classes (see figure \ref{cap:UML-template}),
+which need to share basic attributes or methods (sample, output, etc.)
+but will implement differently common methods (diversification, intensification
+and learning) that will be called by the main procedure. The same
+structure is used for both problems and communication interfaces.
+
+%
+\begin{figure}
+\begin{center}\includegraphics[%
+  scale=0.4]{als_template.pdf}\end{center}
+
+
+\caption{\label{cap:UML-template}UML diagram of the template pattern, used
+to implement a metaheuristic as an \emph{ALS}.}
+\end{figure}
+
+
+
+\paragraph{Manipulating instances with the abstract factory and the Set}
+
+Abstract Factory belongs to the class of creation design patterns.
+It provides an easy way to create objects sharing common properties
+but one won't have to explicitly specify which classes. In a simple
+way, one will define one abstract factory, as an instance of an abstract
+class, that will be used to create instances of derived classes, via
+their own factories.
+
+For example, an abstract factory would allow to create instances of
+specific metaheuristics, so as to, for example, add them to a specific
+set, by using the same interface for all. One only has to define a
+subclass of the metaheuristic factory for each metaheuristic that
+we program (see figure \ref{cap:UML-abstract-factory}). As a result,
+one has not to specify the type of objects wanted, it even remains
+unknown. 
+
+%
+\begin{figure}
+\begin{center}\includegraphics[%
+  scale=0.4]{als_manipulating.pdf}\end{center}
+
+
+\caption{\label{cap:UML-abstract-factory}UML diagram of the abstract factory
+pattern, used to manipulate metaheuristics implementations.}
+\end{figure}
+
+
+%
+\begin{figure}
+\begin{center}\includegraphics[%
+  scale=0.4]{ometah_set.pdf}\end{center}
+
+
+\caption{\label{cap:UML-set-class}UML diagram of the set class.}
+\end{figure}
+
+
+In order to handle the different object types, we use an abstraction
+of a set of objects (see figure~\ref{cap:UML-set-class}). Thanks
+to this class and to the abstract factory pattern, it is possible
+to manipulate several objects sharing a common interface.This class
+can be used to connect several metaheuristics with several problems
+through several communication protocols.
+
+
+\subsection{Test toolbox}
+
 
 \section{Howto}
 
@@ -21,6 +207,18 @@
 
 \subsubsection{Simple Optimization}
 
+Optimizing the Sphere problem with the HCIAC algorithm, with a maximum
+of 100 evaluations:
+
+\begin{lyxcode}
+ometah~-p~Sphere~-m~HCIAC~-e~100
+\end{lyxcode}
+Optimizing the Rosenbrock problem on 3 dimensions with the CHEDA algorithm,
+with 100 evaluation over 10 iterations for a sample of 10 points:
+
+\begin{lyxcode}
+ometah~-p~Rosenbrock~-d~3~-m~CHEDA~-e~100~-i~10~-s~10
+\end{lyxcode}
 
 \subsubsection{Testing a metaheuristic on one problem}
 
@@ -47,28 +245,4 @@
 
 
 \subsubsection{Create a user interface}
-
-
-\section{Classical user interface}
-
-
-\subsection{Basic features}
-
-
-\subsection{Advanced features}
-
-
-\section{Code structure}
-
-
-\subsection{Metaheuristics}
-
-
-\subsection{Problems}
-
-
-\subsection{Communication interface}
-
-
-\subsection{Test toolbox}
 \end{document}
