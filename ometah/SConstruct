@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.22 2005/11/16 18:41:02 nojhan Exp $
+#  $Id: SConstruct,v 1.23 2005/11/24 22:25:27 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -60,7 +60,6 @@ else:
     flags = " ".join( [fcheck,fsup] )
 
 env.Replace( CCFLAGS = flags )
-
 
 Help( \
 """
@@ -133,6 +132,9 @@ genetic = [ 'metaheuristic/genetic/'+i for i in genetic]
 antcolony = ['itsHybridContinuousInteractingAntColony.cpp']
 antcolony = [ 'metaheuristic/antcolony/'+i for i in antcolony]
 
+annealing = ['itsSimulatedAnnealing.cpp']
+annealing = [ 'metaheuristic/annealing/'+i for i in annealing]
+
 
 ################################################################################
 # Configuration
@@ -146,13 +148,15 @@ antcolony = [ 'metaheuristic/antcolony/'+i for i in antcolony]
 # Targets
 ################################################################################
 
+all = common + communication + metaheuristic + problem + cec + interface \
+      + estimation + random + sampling + neldermead + antcolony + genetic + annealing 
+
 if env['static']==1:
     # static library
     Execute(Delete('libometah.so'))
     lib = env.StaticLibrary( target = 'ometah', \
-        source = common + communication + metaheuristic + problem + cec + interface \
-        + estimation + random + sampling + neldermead + antcolony + genetic )
-        
+        source = all)
+    
     # static interface
     Execute(Delete('ometah'))
     ometah = env.Program( target = 'ometah', source = ['interface/ometah.cpp'], LIBS='ometah', LIBPATH='.' )
@@ -169,8 +173,7 @@ else:
     # shared library
     Execute(Delete('libometah.a'))
     lib = env.SharedLibrary( target = 'ometah', \
-        source = common + communication + metaheuristic + problem + cec + interface \
-        + estimation + random + sampling + neldermead + antcolony + genetic )
+        source = all )
         
     # standard interface
     Execute(Delete('ometah'))
