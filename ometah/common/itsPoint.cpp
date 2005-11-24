@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.cpp,v 1.4 2005/11/04 17:28:12 nojhan Exp $
+ * $Id: itsPoint.cpp,v 1.5 2005/11/24 22:19:17 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -68,7 +68,7 @@ bool isValueSmaller(itsPoint p1, itsPoint p2, int dimension)
     if ( p1.getValues().size() <= 0 || p2.getValues().size() <= 0 ) {
       ostringstream msg;
       msg << "ErrorSize: point has no value" 
-          << "(p1: " << p1.getValues().size() 
+          << " (p1: " << p1.getValues().size() 
           << " values, p2: " << p2.getValues().size()
           << " values)";
       throw msg.str().c_str();
