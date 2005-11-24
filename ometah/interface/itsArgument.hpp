@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.9 2005/11/04 21:36:21 nojhan Exp $
+ *  $Id: itsArgument.hpp,v 1.10 2005/11/24 22:22:01 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -30,8 +30,8 @@
 
 #include "../common/logic.hpp"
 
-#define VERSION "0.2.2"
-#define USAGE "usage" // string value doesn't matter
+#define VERSION_KEY "version_key"
+#define USAGE_KEY "usage_key" // string value doesn't matter
 
 using namespace std;
 

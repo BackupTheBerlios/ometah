@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.13 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: itsArgument.cpp,v 1.14 2005/11/24 22:22:01 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -111,11 +111,11 @@ itsArgumentParser::itsArgumentParser(int argc, vector<string> argv)
 void itsArgumentParser::searchEndFlags() 
 {
   if (this->defArg("-V", "--version", "check version", false, "", "")){
-    throw VERSION;  
+    throw VERSION_KEY;  
   }
   if (this->defArg("-h", "--help", "show help", false, "", "") ||
       this->defArg("-u", "--usage", "show usage informations", false, "", "")){
-    throw USAGE;
+    throw USAGE_KEY;
   }
 }
 
