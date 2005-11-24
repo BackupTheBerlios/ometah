@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.22 2005/11/10 09:48:01 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.23 2005/11/24 22:24:25 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -242,7 +242,7 @@ void itsMetaheuristic::parameterParseCommon()
 bool itsMetaheuristic::isStoppingCriteria()
 {
   // if the maximum iterations number has been reached
-  if(iterationsCurrent>=iterationsMaxNumber) {
+  if ( iterationsCurrent >= iterationsMaxNumber ) {
     printLog("steps","Maximum iterations reached");
     return true;
 
@@ -252,14 +252,14 @@ bool itsMetaheuristic::isStoppingCriteria()
     return true;
   
   // if the minimum value has been reached
-  } else if (getSampleSizeCurrent()>0) { // if we have a sample
-    if (getOptimum().getValues()[0] <= getValueMin() ) {
+  } else if ( getSampleSizeCurrent() > 0 ) { // if we have a sample
+    if ( getOptimum().getValues()[0] <= getValueMin() ) {
       printLog("steps","Minimum value reached");
       return true;
     }
   
   // if we reach some internal stopping criterion
-  } else if (isInternalStoppingCriterion) {
+  } else if ( isInternalStoppingCriterion ) {
     printLog("steps","Internal stopping criterion reached");
     return true;
   
@@ -267,6 +267,8 @@ bool itsMetaheuristic::isStoppingCriteria()
     // no stopping criterion reached
     return false;
   }
+
+  return false;
 }
 
 
