@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.14 2005/11/04 21:36:21 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.15 2005/11/24 22:23:44 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -51,6 +51,8 @@
 #include "../metaheuristic/genetic/itsSimpleGenetic.hpp"
 #include "../metaheuristic/genetic/itsJpGenetic.hpp"
 
+#include "../metaheuristic/annealing/itsSimulatedAnnealing.hpp"
+
 // problems
 #include "../problem/CEC05/itsCEC05_SSRPO_Base.hpp"
 
@@ -60,5 +62,7 @@
 
 // interfaces
 #include "itsArgument.hpp"
+
+#define VERSION "0.2.2"
 
 using namespace std;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.19 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.20 2005/11/24 22:23:44 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -69,6 +69,9 @@ int main(int argc, char ** argv)
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
   factoryMetaheuristics = new itsHybridContinuousInteractingAntColonyFactory;
+  setMetaheuristic.add( factoryMetaheuristics->create() );
+  
+  factoryMetaheuristics = new itsSimulatedAnnealingFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
   
@@ -194,11 +197,13 @@ int main(int argc, char ** argv)
     argumentParser.searchEndFlags();
   }
   catch (const char * s) {
-    if ( !strcmp(VERSION, s) ) {
-      cerr << s << endl;
+    if ( !strcmp(VERSION_KEY, s) ) {
+      cout << VERSION << endl;
       return -1;
     }
-    else if (!strcmp(USAGE, s)) {
+    else if (!strcmp(USAGE_KEY, s)) {
+      cout << "Open Metaheuristics, a free framework for designing hard optimization algorithms." << endl;
+      cout << "Version " << VERSION << endl;
       argumentParser.usage();
       return -1;
     }
