@@ -1,0 +1,8 @@
+
+env = Environment()
+
+env.Program( 
+    target = 'example', \
+    source = ['example_interface.cpp'], \
+    LIBS='ometah', \
+    LIBPATH='/usr/lib')
