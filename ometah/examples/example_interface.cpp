@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: example_interface.cpp,v 1.1 2005/11/25 18:24:14 nojhan Exp $
+ *  $Id: example_interface.cpp,v 1.2 2005/11/30 21:19:10 nojhan Exp $
  *  Copyright : Free Software Fundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -7,18 +7,9 @@
 /*  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
  *  for difficult optimization.
  */
- 
- 
- 
-// basic classes
-#include <ometah/metaheuristic/itsMetaheuristic.hpp>
-#include <ometah/problem/itsProblem.hpp>
-#include <ometah/communication/itsCommunicationClient.hpp>
-#include <ometah/communication/itsCommunicationServer.hpp>
 
 // metaheuristics
 #include <ometah/metaheuristic/estimation/itsEstimationOfDistribution.hpp>
-
 
 // problems
 #include <ometah/problem/CEC05/itsCEC05_SSRPO_Base.hpp>
