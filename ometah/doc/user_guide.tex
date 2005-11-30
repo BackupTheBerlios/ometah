@@ -56,8 +56,12 @@ ometah~-{}-help
 
 \subsection{Basic features}
 
+todo
+
 
 \subsection{Advanced features}
+
+todo
 
 
 \section{Code structure}
@@ -198,6 +202,8 @@ through several communication protocols.
 
 \subsection{Test toolbox}
 
+todo
+
 
 \section{Howto}
 
@@ -222,27 +228,172 @@ ometah~-p~Rosenbrock~-d~3~-m~CHEDA~-e~100~-i~10~-s~10
 
 \subsubsection{Testing a metaheuristic on one problem}
 
+todo
+
 
 \subsubsection{Testing a metaheuristic on a problem set}
+
+todo
 
 
 \subsubsection{Comparing several metaheuristic}
 
+todo
+
 
 \subsubsection{Advanced comparisons and tests}
+
+todo
 
 
 \subsection{Programming}
 
 
+\subsubsection{Using the framework}
+
+In order to build your own program with the oMetah framework, you
+can either link it with the dynamic library or compile it staticaly.
+In the first case you can use the license you choose, but note that
+in the second case, your program should be released under the LGPL
+terms.
+
+To link your own work with library, you should install the headers
+in the library path of your system (for example \texttt{/usr/local/lib}
+or \texttt{/usr/lib} on a POSIX system).
+
+You should include the headers you want to use, with the following
+instruction: \texttt{\#include <ometah/SUBDIRECTORY/HEADER.hpp>},
+and then compile your program, specifying to the compiler that you
+want to link it dynamically with oMetah.
+
+
+\subsubsection{Building the library}
+
+Open Metaheuristic use scons as a construction tool, to build the
+default targets, simply type \texttt{scons}. All the instructions
+on how to build the library and the official interface are located
+in the \texttt{SConstruct} file. To get some help on what can be built,
+simply try \texttt{scons -h}.
+
+Basically, you can build the official interface and the library, either
+statically or dynamically, and with or without debug informations.
+Some examples:
+
+\begin{itemize}
+\item \texttt{scons ometah static=yes debug=no}: build a static version
+of the main interface, without debugging informations,
+\item \texttt{scons ometah static=0}: build a the shared library and the
+interface dynamically linked,
+\item \texttt{scons -c ometah}: clean the files used to generate the interface,
+\item \texttt{scons -c install}: uninstall the files,
+\item \texttt{scons -c}: clean all the files used for the default build.
+\end{itemize}
+
+\subsubsection{Create a user interface}
+
+You can use the library through the official interface (defined in
+\texttt{interface/ometah.cpp}), but you can also build your own interface.
+An simple example of how to procede is given in \texttt{examples/example\_interface.cpp}.
+
+Firstly, you need to include the headers you want to use: here we
+choose an estimation of distribution algorithm as the metaheuristic,
+some problems from a benchmark and the embedded client/server communication.
+
+\begin{lyxcode}
+\#include~<ometah/metaheuristic/estimation/itsEstimationOfDistribution.hpp>
+
+\#include~<ometah/problem/CEC05/itsCEC05\_SSRPO\_Base.hpp>
+
+\#include~<ometah/communication/itsCommunicationServer\_embedded.hpp>
+
+\#include~<ometah/communication/itsCommunicationClient\_embedded.hpp>
+\end{lyxcode}
+The next step consist in instanciating the objects you will use: the
+metaheuristic, the problem and the communication client/server:
+
+\begin{lyxcode}
+itsEstimationOfDistribution~metaheuristic;
+
+itsAckley~problem;
+
+itsCommunicationClient\_embedded~client;
+
+itsCommunicationServer\_embedded~server;
+\end{lyxcode}
+In order to use the communication client/server approach, you will
+need to specify some options. When using the embedded way, you just
+need to specify pointers to objects:
+
+\begin{lyxcode}
+metaheuristic.problem~=~\&~client;
+
+client.problem~=~\&~server;
+
+server.problem~=~\&~problem;
+\end{lyxcode}
+After all, you just need to start the optimization:
+
+\begin{lyxcode}
+metaheuristic.start();
+\end{lyxcode}
+
 \subsubsection{Add a new metaheuristic}
+
+Adding a metaheuristic consist in using the \texttt{itsMetaheuristic}
+class to define an ALS interface, and implement it.
+
+\begin{lyxcode}
+class~ITSEXAMPLEMETAHEURISTIC~:~public~itsMetaheuristic~
+
+\{~
+
+protected:
+
+ void~learning();
+
+ void~diversification();
+
+ void~intensification();
+
+public:
+
+ ITSEXAMPLEMETAHEURISTIC();
+
+ \textasciitilde{}ITSEXAMPLEMETAHEURISTIC();
+
+\};
+\end{lyxcode}
+There is two important method to implement: the constructor, where
+informations on the method are inserted, and one of the trhee steps
+of the ALS (learning, diversification, intensification). The best
+way is to separate your algorithm in the three steps, but if only
+one is suitable, you can define empty functions.
 
 
 \subsubsection{Add a new problem}
 
+Adding a problem consist in using the \texttt{itsProblem} class to
+define an common interface:
+
+\begin{lyxcode}
+class~ITSEXAMPLEPROBLEM~:~public~itsProblem~
+
+\{
+
+public:
+
+~ITSEXAMPLEPROBLEM();
+
+~itsPoint~objectiveFunction(itsPoint~point);~
+
+\};
+\end{lyxcode}
+The two important method here are the constructor, where characteristics
+of the problem are inserted, and the \texttt{objectiveFunction} method,
+where the concrete problem is implemented.
+
 
 \subsubsection{Add a communication interface}
 
-
-\subsubsection{Create a user interface}
+todo
 \end{document}
