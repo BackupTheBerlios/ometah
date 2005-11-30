@@ -1,8 +1,8 @@
 
 [filenumbers]
-0=309
-1=66
-2=61
+0=1
+1=1
+2=177
 3=49
 4=162
 5=190
@@ -31,11 +31,9 @@ RunInTerminal=true
 clean before build=false
 
 [filelist]
-0=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/itsMetaheuristic.hpp
-1=/home/nojhan/travail/openMetaheuristic/source/ometah/common/itsPoint.hpp
-2=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/annealing/itsSimulatedAnnealing.cpp
-3=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/annealing/itsSimulatedAnnealing.hpp
-4=/home/nojhan/travail/openMetaheuristic/source/ometah/common/random.hpp
+0=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/estimation/itsEstimationOfDistribution.hpp
+1=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/itsMetaheuristic.hpp
+2=/home/nojhan/travail/openMetaheuristic/source/ometah/problem/itsProblem.hpp
 
 [Project Tree]
 0=0
