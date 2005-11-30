@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: example_metaheuristic.hpp,v 1.1 2005/11/25 18:24:14 nojhan Exp $
+ *  $Id: example_metaheuristic.hpp,v 1.2 2005/11/30 21:28:20 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -19,7 +19,7 @@ class ITSEXAMPLEMETAHEURISTIC : public itsMetaheuristic
 {
   
 protected:
-  //! the intensification is a the a method
+  //! the intensification
   void intensification();
       
   //! the diversification
