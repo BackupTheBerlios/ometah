@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.24 2005/11/25 18:30:56 nojhan Exp $
+#  $Id: SConstruct,v 1.25 2005/11/30 21:33:27 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -68,7 +68,6 @@ scons [options...] [name=val...] [targets...]
 
 Targets: 
 scons ometah: build the main interface
-scons example: build a simple example interface
 scons install: install the files
 
 Flags:""" + \
@@ -76,8 +75,8 @@ Flags:""" + \
 """
 Example:
 scons ometah static=yes debug=no: build a static version of the main interface, without debugging informations
-scons example static=0: build a the shared library and the simple interface dynamically linked
-scons -c example: clean the files used to generate the simple interface
+scons ometah static=0: build a the shared library and the interface dynamically linked
+scons -c ometah: clean the files used to generate the interface
 scons -c install: uninstall the files
 scons -c: clean all the files used for the default build
 """
