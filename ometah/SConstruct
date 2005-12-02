@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.26 2005/12/02 14:39:47 nojhan Exp $
+#  $Id: SConstruct,v 1.27 2005/12/02 14:53:43 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -205,7 +205,7 @@ env['BUILDERS']['Zipper'] = zipBuilder
 distDir = 'dist'
 
 # base name of the package
-zipName = "ometah-0.2.2"
+zipName = "ometah-0.2.2"+"_"+os.uname()[0]+"-"+os.uname()[4]
 
 accDir = os.path.join(distDir,zipName)
 
