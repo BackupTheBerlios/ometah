@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.9 2005/11/04 17:28:19 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.10 2005/12/02 14:40:19 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -42,6 +42,7 @@ itsProblem::itsProblem()
   setCitation("");
   setFormula("f(x)");
   
+  dimensionFixed = false;
   setDimension(1);
 
   setBoundsMaximaAll(1);
@@ -100,13 +101,41 @@ unsigned int itsProblem::getDimension()
 
 void itsProblem::setDimension(unsigned int dimension)
 {
-  this->dimension = dimension;
+  // if we can change the dimension
+  if ( isDimensionFixed() == false ) {
+    this->dimension = dimension;
+  
+  // else, if we cannot change the dimension
+  } else {
+    cerr << "Warning: dimension cannot be changed, " 
+         << this->dimension << " will be used." << endl;
+  }
 
   // reinitialization of bounds
   vector<double> n(dimension,0);
   setBoundsMinima( n );
   vector<double> x(dimension,1);
   setBoundsMaxima( x );
+}
+
+
+bool itsProblem::isDimensionFixed()
+{
+    return dimensionFixed;
+}
+  
+
+void itsProblem::setDimensionFixed(unsigned int dimension)
+{
+    dimensionFixed = true;
+
+    this->dimension = dimension;
+
+    // reinitialization of bounds
+    vector<double> n(dimension,0);
+    setBoundsMinima( n );
+    vector<double> x(dimension,1);
+    setBoundsMaxima( x );
 }
 
 

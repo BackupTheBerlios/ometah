@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.6 2005/11/04 21:03:00 nojhan Exp $
+ *  $Id: itsProblem.hpp,v 1.7 2005/12/02 14:40:19 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -65,6 +65,9 @@ protected:
 
   //! Number of variables
   unsigned int dimension;
+  
+  //! If the dimension is fixed or not
+  bool dimensionFixed;
 
   //! The global optima
   /*!
@@ -91,6 +94,12 @@ protected:
     It's the maximal error value with the optimum to get a success when calculating success rate
    */
   float accuracy;
+  
+  
+protected:
+  //! Change the status of the dimension
+  void setDimensionFixed(unsigned int dimension);
+  
   
 public:
   //! Constructor
@@ -124,6 +133,13 @@ public:
   unsigned int getDimension();
   //! Change the dimension
   void setDimension(unsigned int dimension);
+  
+  //! Return the status of the dimension
+  /*!
+      True = dimension cannot be changed
+      False = dimension can be changed
+  */
+  bool isDimensionFixed();
 
   //! Return the formula
   string getFormula();
