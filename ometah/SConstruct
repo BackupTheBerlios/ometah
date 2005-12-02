@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.25 2005/11/30 21:33:27 nojhan Exp $
+#  $Id: SConstruct,v 1.26 2005/12/02 14:39:47 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -180,6 +180,52 @@ else:
     env.Alias('install', '/usr/lib')
     env.Alias('install', '/usr/local/bin')
     
-    
 
+################################################################################
+# Packaging
+################################################################################
+
+import AccumulatorAction, Zipper, SCons, os
+
+# add builder to accumulate files
+accuBuilder = env.Builder(action=AccumulatorAction.accumulatorFunction,
+    source_factory=SCons.Node.FS.default_fs.Entry,
+    target_factory=SCons.Node.FS.default_fs.Entry,
+    multi=1)
+env['BUILDERS']['Accumulate'] = accuBuilder
+
+# add builder to zip files
+zipBuilder = env.Builder(action=Zipper.zipperFunction,
+   source_factory=SCons.Node.FS.default_fs.Entry,
+   target_factory=SCons.Node.FS.default_fs.Entry,
+   multi=0)
+env['BUILDERS']['Zipper'] = zipBuilder
+
+# temporary directory where files are stored
+distDir = 'dist'
+
+# base name of the package
+zipName = "ometah-0.2.2"
+
+accDir = os.path.join(distDir,zipName)
+
+if env['debug']==1:
+    zipName += "-debug"
+
+if env['static']==1:
+    zipName += "-static"
+    env.Accumulate(accDir, 'libometah.a')
+else:
+    env.Accumulate(accDir, 'libometah.so')
+
+env.Accumulate(accDir, 'ometah')    
+env.Accumulate(accDir, ['COPYING','AUTHORS','README'])
+
+# zip an archive
+env.Zipper(zipName, distDir)
+
+# use dist as target
+env.Alias('dist',[zipName])
+
+# default target
 Default(ometah)
