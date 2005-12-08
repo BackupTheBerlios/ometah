@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.1 2005/11/05 21:14:02 nojhan Exp $
+#  $Id: SConstruct,v 1.2 2005/12/08 22:59:26 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -92,7 +92,7 @@ if have_cimg == False:
     print "You must have the CImg.h library installed to build ometah registration"
 else:
     registration = env.Program( target = 'registration', \
-        source = ['ometah_registration.cpp','itsRegistration.cpp'], LIBS='ometah', LIBPATH='/usr/lib')
+        source = ['ometah_registration.cpp','itsRegistration.cpp'], LIBS='ometah', LIBPATH='.')
 
 
 Default(registration)
