@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.27 2005/12/02 14:53:43 nojhan Exp $
+#  $Id: SConstruct,v 1.28 2005/12/10 23:30:25 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -51,13 +51,16 @@ opts.AddOptions( \
     BoolOption('static', 'Build a static version',0), \
     BoolOption('debug', 'Compile with the debug informations',0) \
 )
+
+opts.AddOptions( ('flags','Additional flags to pass to the compiler','') )
+
 opts.Update(env)
 
 flags=""
 if env['debug']==1:
-    flags = " ".join( [fcheck,fdebug,fsup] )
+    flags = " ".join( [fcheck,fdebug,fsup,env['flags']] )
 else:
-    flags = " ".join( [fcheck,fsup] )
+    flags = " ".join( [fcheck,fsup,env['flags']] )
 
 env.Replace( CCFLAGS = flags )
 
@@ -203,6 +206,7 @@ env['BUILDERS']['Zipper'] = zipBuilder
 
 # temporary directory where files are stored
 distDir = 'dist'
+Execute(Delete(distDir))
 
 # base name of the package
 zipName = "ometah-0.2.2"+"_"+os.uname()[0]+"-"+os.uname()[4]
@@ -214,7 +218,6 @@ if env['debug']==1:
 
 if env['static']==1:
     zipName += "-static"
-    env.Accumulate(accDir, 'libometah.a')
 else:
     env.Accumulate(accDir, 'libometah.so')
 
