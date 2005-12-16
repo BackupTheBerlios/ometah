@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah_registration.cpp,v 1.1 2005/11/05 21:14:02 nojhan Exp $
+ *  $Id: ometah_registration.cpp,v 1.2 2005/12/16 14:28:45 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -152,7 +152,7 @@ CImg<unsigned char> makeRegisteredImage( CImg<unsigned char> imgOrigin, int rx, 
 
   cimg_mapXY(imgResult,x,y) {
       // if we do not try out of bounds
-    if ( !(x+rx<0 || x+rx>imgOrigin.width || y+ry<0 || y+ry>imgOrigin.height)  ) {
+    if ( !(x+rx<0 || x+rx>(signed int)imgOrigin.width || y+ry<0 || y+ry>(signed int)imgOrigin.height)  ) {
       imgResult(x,y) = imgOrigin(x+rx,y+ry);
     } else {
       imgResult(x,y) = 0;
@@ -421,11 +421,11 @@ int main(int argc, char ** argv)
     argumentParser.searchEndFlags();
   }
   catch (const char * s) {
-    if ( !strcmp(VERSION, s) ) {
+    if ( !strcmp(VERSION_KEY, s) ) {
       cerr << s << endl;
       return -1;
     }
-    else if (!strcmp(USAGE, s)) {
+    else if (!strcmp(USAGE_KEY, s)) {
       argumentParser.usage();
       return -1;
     }
@@ -599,10 +599,10 @@ try {
   // output the registered image in a file
   if ( argumentParser.getStringValue("--save-registered-image") != "" ) {
       
-      CImg<> img1( argumentParser.getStringValue("--image-static").c_str() );
-      CImg<> img2( argumentParser.getStringValue("--image-registered").c_str() );
+      CImg<float> img1( argumentParser.getStringValue("--image-static").c_str() );
+      CImg<float> img2( argumentParser.getStringValue("--image-registered").c_str() );
   
-      CImg<> result = img1;
+      CImg<float> result = img1;
   
       itsPoint optimum = setMetaheuristic.item()->getOptimum();
 
