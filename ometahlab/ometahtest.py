@@ -164,7 +164,7 @@ class Test:
         import cPickle
         
         #print "\nRunning ometah", ''.join(self.__argv)
-        print '\nRunning %s' % self.args
+        print '    Running %s' % self.args
         
         # to initialize loading bar
         for j in xrange(self.runsNb-1): 
@@ -212,6 +212,7 @@ class Test:
         for src in files:
             os.rename(src, os.path.join(self.__dir, src) )
         
+        print ''
             
 
     def setIterationLists(self):

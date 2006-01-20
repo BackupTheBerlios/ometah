@@ -35,35 +35,47 @@ try:
 except:
     pass
 
+import glob
 from rpy import *
 
+OMETAHLAB_PLUGIN_MARK = 'isOmetahLabPlugin'
 
-def stat(paths):
+def process(paths,plugs=['end_optimum_distribution']):
     """ Generate text report and graphic representation in postscript format,
     comparing the previous Ometah execution which directories' paths are given as a list of strings,
     ometahtest's function getPath can be used to get those strings. See demoscript for usage example."""
-    print '\n\nInitialization of data structures...'
-    c = Stater(paths)
-    print 'Checking tests...'
-    c.check()
-    print 'Creating graphics and report...'
-    c.plot()
-    c.writeLatex()
-    print 'Results in %s\n' % c.getDir()
+    
+    print '  Initialization of data structures...'
+    s = DataManager(paths)
+    print '  Checking data...'
+    s.check()
+    
+    print '  Loading plugins...'
+    p = PluginManager(s,'plugins')
+    print '    Available: '," ".join( p.available )
+    for i in plugs:
+        p.load(i)
+    print '    Loaded :', " ".join( p.loaded.keys() )
+    
+    print '  Launching plugins on data...'
+    for i in p.loaded:
+        p.loaded[i].process()
+    
+    print '  Results are in: %s' % s.getDir()
 
 
-class Stater:
+class DataManager:
     """ A comparison between several Ometah executions (Test instances), giving text and graphical reports. """
 
     def __init__(self, paths):
         """ Constructor, paths is a list of strings, which are paths to Ometah executions directories."""
         import cPickle, os
         # color used in graphic plottings
-        self.__color = 'grey85'        
+        self.color = 'grey85'        
         # list of Test objects, one for each metarun
-        self.__tests = []
+        self.tests = []
         # working directory
-        self.__dir = ''
+        self.dir = ''
         # report file name
         self.__report = 'REPORT'
         # serialized file name
@@ -75,7 +87,7 @@ class Stater:
             try:
                 fd = open( os.path.join(p, 'TEST'), 'r' )
                 s = cPickle.load( fd )
-                self.__tests.append(s)
+                self.tests.append(s)
                 fd.close()
             except:
                 msg = 'error while loading test'
@@ -83,7 +95,7 @@ class Stater:
         self.__LOG = 1
 
         # initialize Test's Points lists
-        for test in self.__tests:
+        for test in self.tests:
             test.setOptimaList()
             test.setIterationLists()
 
@@ -92,9 +104,9 @@ class Stater:
                 test.calculSuccessRates()
 
         # initialize optimas and points
-        self.__optimas = [test.optima for test in self.__tests]
-        self.__pointsIter = [test.pointsIterations for test in self.__tests]
-        self.__optimaIter = [test.optimaIterations for test in self.__tests]        
+        self.optimas = [test.optima for test in self.tests]
+        self.pointsIter = [test.pointsIterations for test in self.tests]
+        self.optimaIter = [test.optimaIterations for test in self.tests]        
         
         # create working directory
         (i, ok) = (1, 0)
@@ -105,16 +117,16 @@ class Stater:
                 os.mkdir(dir)
             except:
                 (i, ok) = (i+1 ,0)
-        self.__dir = dir
+        self.dir = dir
 
 
     def check(self):
         """ Check the coherence of Ometah executions, fatal error or a warning is given."""
-        pb = self.__tests[0].problem.key
-        dim = self.__tests[0].problem.dimension
-        sample = self.__tests[0].parameters.sampleSize
-        runsNb = self.__tests[0].runsNb
-        for test in self.__tests:
+        pb = self.tests[0].problem.key
+        dim = self.tests[0].problem.dimension
+        sample = self.tests[0].parameters.sampleSize
+        runsNb = self.tests[0].runsNb
+        for test in self.tests:
             if test.problem.key != pb:
                 self.__warning('tests have different problems.')
             elif test.problem.dimension != dim:
@@ -131,396 +143,31 @@ class Stater:
 
     def __warning(self, msg):
         print "WARNING : %s" % msg
-
-    def __plot_1(self):
-        """ Plot frequency distribution of optima for each test, that is each Test instance,
-        each one having its own sublist of optimas in self.__optimas. We have one optimum for each run of the test. """
-        fileName = os.path.join(self.__dir, 'distribution_optima.ps')        
-        breaks = 10 # nb breaks in histo, may be reduced if not enough points
-        r.postscript(fileName, paper='letter')
-        i = 0
-        for points in self.__optimas:
-            vlist = [p.value for p in points]
-            txt = '%s\nOptima distribution' % self.__tests[i].args
-            r.hist(vlist, breaks, col=self.__color, main=txt, xlab='Value', ylab='Frequency') 
-            r.grid(nx=10)
-            i += 1
-        r.dev_off()
         
-    def __plot_2(self):
-        """ Show one quantile box of optima for each Test. """
-        fileName = os.path.join(self.__dir, 'testboxes_optima.ps')
-        r.postscript(fileName, paper='letter')
-        vlist = [[p.value for p in points ] for points in self.__optimas ]
-
-        zero = False
-        for v in vlist:
-            if 0 in v:
-                zero = True
-        if zero:
-            r.boxplot(vlist, style='quantile', col=self.__color, main='Optimas list', xlab='Test index', ylab='')
-        else:
-            try:
-                r.boxplot(vlist, style='quantile', log="y", col=self.__color, main='Optimas list', xlab='Test index', ylab='')
-            except:
-                print 'Cannot use logarithmic scale 0'
-                self.__LOG = 0
-                r.boxplot(vlist, style='quantile', col=self.__color, main='Optimas list', xlab='Test index', ylab='')
-        r.grid(nx=10, ny=40)
-        r.dev_off()
-
-    def __plot_3(self):
-        """ Plot the graph of optimas' values, to finally have one Point for each Test, we present 3 selections :
-        - best optimum
-        - worst optimum
-        - median optimum value"""
-        fileName = os.path.join(self.__dir, 'graph_optima.ps')        
-        r.postscript(fileName, paper='letter')
-        # make best optima list (minima)
-        olist = [(min([p.value for p in points])) for points in self.__optimas ]
-        # make worst optima list (maxima)
-        wlist = [(max([p.value for p in points])) for points in self.__optimas ]
-        # make media optima list (sort and take (len/2)'s index value)        
-        [ points.sort() for points in self.__optimas ]
-        # all sublist should have the same length, that is NB_RUN
-        length = len(self.__optimas[0])
-        medianIndex = length/2 # integer division, ok with first index = zero
-        mlist = [ points[medianIndex].value for points in self.__optimas]
-
-        # to avoid crash when a value = 0
-        zero = False
-        # only consider bests
-        if 0 in olist:
-            zero = True
-        if zero:
-            r.plot(olist, type='n', main='Bests optima evolution', xlab='Test index', ylab='Optima value')
-            r.lines(olist)
-            r.points(olist, bg = 'white', pch = 21)
-            r.grid(nx=10, ny=40)
-            r.plot(wlist, type='n', main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
-            r.lines(wlist)
-            r.points(wlist, bg ='white', pch = 21, lty='dashed')
-            r.grid(nx=10, ny=40)
-            r.plot(mlist, type='n', main='Median optima evolution', xlab='Test index', ylab='Optima value')        
-            r.lines(mlist)
-            r.points(mlist, bg ='white', pch = 21, lty='dotted')
-            r.grid(nx=10, ny=40)
-            r.matplot(r.cbind(olist, mlist, wlist), type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
-
-        else:
-            r.plot(olist, type='n', log="y", main='Bests optima evolution', xlab='Test index', ylab='Optima value')
-            r.lines(olist)
-            r.points(olist, bg = 'white', pch = 21)
-            r.grid(nx=10, ny=40)
-            r.plot(wlist, type='n', log="y", main='Worsts optima evolution', xlab='Test index', ylab='Optima value')
-            r.lines(wlist)
-            r.points(wlist, bg ='white', pch = 21, lty='dashed')
-            r.grid(nx=10, ny=40)
-            r.plot(mlist, type='n', log="y", main='Median optima evolution', xlab='Test index', ylab='Optima value')        
-            r.lines(mlist)
-            r.points(mlist, bg ='white', pch = 21, lty='dotted')
-            r.grid(nx=10, ny=40)
-            r.matplot(r.cbind(olist, mlist, wlist), log="y", type='n', main='Optima evolution: worst, median, and best', xlab='Test index', ylab='Value')
-
-        r.points(olist, bg ='white', pch = 21, type='o')
-        r.points(mlist, bg ='white', pch = 22, type='o', lty='dotted')
-        r.points(wlist, bg ='white', pch = 23, type='o', lty='dashed')
-
-        r.grid(nx=10, ny=40)
-        r.dev_off()
 
 
-    def __plot_4(self):
-        """ For each Test, plot the sequence of iterations (for any run) as a set of quantile boxes.
-        So we have one graphic for each Test. """
-        fileName = os.path.join(self.__dir, 'convergence_points.ps')
-        r.postscript(fileName, paper='letter')
-        i = 0
-        for metalist in self.__pointsIter:
-            vlist = [[p.value for p in points] for points in metalist ]
-            txt = '%s\nConvergence of all points' % self.__tests[i].args
-            zero = False
-            for l in vlist:
-                if 0 in l:
-                    zero = True
-            if zero:
-                r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Point value')
-            else:
-                try:
-                    r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Point value')
-                except:
-                    if self.__LOG:
-                        self.__LOG = 0
-                        print 'Cannot use logarithmic scale 2'
-                    r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Point value')
-            r.grid(nx=10, ny=40)
-            i += 1
-        r.dev_off()
-
-
-    def __plot_5(self):
-        """ Same than plot_4, but instead of showing box for any point of the iteration,
-        we only select the optimum for each run."""
-        fileName = os.path.join(self.__dir, 'convergence_optima.ps')
-        r.postscript(fileName, paper='letter')
-        i = 0
-        for metalist in self.__optimaIter:
-            vlist = [[p.value for p in points] for points in metalist ]
-            txt = '%s\nConvergence of optima' % self.__tests[i].args
-            zero = False
-            for v in vlist:
-                if 0 in v:
-                    zero = True
-            if zero:
-                r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Optima value')
-            else:
-                try:
-                    r.boxplot(vlist, style='quantile', col=self.__color, log="y", main=txt, xlab='Iteration index', ylab='Optima value')
-                except:
-                    if self.__LOG:
-                        self.__LOG = 0
-                        print 'Cannot use logarithmic scale 3'
-                    r.boxplot(vlist, style='quantile', col=self.__color, main=txt, xlab='Iteration index', ylab='Optima value')
-            r.grid(nx=10, ny=40)
-            i += 1
-        r.dev_off()
-
-    def __plot_6(self):
-        """ Plot the graph of success rates, considering a Test as a success when the given
-        precision of the problem is reached."""
-        fileName = os.path.join(self.__dir, 'success_graph.ps')
-        r.postscript(fileName, paper='letter')
-        slist = []
-        slist = [t.succRate*100 for t in self.__tests]
-        r.plot(slist, type='n', main='Success rate for each test', xlab='Test index', ylab='Rate (%)')
-        r.points(slist, pch = 21, type='h')
-        r.points(slist, pch = 21)
-        r.grid(nx=10, ny=40)
-        r.dev_off()        
-
-    
-    def __plot_8(self):
-        """ Plot optima and the optimum in their neighborhood plan, PCA used if dimension > 2 """
-        fileName = os.path.join(self.__dir, 'solutions_space.ps') 
-        r.postscript(fileName, paper='letter')            
-        for t in self.__tests:        
-            if t.problem.dimension < 2:
-
-                (x, y) = (xrange(len(t.optima)), [])
-
-                y = [ p.coords[0] for p in t.optima ]
-                y.sort()
-                
-                xlimm = [0, len(t.optima)]
-                ylimm = [t.pb_optimum[0].coords[0]-.1, max(y) ]
-                txt = '%s\nPoints ordered positions' % t.args
-                r.plot(x, y, xlim=xlimm, ylim=ylimm, xlab = 'Points, from best to worst', ylab='Position', \
-                       main=txt, bg='white', pch=21, type='o')
-                opt = t.pb_optimum[0].coords[0]                
-                r.lines(xlimm, [opt, opt], col='black', type='o')
-                r.grid(nx=10, ny=40)
-
-            else:
-                (x, y) = ([], [])                                
-                if t.problem.dimension == 2:
-                    x = [ p.coords[0] for p in t.optima ]
-                    y = [ p.coords[1] for p in t.optima ]
-                    op = t.pb_optimum[0]
-                    for p in t.pb_optimum:
-                        if p.value < op.value:
-                            op = p
-                    xoptim = op.coords[0]
-                    yoptim = op.coords[1]
-                    xmin = t.pb_min_bound[0].coords[0]
-                    ymin = t.pb_min_bound[0].coords[1]
-                    xmax = t.pb_max_bound[0].coords[0]
-                    ymax = t.pb_max_bound[0].coords[1]
-                    m = max(max(x), xoptim)
-                    if m < xmax:
-                        xmax = 0.8 * m + 0.2 * xmax
-                    m = max(max(y), yoptim)
-                    if m < ymax:
-                        ymax = 0.8 * m + 0.2 * ymax
-                    m = min(min(x), xoptim)
-                    if m > xmin:
-                        xmin = 0.8 * m + 0.2 * xmin
-                    m = min(min(y), yoptim)
-                    if m > ymin:
-                        ymin = 0.8 * m + 0.2 * ymin
-                    
-                    xlimm = [xmin, xmax]
-                    ylimm = [ymin, ymax]
-                    
-                else:
-                    import matrix
-                    a = matrix.PCA()
-                    # append solution Points
-                    co = [p.coords for p in t.optima]
-                    # also optimum
-                    op = t.pb_optimum[0]
-                    
-                    for p in t.pb_optimum:
-                        if p.value < op.value:
-                            op = p
-                    co.append(op.coords)
-                    
-                    a.setMatrix(co)
-                    self.__eigenv.append(a.getEigenVectors())
-                
-                    x = [a.reduceDim(i,2)[0] for i in xrange(len(co) - 1) ]
-                    y = [a.reduceDim(i,2)[1] for i in xrange(len(co) - 1) ]
-                    res = a.reduceDim(len(co) - 2, 2)
-                    xoptim = res[0]
-                    yoptim = res[1]
-
-                    del(a)
-                    # add optimum points to point list, if it has an extrema value 
-                    x.append(xoptim)
-                    y.append(yoptim)
-
-                    xlimm = [min(x), max(x)]
-                    ylimm = [min(y), max(y)]
-                
-                txt = '%s\nSolutions positions' % t.args
-                r.plot(x,y, bg='white', pch=21, xlab='X', ylab='Y', \
-                       main=txt, xlim=xlimm, ylim=ylimm)                
-
-                r.points([xoptim], \
-                         [yoptim], \
-                         bg='black', pch=21)
-                r.grid(nx=10, ny=40)
-           
-        r.dev_off()
-
-
-    def __plot_9(self):
-        """ Create graph of distribution errors, and make non-parametric over ALL tests
-        ( see np_test() for n-p test over 2 tests )"""
-        import Numeric
-        limit = .05
-        # initialize our matrix with as sublists as tests
-        emlist = [ [] for i in self.__tests ]
-        fileName = os.path.join(self.__dir, 'distribution_errors.ps')        
-        r.postscript(fileName, paper='letter')
-        breaks = 10
-        
-        for i in xrange(len(self.__optimas)):
-            # for current test's optima list, add their error as a list at emlist[i]
-            emlist[i] = [p.value - self.__tests[i].opt_val for p in self.__optimas[i]]
-            txt = '%s\nOptima error distribution' % self.__tests[i].args
-            r.hist(emlist[i], breaks, col=self.__color, main=txt, xlab='Error', ylab='Frequency')
-            r.grid(nx=10)
-        r.dev_off()
-
-        if len(self.__tests) == 2:
-            # use Mann-Whitney test
-            dic = r.wilcox_test(Numeric.array(emlist))
-        elif len(self.__tests) > 2:
-            # use Kruskal-Wallis test
-            dic = r.kruskal_test(emlist)
-        else: # only one test
-            return
-        self.__same_distrib = dic['p.value']
-
+# TODO in plugins :
 
     def np_test(self, testIndex1, testIndex2):
         """ Return non-parametric test """
         import Numeric
         tests = [ testIndex1, testIndex2 ]
         for i in tests:
-            tlist = [ p.value - self.__tests[i].opt_val for p in self.__optimas[i] ]
+            tlist = [ p.value - self.tests[i].opt_val for p in self.optimas[i] ]
         return r.wilcox_test(Numeric.array(tlist))['p.value']
         
-
-    def __plot_10(self):
-        """ Convergence graph over iterations : plot median error of each run for a given iteration,
-        using logarithmic scale. """
-        fileName = os.path.join(self.__dir, 'convergence_error_all.ps')
-        r.postscript(fileName, paper='letter')
-        i = 0
-        for list in self.__pointsIter:
-            elist = [[p.error for p in points] for points in list ]
-            errlist = [r.median(list) for list in elist]
-            txt = '%s\nConvergence of median error of all points' % self.__tests[i].args
-            try:
-                r.plot(errlist, main=txt, type='o', ylab='Median error', xlab='Iteration', log="y")
-            except:
-                if self.__LOG:
-                    self.__LOG = 0
-                    print 'Cannot use logarithmic scale 4'
-                r.plot(errlist, main=txt, type='o', ylab='Median error', xlab='Iteration')
-            r.grid(nx=10, ny=40)
-            i += 1
-        r.dev_off()
-
-
-    def __plot_11(self):
-        """ Convergence graph over iterations : plot median error of each run for a given iteration,
-        using logarithmic scale. """
-        fileName = os.path.join(self.__dir, 'convergence_error_opt.ps')
-        r.postscript(fileName, paper='letter')
-        i = 0
-
-        for list in self.__optimaIter:
-            elist = [[p.error for p in points] for points in list ]
-            try:
-                errlist = [r.median(list) for list in elist]
-            except:
-                print 'Error in plot_11 calculating medians list'
-                return 0
-            txt = '%s\nConvergence of median error of optima' % self.__tests[i].args
-            try:
-                r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration', log="y")
-            except:
-                if self.__LOG:
-                    self.__LOG = 0
-                    print 'Cannot use logarithmic scale 5'
-                r.plot(errlist, main=txt, type='o', ylab='Error', xlab='Iteration')
-            r.grid(nx=10, ny=40)
-            i += 1
-        r.dev_off()
-        
-        
-    def plot(self):
-        """ Plot results as postscript files. """
-        # frequency distributions
-        self.__plot_1()
-        # a quantile box for each sublist
-        self.__plot_2()
-        # graph of optimas, selecting the best among #runs of each Test, to finally have one Point for each Test.       
-        self.__plot_3()
-        # convergence boxes for all points in iterations
-        self.__plot_4()
-        # convergence boxes for optima points in iterations
-        self.__plot_5()
-        # if a test does not have optimum given, return
-        # (cos we won't have information on error for following plots)
-        for test in self.__tests:
-            if test.opt_val == 'Unknown':
-                return 0            
-        # success rates
-        self.__plot_6()
-        # points in plan
-        self.__plot_8()
-        # optima's error distribution
-        self.__plot_9()
-        # error convergence for all points
-        self.__plot_10()
-        # error convergence for optima
-        self.__plot_11()
-
 
 
     def writeLatex(self):
         """ Write Latex report """
-        path = os.path.join(self.__dir, 'report.tex')
+        path = os.path.join(self.dir, 'report.tex')
         fd = open(path, 'w')
         W = fd.write
 
         W('\\documentclass[]{report}\n\\begin{document}\n')
         W('\\section*{OMETAHLAB REPORT}\n')
         
-        for test in self.__tests:
+        for test in self.tests:
             txt = '%s\\\\\n' % test.args
             W(txt)
 
@@ -532,7 +179,7 @@ class Stater:
         txt = '%s \\textbf{%s}\\\\\n' % (txt, cols[-1])
         W(txt)
 
-        for t in self.__tests:
+        for t in self.tests:
             vals = [p.value for p in t.optima]
             vmin = str( ( "%.6f" % ( min(vals)) ) )[:10]
             vmean = str(r.mean(vals))[:5]
@@ -544,13 +191,13 @@ class Stater:
             W(txt)
         W('\\end{tabular}\n')
 
-        if len(self.__tests) > 1:
+        if len(self.tests) > 1:
             txt = '\n\\paragraph{Non-parametric test on optima error over all tests}\n%f\n' % self.__same_distrib
             W(txt)
 
         W('\n\\paragraph{Non parametric tests on optima error over for tests pairs}')
-        for i in xrange(len(self.__tests)):
-            for j in xrange(len(self.__tests)):
+        for i in xrange(len(self.tests)):
+            for j in xrange(len(self.tests)):
                 if ( i < j ):
                     txt = '\n( %d, %d)\\\\\n%f\\\\' % ( i, j, self.np_test(i, j) )
                     W(txt)
@@ -566,7 +213,75 @@ class Stater:
         
     def getDir(self):
         """ Returns the path of the directory containing files created."""
-        return self.__dir
+        return self.dir
+
+
+
+class PluginManager:
+    """Management of the plugins"""
+    def __init__(self,data,pluginPath):
+        # available plugins
+        self.available = []
+        
+        # loaded plugins
+        self.loaded={}
+        
+        # the data object to pass to the plugin
+        self.data = data
+        
+        # path where plugins are stored
+        self.pluginPath = pluginPath
+        
+        # look for available plugins
+        self.find()
+        
+        
+    def isPlugin(self,f):
+        """Test if a file is a plugin, and add it to the available list"""
+        #open the source file
+        file = open(f,'r')
+        code = file.readlines()
+        code = str.join(' ',code)
+        # if there is the mark
+        if code.find(OMETAHLAB_PLUGIN_MARK) > -1 and f != 'plugin.py':
+            return True
+        return False
+
+
+    def find(self):
+        """Look for plugins in the path"""
+        # list python files
+        pyFiles = glob.glob( os.path.join(self.pluginPath,'*.py') )
+        
+        for f in pyFiles:
+            if self.isPlugin(f):
+                # add to the list
+                # (only consider the file name)
+                self.available += [os.path.basename(f).split('.')[0]]
+       
+       
+    def load(self,pluginName):
+        """Load a plugin"""
+        
+        if pluginName not in self.available:
+            raise "PluginError","Plugin not available : "+pluginName
+
+        if self.loaded.has_key(pluginName):
+            return
+
+        # import the plugin
+        #print os.path.join(self.pluginPath,pluginName)
+        plugin = __import__(os.path.join(self.pluginPath,pluginName))
+        pluginClass = getattr(plugin, pluginName)
+        self.loaded[pluginName] = pluginClass(self.data)
+
+
+    def unload(self,pluginName):
+        try:
+            del self.loaded[pluginName]
+        except IndexError:
+            print 'No plugin named ' + str(pluginName)
+
 
 
 if __name__ == '__main__':
