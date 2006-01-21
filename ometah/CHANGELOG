@@ -1,0 +1,18 @@
+Current
+* automated archive creation in SConstruct
+* bugfix with SA compilation
+
+Version 0.2.2
+Date 2 december 2005
+* Can now be compiled in a dynamic library
+* Added a Simulated Annealing algorithm
+* fix a bug when fixing dimension
+
+Version 0.2.1
+Date 5 october 2005
+* lost changelog :(
+
+Version 0.1.1
+Date 14 june 2005
+* The first release embed a estimation of distribution metaheuristic, some classical tests problems, and a statically link protocol.
+* The command line interface is usable and it outputs xml files.
