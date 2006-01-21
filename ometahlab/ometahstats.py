@@ -6,7 +6,9 @@
 #  Ometahlab is a set of Python scripts to make experiments on Ometah.
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-#  File : ometahstats.py
+#  Author : Johann Dréo <nojhan@gmail.com>
+#  $id$
+#  Copyright : Free Software Fundation
 #  This module is used to generate graphical and text output from several Ometah executions.
 #
 ###

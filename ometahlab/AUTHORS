@@ -1,0 +1,17 @@
+This is a list of people that have contributed to oMetah.
+It is sorted by date.
+
+The fields are: name (N), nickname (K), email (E), web-address
+(W), description (D).
+
+N : Jean-Philippe Aumasson
+K : jpa
+E : jeanphilippe.aumasson@gmail.com
+W : http://jpnossa.free.fr
+D : Original author
+
+N : Johann Dréo
+K : nojhan
+E : nojhan@gmail.com
+W : http://nojhan.free.fr
+D : Maintener, pluginization

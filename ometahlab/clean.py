@@ -6,7 +6,8 @@
 #  Ometahlab is a set of Python scripts to make experiments on Ometah.
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-#  File: clean.py
+#  $id$
+#  Copyright : Free Software Fundation
 #  This script cleans the results directory, which size grows very fast.
 #
 ###

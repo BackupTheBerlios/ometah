@@ -5,8 +5,9 @@
 #
 #  Ometahlab is a set of Python scripts to make experiments on Ometah.
 #
+#  $id$
+#  Copyright : Free Software Fundation
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-#  File: qparser.py
 #  This file contains an experimental class to read ometah's XML output,
 #  much faster than formal XML parsing with xml module.
 #

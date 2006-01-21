@@ -6,7 +6,8 @@
 #  Ometahlab is a set of Python scripts to make experiments on Ometah.
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-#  File : matrix.py
+#  $id$
+#  Copyright : Free Software Fundation
 #  This module is used for principal components analysis, to reduce dimension
 #  of problems with dim > 2.
 #

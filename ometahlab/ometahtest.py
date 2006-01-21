@@ -6,7 +6,8 @@
 #  Ometahlab is a set of Python scripts to make experiments on Ometah.
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-#  File : ometahtest.py
+#  $id$
+#  Copyright : Free Software Fundation
 #  This is the main module of ometahlab, used to create, configure, and launch a test,
 #  which is a set of several runs. It also contains the classes of the entities used
 #  in a test.
