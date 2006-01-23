@@ -46,7 +46,7 @@ class Plugin:
         self.ps_paper = 'letter'
         
         # list of supported outputs
-        self.output_available = ['.ps']
+        self.output_available = ['.ps','.png']
         
         # type of the default output file
         self.fileType = ".ps"
@@ -75,12 +75,14 @@ class Plugin:
     def outputInit(self):
         if self.fileType == ".ps":
             r.postscript(self.fileName, paper=self.ps_paper)
+        elif self.fileType == ".png":
+            r.png(self.fileName)
         else:
             return
         
     
     def outputEnd(self):
-        if self.fileType == ".ps":
+        if self.fileType in self.output_available:
             r.dev_off()
         else:
             return
