@@ -1,0 +1,10 @@
+Current
+* added a PNG output type
+* new plugin : 2D distribution of the optimums positions, with optionnal PCA
+* plots are considered as plugins
+
+Version 0.2.1
+Date 5 october 2005
+* initial release (same version number as ometah)
+* test module 
+* several plots and report tools
