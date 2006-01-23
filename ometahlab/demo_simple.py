@@ -33,24 +33,27 @@
 import ometahtest
 import ometahstats
 
+runs = 100
 
 print 'Launching test runs:'
 print '  First test on JGEN:'
 u = ometahtest.Test()
-u.setArgs('-e 10 -p Sphere -d 1 -m JGEN')
-u.setNbRuns(5)
+u.setArgs('-e 100 -p Rosenbrock -d 2 -m JGEN')
+u.setNbRuns(runs)
 u.setOmetahPath('../ometah/ometah')
 u.start()
 
 print '  Second test on SGEN:'
 v = ometahtest.Test()
-v.setArgs('-e 10 -p Sphere -d 1 -m SGEN')
-v.setNbRuns(5)
+v.setArgs('-e 100 -p Rosenbrock -d 2 -m SGEN')
+v.setNbRuns(runs)
 v.setOmetahPath('../ometah/ometah')
 v.start()
 
 print '\nLaunching data process:'
 paths = [ u.getPath(), v.getPath() ]
+print '  Using ',paths
+
 ometahstats.process(paths,
     [
     'end_optimum_distribution',
@@ -61,5 +64,7 @@ ometahstats.process(paths,
     'end_optimum_successrate',
     'end_optimum_position',
     'end_optimum_kruskal',
-    'iteration_median_logarithmic'
-    ])
+    'iteration_median_logarithmic',
+    'end_optimum_distribution_position2D'
+    ],
+    '.ps') # output type
