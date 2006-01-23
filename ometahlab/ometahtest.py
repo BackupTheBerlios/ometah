@@ -52,7 +52,7 @@ class Test:
     # turned to 1 to archive XML
     _XML_ARCH = False
 
-    def __init__(self):        
+    def __init__(self,ometah_path=os.path.join('..', os.path.join('ometah', 'ometah')),args='',runs=25):        
         """ Constructor. """
         import os
         # list of the N optimas, have to sort it after
@@ -73,7 +73,7 @@ class Test:
         # one log for each test, grouping all runs informations
         self.__logfile = "run.log"
         # default location of ometah
-        self.__ometah_path = os.path.join('..', os.path.join('ometah', 'ometah'))
+        self.__ometah_path = ometah_path
         # common dir for all results
         self.__results_dir = "results"
         # real optimum value (min of the optima given for the pb)
@@ -83,7 +83,7 @@ class Test:
         # success performance = mean(FES for successful run * #run)/#succRuns
         self.succPerf = 0
         # number of runs for the test
-        self.runsNb = 25
+        self.runsNb = runs
         # list of effective nb of evaluations (size = runsNb)
         self.evaluations = []
         
@@ -97,7 +97,7 @@ class Test:
         self.metah = None
 
         # set default arguments
-        self.setArgs('')
+        self.setArgs(args)
 
 
     def __init(self, runb):
