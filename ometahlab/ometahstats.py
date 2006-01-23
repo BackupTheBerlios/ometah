@@ -42,7 +42,7 @@ from rpy import *
 
 OMETAHLAB_PLUGIN_MARK = 'isOmetahLabPlugin'
 
-def process(paths,plugs=['end_optimum_distribution']):
+def process(paths,plugs=['end_optimum_distribution'],output_type='.ps'):
     """ Generate text report and graphic representation in postscript format,
     comparing the previous Ometah execution which directories' paths are given as a list of strings,
     ometahtest's function getPath can be used to get those strings. See demoscript for usage example."""
@@ -61,6 +61,7 @@ def process(paths,plugs=['end_optimum_distribution']):
     
     print '  Launching plugins on data...'
     for i in p.loaded:
+        p.loaded[i].setFileType(output_type)
         p.loaded[i].process()
     
     print '  Results are in: %s' % s.getDir()
