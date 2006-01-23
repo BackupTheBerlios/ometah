@@ -52,6 +52,8 @@ class end_optimum_position(Plugin):
         # set the name of your plugin
         self.setName("end_optimum_position","Plot optima and the optimum in their neighborhood plan, PCA used if dimension > 2")
         
+        # eigen vectors weight for the tests
+        self.__eigenv = []
 
     # necessary method, called when lauching the plugin
     def process(self):
