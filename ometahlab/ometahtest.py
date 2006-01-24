@@ -48,9 +48,10 @@ class Test:
     method, you can configure the arguments (setArgs) and the number of runs (setRuns)."""
 
     # turned to 1 when problem string updated
+    # avoid reparsing the header's informations at each run
     _INFO_PB = False
     # turned to 1 to archive XML
-    _XML_ARCH = False
+    _XML_ARCH = True
 
     def __init__(self,ometah_path=os.path.join('..', os.path.join('ometah', 'ometah')),args='',runs=25):        
         """ Constructor. """
