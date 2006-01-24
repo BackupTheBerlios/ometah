@@ -79,7 +79,7 @@ def main():
         v.start()
         
         paths = [ u.getPath(), v.getPath() ]
-        ometahstats.stat(paths)
+        ometahstats.process(paths)
 
     elif arg == 1:
 
@@ -120,7 +120,7 @@ def main():
         b.start()        
          
         paths = [ t.getPath(), u.getPath(), z.getPath(), a.getPath(), c.getPath(), b.getPath() ]
-        ometahstats.stat(paths)
+        ometahstats.process(paths)
 
     elif arg == 2:
 
@@ -149,7 +149,7 @@ def main():
         a.start()
         
         paths = [ v.getPath(), w.getPath(), z.getPath(), a.getPath()  ]
-        ometahstats.stat(paths)
+        ometahstats.process(paths)
 
     elif arg == 3:
 
@@ -196,7 +196,7 @@ def main():
         g.start()
 
         paths = [ a.getPath(), b.getPath(), c.getPath(), d.getPath(), e.getPath(), f.getPath(), g.getPath() ]
-        ometahstats.stat(paths)
+        ometahstats.process(paths)
 
     elif arg == 4:
 
@@ -219,7 +219,7 @@ def main():
         w.start()
 
         paths = [ t.getPath(), v.getPath(), w.getPath() ]
-        ometahstats.stat(paths)
+        ometahstats.process(paths)
         
 
     elif arg == 5:
@@ -240,7 +240,7 @@ def main():
         v.start()
         
         p = [ t.getPath(), u.getPath(), v.getPath() ]
-        ometahstats.stat(p)
+        ometahstats.process(p)
         
     print 'Time: ', time.time()-emit
     
