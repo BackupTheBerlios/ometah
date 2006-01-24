@@ -294,7 +294,7 @@ class Test:
     def __copyToDisk(self, rfd, filename="xml"):
         """ Copy the file opened with rfd to a new file on disk, is used to copy XML output on disk. """
         filename += '.xml'
-        xfile = os.path.join(self.__path, filename)
+        xfile = os.path.join(self.__dir, filename)
         try:
             wfd = open(xfile, 'w')
         except:
@@ -312,9 +312,9 @@ class Test:
             import tarfile
             path = 'xml.tar.gz'
             tf = tarfile.open(name=path, mode='w:gz')
-            for s in os.listdir(self.__path):
+            for s in os.listdir(self.__dir):
                 if s[-4:] == '.xml':
-                    f = os.path.join(self.__path, s)
+                    f = os.path.join(self.__dir, s)
                     tf.add(f)
                     os.remove(f)
             tf.close()
