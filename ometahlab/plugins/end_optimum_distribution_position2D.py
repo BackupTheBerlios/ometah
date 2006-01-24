@@ -146,8 +146,10 @@ class end_optimum_distribution_position2D(Plugin):
             v.sort(reverse = True)
             colors = r.gray( v )
             
+            ins = int(2 * math.sqrt( 0.5*len(x) )) # magic formula
+            
             r.hist2d(x,y,
-                     nbins = int(2 * math.sqrt( len(x) )), # magic formula
+                     nbins = ins,
                      col = colors,
                      xlab = 'X', ylab='Y', main=txt)
                          
