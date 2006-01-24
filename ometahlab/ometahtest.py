@@ -125,12 +125,13 @@ class Test:
             self.__fatal('ometah failed to create XML\n')
     
         # Loading bar        
-        for i in xrange(self.runsNb):
-            print '\b\b', # delete previous bar
-        for i in xrange(runb):
-            print '\b|',  # write as char as runNumber
-        for i in xrange(self.runsNb - 1 - runb):
-            print '\b-',  # padd with default char
+        #~ for i in xrange(self.runsNb):
+            #~ print '\b\b', # delete previous bar
+        #~ for i in xrange(runb):
+            #~ print '\b|',  # write as char as runNumber
+        #~ for i in xrange(self.runsNb - 1 - runb):
+            #~ print '\b-',  # padd with default char
+        print '\b\r',runb+1,'/',self.runsNb
         sys.stdout.flush()
         
         q = qparser.Qparser()
@@ -156,7 +157,7 @@ class Test:
         slog = '%f\n' % (min(olist))
         self.__log(slog)
         
-        fd.close()        
+        fd.close()
     
     
     def __metarun(self):
@@ -168,13 +169,15 @@ class Test:
         print '    Running %s' % self.args
         
         # to initialize loading bar
-        for j in xrange(self.runsNb-1): 
-            print '\b-',
+        #~ for j in xrange(self.runsNb-1): 
+            #~ print '\b-',
+        print ''
 
         # make the runsNb runs
         for i in xrange(self.runsNb):
             self.__init(i)
         
+        print '    Archiving...'
         if self._XML_ARCH:
             self.__archiveXml()        
 
@@ -199,7 +202,8 @@ class Test:
         self.pb_optimum = self.problem.optimum
         self.pb_min_bound = self.problem.min_bound
         self.pb_max_bound = self.problem.max_bound
-        
+
+        print '    Serialization...'
         try:
             import copy            
             cPickle.dump( copy.deepcopy(self), open('TEST', 'w'))
@@ -213,7 +217,6 @@ class Test:
         for src in files:
             os.rename(src, os.path.join(self.__dir, src) )
         
-        print ''
             
 
     def setIterationLists(self):
