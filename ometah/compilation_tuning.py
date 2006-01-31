@@ -7,7 +7,8 @@ run_command = './ometah -m HCIAC -p Rosenbrock -d 2 -i 10 -e 1000 -s 100'
 run_number=20
 
 # -ftree-vectorize -fprefetch-loop-arrays -O1 -O2 -O3
-test_flags = ['-O0','-O1','-O2','-O3']
+#test_flags = ['-O0','-O1','-O2','-O3','-02  -mfpmath=sse']
+test_flags = ['-O1','-O2','-O3','-O2 -mfpmath=sse','-O3 -mfpmath=sse']
 
 
 def compilation(flags):

@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.29 2005/12/11 15:36:36 nojhan Exp $
+#  $Id: SConstruct,v 1.30 2006/01/31 11:49:28 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -30,7 +30,7 @@
 #foptim = '-fcaller-saves -fcse-follow-jumps -fcse-skip-blocks  \
 #          -felide-constructors -fexpensive-optimizations -ffast-math \
 #          -ffloat-store -funroll-all-loops -funroll-loops'
-foptim = '-O1' # seems to go faster than with -03
+foptim = '-O2 -mfpmath=sse' # seems to go faster than with -03
 
 # flags for checking the code
 #-Wstrict-prototypes -Wmissing-prototypes 
