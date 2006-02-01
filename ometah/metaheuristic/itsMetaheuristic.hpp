@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.17 2005/11/04 21:03:00 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.18 2006/02/01 08:52:21 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -157,6 +157,9 @@ protected:
 
   //! The random seed used
   unsigned int seed;
+  
+  //! A specific random seed to use at initialization step
+  unsigned int initializationSeed;
 
   //! Stream for the main result of the optimization
   /*!  
@@ -417,6 +420,12 @@ public:
   
   //! Return the random seed used
   unsigned int getSeed();
+  
+  //! Change the initialization seed
+  void setInitializationSeed(unsigned int seed);
+  
+  //! Return the initialization seed
+  unsigned int getInitializationSeed();
 };
 
 

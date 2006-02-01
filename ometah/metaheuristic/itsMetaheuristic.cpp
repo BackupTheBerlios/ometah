@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.23 2005/11/24 22:24:25 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.24 2006/02/01 08:52:21 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -85,18 +85,22 @@ itsMetaheuristic::itsMetaheuristic()
   this->logKeys["iterations"] = 2;
   this->logKeys["sample_steps"] = 3;
 
-  struct timeb * tim;
-  tim=(struct timeb*)malloc(sizeof(tim));
-  ftime(tim);
-  this->seed = tim->millitm;
- 
+  initRandom(); 
+  this->initializationSeed = 0;
 }
 
 void itsMetaheuristic::initialization()
 {
+    
   // ask for the bounds
   vector<double> min = this->problem->boundsMinima();
   vector<double> max = this->problem->boundsMaxima();
+    
+  // if we want a special random seed for initialization
+  if ( this->initializationSeed != 0 ) {
+      // use it
+      initRandom(this->initializationSeed);
+  }
   
   // create the initial sample
   for(unsigned int i=0; i<getSampleSize(); i++) {
@@ -109,6 +113,9 @@ void itsMetaheuristic::initialization()
     //sample.push_back(aRandomPoint);
     sample[i] = aRandomPoint;
   }
+  
+  // keep the generic random seed
+  initRandom(this->seed);
 }
 
 void itsMetaheuristic::start()
@@ -637,4 +644,14 @@ vector<double> itsMetaheuristic::getSampleSolutionsMax()
   }
 
   return vec;
+}
+
+void itsMetaheuristic::setInitializationSeed(unsigned int seed) 
+{
+    this->initializationSeed = seed;
+}
+
+unsigned int itsMetaheuristic::getInitializationSeed()
+{
+    return this->initializationSeed;
 }
