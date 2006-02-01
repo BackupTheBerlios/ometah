@@ -1,4 +1,5 @@
 Current
+* possibility to fix a random seed for the initialization step only
 * automated archive creation in SConstruct
 * bugfix with SA compilation
 
