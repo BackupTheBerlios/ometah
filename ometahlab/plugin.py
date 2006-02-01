@@ -73,6 +73,14 @@ class Plugin:
         
         
     def outputInit(self):
+        testName = self.fileName
+        i=1
+        while os.path.isfile(testName):
+            testName = "%s_%i%s" % ( os.path.join(self.data.dir, self.name), i, self.fileType )
+            
+        self.fileName = testName
+            
+        
         if self.fileType == ".ps":
             r.postscript(self.fileName, paper=self.ps_paper)
         elif self.fileType == ".png":

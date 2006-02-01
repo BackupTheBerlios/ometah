@@ -57,8 +57,6 @@ class end_optimum_position(Plugin):
 
     # necessary method, called when lauching the plugin
     def process(self):
-        # uncomment this line if you use a R output
-        self.outputInit()
         
         # put your plugin code here
         # the data are in self.data :
@@ -68,8 +66,10 @@ class end_optimum_position(Plugin):
         #   self.data.optimaIter
         #   ...
                 
-        for t in self.data.tests:        
+        for t in self.data.tests:      
             if t.problem.dimension < 2:
+                # uncomment this line if you use a R output
+                self.outputInit()  
 
                 (x, y) = (xrange(len(t.optima)), [])
 
@@ -84,6 +84,9 @@ class end_optimum_position(Plugin):
                 opt = t.pb_optimum[0].coords[0]                
                 r.lines(xlimm, [opt, opt], col='black', type='o')
                 r.grid(nx=10, ny=40)
+                
+                # uncomment this line if you use a R output
+                self.outputEnd()
 
             else:
                 (x, y) = ([], [])                                
@@ -146,6 +149,9 @@ class end_optimum_position(Plugin):
                     xlimm = [min(x), max(x)]
                     ylimm = [min(y), max(y)]
                 
+                # uncomment this line if you use a R output
+                self.outputInit()  
+                
                 txt = '%s\nSolutions positions' % t.args
                 r.plot(x,y, bg='white', pch=21, xlab='X', ylab='Y', \
                        main=txt, xlim=xlimm, ylim=ylimm)                
@@ -156,5 +162,5 @@ class end_optimum_position(Plugin):
                 r.grid(nx=10, ny=40)
            
         
-        # uncomment this line if you use a R output
-        self.outputEnd()
+                # uncomment this line if you use a R output
+                self.outputEnd()

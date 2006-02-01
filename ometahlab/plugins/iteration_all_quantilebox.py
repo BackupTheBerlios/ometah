@@ -57,8 +57,6 @@ class iteration_all_quantilebox(Plugin):
 
     # necessary method, called when lauching the plugin
     def process(self):
-        # uncomment this line if you use a R output
-        self.outputInit()
         
         # put your plugin code here
         # the data are in self.data :
@@ -70,6 +68,8 @@ class iteration_all_quantilebox(Plugin):
         
         i = 0
         for metalist in self.data.pointsIter:
+            # uncomment this line if you use a R output
+            self.outputInit()
             vlist = [[p.value for p in points] for points in metalist ]
             txt = '%s\nConvergence of all points' % self.data.tests[i].args
             zero = False
@@ -89,5 +89,5 @@ class iteration_all_quantilebox(Plugin):
             r.grid(nx=10, ny=40)
             i += 1
         
-        # uncomment this line if you use a R output
-        self.outputEnd()
+            # uncomment this line if you use a R output
+            self.outputEnd()

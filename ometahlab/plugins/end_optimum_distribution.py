@@ -48,16 +48,17 @@ class end_optimum_distribution(Plugin):
         We have one optimum for each run of the test.")
 
     def process(self):
-        self.outputInit()
     
         breaks = 10 # nb breaks in histo, may be reduced if not enough points
         
         i = 0
         for points in self.data.optimas:
+            self.outputInit()
+            
             vlist = [p.value for p in points]
             txt = '%s\nOptima distribution' % self.data.tests[i].args
             r.hist(vlist, breaks, col=self.data.color, main=txt, xlab='Value', ylab='Frequency') 
             r.grid(nx=10)
             i += 1
         
-        self.outputEnd()
+            self.outputEnd()

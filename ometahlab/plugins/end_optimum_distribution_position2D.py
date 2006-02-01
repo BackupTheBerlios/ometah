@@ -57,8 +57,6 @@ class end_optimum_distribution_position2D(Plugin):
 
     # necessary method, called when lauching the plugin
     def process(self):
-        # uncomment this line if you use a R output
-        self.outputInit()
         
         # put your plugin code here
         # the data are in self.data :
@@ -131,6 +129,10 @@ class end_optimum_distribution_position2D(Plugin):
                 xlimm = [min(x), max(x)]
                 ylimm = [min(y), max(y)]
             
+            
+            # uncomment this line if you use a R output
+            self.outputInit()
+            
             txt = '%s\nSolutions positions distribution' % t.args
             
             # 2D distribution histogram
@@ -162,5 +164,5 @@ class end_optimum_distribution_position2D(Plugin):
             #r.rug(y,side=2) 
             r.box() 
    
-        # uncomment this line if you use a R output
-        self.outputEnd()
+            # uncomment this line if you use a R output
+            self.outputEnd()

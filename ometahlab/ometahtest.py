@@ -110,6 +110,7 @@ class Test:
         slog = "%i:\n" % (runb)
         self.__log(slog)
 
+        #print "## %s ## %s ##" % (self.__argv,self.args)
         try:
             fd = os.popen(self.__argv)
         except:

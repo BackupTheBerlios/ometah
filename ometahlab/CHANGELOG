@@ -1,4 +1,5 @@
 Current
+* possibility of using several output file per plugin
 * added a PNG output type
 * new plugin : 2D distribution of the optimums positions, with optionnal PCA
 * plots are considered as plugins

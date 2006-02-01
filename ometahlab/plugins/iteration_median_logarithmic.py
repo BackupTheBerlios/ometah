@@ -57,8 +57,6 @@ class iteration_median_logarithmic(Plugin):
 
     # necessary method, called when lauching the plugin
     def process(self):
-        # uncomment this line if you use a R output
-        self.outputInit()
         
         # put your plugin code here
         # the data are in self.data :
@@ -70,6 +68,8 @@ class iteration_median_logarithmic(Plugin):
         
         i = 0
         for list in self.data.pointsIter:
+            # uncomment this line if you use a R output
+            self.outputInit()
             elist = [[p.error for p in points] for points in list ]
             errlist = [r.median(list) for list in elist]
             txt = '%s\nConvergence of median error of all points' % self.data.tests[i].args
@@ -83,5 +83,5 @@ class iteration_median_logarithmic(Plugin):
             r.grid(nx=10, ny=40)
             i += 1
         
-        # uncomment this line if you use a R output
-        self.outputEnd()
+            # uncomment this line if you use a R output
+            self.outputEnd()
