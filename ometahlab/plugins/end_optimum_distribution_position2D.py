@@ -50,7 +50,7 @@ class end_optimum_distribution_position2D(Plugin):
         Plugin.__init__(self,data)
 
         # set the name of your plugin
-        self.setName("end_optimum_distribution_position2D","Description of your plugin.")
+        self.setName("end_optimum_distribution_position2D","The positions distribution of optimums, in a 2D space. Use PCA if dimensions > 2..")
         
         # eigen vectors weight for the tests
         self.__eigenv = []

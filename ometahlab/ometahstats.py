@@ -73,6 +73,8 @@ def process(paths,plugs=['end_optimum_distribution'],output_type='.ps'):
     r = ReportManager(p)
     r.process()
 
+    print '  Report wrote to',r.reportfile
+    
 
 class DataManager:
     """ A comparison between several Ometah executions (Test instances), giving text and graphical reports. """
@@ -303,6 +305,7 @@ class ReportItem:
 class ReportManager:
     def __init__(self,pluginManager):
         self.plugins = pluginManager
+        self.reportFile = ""
         
     def process(self):
         plist= []
@@ -316,11 +319,10 @@ class ReportManager:
             plist += [i]
         
         result = "%s" % ( Template(file=os.path.join(self.plugins.pluginPath,"report_html.tmpl"), searchList=[{'plugins':plist}]) )
-        reportfile = os.path.join(self.plugins.data.dir,'report.html')
-        f = open(reportfile,'w')
+        self.reportfile = os.path.join(self.plugins.data.dir,'report.html')
+        f = open(self.reportfile,'w')
         f.write(result)
         f.close()
-        print '  Report wrote to',reportfile
         
 
 if __name__ == '__main__':

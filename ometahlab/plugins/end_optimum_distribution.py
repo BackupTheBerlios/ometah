@@ -43,8 +43,7 @@ class end_optimum_distribution(Plugin):
         Plugin.__init__(self,data)
 
         self.setName("end_optimum_distribution",
-        "Plot frequency distribution of optima for each test, that is each Test \
-        instance, each one having its own sublist of optimas in self.__optimas. \
+        "Plot frequency distribution of optima for each test. \
         We have one optimum for each run of the test.")
 
     def process(self):
