@@ -32,7 +32,8 @@
 
 
 # This is a string marking the file as a ometahlab plugin
-# isOmetahLabPlugin
+# remove the _NOT_ string to use it
+# is_NOT_OmetahLabPlugin
 
 # necessary base class
 from plugin import Plugin
