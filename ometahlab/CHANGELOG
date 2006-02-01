@@ -1,4 +1,5 @@
 Current
+* the 'all' keyword can be used to launch all plugins
 * added a report manager to show results in a html page with png images
 * possibility of using several output file per plugin
 * added a PNG output type

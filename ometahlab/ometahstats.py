@@ -56,7 +56,11 @@ def process(paths,plugs=['end_optimum_distribution'],output_type='.ps'):
     
     print '  Loading plugins...'
     p = PluginManager(s,'plugins')
-    #print '    Available: '," ".join( p.available )
+    
+    # if we use the 'all' key, load all available plugins
+    if plugs == 'all':
+        plugs = p.available
+        
     for i in plugs:
         p.load(i)
     print '    Loaded :', " ".join( p.loaded.keys() )
