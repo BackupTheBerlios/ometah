@@ -31,12 +31,14 @@
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
-try:
-    import psyco
-    psyco.full()
-except:
-    pass
+#~ try:
+    #~ import psyco
+    #~ psyco.full()
+#~ except:
+    #~ pass
 
+from Cheetah.Template import Template
+        
 import glob
 from rpy import *
 
@@ -54,7 +56,7 @@ def process(paths,plugs=['end_optimum_distribution'],output_type='.ps'):
     
     print '  Loading plugins...'
     p = PluginManager(s,'plugins')
-    print '    Available: '," ".join( p.available )
+    #print '    Available: '," ".join( p.available )
     for i in plugs:
         p.load(i)
     print '    Loaded :', " ".join( p.loaded.keys() )
@@ -65,6 +67,11 @@ def process(paths,plugs=['end_optimum_distribution'],output_type='.ps'):
         p.loaded[i].process()
     
     print '  Results are in: %s' % s.getDir()
+    
+    print '  Generating reports...'
+    
+    r = ReportManager(p)
+    r.process()
 
 
 class DataManager:
@@ -286,6 +293,35 @@ class PluginManager:
             print 'No plugin named ' + str(pluginName)
 
 
+class ReportItem:
+    def __init__(self,name,description,fileList):
+        self.name = name
+        self.description = description
+        self.fileList = fileList
+        
+
+class ReportManager:
+    def __init__(self,pluginManager):
+        self.plugins = pluginManager
+        
+    def process(self):
+        plist= []
+        for plug in self.plugins.loaded:
+            flist = [os.path.basename(f) for f in self.plugins.loaded[plug].fileList ]
+            print flist
+            i = ReportItem( self.plugins.loaded[plug].name.replace("_"," "),
+                            self.plugins.loaded[plug].description,
+                            flist
+                          )
+            plist += [i]
+        
+        result = "%s" % ( Template(file=os.path.join(self.plugins.pluginPath,"report_html.tmpl"), searchList=[{'plugins':plist}]) )
+        reportfile = os.path.join(self.plugins.data.dir,'report.html')
+        f = open(reportfile,'w')
+        f.write(result)
+        f.close()
+        print '  Report wrote to',reportfile
+        
 
 if __name__ == '__main__':
     print "This file contains no instructions in main(), please see README for program usage\n"

@@ -54,6 +54,9 @@ class Plugin:
         # name and description of the plugin
         self.setName("ometalab_unnamed_plugin","none")
         
+        # list of written files
+        self.fileList = []
+        
     def setName(self,name,description="none"):
         self.name = name
         self.description = description
@@ -80,6 +83,7 @@ class Plugin:
             
         self.fileName = testName
             
+        self.fileList += [self.fileName]
         
         if self.fileType == ".ps":
             r.postscript(self.fileName, paper=self.ps_paper)

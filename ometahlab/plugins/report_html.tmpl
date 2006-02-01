@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <title>oMetahLab report</title>
+    <style>
+
+h1 {
+	margin-top:3em;
+	font-size:large;
+	color:#6666CC;
+	border-bottom: solid 1px #CCCCFF;
+}
+h2 {
+	margin-top:2em;
+	font-size:medium;
+	color:#6666CC;
+}
+a {
+	color:#6666CC;
+}
+a:hover {
+	color:#9999FF;
+}
+code {
+	color:#809FFF;
+	color:#BF9960;
+}
+
+body {
+	background-color:#CCCCFF;
+	color:white;
+}
+#page {
+	background-color:white;
+	color:black;
+	color:#292960;
+        border:solid 1px #9999FF;
+        margin:1em;
+        padding:1em;
+}
+#foot {
+	font-size:x-small;
+}
+#foot>address {
+	float:left;
+}
+#berlios_logo {
+	float:right;
+}
+#ometah_logo {
+	float:right;
+}
+    </style>
+</head>
+
+<body>
+
+<div id="page">
+
+#for $p in $plugins
+    <h1 class="plugin">$p.name</h1>
+    <p class="plugin_description">$p.description</p>
+    <p class="plugin_results">
+        #for $i in $p.fileList
+            <img src="$i" alt="$i" />
+        #end for
+    </p>
+#end for
+
+</div> <!-- id="page" -->
+
+<div id="foot">
+
+<address>
+<a title="oMetah website" href="http://ometah.berlios.de">oMetahLab</a>
+</address>
+
+</div> <!-- id="foot" -->
+
+</body>
+
+</html>
