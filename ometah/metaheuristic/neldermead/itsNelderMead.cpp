@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.12 2005/11/04 17:28:19 nojhan Exp $
+ *  $Id: itsNelderMead.cpp,v 1.13 2006/02/09 14:55:47 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -37,7 +37,13 @@ itsNelderMead::itsNelderMead()
     setKey("NMS");
     setAccronym("NMS");
     setDescription("Nelder-Mead search algorithm");
-    setCitation("");
+    setCitation("@ARTICLE{Nelder65simplex,"
+  "author = {Nelder, J. A. and Mead, R.},"
+  "title = {A simplex method for function minimization},"
+  "journal = {Computer Journal},"
+  "year = {1965},"
+  "volume = {7},"
+  "pages = {308--313},");
     setFamily("Local search");
 
     reflection = 1.0;
