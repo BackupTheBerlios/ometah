@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.hpp,v 1.4 2005/11/04 17:28:12 nojhan Exp $
+ * $Id: itsPoint.hpp,v 1.5 2006/02/22 13:56:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author :  Walid TFAILI <tfaili@univ-paris12.fr>
  * Author : Johann Dré <nojhan@gmail.com>
@@ -23,7 +23,10 @@
  
 #ifndef ITSPOINT
 #define ITSPOINT
- 
+
+#define SELECT_QUICKSORT_RATIO_LIMIT 0.9
+
+#include <list>
 #include <vector>
 #include <functional>
 
@@ -76,7 +79,15 @@ bool isValueEqual(itsPoint p1, itsPoint p2, int dimension=0);
 /*!
     It uses a quicksort algorithm
 */
-vector<itsPoint> sortOnValues(vector<itsPoint> vec, int dimension);
+vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension);
+
+
+//! Select the bests values in a sample
+/*!
+  You have the choice between two algorithms  (quicksort or comparison)
+  at the compilation stage
+*/
+vector<itsPoint> selectOnValues(vector<itsPoint> & vec, unsigned int selectNumber);
 
 
 //! Print the values of a point
