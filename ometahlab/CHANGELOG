@@ -1,4 +1,8 @@
 Current
+* add a simple GUI for tests and stats
+
+Version 0.2.2
+Date 5 february 2006
 * the 'all' keyword can be used to launch all plugins
 * added a report manager to show results in a html page with png images
 * possibility of using several output file per plugin
