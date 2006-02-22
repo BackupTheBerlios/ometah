@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.14 2005/11/24 22:22:01 nojhan Exp $
+ *  $Id: itsArgument.cpp,v 1.15 2006/02/22 13:58:42 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -25,6 +25,9 @@
 
 
 #include "itsArgument.hpp"
+
+#define FLAG_SHORT_MARK "-"
+#define FLAG_LONG_MARK "--"
 
 using namespace std;
 
@@ -110,11 +113,11 @@ itsArgumentParser::itsArgumentParser(int argc, vector<string> argv)
 
 void itsArgumentParser::searchEndFlags() 
 {
-  if (this->defArg("-V", "--version", "check version", false, "", "")){
+  if (this->defArg("V", "version", "check version", false, "", "")){
     throw VERSION_KEY;  
   }
-  if (this->defArg("-h", "--help", "show help", false, "", "") ||
-      this->defArg("-u", "--usage", "show usage informations", false, "", "")){
+  if (this->defArg("h", "help", "show help", false, "", "") ||
+      this->defArg("u", "usage", "show usage informations", false, "", "")){
     throw USAGE_KEY;
   }
 }
@@ -129,6 +132,9 @@ bool itsArgumentParser::defArg(string flagShort, string flagLong, string usage,
   string value = valueDefault;
   string defaultVal = valueDefault;
   
+  // add the flag marks
+  flagShort = FLAG_SHORT_MARK + flagShort;
+  flagLong = FLAG_LONG_MARK + flagLong;
 
   while ( (i < this->argv.size()) && (!found)) {
 
@@ -173,6 +179,7 @@ bool itsArgumentParser::defArg(string flagShort, string flagLong, string usage,
 
 string itsArgumentParser::getStringValue(string key)
 {
+  key = FLAG_LONG_MARK + key;
 
   vector<itsArgument>::iterator iter;
   iter = arguments.begin();
@@ -189,6 +196,7 @@ string itsArgumentParser::getStringValue(string key)
 
 double itsArgumentParser::getDoubleValue(string key)
 {
+  key = FLAG_LONG_MARK + key;
   
   vector<itsArgument>::iterator iter;
   iter = arguments.begin();
@@ -204,7 +212,9 @@ double itsArgumentParser::getDoubleValue(string key)
   return -1.;
 }
 
-int itsArgumentParser::getIntValue(string key){
+int itsArgumentParser::getIntValue(string key)
+{
+  key = FLAG_LONG_MARK + key;
 
   int i = -1;
   vector<itsArgument>::iterator iter;
@@ -225,6 +235,7 @@ int itsArgumentParser::getIntValue(string key){
 
 bool itsArgumentParser::getBoolValue(string key)
 {
+  key = FLAG_LONG_MARK + key;
 
   vector<itsArgument>::iterator iter;
   iter = arguments.begin();
@@ -348,6 +359,8 @@ bool itsArgumentParser::hasValue(string flag)
 
 bool itsArgumentParser::isAsked(string flag)
 {
+  flag = FLAG_LONG_MARK + flag;
+
     // find the defined argument
     for ( unsigned int i=0; i < this->arguments.size(); i++ ) {
         if ( arguments[i].getShortKey() == flag || arguments[i].getLongKey() == flag ) {
