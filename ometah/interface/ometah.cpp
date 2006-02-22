@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.21 2006/02/01 08:52:19 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.22 2006/02/22 14:02:04 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -133,8 +133,8 @@ int main(int argc, char ** argv)
   itsArgumentParser argumentParser(argc, argumentsVector);
 
   int VERBOSE;
-  if (argumentParser.defArg("-v", "--verbose", "verbose level", true, "int", "0"))
-    VERBOSE = argumentParser.getIntValue("--verbose");
+  if (argumentParser.defArg("v", "verbose", "verbose level", true, "int", "0"))
+    VERBOSE = argumentParser.getIntValue("verbose");
   else
     VERBOSE = 0;
   
@@ -157,36 +157,38 @@ int main(int argc, char ** argv)
 
   try {
     // arguments definitions (only here !!)
-    argumentParser.defArg("-p", "--problem",
+    argumentParser.defArg("p", "problem",
 			  (problemUsage.str()).c_str(), 
 			  true, "string", "Rosenbrock");
-    argumentParser.defArg("-m", "--metah",
+    argumentParser.defArg("m", "metah",
 			  (metahUsage.str()).c_str(), 
 			  true, "string", "CEDA");
-    argumentParser.defArg("-C", "--com-client", 
+    argumentParser.defArg("C", "com-client", 
 			  (clientUsage.str()).c_str() ,
 			  true, "string", "Embedded");
-    argumentParser.defArg("-S", "--com-server", 
+    argumentParser.defArg("S", "com-server", 
 			  (serverUsage.str()).c_str() ,
 			  true, "string", "Embedded");
-    argumentParser.defArg("-r", "--random-seed", 
+    argumentParser.defArg("r", "random-seed", 
 			  "seed of the pseudo-random generator (0 to use the clock)", true, "int", "0");
-    argumentParser.defArg("-a", "--init-random-seed", 
+    argumentParser.defArg("a", "init-random-seed", 
 			  "a specific random seed for the initialization step", true, "int", "0");
-    argumentParser.defArg("-D", "--debug", 
+    argumentParser.defArg("D", "debug", 
 			  "debug key" ,true, "string", "");
-    argumentParser.defArg("-i", "--iterations", 
+    argumentParser.defArg("i", "iterations", 
 			  "maximum number of iterations" ,true, "int", "10000");
-    argumentParser.defArg("-e", "--evaluations", 
+    argumentParser.defArg("e", "evaluations", 
 			  "maximum number of evaluations" ,true, "int", "110");
-    argumentParser.defArg("-P", "--precision", 
+    argumentParser.defArg("P", "precision", 
 			  "minimum value to reach" ,true, "double", "0.0");
-    argumentParser.defArg("-s", "--sample-size", 
+    argumentParser.defArg("s", "sample-size", 
 			  "number of points in the sample" ,true, "int", "10");
-    argumentParser.defArg("-d", "--dimension", 
+    argumentParser.defArg("d", "dimension", 
 			  "dimension of the problem" ,true, "int", "1");
-    argumentParser.defArg("-o", "--output", 
-			  "output of the results" ,true, "string", "");
+    argumentParser.defArg("o", "output", 
+			  "output of the results" ,true, "string", "-");
+    argumentParser.defArg("l", "silent", 
+			  "only output the number of evaluations and the optimums values" ,false);
   }
   catch(const char * s) {
     cerr << s;
@@ -226,17 +228,17 @@ int main(int argc, char ** argv)
   
   if (VERBOSE){
     clog << "\ngetValues :" 
-	 << "\n problem: " << argumentParser.getStringValue("--problem") 
-	 << "\n metah: "<< argumentParser.getStringValue("--metah")
-	 << "\n client: " << argumentParser.getStringValue("--com-client") 
-	 << "\n server " << argumentParser.getStringValue("--com-server")
-	 << "\n seed: " << argumentParser.getIntValue("--random-seed")
-	 << "\n debug: "<< argumentParser.getStringValue("--debug") 
-	 << "\n iterations: " << argumentParser.getIntValue("--iterations")
-	 << "\n evaluations: " << argumentParser.getIntValue("--evaluations")
-	 << "\n precision: " << argumentParser.getDoubleValue("--precision")
-	 << "\n sample size: " << argumentParser.getIntValue("--sample-size")
-	 << "\n dimension: " << argumentParser.getIntValue("--dimension")
+	 << "\n problem: " << argumentParser.getStringValue("problem") 
+	 << "\n metah: "<< argumentParser.getStringValue("metah")
+	 << "\n client: " << argumentParser.getStringValue("com-client") 
+	 << "\n server " << argumentParser.getStringValue("com-server")
+	 << "\n seed: " << argumentParser.getIntValue("random-seed")
+	 << "\n debug: "<< argumentParser.getStringValue("debug") 
+	 << "\n iterations: " << argumentParser.getIntValue("iterations")
+	 << "\n evaluations: " << argumentParser.getIntValue("evaluations")
+	 << "\n precision: " << argumentParser.getDoubleValue("precision")
+	 << "\n sample size: " << argumentParser.getIntValue("sample-size")
+	 << "\n dimension: " << argumentParser.getIntValue("dimension")
 	 << endl;
   }
 
@@ -246,10 +248,10 @@ int main(int argc, char ** argv)
    */
     
   
-  setMetaheuristic.choose(argumentParser.getStringValue("--metah"));
-  setProblem.choose(argumentParser.getStringValue("--problem"));
-  setCommunicationClient.choose(argumentParser.getStringValue("--com-client"));
-  setCommunicationServer.choose(argumentParser.getStringValue("--com-server"));
+  setMetaheuristic.choose(argumentParser.getStringValue("metah"));
+  setProblem.choose(argumentParser.getStringValue("problem"));
+  setCommunicationClient.choose(argumentParser.getStringValue("com-client"));
+  setCommunicationServer.choose(argumentParser.getStringValue("com-server"));
 
 
   if (VERBOSE)
@@ -261,7 +263,7 @@ int main(int argc, char ** argv)
    */
   char ok = 0;
   for (unsigned i = 0; i < setMetaheuristic.getKeyList().size() ; i++) {
-    if ( setMetaheuristic.getKeyList()[i]  == argumentParser.getStringValue("--metah"))
+    if ( setMetaheuristic.getKeyList()[i]  == argumentParser.getStringValue("metah"))
       ok = 1;
   }
   if (!ok) {
@@ -270,7 +272,7 @@ int main(int argc, char ** argv)
   }
   
   for (unsigned i = 0; i < setProblem.getKeyList().size() ; i++) {
-    if ( setProblem.getKeyList()[i]  == argumentParser.getStringValue("--problem"))
+    if ( setProblem.getKeyList()[i]  == argumentParser.getStringValue("problem"))
       ok = 1;
   }
   if (!ok) {
@@ -293,8 +295,8 @@ int main(int argc, char ** argv)
   setCommunicationServer.item()->problem = setProblem.item();
     
   // Special case for the embedded protocol : we must link client and server
-  if( setCommunicationClient.item()->getKey() == argumentParser.getStringValue("--com-client") && 
-      setCommunicationServer.item()->getKey() ==  argumentParser.getStringValue("--com-server")) {
+  if( setCommunicationClient.item()->getKey() == argumentParser.getStringValue("com-client") && 
+      setCommunicationServer.item()->getKey() ==  argumentParser.getStringValue("com-server")) {
     setCommunicationClient.item()->problem = setCommunicationServer.item();
   }
 
@@ -323,25 +325,25 @@ int main(int argc, char ** argv)
   // TESTS
 
   // Debug keys
-  setMetaheuristic.item()->addDebugKey(argumentParser.getStringValue("--debug"));
+  setMetaheuristic.item()->addDebugKey(argumentParser.getStringValue("debug"));
   //setMetaheuristic.item()->addDebugKey("selectNumber");
 
   // Log
   //setMetaheuristic.item()->setLogLevel(0);
 
   // parameters
-  setProblem.item()->setDimension( argumentParser.getIntValue("--dimension") );
-  setMetaheuristic.item()->setSampleSize( argumentParser.getIntValue("--sample-size") );
+  setProblem.item()->setDimension( argumentParser.getIntValue("dimension") );
+  setMetaheuristic.item()->setSampleSize( argumentParser.getIntValue("sample-size") );
 
   // Stopping criteria
-  setMetaheuristic.item()->setEvaluationsMaxNumber( argumentParser.getIntValue("--evaluations") );
-  setMetaheuristic.item()->setIterationsMaxNumber( argumentParser.getIntValue("--iterations") );
-  setMetaheuristic.item()->setValueMin( argumentParser.getDoubleValue("--precision") );
+  setMetaheuristic.item()->setEvaluationsMaxNumber( argumentParser.getIntValue("evaluations") );
+  setMetaheuristic.item()->setIterationsMaxNumber( argumentParser.getIntValue("iterations") );
+  setMetaheuristic.item()->setValueMin( argumentParser.getDoubleValue("precision") );
 
   // Initialize pseudo random generator with time unit
   // (overloaded method exists with an unsigned parameter as seed)
-  setMetaheuristic.item()->initRandom( argumentParser.getIntValue("--random-seed") );
-  setMetaheuristic.item()->setInitializationSeed( argumentParser.getIntValue("--init-random-seed") );
+  setMetaheuristic.item()->initRandom( argumentParser.getIntValue("random-seed") );
+  setMetaheuristic.item()->setInitializationSeed( argumentParser.getIntValue("init-random-seed") );
 
   if (VERBOSE)
     clog << "parameters ok, starting optimization..." << endl;
@@ -355,27 +357,57 @@ int main(int argc, char ** argv)
   
   ostream * pout;
   ofstream outfile;
+  
   // if we want the output on stdout
-  if( argumentParser.getStringValue("--output") == "" || 
-      argumentParser.getStringValue("--output") == "-" ) {
+  if( argumentParser.getStringValue("output") == "" || 
+      argumentParser.getStringValue("output") == "-" ) {
       pout = &cout;
       
   // if we want to output to a file
   } else {
-      outfile.open ( argumentParser.getStringValue("--output").c_str(), ofstream::out | ofstream::app);
+      outfile.open ( argumentParser.getStringValue("output").c_str(), ofstream::out | ofstream::app);
       pout = &outfile;
   }
   // link process and en output
   setMetaheuristic.item()->setOutProcessResult(pout);
   setMetaheuristic.item()->setOutEndResult(pout);
   
-  *pout << "<? xml-version=\"1.0\" encoding=\"iso-8859-15\" ?>" << endl;
-  *pout << "<ometah>" << endl;
-  *pout << setProblem.item()->getInformations_XML() << endl;
-  *pout << setMetaheuristic.item()->getInformations_XML() << endl;
-  
+  // if we are not asking for silence
+  if( ! argumentParser.isAsked("silent") ) {
+    *pout << "<? xml-version=\"1.0\" encoding=\"iso-8859-15\" ?>" << endl;
+    *pout << "<ometah>" << endl;
+    *pout << setProblem.item()->getInformations_XML() << endl;
+    *pout << setMetaheuristic.item()->getInformations_XML() << endl;
+  }
+
   try {
-    setMetaheuristic.item()->start();
+    // if we are asking for silence
+    if( argumentParser.isAsked("silent") ) {
+      setMetaheuristic.item()->initialization(); // initialization step is not call in silent mode
+      setMetaheuristic.item()->startSilent(); // silent mode
+    
+      // print out the evaluation number
+      *pout << setMetaheuristic.item()->getEvaluationNumber() << " ";
+    
+      // print out one optimum only
+      itsPoint optim = setMetaheuristic.item()->getOptimum();
+      
+      *pout << optim.getValues()[0];
+      for(unsigned int i=1; i < optim.getValuesNumber(); i++) {
+        *pout << "," << optim.getValues()[i];
+      }
+      
+      *pout << " ";
+      
+      *pout << optim.getSolution()[0];
+      for(unsigned int i=1; i < optim.getSolutionDimension(); i++) {
+        *pout << "," << optim.getSolution()[i];
+      }
+      *pout << endl;
+    
+    } else {
+      setMetaheuristic.item()->start();
+    }
   }
   catch(const char * str) {
     cerr << str << endl;
@@ -387,10 +419,14 @@ int main(int argc, char ** argv)
     cerr << "Unknown error" << endl;
   }
 
-  *pout << "</ometah>" << endl;
+  // if we are not asking for silence
+  if( ! argumentParser.isAsked("silent") ) {
+    *pout << "</ometah>" << endl;
+  }
   
   // close the file if necessary
   if( outfile.is_open() ) {
       outfile.close();
   }
+
 }
