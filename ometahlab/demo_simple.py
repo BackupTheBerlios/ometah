@@ -7,7 +7,7 @@
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 #  Author : Johann Dréo <nojhan@gmail.com>
-#  $id$
+#  $Id: demo_simple.py,v 1.5 2006/02/22 14:52:46 nojhan Exp $
 #  Copyright : Free Software Fundation
 #
 ###
@@ -35,31 +35,31 @@ import ometahstats
 
 runs = 1000
 
-#~ print 'Launching test runs:'
-#~ print '  First test:'
-#~ u = ometahtest.Test()
-#~ u.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m CEDA')
-#~ u.setNbRuns(runs)
-#~ u.setOmetahPath('../ometah/ometah')
-#~ u.start()
+print 'Launching test runs:'
+print '  First test:'
+u = ometahtest.Test()
+u.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m CEDA')
+u.setNbRuns(runs)
+u.setOmetahPath('../ometah/ometah')
+u.start()
 
-#~ print '  Second test:'
-#~ v = ometahtest.Test()
-#~ v.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m RA')
-#~ v.setNbRuns(runs)
-#~ v.setOmetahPath('../ometah/ometah')
-#~ v.start()
+print '  Second test:'
+v = ometahtest.Test()
+v.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m RA')
+v.setNbRuns(runs)
+v.setOmetahPath('../ometah/ometah')
+v.start()
 
-#~ print '  Third test:'
-#~ w = ometahtest.Test()
-#~ w.setArgs('-s 100 -i 10 -e 10000 -p Rosenbrock -d 1 -m HCIAC')
-#~ w.setNbRuns(runs)
-#~ w.setOmetahPath('../ometah/ometah')
-#~ w.start()
+print '  Third test:'
+w = ometahtest.Test()
+w.setArgs('-s 100 -i 10 -e 10000 -p Rosenbrock -d 1 -m HCIAC')
+w.setNbRuns(runs)
+w.setOmetahPath('../ometah/ometah')
+w.start()
 
 print '\nLaunching data process:'
-#paths = [ u.getPath(), v.getPath()]#, w.getPath() ]
-paths = ['results/Rosenbrock_CEDA_d2_e100_r27461_1', 'results/Rosenbrock_RA_d2_e100_r1433_1']
+paths = [ u.getPath(), v.getPath(), w.getPath() ]
+#paths = ['results/Rosenbrock_CEDA_d2_e100_r27461_1', 'results/Rosenbrock_RA_d2_e100_r1433_1']
 print '  Using ',paths
 
 ometahstats.process(paths,
