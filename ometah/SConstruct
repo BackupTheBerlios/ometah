@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.30 2006/01/31 11:49:28 nojhan Exp $
+#  $Id: SConstruct,v 1.31 2006/02/22 14:07:02 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -210,7 +210,7 @@ distDir = 'dist'
 Execute(Delete(distDir))
 
 # base name of the package
-zipName = "ometah-0.2.2"+"_"+os.uname()[0]+"-"+os.uname()[4]
+zipName = "ometah-0.2.4a"+"_"+os.uname()[0]+"-"+os.uname()[4]
 
 accDir = os.path.join(distDir,zipName)
 

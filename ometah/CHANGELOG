@@ -1,4 +1,10 @@
-Current
+Version CVS
+* add a silent mode, outputing only the number of evaluation and the optimum, no xml
+* better selection algorithm for high selection rate
+* flags marks automatically managed
+
+Version 0.2.3
+Date 5 february 2006
 * possibility to fix a random seed for the initialization step only
 * automated archive creation in SConstruct
 * bugfix with SA compilation
