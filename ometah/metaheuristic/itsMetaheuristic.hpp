@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.18 2006/02/01 08:52:21 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.19 2006/02/22 14:05:59 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -68,10 +68,12 @@ protected:
       
   //! The learning phase
   virtual void learning() {};
-      
+
+public:
   //! The initialization phase
   virtual void initialization();
 
+protected:
   //! Test if a stopping criteria have been reached
   bool isStoppingCriteria();
   
