@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.7 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.8 2006/02/22 14:05:02 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -185,20 +185,12 @@ void itsEstimationOfDistribution::diversification()
 
 void itsEstimationOfDistribution::selection()
 {
-    // sort the sample
-    this->sample = sortOnValues(this->sample,0);
 
-    // get the best points
     int selectNumber = (int) floor( (double)this->sample.size() * this->selectRatio);
     printDebug("selectNumber",selectNumber);
 
-    vector<itsPoint> bests(this->sample.begin(), this->sample.begin() + selectNumber );
-    
-    if(bests.size()<=0) {
-        throw "ErrorSize: no more points left after selection";
-    }
+    this->sample = selectOnValues( this->sample, selectNumber );
 
-    this->sample = bests;
 }
 
 void itsEstimationOfDistribution::intensification()

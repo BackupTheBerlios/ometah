@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.hpp,v 1.4 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.hpp,v 1.5 2006/02/22 14:05:02 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -24,7 +24,6 @@
  
 #ifndef ITSESTIMATIONOFDISTRIBUTION
 #define ITSESTIMATIONOFDISTRIBUTION
- 
 
 #include <iostream>
 #include <vector>
