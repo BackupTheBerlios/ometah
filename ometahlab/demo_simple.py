@@ -7,7 +7,7 @@
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 #  Author : Johann Dréo <nojhan@gmail.com>
-#  $Id: demo_simple.py,v 1.5 2006/02/22 14:52:46 nojhan Exp $
+#  $Id: demo_simple.py,v 1.6 2006/02/23 10:38:04 nojhan Exp $
 #  Copyright : Free Software Fundation
 #
 ###
@@ -33,7 +33,7 @@
 import ometahtest
 import ometahstats
 
-runs = 1000
+runs = 10
 
 print 'Launching test runs:'
 print '  First test:'
@@ -50,15 +50,8 @@ v.setNbRuns(runs)
 v.setOmetahPath('../ometah/ometah')
 v.start()
 
-print '  Third test:'
-w = ometahtest.Test()
-w.setArgs('-s 100 -i 10 -e 10000 -p Rosenbrock -d 1 -m HCIAC')
-w.setNbRuns(runs)
-w.setOmetahPath('../ometah/ometah')
-w.start()
-
 print '\nLaunching data process:'
-paths = [ u.getPath(), v.getPath(), w.getPath() ]
+paths = [ u.getPath(), v.getPath() ]
 #paths = ['results/Rosenbrock_CEDA_d2_e100_r27461_1', 'results/Rosenbrock_RA_d2_e100_r1433_1']
 print '  Using ',paths
 
