@@ -32,8 +32,7 @@
 
 
 # This is a string marking the file as a ometahlab plugin
-# remove the _NOT_ string to use it
-# is_NOT_OmetahLabPlugin
+# isOmetahLabPlugin
 
 # necessary base class
 from plugin import Plugin
@@ -42,16 +41,18 @@ from plugin import Plugin
 from rpy import *
 
 # name your plugin according to the following notation :
-# (end|iteration)_(optimum|all)_(value|solution)_(type)
-# for example : end_optimum_value_histogram
-class plugin_template(Plugin):
+# (end|iteration)_(optimum|all)_(type)
+# for example : end_optimum_distribution
+class end_optimum_value_successrate(Plugin):
 
     def __init__(self,data):
         # call the plugin basic initializations
         Plugin.__init__(self,data)
 
         # set the name of your plugin
-        self.setName("plugin_template","Description of your plugin.")
+        self.setName("end_optimum_value_successrate",
+        "Plot the graph of success rates, considering a Test as a success when \
+        the given precision of the problem is reached.")
         
 
     # necessary method, called when lauching the plugin
@@ -66,7 +67,13 @@ class plugin_template(Plugin):
         #   self.data.pointsIter
         #   self.data.optimaIter
         #   ...
-        pass
+        
+        slist = []
+        slist = [t.succRate*100 for t in self.data.tests]
+        r.plot(slist, type='n', main='Success rate for each test', xlab='Test index', ylab='Rate (%)')
+        r.points(slist, pch = 21, type='h')
+        r.points(slist, pch = 21)
+        r.grid(nx=10, ny=40)
         
         # uncomment this line if you use a R output
         self.outputEnd()

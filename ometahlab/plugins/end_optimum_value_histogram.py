@@ -31,42 +31,33 @@
 #
 
 
-# This is a string marking the file as a ometahlab plugin
-# remove the _NOT_ string to use it
-# is_NOT_OmetahLabPlugin
+# isOmetahLabPlugin
 
-# necessary base class
+import os
+from rpy import *
 from plugin import Plugin
 
-# import rpy if you use R
-from rpy import *
-
-# name your plugin according to the following notation :
-# (end|iteration)_(optimum|all)_(value|solution)_(type)
-# for example : end_optimum_value_histogram
-class plugin_template(Plugin):
+class end_optimum_value_histogram(Plugin):
 
     def __init__(self,data):
-        # call the plugin basic initializations
         Plugin.__init__(self,data)
 
-        # set the name of your plugin
-        self.setName("plugin_template","Description of your plugin.")
-        
+        self.setName("end_optimum_value_histogram",
+        "Plot frequency distribution of optima for each test. \
+        We have one optimum for each run of the test.")
 
-    # necessary method, called when lauching the plugin
     def process(self):
-        # uncomment this line if you use a R output
-        self.outputInit()
+    
+        breaks = 10 # nb breaks in histo, may be reduced if not enough points
         
-        # put your plugin code here
-        # the data are in self.data :
-        #   self.data.color
-        #   self.data.optimas
-        #   self.data.pointsIter
-        #   self.data.optimaIter
-        #   ...
-        pass
+        i = 0
+        for points in self.data.optimas:
+            self.outputInit()
+            
+            vlist = [p.value for p in points]
+            txt = '%s\nOptima distribution' % self.data.tests[i].args
+            r.hist(vlist, breaks, col=self.data.color, main=txt, xlab='Value', ylab='Frequency') 
+            r.grid(nx=10)
+            i += 1
         
-        # uncomment this line if you use a R output
-        self.outputEnd()
+            self.outputEnd()

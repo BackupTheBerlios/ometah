@@ -32,8 +32,7 @@
 
 
 # This is a string marking the file as a ometahlab plugin
-# remove the _NOT_ string to use it
-# is_NOT_OmetahLabPlugin
+# isOmetahLabPlugin
 
 # necessary base class
 from plugin import Plugin
@@ -42,16 +41,17 @@ from plugin import Plugin
 from rpy import *
 
 # name your plugin according to the following notation :
-# (end|iteration)_(optimum|all)_(value|solution)_(type)
-# for example : end_optimum_value_histogram
-class plugin_template(Plugin):
+# (end|iteration)_(optimum|all)_(type)
+# for example : end_optimum_distribution
+class end_optimum_value_kruskal(Plugin):
 
     def __init__(self,data):
         # call the plugin basic initializations
         Plugin.__init__(self,data)
 
         # set the name of your plugin
-        self.setName("plugin_template","Description of your plugin.")
+        self.setName("end_optimum_value_kruskal",
+        "Make non-parametric over ALL tests.")
         
 
     # necessary method, called when lauching the plugin
@@ -66,7 +66,31 @@ class plugin_template(Plugin):
         #   self.data.pointsIter
         #   self.data.optimaIter
         #   ...
-        pass
+        import Numeric
+        limit = .05
+        # initialize our matrix with as sublists as tests
+        emlist = [ [] for i in self.data.tests ]
+        breaks = 10
         
+        for i in xrange(len(self.data.optimas)):
+            # for current test's optima list, add their error as a list at emlist[i]
+            emlist[i] = [p.value - self.data.tests[i].opt_val for p in self.data.optimas[i]]
+            txt = '%s\nOptima error distribution' % self.data.tests[i].args
+            r.hist(emlist[i], breaks, col=self.data.color, main=txt, xlab='Error', ylab='Frequency')
+            r.grid(nx=10)
+
         # uncomment this line if you use a R output
         self.outputEnd()
+        
+        if len(self.data.tests) == 2:
+            # use Mann-Whitney test
+            dic = r.wilcox_test(Numeric.array(emlist))
+        elif len(self.data.tests) > 2:
+            # use Kruskal-Wallis test
+            dic = r.kruskal_test(emlist)
+        else: # only one test
+            return
+        
+        # TODO : find a way to automate the LaTeX output in a plugin
+        #self.__same_distrib = dic['p.value']
+        print "Non-parametric test on optima error over all tests: ",dic['p.value']

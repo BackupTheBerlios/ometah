@@ -32,8 +32,7 @@
 
 
 # This is a string marking the file as a ometahlab plugin
-# remove the _NOT_ string to use it
-# is_NOT_OmetahLabPlugin
+# isOmetahLabPlugin
 
 # necessary base class
 from plugin import Plugin
@@ -42,22 +41,22 @@ from plugin import Plugin
 from rpy import *
 
 # name your plugin according to the following notation :
-# (end|iteration)_(optimum|all)_(value|solution)_(type)
-# for example : end_optimum_value_histogram
-class plugin_template(Plugin):
+# (end|iteration)_(optimum|all)_(type)
+# for example : end_optimum_distribution
+class iteration_all_value_median_logarithmic(Plugin):
 
     def __init__(self,data):
         # call the plugin basic initializations
         Plugin.__init__(self,data)
 
         # set the name of your plugin
-        self.setName("plugin_template","Description of your plugin.")
+        self.setName("iteration_all_value_median_logarithmic",
+        "Convergence graph over iterations : plot median error of each run for \
+        a given iteration, using logarithmic scale.")
         
 
     # necessary method, called when lauching the plugin
     def process(self):
-        # uncomment this line if you use a R output
-        self.outputInit()
         
         # put your plugin code here
         # the data are in self.data :
@@ -66,7 +65,23 @@ class plugin_template(Plugin):
         #   self.data.pointsIter
         #   self.data.optimaIter
         #   ...
-        pass
         
-        # uncomment this line if you use a R output
-        self.outputEnd()
+        i = 0
+        for list in self.data.pointsIter:
+            # uncomment this line if you use a R output
+            self.outputInit()
+            elist = [[p.error for p in points] for points in list ]
+            errlist = [r.median(list) for list in elist]
+            txt = '%s\nConvergence of median error of all points' % self.data.tests[i].args
+            try:
+                r.plot(errlist, main=txt, type='o', ylab='Median error', xlab='Iteration', log="y")
+            except:
+                if self.__LOG:
+                    self.__LOG = 0
+                    print 'Cannot use logarithmic scale 4'
+                r.plot(errlist, main=txt, type='o', ylab='Median error', xlab='Iteration')
+            r.grid(nx=10, ny=40)
+            i += 1
+        
+            # uncomment this line if you use a R output
+            self.outputEnd()

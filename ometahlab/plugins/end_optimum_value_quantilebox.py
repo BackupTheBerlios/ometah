@@ -32,8 +32,7 @@
 
 
 # This is a string marking the file as a ometahlab plugin
-# remove the _NOT_ string to use it
-# is_NOT_OmetahLabPlugin
+# isOmetahLabPlugin
 
 # necessary base class
 from plugin import Plugin
@@ -41,17 +40,14 @@ from plugin import Plugin
 # import rpy if you use R
 from rpy import *
 
-# name your plugin according to the following notation :
-# (end|iteration)_(optimum|all)_(value|solution)_(type)
-# for example : end_optimum_value_histogram
-class plugin_template(Plugin):
+class end_optimum_value_quantilebox(Plugin):
 
     def __init__(self,data):
         # call the plugin basic initializations
         Plugin.__init__(self,data)
 
         # set the name of your plugin
-        self.setName("plugin_template","Description of your plugin.")
+        self.setName("end_optimum_value_quantilebox","Show one quantile box of optima for each Test. ")
         
 
     # necessary method, called when lauching the plugin
@@ -60,13 +56,22 @@ class plugin_template(Plugin):
         self.outputInit()
         
         # put your plugin code here
-        # the data are in self.data :
-        #   self.data.color
-        #   self.data.optimas
-        #   self.data.pointsIter
-        #   self.data.optimaIter
-        #   ...
-        pass
+        vlist = [[p.value for p in points ] for points in self.data.optimas ]
+
+        zero = False
+        for v in vlist:
+            if 0 in v:
+                zero = True
+        if zero:
+            r.boxplot(vlist, style='quantile', col=self.data.color, main='Optimas list', xlab='Test index', ylab='')
+        else:
+            try:
+                r.boxplot(vlist, style='quantile', log="y", col=self.data.color, main='Optimas list', xlab='Test index', ylab='')
+            except:
+                print 'Cannot use logarithmic scale 0'
+                self.__LOG = 0
+                r.boxplot(vlist, style='quantile', col=self.data.color, main='Optimas list', xlab='Test index', ylab='')
+        r.grid(nx=10, ny=40)
         
         # uncomment this line if you use a R output
         self.outputEnd()

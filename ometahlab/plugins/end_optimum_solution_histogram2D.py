@@ -32,8 +32,7 @@
 
 
 # This is a string marking the file as a ometahlab plugin
-# remove the _NOT_ string to use it
-# is_NOT_OmetahLabPlugin
+# isOmetahLabPlugin
 
 # necessary base class
 from plugin import Plugin
@@ -42,22 +41,22 @@ from plugin import Plugin
 from rpy import *
 
 # name your plugin according to the following notation :
-# (end|iteration)_(optimum|all)_(value|solution)_(type)
-# for example : end_optimum_value_histogram
-class plugin_template(Plugin):
+# (end|iteration)_(optimum|all)_(type)
+# for example : end_optimum_distribution
+class end_optimum_solution_histogram2D(Plugin):
 
     def __init__(self,data):
         # call the plugin basic initializations
         Plugin.__init__(self,data)
 
         # set the name of your plugin
-        self.setName("plugin_template","Description of your plugin.")
+        self.setName("end_optimum_solution_histogram2D","The positions distribution of optimums, in a 2D space. Use PCA if dimensions > 2..")
         
+        # eigen vectors weight for the tests
+        self.__eigenv = []
 
     # necessary method, called when lauching the plugin
     def process(self):
-        # uncomment this line if you use a R output
-        self.outputInit()
         
         # put your plugin code here
         # the data are in self.data :
@@ -66,7 +65,45 @@ class plugin_template(Plugin):
         #   self.data.pointsIter
         #   self.data.optimaIter
         #   ...
-        pass
         
-        # uncomment this line if you use a R output
-        self.outputEnd()
+        for t in self.data.tests:
+            (x, y) = ([], [])
+            (x,y) = self.get_endOptimumsPositionDistribution_ACP( t )
+            
+            
+            # uncomment this line if you use a R output
+            self.outputInit()
+            
+            txt = '%s\nSolutions positions distribution' % t.args
+            
+            # 2D distribution histogram
+            r.require('gplots') 
+            
+            #colors = r.c("white",r.rainbow(16))
+            #colors = r.c("white",r.rainbow(16,0.1))
+            #colors = r.c("white",r.heat_colors(16))
+            #colors = r.c("white",r.terrain_colors(16))
+            #colors = r.c("white",r.topo_colors(16))
+            #colors = r.c("white",r.cm_colors(16))
+            v=[i/1000.0 for i in range(0,1000,125)]+[1]
+            v.sort(reverse = True)
+            colors = r.gray( v )
+            
+            ins = int(2 * math.sqrt( 0.5*len(x) )) # magic formula
+            
+            r.hist2d(x,y,
+                     nbins = ins,
+                     col = colors,
+                     xlab = 'X', ylab='Y', main=txt)
+                         
+            # points
+            r.points([xoptim], \
+                     [yoptim], \
+                     bg='black', pch=21)
+            
+            #r.rug(x,side=1) 
+            #r.rug(y,side=2) 
+            r.box() 
+   
+            # uncomment this line if you use a R output
+            self.outputEnd()
