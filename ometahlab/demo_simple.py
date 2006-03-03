@@ -7,7 +7,7 @@
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 #  Author : Johann Dréo <nojhan@gmail.com>
-#  $Id: demo_simple.py,v 1.6 2006/02/23 10:38:04 nojhan Exp $
+#  $Id: demo_simple.py,v 1.7 2006/03/03 15:42:43 nojhan Exp $
 #  Copyright : Free Software Fundation
 #
 ###
@@ -33,7 +33,7 @@
 import ometahtest
 import ometahstats
 
-runs = 10
+runs = 100
 
 print 'Launching test runs:'
 print '  First test:'
@@ -41,6 +41,7 @@ u = ometahtest.Test()
 u.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m CEDA')
 u.setNbRuns(runs)
 u.setOmetahPath('../ometah/ometah')
+# or simply : ometahtest.Test('../ometah/ometah','-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m CEDA',runs)
 u.start()
 
 print '  Second test:'
@@ -48,11 +49,12 @@ v = ometahtest.Test()
 v.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m RA')
 v.setNbRuns(runs)
 v.setOmetahPath('../ometah/ometah')
+# or simply : ometahtest.Test('../ometah/ometah','-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m RA',runs)
 v.start()
 
 print '\nLaunching data process:'
 paths = [ u.getPath(), v.getPath() ]
-#paths = ['results/Rosenbrock_CEDA_d2_e100_r27461_1', 'results/Rosenbrock_RA_d2_e100_r1433_1']
+#or with true paths : paths = ['results/Rosenbrock_CEDA_d2_e100_r27461_1', 'results/Rosenbrock_RA_d2_e100_r1433_1']
 print '  Using ',paths
 
 ometahstats.process(paths,
@@ -66,6 +68,7 @@ ometahstats.process(paths,
     'end_optimum_position',
     'end_optimum_kruskal',
     'iteration_median_logarithmic',
-    'end_optimum_distribution_position2D'
+    'end_optimum_distribution_position2D',
+    'end_optimum_distribution_position2D_kernelestimation'
     ],
     '.png') # output type

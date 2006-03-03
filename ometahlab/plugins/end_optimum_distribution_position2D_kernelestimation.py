@@ -50,7 +50,8 @@ class end_optimum_distribution_position2D_kernelestimation(Plugin):
         Plugin.__init__(self,data)
 
         # set the name of your plugin
-        self.setName("end_optimum_distribution_position2D_kernelestimation","Description of your plugin.")
+        self.setName("end_optimum_distribution_position2D_kernelestimation",
+        "Gaussian kernel estimation of end optimums distribution in the solution space.")
         
         # eigen vectors weight for the tests
         self.__eigenv = []

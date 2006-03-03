@@ -1,5 +1,6 @@
 Current
 * add a simple GUI for tests and stats
+* add a gaussian kernel estimation of the end optimums distribution in the solution space
 
 Version 0.2.2
 Date 5 february 2006
