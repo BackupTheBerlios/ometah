@@ -7,7 +7,7 @@
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 #  Author : Johann Dréo <nojhan@gmail.com>
-#  $Id: demo_simple.py,v 1.8 2006/03/03 21:01:49 nojhan Exp $
+#  $Id: demo_simple.py,v 1.9 2006/03/03 21:26:46 nojhan Exp $
 #  Copyright : Free Software Fundation
 #
 ###
@@ -67,7 +67,7 @@ ometahstats.process(paths,
 'end_optimum_value_kruskal',
 'end_optimum_value_quantilebox',
 'end_optimum_value_successrate',
-'iterationall_value_median_logarithmic',
+'iteration_all_value_median_logarithmic',
 'iteration_all_value_quantilebox',
 'iteration_optimum_value_quantilebox'
     ],
