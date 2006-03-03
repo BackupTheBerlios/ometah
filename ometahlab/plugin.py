@@ -102,3 +102,69 @@ class Plugin:
         
     def process(self):
         pass
+
+    def get_endOptimumsPositionDistribution_ACP(self,t):
+        (x, y) = ([], [])
+        if t.problem.dimension < 2:
+            print "Warning: problem dimension is < 1, the current plugin cannot be used."
+            return
+        if t.problem.dimension == 2:
+            x = [ p.coords[0] for p in t.optima ]
+            y = [ p.coords[1] for p in t.optima ]
+            op = t.pb_optimum[0]
+            for p in t.pb_optimum:
+                if p.value < op.value:
+                    op = p
+            xoptim = op.coords[0]
+            yoptim = op.coords[1]
+            xmin = t.pb_min_bound[0].coords[0]
+            ymin = t.pb_min_bound[0].coords[1]
+            xmax = t.pb_max_bound[0].coords[0]
+            ymax = t.pb_max_bound[0].coords[1]
+            m = max(max(x), xoptim)
+            if m < xmax:
+                xmax = 0.8 * m + 0.2 * xmax
+            m = max(max(y), yoptim)
+            if m < ymax:
+                ymax = 0.8 * m + 0.2 * ymax
+            m = min(min(x), xoptim)
+            if m > xmin:
+                xmin = 0.8 * m + 0.2 * xmin
+            m = min(min(y), yoptim)
+            if m > ymin:
+                ymin = 0.8 * m + 0.2 * ymin
+            
+            xlimm = [xmin, xmax]
+            ylimm = [ymin, ymax]
+        
+        else:
+            import matrix
+            a = matrix.PCA()
+            # append solution Points
+            co = [p.coords for p in t.optima]
+            # also optimum
+            op = t.pb_optimum[0]
+            
+            for p in t.pb_optimum:
+                if p.value < op.value:
+                    op = p
+            co.append(op.coords)
+            
+            a.setMatrix(co)
+            self.__eigenv.append(a.getEigenVectors())
+        
+            x = [a.reduceDim(i,2)[0] for i in xrange(len(co) - 1) ]
+            y = [a.reduceDim(i,2)[1] for i in xrange(len(co) - 1) ]
+            res = a.reduceDim(len(co) - 2, 2)
+            xoptim = res[0]
+            yoptim = res[1]
+
+            del(a)
+            # add optimum points to point list, if it has an extrema value 
+            x.append(xoptim)
+            y.append(yoptim)
+
+            xlimm = [min(x), max(x)]
+            ylimm = [min(y), max(y)]
+            
+        return (x,y)

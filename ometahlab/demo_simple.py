@@ -7,7 +7,7 @@
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 #  Author : Johann Dréo <nojhan@gmail.com>
-#  $Id: demo_simple.py,v 1.7 2006/03/03 15:42:43 nojhan Exp $
+#  $Id: demo_simple.py,v 1.8 2006/03/03 21:01:49 nojhan Exp $
 #  Copyright : Free Software Fundation
 #
 ###
@@ -59,16 +59,16 @@ print '  Using ',paths
 
 ometahstats.process(paths,
     [
-    'end_optimum_distribution',
-    'end_optimum_quantilebox',
-    'end_optimum_bestworst',
-    'iteration_all_quantilebox',
-    'iteration_optimum_quantilebox',
-    'end_optimum_successrate',
-    'end_optimum_position',
-    'end_optimum_kruskal',
-    'iteration_median_logarithmic',
-    'end_optimum_distribution_position2D',
-    'end_optimum_distribution_position2D_kernelestimation'
+'end_optimum_solution_distribution_2D_kernelestimation',
+'end_optimum_solution_histogram2D',
+'end_optimum_solution_points',
+'end_optimum_value_bestworst',
+'end_optimum_value_histogram',
+'end_optimum_value_kruskal',
+'end_optimum_value_quantilebox',
+'end_optimum_value_successrate',
+'iterationall_value_median_logarithmic',
+'iteration_all_value_quantilebox',
+'iteration_optimum_value_quantilebox'
     ],
     '.png') # output type
