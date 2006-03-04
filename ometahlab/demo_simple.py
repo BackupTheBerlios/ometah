@@ -7,7 +7,7 @@
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 #  Author : Johann Dréo <nojhan@gmail.com>
-#  $Id: demo_simple.py,v 1.9 2006/03/03 21:26:46 nojhan Exp $
+#  $Id: demo_simple.py,v 1.10 2006/03/04 22:08:38 nojhan Exp $
 #  Copyright : Free Software Fundation
 #
 ###
@@ -33,7 +33,7 @@
 import ometahtest
 import ometahstats
 
-runs = 100
+runs = 1000
 
 print 'Launching test runs:'
 print '  First test:'

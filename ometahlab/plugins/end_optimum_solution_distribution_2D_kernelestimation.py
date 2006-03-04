@@ -69,7 +69,7 @@ class end_optimum_solution_distribution_2D_kernelestimation(Plugin):
         
         for t in self.data.tests:
             self.outputInit()
-            (x,y) = self.get_endOptimumsPositionDistribution_ACP( t )
+            (x,y,xoptim,yoptim,xlimm,ylimm) = self.get_endOptimumsPositionDistribution_ACP( t )
             
             txt = '%s\nSolutions positions distribution' % t.args
             

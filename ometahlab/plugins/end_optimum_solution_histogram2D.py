@@ -67,8 +67,7 @@ class end_optimum_solution_histogram2D(Plugin):
         #   ...
         
         for t in self.data.tests:
-            (x, y) = ([], [])
-            (x,y) = self.get_endOptimumsPositionDistribution_ACP( t )
+            (x,y,xoptim,yoptim,xlimm,ylimm) = self.get_endOptimumsPositionDistribution_ACP( t )
             
             
             # uncomment this line if you use a R output
