@@ -104,6 +104,9 @@ class Plugin:
         pass
 
     def get_endOptimumsPositionDistribution_ACP(self,t):
+        # ugly fix
+        self.__eigenv = []
+        
         (x, y) = ([], [])
         if t.problem.dimension < 2:
             print "Warning: problem dimension is < 1, the current plugin cannot be used."
