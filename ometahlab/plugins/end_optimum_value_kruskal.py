@@ -56,8 +56,6 @@ class end_optimum_value_kruskal(Plugin):
 
     # necessary method, called when lauching the plugin
     def process(self):
-        # uncomment this line if you use a R output
-        self.outputInit()
         
         # put your plugin code here
         # the data are in self.data :
@@ -76,11 +74,9 @@ class end_optimum_value_kruskal(Plugin):
             # for current test's optima list, add their error as a list at emlist[i]
             emlist[i] = [p.value - self.data.tests[i].opt_val for p in self.data.optimas[i]]
             txt = '%s\nOptima error distribution' % self.data.tests[i].args
-            r.hist(emlist[i], breaks, col=self.data.color, main=txt, xlab='Error', ylab='Frequency')
-            r.grid(nx=10)
+            #r.hist(emlist[i], breaks, col=self.data.color, main=txt, xlab='Error', ylab='Frequency')
+            #r.grid(nx=10)
 
-        # uncomment this line if you use a R output
-        self.outputEnd()
         
         if len(self.data.tests) == 2:
             # use Mann-Whitney test
@@ -89,6 +85,7 @@ class end_optimum_value_kruskal(Plugin):
             # use Kruskal-Wallis test
             dic = r.kruskal_test(emlist)
         else: # only one test
+            print "Cannot use %s on one test only" % (self.name)
             return
         
         # TODO : find a way to automate the LaTeX output in a plugin
