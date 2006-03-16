@@ -1,4 +1,5 @@
 Current
+* add a multiple ("all-in-one") histogram plot for end optimums values
 * add a simple GUI for tests and stats
 * add a gaussian kernel estimation of the end optimums distribution in the solution space
 * rename the plugins with more precises informations

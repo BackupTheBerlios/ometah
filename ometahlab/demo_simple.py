@@ -7,7 +7,7 @@
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 #  Author : Johann Dréo <nojhan@gmail.com>
-#  $Id: demo_simple.py,v 1.10 2006/03/04 22:08:38 nojhan Exp $
+#  $Id: demo_simple.py,v 1.11 2006/03/16 18:06:21 nojhan Exp $
 #  Copyright : Free Software Fundation
 #
 ###
@@ -33,12 +33,12 @@
 import ometahtest
 import ometahstats
 
-runs = 1000
+runs = 10
 
 print 'Launching test runs:'
 print '  First test:'
 u = ometahtest.Test()
-u.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m CEDA')
+u.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 3 -m CEDA')
 u.setNbRuns(runs)
 u.setOmetahPath('../ometah/ometah')
 # or simply : ometahtest.Test('../ometah/ometah','-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m CEDA',runs)
@@ -46,7 +46,7 @@ u.start()
 
 print '  Second test:'
 v = ometahtest.Test()
-v.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m RA')
+v.setArgs('-s 10 -i 10 -e 100 -p Rosenbrock -d 3 -m RA')
 v.setNbRuns(runs)
 v.setOmetahPath('../ometah/ometah')
 # or simply : ometahtest.Test('../ometah/ometah','-s 10 -i 10 -e 100 -p Rosenbrock -d 2 -m RA',runs)
@@ -69,6 +69,7 @@ ometahstats.process(paths,
 'end_optimum_value_successrate',
 'iteration_all_value_median_logarithmic',
 'iteration_all_value_quantilebox',
-'iteration_optimum_value_quantilebox'
+'iteration_optimum_value_quantilebox',
+'end_optimum_value_histogram_multi'
     ],
     '.png') # output type

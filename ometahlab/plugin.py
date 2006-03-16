@@ -170,4 +170,5 @@ class Plugin:
             xlimm = [min(x), max(x)]
             ylimm = [min(y), max(y)]
             
+        print "#######",xoptim,yoptim,xlimm,ylimm
         return (x,y,xoptim,yoptim,xlimm,ylimm)
