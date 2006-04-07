@@ -7,7 +7,7 @@
 #
 #  Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
 #  Author : Johann Dréo <nojhan@gmail.com>
-#  $Id: demo_simple.py,v 1.11 2006/03/16 18:06:21 nojhan Exp $
+#  $Id: demo_simple.py,v 1.12 2006/04/07 17:00:15 nojhan Exp $
 #  Copyright : Free Software Fundation
 #
 ###
@@ -72,4 +72,4 @@ ometahstats.process(paths,
 'iteration_optimum_value_quantilebox',
 'end_optimum_value_histogram_multi'
     ],
-    '.png') # output type
+    'html') # output type

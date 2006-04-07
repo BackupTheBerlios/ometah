@@ -37,17 +37,29 @@
 #~ except:
     #~ pass
 
-from Cheetah.Template import Template
+try:
+    from Cheetah.Template import Template
+except:
+    print '  Cheetah library not found, cannot generate reports'
+
         
-import glob
+import glob, sys
 from rpy import *
 
 OMETAHLAB_PLUGIN_MARK = 'isOmetahLabPlugin'
 
-def process(paths,plugs=['end_optimum_distribution'],output_type='.ps'):
+def process(paths,plugs=['end_optimum_distribution'],output_type='html'):
     """ Generate text report and graphic representation in postscript format,
     comparing the previous Ometah execution which directories' paths are given as a list of strings,
     ometahtest's function getPath can be used to get those strings. See demoscript for usage example."""
+    
+    if output_type == 'tex':
+        output_type_images = '.ps'
+    elif output_type == 'html':
+        output_type_images = '.png'
+    else:
+        print 'Error: '+output_type+' is not a known format'
+        sys.exit(1)
     
     print '  Initialization of data structures...'
     s = DataManager(paths)
@@ -67,17 +79,16 @@ def process(paths,plugs=['end_optimum_distribution'],output_type='.ps'):
     
     print '  Launching plugins on data...'
     for i in p.loaded:
-        p.loaded[i].setFileType(output_type)
+        p.loaded[i].setFileType(output_type_images)
         p.loaded[i].process()
     
     print '  Results are in: %s' % s.getDir()
     
     print '  Generating reports...'
-    
     r = ReportManager(p)
-    r.process()
-
+    r.process(output_type)
     print '  Report wrote to',r.reportfile
+        
     
 
 class DataManager:
@@ -311,7 +322,10 @@ class ReportManager:
         self.plugins = pluginManager
         self.reportFile = ""
         
-    def process(self):
+    def process(self,output_type='html'):
+        input_file = 'report_'+output_type+'.tmpl'
+        output_file = 'report.'+output_type
+    
         plist= []
         for plug in self.plugins.loaded:
             flist = [os.path.basename(f) for f in self.plugins.loaded[plug].fileList ]
@@ -322,8 +336,8 @@ class ReportManager:
                           )
             plist += [i]
         
-        result = "%s" % ( Template(file=os.path.join(self.plugins.pluginPath,"report_html.tmpl"), searchList=[{'plugins':plist}]) )
-        self.reportfile = os.path.join(self.plugins.data.dir,'report.html')
+        result = "%s" % ( Template(file=os.path.join(self.plugins.pluginPath,input_file), searchList=[{'plugins':plist}]) )
+        self.reportfile = os.path.join(self.plugins.data.dir,output_file)
         f = open(self.reportfile,'w')
         f.write(result)
         f.close()
