@@ -6,7 +6,7 @@
 #  Ometahlab GUI is a user interface for ometahtests and ometahstats
 #
 #  Author : Johann Dréo <nojhan@gmail.com>
-#  $Id: ometahlab_gui.py,v 1.1 2006/02/22 14:48:22 nojhan Exp $
+#  $Id: ometahlab_gui.py,v 1.2 2006/04/07 17:58:27 nojhan Exp $
 #  Copyright : Free Software Fundation
 #
 ###
@@ -234,7 +234,7 @@ class Stats(Frame):
         Label(fraFileType,text="File type:").pack(side=LEFT)
         self.varFileType = StringVar()
         self.entFileType = Entry(fraFileType,textvariable=self.varFileType,bg='white')
-        self.varFileType.set('.png')
+        self.varFileType.set('html')
         self.entFileType.pack(side=LEFT,expand=YES,fill=X)
         
         fraFileType.pack()
