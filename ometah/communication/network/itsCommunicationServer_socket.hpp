@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationServer.hpp,v 1.5 2006/04/07 16:55:58 nojhan Exp $
+ *  $Id: itsCommunicationServer_socket.hpp,v 1.1 2006/04/07 16:55:57 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -20,60 +20,65 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#ifndef ITSCOMMUNICATIONSERVER
-#define ITSCOMMUNICATIONSERVER
+ 
+ #ifndef ITSCOMMUNICATIONSERVERSOCKET
+ #define ITSCOMMUNICATIONSERVERSOCKET
 
 #include <vector>
-#include "itsCommunication.hpp"
-#include "../common/itsPoint.hpp"
-#include "../problem/itsProblem.hpp"
+#include <string>
+#include <iostream>
+#include <sstream>
+//#include "../itsCommunicationClient_socket.hpp"
+#include "../../common/itsPoint.hpp"
+#include "../../common/string.hpp"
+#include "../itsCommunicationServer.hpp"
+
+#include "itsSocketServer.hpp"
+#include "Exception_Socket.hpp"
+#include "SocketProtocol.hpp"
 
 using namespace std;
 
-
-class itsCommunicationServer : public itsCommunication
+class itsCommunicationServer_socket : public itsCommunicationServer
 {
+private:
+    //! the port to which the server is listening
+    int port;
+
 public:
-    itsCommunicationServer() {};
-    virtual ~itsCommunicationServer() {};
+    itsCommunicationServer_socket();
 
-    //! The problem 
-    itsProblem* problem;
 
-    //! Call the problem on a point to get its associated values
     itsPoint call(itsPoint point);
-
-    //! The minima of the problem bounds
     vector<double> boundsMinima();
-
-    //! The maxima of the problem bounds
     vector<double> boundsMaxima();
-
-    //! The bounds matrix
-    /*!  
-        This method call getBoundsMinima and getBoundsMaxima to produce
-        a matrix with each dimension on a row.
-    */
     vector<vector<double> > bounds();
-
-    //! Return the dimension
     int getDimension();
-    
-    //! Launch the server
+
+    //! Set the port
+    void setPort(int portNumber);
+
+    //! Parse the string received from a client and handle the commands
     /*!
-        Not used for embedded protocol, but necessary when using client/server protocols
+      The command should be of the form :
+        COMMAND arguments
+      Available commands :
+        CALL x1,x2,x3,...
+        BOUNDSMINIMA
+        BOUNDSMAXIMA
+        BOUNDS
+        DIMENSION
     */
-    virtual void start() = 0;
-    
+    string handleRequest( string data );
+
+    //! Start the server
+    void start();
 };
 
-class itsCommunicationServerFactory
+class itsCommunicationServerFactory_socket : public itsCommunicationServerFactory
 {
 public:
-    virtual ~itsCommunicationServerFactory() {};
-    //itsCommunicationServerFactory() {};
-
-    virtual itsCommunicationServer * create() =0;
+    itsCommunicationServer* create();
 };
 
 #endif

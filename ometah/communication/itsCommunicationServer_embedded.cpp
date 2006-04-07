@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationServer_embedded.cpp,v 1.2 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: itsCommunicationServer_embedded.cpp,v 1.3 2006/04/07 16:55:58 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -26,6 +26,12 @@ itsCommunicationServer_embedded::itsCommunicationServer_embedded()
 {
     this->setKey("Embedded");
 }
+
+
+void itsCommunicationServer_embedded::start()
+{
+}
+
 
 itsCommunicationServer* itsCommunicationServerFactory_embedded::create()
 {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.22 2006/02/22 14:02:04 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.23 2006/04/07 16:55:58 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -119,6 +119,15 @@ int main(int argc, char ** argv)
   factoryServer = new itsCommunicationServerFactory_embedded;
   setCommunicationServer.add( factoryServer->create() );
 
+#ifdef WITH_SOCKET
+  // add the socket protocol
+  factoryClient = new itsCommunicationClientFactory_socket;
+  setCommunicationClient.add( factoryClient->create() );
+    
+  factoryServer = new itsCommunicationServerFactory_socket;
+  setCommunicationServer.add( factoryServer->create() );
+#endif
+  
   /*
    * Arguments
    */
@@ -169,6 +178,12 @@ int main(int argc, char ** argv)
     argumentParser.defArg("S", "com-server", 
 			  (serverUsage.str()).c_str() ,
 			  true, "string", "Embedded");
+#ifdef WITH_SOCKET
+    argumentParser.defArg("t", "port", 
+			  "network port to use for communication with the problem server (Socket protocol)" , true, "int", "80277");
+    argumentParser.defArg("I", "ip", 
+			  "ip address of the problem server (Socket protocol)" , true, "string", "localhost");
+#endif
     argumentParser.defArg("r", "random-seed", 
 			  "seed of the pseudo-random generator (0 to use the clock)", true, "int", "0");
     argumentParser.defArg("a", "init-random-seed", 
@@ -295,9 +310,9 @@ int main(int argc, char ** argv)
   setCommunicationServer.item()->problem = setProblem.item();
     
   // Special case for the embedded protocol : we must link client and server
-  if( setCommunicationClient.item()->getKey() == argumentParser.getStringValue("com-client") && 
-      setCommunicationServer.item()->getKey() ==  argumentParser.getStringValue("com-server")) {
-    setCommunicationClient.item()->problem = setCommunicationServer.item();
+  if( setCommunicationClient.item()->getKey() == "Embedded" && 
+      setCommunicationServer.item()->getKey() == "Embedded") {
+        setCommunicationClient.item()->problem = setCommunicationServer.item();
   }
 
   if (VERBOSE)
@@ -346,8 +361,19 @@ int main(int argc, char ** argv)
   setMetaheuristic.item()->setInitializationSeed( argumentParser.getIntValue("init-random-seed") );
 
   if (VERBOSE)
-    clog << "parameters ok, starting optimization..." << endl;
+    clog << "parameters ok, starting..." << endl;
     
+  
+#ifdef WITH_SOCKET
+  if( argumentParser.isAsked("com-server") && argumentParser.getStringValue("com-server") == "Socket" ) {
+      //if(VERBOSE)
+          clog << "Starting the socket server..." << endl;
+      setCommunicationServer.item()->start();
+      exit(0);
+  }
+#endif
+  
+  
   // Starting the optimization
   
   if (VERBOSE)
@@ -416,7 +442,7 @@ int main(int argc, char ** argv)
     cerr << str << endl;
   }
   catch (...) {
-    cerr << "Unknown error" << endl;
+    cerr << "Cant handle error, stopping." << endl;
   }
 
   // if we are not asking for silence

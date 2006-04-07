@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.16 2006/02/22 14:01:49 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.17 2006/04/07 16:55:58 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -59,6 +59,11 @@
 // communication
 #include "../communication/itsCommunicationServer_embedded.hpp"
 #include "../communication/itsCommunicationClient_embedded.hpp"
+
+#ifdef WITH_SOCKET
+#include "../communication/network/itsCommunicationClient_socket.hpp"
+#include "../communication/network/itsCommunicationServer_socket.hpp"
+#endif
 
 // interfaces
 #include "itsArgument.hpp"
