@@ -1,0 +1,12 @@
+To launch the demos, use python.
+
+For example, in a shell, type :
+    python demo_simple.py
+
+The scripts assumes that the oMetah binary is in a directory named "ometah", at the same level that the "ometahlab" one. Thus your paths should be like :
+|
+|- ometah
+|  \- ometah (the executable binary)
+\- ometahlab
+   \-demo
+     \- demo_simple.py (or one of the demo script)
