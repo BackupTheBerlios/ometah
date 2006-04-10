@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_socket.cpp,v 1.1 2006/04/07 16:55:57 nojhan Exp $
+ *  $Id: itsCommunicationClient_socket.cpp,v 1.2 2006/04/10 20:56:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -126,7 +126,7 @@ int itsCommunicationClient_socket::getDimension()
 
 string itsCommunicationClient_socket::sendRequest( string cmd )
 {
-    try {
+    //try {
 
         itsSocketClient client_socket( hostIP, port );
 
@@ -140,16 +140,14 @@ string itsCommunicationClient_socket::sendRequest( string cmd )
         clog << "Receiving:" << response << endl;
     
         if ( stringSplit(response, OMSP_SPLIT_COMMAND)[0] == "ERROR" ) {
-            throw Exception_Socket ( response );
+            throw Exception_Socket ( response, EXCEPTION_INFOS );
         }
     
         return response;
     
-	  } catch ( Exception_Socket& e ) {
-        cerr << "Exception was caught:" << e.description() << endl;
-    }
-  
-    throw Exception_Socket ( "ERROR unknown" );
+    /*} catch ( Exception_Socket& e ) {
+        cerr << "Error: " << e.what() << endl;
+    }*/
 }
 
 

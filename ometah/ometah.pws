@@ -5,9 +5,9 @@
 2=55
 3=38
 4=182
-5=48
-6=369
-7=66
+5=1
+6=15
+7=48
 8=164
 9=11
 
@@ -33,14 +33,6 @@ RunInTerminal=true
 
 [Project State]
 clean before build=false
-
-[filelist]
-0=/home/nojhan/travail/openMetaheuristic/source/ometah/communication/network/itsCommunicationClient_socket.cpp
-1=/home/nojhan/travail/openMetaheuristic/source/ometah/communication/network/itsCommunicationClient_socket.hpp
-2=/home/nojhan/travail/openMetaheuristic/source/ometah/communication/network/itsCommunicationServer_socket.cpp
-3=/home/nojhan/travail/openMetaheuristic/source/ometah/communication/network/itsCommunicationServer_socket.hpp
-4=/home/nojhan/travail/openMetaheuristic/source/ometah/communication/network/itsSocket.cpp
-5=/home/nojhan/travail/openMetaheuristic/source/ometah/communication/network/SocketProtocol.hpp
 
 [Project Tree]
 0=0

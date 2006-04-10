@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSocketServer.cpp,v 1.1 2006/04/07 16:55:57 nojhan Exp $
+ *  $Id: itsSocketServer.cpp,v 1.2 2006/04/10 20:56:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,15 +29,15 @@ using namespace std;
 itsSocketServer::itsSocketServer ( int port )
 {
     if ( ! itsSocket::create() ) {
-        throw Exception_Socket ( "Could not create server socket" );
+        throw Exception_Socket_Creation ( "Could not create server socket", EXCEPTION_INFOS );
     }
 
     if ( ! itsSocket::bind ( port ) ) {
-        throw Exception_Socket ( "Could not bind to port" );
+        throw Exception_Socket_Binding ( "Could not bind to port", EXCEPTION_INFOS );
     }
 
     if ( ! itsSocket::listen() ) {
-        throw Exception_Socket ( "Could not listen to socket" );
+        throw Exception_Socket_IO ( "Could not listen to socket", EXCEPTION_INFOS );
     }
 }
 
@@ -50,7 +50,7 @@ itsSocketServer::~itsSocketServer()
 const itsSocketServer& itsSocketServer::operator << ( const string& s ) const
 {
     if ( ! itsSocket::send ( s ) ) {
-        throw Exception_Socket ( "Could not write to socket" );
+        throw Exception_Socket_IO ( "Could not write to socket", EXCEPTION_INFOS );
     }
 
     return *this;
@@ -60,7 +60,7 @@ const itsSocketServer& itsSocketServer::operator << ( const string& s ) const
 const itsSocketServer& itsSocketServer::operator >> ( string& s ) const
 {
     if ( ! itsSocket::receive ( s ) ) {
-        throw Exception_Socket ( "Could not read from socket" );
+        throw Exception_Socket_IO ( "Could not read from socket", EXCEPTION_INFOS );
     }
 
     return *this;
@@ -70,6 +70,6 @@ const itsSocketServer& itsSocketServer::operator >> ( string& s ) const
 void itsSocketServer::accept ( itsSocketServer& sock )
 {
     if ( ! itsSocket::accept ( sock ) ) {
-        throw Exception_Socket ( "Could not accept socket" );
+        throw Exception_Socket_IO ( "Could not accept socket", EXCEPTION_INFOS );
     }
 }

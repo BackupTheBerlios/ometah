@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSocketClient.cpp,v 1.1 2006/04/07 16:55:57 nojhan Exp $
+ *  $Id: itsSocketClient.cpp,v 1.2 2006/04/10 20:56:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,11 +29,11 @@ using namespace std;
 itsSocketClient::itsSocketClient ( string host, int port )
 {
     if ( ! itsSocket::create() ) {
-        throw Exception_Socket ( "Could not create client socket." );
+        throw Exception_Socket_Creation ( "Could not create client socket", EXCEPTION_INFOS );
     }
 
     if ( ! itsSocket::connect ( host, port ) ) {
-        throw Exception_Socket ( "Could not bind to port." );
+        throw Exception_Socket_Binding ( "Could not bind to port", EXCEPTION_INFOS );
     }
 }
 
@@ -41,7 +41,7 @@ itsSocketClient::itsSocketClient ( string host, int port )
 const itsSocketClient& itsSocketClient::operator << ( const string& s ) const
 {
     if ( ! itsSocket::send ( s ) ) {
-        throw Exception_Socket ( "Could not write to socket" );
+        throw Exception_Socket_IO ( "Could not write to socket", EXCEPTION_INFOS );
     }
 
     return *this;
@@ -51,7 +51,7 @@ const itsSocketClient& itsSocketClient::operator << ( const string& s ) const
 const itsSocketClient& itsSocketClient::operator >> ( string& s ) const
 {
     if ( ! itsSocket::receive ( s ) ) {
-        throw Exception_Socket ( "Could not read from socket" );
+        throw Exception_Socket_IO ( "Could not read from socket", EXCEPTION_INFOS );
     }
     
     return *this;

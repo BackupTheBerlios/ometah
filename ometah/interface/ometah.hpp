@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.17 2006/04/07 16:55:58 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.18 2006/04/10 20:56:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -32,6 +32,7 @@
 #include "../common/logic.hpp"
 #include "../common/itsSet.hpp"
 #include "../common/string.hpp"
+#include "../common/Exception_oMetah.hpp"
 
 // basic classes
 #include "../metaheuristic/itsMetaheuristic.hpp"
@@ -64,6 +65,11 @@
 #include "../communication/network/itsCommunicationClient_socket.hpp"
 #include "../communication/network/itsCommunicationServer_socket.hpp"
 #endif
+
+#ifdef WITH_PYTHON
+#include "../communication/languages/itsCommunicationClient_python.hpp"
+#endif
+
 
 // interfaces
 #include "itsArgument.hpp"

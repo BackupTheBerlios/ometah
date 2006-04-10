@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.32 2006/04/07 16:55:58 nojhan Exp $
+#  $Id: SConstruct,v 1.33 2006/04/10 20:56:52 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -51,7 +51,8 @@ opts = Options()
 opts.AddOptions( \
     BoolOption('static', 'Build a static version',0), \
     BoolOption('debug', 'Compile with the debug informations',0), \
-    BoolOption('network', 'Compile with the network support',0) \
+    BoolOption('network', 'Compile with the network support',0), \
+    BoolOption('python', 'Compile with the python bindings',0) \
 )
 
 opts.AddOptions( ('flags','Additional flags to pass to the compiler','') )
@@ -93,7 +94,7 @@ scons -c: clean all the files used for the default build
 
 # Common
 common = ['itsPoint.cpp','geometry.cpp','itsSet.cpp','logic.cpp','matrix.cpp', \
-          'random.cpp','string.cpp']
+          'random.cpp','string.cpp','Exception_oMetah.cpp']
 common = [ 'common/'+i for i in common]
           
 # Interface
@@ -116,6 +117,9 @@ communication = [ 'communication/'+i for i in communication]
 com_network = ['itsSocket.cpp', 'itsSocketClient.cpp','itsSocketServer.cpp', \
                'itsCommunicationClient_socket.cpp', 'itsCommunicationServer_socket.cpp']
 com_network = [ 'communication/network/'+i for i in com_network]
+
+com_languages = ['itsCommunicationClient_python.cpp']
+com_languages = [ 'communication/languages/'+i for i in com_languages]
 
 # Metaheuristic
 
@@ -148,13 +152,37 @@ annealing = [ 'metaheuristic/annealing/'+i for i in annealing]
 # Configuration
 ################################################################################
 
-#conf = Configure(env)
-#env = conf.Finish()
+conf = Configure(env)
+
+if not conf.CheckLib('libstdc++'):
+    print 'The C++ standard library must be installed'
+    Exit(1)
+        
+if env['python'] == 1:
+    if not conf.CheckLibWithHeader('python2.4','python2.4/Python.h', 'C', 'void Py_Initialize();'):
+        print 'Python 2.4 must be installed if you want to compile with python support'
+        Exit(1)
+        
+if env['network'] == 1:
+    hdr_unix_socket = ['sys/types.h', 'sys/socket.h', 'netinet/in.h', 'netdb.h', 'unistd.h', 'arpa/inet.h', 'fcntl.h']
+    no_header_error = 0
+    for h in hdr_unix_socket:
+        if not conf.CheckCHeader(h):
+            no_header_error = 1
+    if no_header_error == 1:
+        print 'Unix socket headers must be installed if you want to compile with python support'
+        Exit(1)
+
+        
+env = conf.Finish()
 
 
 ################################################################################
 # Targets
 ################################################################################
+
+libPaths = ['.']
+libs = ['ometah']
 
 all = common + communication + metaheuristic + problem + cec + interface \
       + estimation + random + sampling + neldermead + antcolony + genetic + annealing 
@@ -165,6 +193,14 @@ if env['network'] == 1:
     env.Replace( CCFLAGS = flags )
     
 
+if env['python'] == 1:
+    all += com_languages
+    flags += ' -D WITH_PYTHON '
+    env.Replace( CCFLAGS = flags )
+    
+    libs += ['python2.4']
+    
+    
 if env['static']==1:
     # static library
     Execute(Delete('libometah.so'))
@@ -173,9 +209,10 @@ if env['static']==1:
     
     # static interface
     Execute(Delete('ometah'))
-    ometah = env.Program( target = 'ometah', source = ['interface/ometah.cpp'], LIBS='ometah', LIBPATH='.' )
+    ometah = env.Program( target = 'ometah', source = ['interface/ometah.cpp'], LIBS=libs, LIBPATH=libPaths  )
         
     # installation
+    # FIXME : only works for Unix
     env.Install('/usr/local/bin', ometah)
     env.Alias('install', '/usr/local/bin')
     
@@ -187,7 +224,7 @@ else:
         
     # standard interface
     Execute(Delete('ometah'))
-    ometah = env.Program( target = 'ometah', source = ['interface/ometah.cpp'], LIBS='ometah', LIBPATH='.') 
+    ometah = env.Program( target = 'ometah', source = ['interface/ometah.cpp'], LIBS=libs, LIBPATH=libPaths ) 
 
     # installation
     env.Install('/usr/lib', lib)

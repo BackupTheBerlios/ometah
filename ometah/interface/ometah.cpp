@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.23 2006/04/07 16:55:58 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.24 2006/04/10 20:56:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -126,6 +126,18 @@ int main(int argc, char ** argv)
     
   factoryServer = new itsCommunicationServerFactory_socket;
   setCommunicationServer.add( factoryServer->create() );
+#endif
+  
+#ifdef WITH_PYTHON
+    try {
+        // add the python protocol
+        factoryClient = new itsCommunicationClientFactory_python;
+        setCommunicationClient.add( factoryClient->create() );
+    }
+    catch( Exception_oMetah & e ) {
+        cerr << "Error: " << e.what() << endl;
+        exit(1);
+    }
 #endif
   
   /*
@@ -435,14 +447,21 @@ int main(int argc, char ** argv)
       setMetaheuristic.item()->start();
     }
   }
+  catch( Exception_oMetah & e ) {
+    cerr << "Error: " << e.what() << endl;
+    exit(1);
+  }
   catch(const char * str) {
     cerr << str << endl;
+    exit(1);
   }
   catch(string str) {
     cerr << str << endl;
+    exit(1);
   }
   catch (...) {
     cerr << "Cant handle error, stopping." << endl;
+    exit(1);
   }
 
   // if we are not asking for silence
