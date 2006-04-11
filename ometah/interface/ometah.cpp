@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.24 2006/04/10 20:56:52 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.25 2006/04/11 10:14:00 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -129,10 +129,15 @@ int main(int argc, char ** argv)
 #endif
   
 #ifdef WITH_PYTHON
+    bool python_path_error = 0;
     try {
         // add the python protocol
         factoryClient = new itsCommunicationClientFactory_python;
         setCommunicationClient.add( factoryClient->create() );
+    }
+    catch( Exception_Python_LookUp & e ) {
+        cerr << "Warning: " << e.what() << endl;
+        python_path_error = 1;
     }
     catch( Exception_oMetah & e ) {
         cerr << "Error: " << e.what() << endl;
@@ -219,7 +224,11 @@ int main(int argc, char ** argv)
   }
   catch(const char * s) {
     cerr << s;
-    return -1;
+    exit(1);
+  }
+  catch( Exception_Argument & e ) {
+      cerr << "Error: " << e.what() << endl;
+      exit(1);
   }
 
 
@@ -243,30 +252,30 @@ int main(int argc, char ** argv)
   try {
     if (argumentParser.syntaxCorrect()){      
       if (VERBOSE)
-	clog << "syntax ok" << endl;      
+        clog << "syntax ok" << endl;      
     }
   }
-  catch (const char * s) {
-    cerr << s;
+  catch ( Exception_Argument & e) {
+    cerr << "Error: " << e.what() << endl;
     argumentParser.usage();
-    return -1;
+    exit(1);
   }
   
   
   if (VERBOSE){
     clog << "\ngetValues :" 
-	 << "\n problem: " << argumentParser.getStringValue("problem") 
-	 << "\n metah: "<< argumentParser.getStringValue("metah")
-	 << "\n client: " << argumentParser.getStringValue("com-client") 
-	 << "\n server " << argumentParser.getStringValue("com-server")
-	 << "\n seed: " << argumentParser.getIntValue("random-seed")
-	 << "\n debug: "<< argumentParser.getStringValue("debug") 
-	 << "\n iterations: " << argumentParser.getIntValue("iterations")
-	 << "\n evaluations: " << argumentParser.getIntValue("evaluations")
-	 << "\n precision: " << argumentParser.getDoubleValue("precision")
-	 << "\n sample size: " << argumentParser.getIntValue("sample-size")
-	 << "\n dimension: " << argumentParser.getIntValue("dimension")
-	 << endl;
+      << "\n problem: " << argumentParser.getStringValue("problem") 
+      << "\n metah: "<< argumentParser.getStringValue("metah")
+      << "\n client: " << argumentParser.getStringValue("com-client") 
+      << "\n server " << argumentParser.getStringValue("com-server")
+      << "\n seed: " << argumentParser.getIntValue("random-seed")
+      << "\n debug: "<< argumentParser.getStringValue("debug") 
+      << "\n iterations: " << argumentParser.getIntValue("iterations")
+      << "\n evaluations: " << argumentParser.getIntValue("evaluations")
+      << "\n precision: " << argumentParser.getDoubleValue("precision")
+      << "\n sample size: " << argumentParser.getIntValue("sample-size")
+      << "\n dimension: " << argumentParser.getIntValue("dimension")
+      << endl;
   }
 
 
@@ -277,8 +286,18 @@ int main(int argc, char ** argv)
   
   setMetaheuristic.choose(argumentParser.getStringValue("metah"));
   setProblem.choose(argumentParser.getStringValue("problem"));
-  setCommunicationClient.choose(argumentParser.getStringValue("com-client"));
   setCommunicationServer.choose(argumentParser.getStringValue("com-server"));
+
+#ifdef WITH_PYTHON
+    if( python_path_error && argumentParser.getStringValue("com-client") == "Python" ) {
+        cerr << "Warning: Python cannot find the necessary module/functions, "
+             << "thus Python communication client is not available, Embedded protocol used instead." << endl;
+        setCommunicationClient.choose("Embedded");
+    }
+#else
+  setCommunicationClient.choose(argumentParser.getStringValue("com-client"));
+#endif
+
 
 
   if (VERBOSE)

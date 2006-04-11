@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.7 2005/12/02 14:40:19 nojhan Exp $
+ *  $Id: itsProblem.hpp,v 1.8 2006/04/11 10:14:00 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -27,6 +27,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <string>
 
 #include "../common/itsPoint.hpp"
+#include "../common/Exception_oMetah.hpp"
 
 using namespace std;
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.hpp,v 1.5 2006/02/22 13:56:55 nojhan Exp $
+ * $Id: itsPoint.hpp,v 1.6 2006/04/11 10:13:57 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author :  Walid TFAILI <tfaili@univ-paris12.fr>
  * Author : Johann Dré <nojhan@gmail.com>
@@ -29,6 +29,8 @@
 #include <list>
 #include <vector>
 #include <functional>
+
+#include "Exception_oMetah.hpp"
 
 using namespace std;
  

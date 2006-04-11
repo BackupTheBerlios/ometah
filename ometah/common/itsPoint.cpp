@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.cpp,v 1.6 2006/02/22 13:56:55 nojhan Exp $
+ * $Id: itsPoint.cpp,v 1.7 2006/04/11 10:13:57 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -67,11 +67,11 @@ bool isValueSmaller(itsPoint p1, itsPoint p2, int dimension)
 {
     if ( p1.getValues().size() <= 0 || p2.getValues().size() <= 0 ) {
       ostringstream msg;
-      msg << "ErrorSize: point has no value" 
+      msg << "Point has no value" 
           << " (p1: " << p1.getValues().size() 
           << " values, p2: " << p2.getValues().size()
           << " values)";
-      throw msg.str().c_str();
+      throw Exception_Size(msg.str(), EXCEPTION_INFOS );
     }
     return (p1.getValues()[dimension] < p2.getValues()[dimension]);
 }
@@ -126,11 +126,11 @@ vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension)
 string printValues( vector<itsPoint> vec, int dimension, const char* separatorDimension, const char* separatorPoint )
 {
     if( vec.size() <= 0 ) {
-        throw "ErrorSize: cannot print an empty vector";
+      throw Exception_Size("Cannot print an empty vector", EXCEPTION_INFOS );
     
     } else {
         if ( vec[0].getValues().size()<=0 || dimension > (signed int)vec[0].getValues().size() ) {
-            throw "ErrorSize: cannot print a vector of empty points";
+            throw Exception_Size("Cannot print a vector of empty points", EXCEPTION_INFOS );
         }
     }
 
@@ -160,11 +160,11 @@ string printValues( vector<itsPoint> vec, int dimension, const char* separatorDi
 string printSolutions( vector<itsPoint> vec, int dimension, const char* separatorDimension, const char* separatorPoint )
 {
     if( vec.size() <= 0 ) {
-        throw "ErrorSize: cannot print an empty vector";
+        throw Exception_Size("Cannot print an empty vector", EXCEPTION_INFOS );
     
     } else {
         if ( vec[0].getSolution().size()<=0 || dimension > (signed int)vec[0].getSolution().size() ) {
-            throw "ErrorSize: cannot print a vector of empty points";
+            throw Exception_Size("Cannot print a vector of empty points", EXCEPTION_INFOS );
         }
     }
 
@@ -214,7 +214,7 @@ vector<itsPoint> selectOnValues(vector<itsPoint> & vec, unsigned int selectNumbe
     vector<itsPoint> bests(vec.begin(), vec.begin() + selectNumber );
     
     if(bests.size()<=0) {
-        throw "ErrorSize: no more points left after selection";
+        throw Exception_Size("No more points left after selection", EXCEPTION_INFOS );
     }
 
     return bests;

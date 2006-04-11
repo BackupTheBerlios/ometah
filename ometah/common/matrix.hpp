@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.9 2005/11/04 20:57:33 nojhan Exp $
+ *  $Id: matrix.hpp,v 1.10 2006/04/11 10:13:57 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -25,6 +25,8 @@
 
 #include <vector>
 #include <sstream>
+
+#include "Exception_oMetah.hpp"
 
 using namespace std;
 
@@ -120,13 +122,13 @@ T multiply( T matA, T matB)
   newMat=matrixFilled( Al,Bc,0.0);
 
   if(Ac!=Bl) {
-    throw("Error: Cannot multiply matrices, sizes does not match");
+    throw Exception_Size_Match("Cannot multiply matrices, sizes does not match", EXCEPTION_INFOS );
   }
 
   for( unsigned int i=0; i<Al; i++ ) {
     for( unsigned int j=0; j<Bc; j++ ) {
       for( unsigned int k=0; k<Ac ;k++ ) {
-	newMat[i][j] += matA[i][k]*matB[k][j];
+         newMat[i][j] += matA[i][k]*matB[k][j];
       }
     }
   }
@@ -190,7 +192,7 @@ T cholesky( T A)
         ostringstream msg;
         msg << "Error: Cannot compute the Cholesky decomposition, matrix may not be positive definite (A[";
         msg << i << "][" << i << "]-sum(B[i][k]^2) = " << A[i][i]-sum << ").";
-        throw msg.str().c_str();
+        throw Exception_Math(msg.str(), EXCEPTION_INFOS );
     }
     
     B[i][i] = sqrt( A[i][i] - sum );
@@ -220,7 +222,7 @@ T transpose( T &mat)
     ostringstream msg;
     msg << "ErrorSize: matrix not defined "
         << "(iSize:" << iSize << ", jSize:" << jSize << ")";
-    throw msg.str().c_str();
+    throw Exception_Size( msg.str(), EXCEPTION_INFOS );
   }
 
   typename T::value_type  aVector;
@@ -235,7 +237,7 @@ T transpose( T &mat)
         ostringstream msg;
         msg << "ErrorSize: matrix not defined "
             << "(iSize:" << iSize << ", jSize:" << jSize << ", matrix[" << i << "].size:" << mat[i].size() << ")";
-        throw msg.str().c_str();
+        throw Exception_Size(msg.str(), EXCEPTION_INFOS );
       }
 
       aVector.push_back(mat[i][j]);
@@ -345,7 +347,7 @@ T sum(vector<T> aVector, unsigned int begin=0, unsigned int during=0)
     msg << "ErrorSize: parameters are out of vector bounds "
         << "(begin:" << begin << ", during:" << during
         << ", size:" << aVector.size() << ")";
-    throw msg.str().c_str();
+    throw Exception_Size_Index( msg.str(), EXCEPTION_INFOS );
   }
 
   if (during==0) {
@@ -371,7 +373,7 @@ T stdev(vector<T> aVector, unsigned int begin=0, unsigned int during=0)
     msg << "ErrorSize: parameters are out of vector bounds "
         << "(begin:" << begin << ", during:" << during
         << ", size:" << aVector.size() << ")";
-    throw msg.str().c_str();
+    throw Exception_Size_Index( msg.str(), EXCEPTION_INFOS );
   }
 
   if (during==0) {
@@ -403,7 +405,7 @@ typename T::value_type min(T aVector, unsigned int begin=0, unsigned int during=
     msg << "ErrorSize: parameters are out of vector bounds "
         << "(begin:" << begin << ", during:" << during
         << ", size:" << aVector.size() << ")";
-    throw msg.str().c_str();
+    throw Exception_Size_Index( msg.str(), EXCEPTION_INFOS );
   }
 
   if (during==0) {
@@ -456,7 +458,7 @@ typename T::value_type max(T aVector, unsigned int begin=0, unsigned int during=
     msg << "ErrorSize: parameters are out of vector bounds "
         << "(begin:" << begin << ", during:" << during
         << ", size:" << aVector.size() << ")";
-    throw msg.str().c_str();
+    throw Exception_Size_Index( msg.str(), EXCEPTION_INFOS );
   }
 
   if (during==0) {
@@ -531,7 +533,7 @@ vector<T> gravityCenter( vector<vector<T> > points, vector<T> weights )
     msg << "ErrorSize: "
         << "points size (" << points.size() << ")" 
         << " does not match weights size (" << weights.size() << ")";
-    throw msg.str().c_str();
+    throw Exception_Size_Match( msg.str(), EXCEPTION_INFOS );
   }
 
   T weightsSum = sum(weights);

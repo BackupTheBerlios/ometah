@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: Exception_oMetah.hpp,v 1.1 2006/04/10 20:57:58 nojhan Exp $
+ *  $Id: Exception_oMetah.hpp,v 1.2 2006/04/11 10:13:57 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -77,5 +77,17 @@ public:
     //! The method to use for printing the complete description of the exception
     string what();
 };
+
+//! Use this exception when you have a mathematical problem
+EXCEPTION_DECLARATION(Exception_Math,Exception_oMetah);
+
+//! Use this exception when you have a size problem
+EXCEPTION_DECLARATION(Exception_Size,Exception_oMetah);
+
+    //! Use this exception when you cant access to an element in a container
+    EXCEPTION_DECLARATION(Exception_Size_Index,Exception_Size);
+
+    //! Use this exception when size of containers does not match
+    EXCEPTION_DECLARATION(Exception_Size_Match,Exception_Size);
 
 #endif

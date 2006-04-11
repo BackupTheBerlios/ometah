@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.15 2006/02/22 13:58:42 nojhan Exp $
+ *  $Id: itsArgument.cpp,v 1.16 2006/04/11 10:14:00 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -151,7 +151,7 @@ bool itsArgumentParser::defArg(string flagShort, string flagLong, string usage,
 	else { 
 	  stringstream s;
 	  s << "Value missing for " << flagShort << endl;
-	  throw (s.str()).c_str();
+	  throw Exception_Argument_Value( s.str(), EXCEPTION_INFOS );
 	}      
       }
       else { // no value associated => arg has boolean value
@@ -190,7 +190,7 @@ string itsArgumentParser::getStringValue(string key)
   }
   stringstream s;
   s << "getStringValue error with " << key << endl;
-  throw (s.str()).c_str();
+  throw Exception_Argument_Value(s.str(), EXCEPTION_INFOS );
   return "";
 }
 
@@ -208,7 +208,7 @@ double itsArgumentParser::getDoubleValue(string key)
   }
   stringstream s;
   s << "getDoubleValue error with " << key << endl;
-  throw (s.str()).c_str();
+  throw Exception_Argument_Value(s.str(), EXCEPTION_INFOS );
   return -1.;
 }
 
@@ -229,7 +229,7 @@ int itsArgumentParser::getIntValue(string key)
   }
   stringstream s;
   s << "getIntValue error with " << key << endl;
-  throw (s.str()).c_str();
+  throw Exception_Argument_Value(s.str(), EXCEPTION_INFOS );
   return i;
 }
 
@@ -246,7 +246,7 @@ bool itsArgumentParser::getBoolValue(string key)
   }
   stringstream s;
   s << "getBoolValue error with " << key << endl;
-  throw (s.str()).c_str();
+  throw Exception_Argument_Value(s.str(), EXCEPTION_INFOS );
   return false;
 }
 
@@ -297,15 +297,15 @@ bool itsArgumentParser::syntaxCorrect()
   while (iter < this->argv.end()){    
     if ((*iter)[0] == '-'){ // if is a flag (known or not)
       if (!isAnArgument(*iter)) { // if is not a known flag	
-	s << "Unknown option: " << *iter << endl;	
-	throw (s.str()).c_str();
-	return false;
+        s << "Unknown option: " << *iter << endl;	
+        throw Exception_Argument_Definition(s.str(), EXCEPTION_INFOS );
+        return false;
       }
       else { // is a correct flag (defArg-ed)	
 	if (!this->hasValue(*iter)){
 	  if (( (iter+1) != this->argv.end()) && ( (*(iter+1))[0] != '-')){
 	     s << "Value not needed for " << *iter << endl;
-	     throw (s.str()).c_str();
+      throw Exception_Argument_Value(s.str(), EXCEPTION_INFOS );
 	     return false;
 	  }
 	}
@@ -316,7 +316,7 @@ bool itsArgumentParser::syntaxCorrect()
     }
     else { // != -? && --*
       s << "Unknown argument: " << *iter << endl;
-      throw (s.str()).c_str();
+      throw Exception_Argument_Definition(s.str(), EXCEPTION_INFOS );
       return false;
     }
     iter++;
@@ -353,7 +353,7 @@ bool itsArgumentParser::hasValue(string flag)
   }
   stringstream s;
   s << "Unexpected error in hasValue()" << endl;
-  throw (s.str()).c_str();
+  throw Exception_Argument_Value(s.str(), EXCEPTION_INFOS );
   return false;
 }
 
@@ -373,5 +373,5 @@ bool itsArgumentParser::isAsked(string flag)
             return false;
         }
     }
-    throw "Error: argument not defined (" + flag + ")";
+    throw Exception_Argument_Definition("Argument not defined (" + flag + ")", EXCEPTION_INFOS );
 }

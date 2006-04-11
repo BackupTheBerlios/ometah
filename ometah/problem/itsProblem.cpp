@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.10 2005/12/02 14:40:19 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.11 2006/04/11 10:14:00 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -319,7 +319,7 @@ void itsProblem::setBoundsMinima(vector<double> minima)
         ostringstream msg;
         msg << "ErrorSize: number of bounds (" << minima.size() 
             << ") does not correspond to dimension  (" << getDimension() << ")";
-        throw msg.str().c_str();
+        throw Exception_Size_Match(msg.str(), EXCEPTION_INFOS );
     } else {
         this->boundsMinima = minima;
     }
@@ -336,7 +336,7 @@ void itsProblem::setBoundsMaxima(vector<double> maxima)
         ostringstream msg;
         msg << "ErrorSize: number of bounds (" << maxima.size() 
             << ") does not correspond to dimension  (" << getDimension() << ")";
-        throw msg.str().c_str();
+        throw Exception_Size_Match(msg.str(), EXCEPTION_INFOS );
     } else {
         this->boundsMaxima = maxima;
     }

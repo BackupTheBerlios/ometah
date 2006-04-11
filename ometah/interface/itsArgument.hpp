@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.10 2005/11/24 22:22:01 nojhan Exp $
+ *  $Id: itsArgument.hpp,v 1.11 2006/04/11 10:14:00 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -23,12 +23,16 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#ifndef ITSARGUMENT
+#define ITSARGUMENT
+
 #include <hash_map.h>
 #include <string>
 #include <sstream>
 #include <stdlib.h>
 
 #include "../common/logic.hpp"
+#include "../common/Exception_oMetah.hpp"
 
 #define VERSION_KEY "version_key"
 #define USAGE_KEY "usage_key" // string value doesn't matter
@@ -163,3 +167,14 @@ public:
   //! Return true if the matching argument has been asked
   bool isAsked(string flag);
 };
+
+//! Base exception for problems of arguments
+EXCEPTION_DECLARATION(Exception_Argument, Exception_oMetah);
+
+    //! Use this exception if we have no value for an argument which needs one
+    EXCEPTION_DECLARATION(Exception_Argument_Value, Exception_Argument);
+
+    //! Use this exception if there is no argument definition
+    EXCEPTION_DECLARATION(Exception_Argument_Definition, Exception_Argument);
+
+#endif
