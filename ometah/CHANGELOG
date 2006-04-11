@@ -1,5 +1,9 @@
 Version CVS
-* a network protocol using sockets
+
+Version 0.2.4
+* use clean exception management
+* can call problems written in Python with the Python communication client
+* a network protocol for communication, using unix sockets
 * a silent mode, outputing only the number of evaluation and the optimum, no xml
 * better selection algorithm for high selection rate
 * flags marks automatically managed
