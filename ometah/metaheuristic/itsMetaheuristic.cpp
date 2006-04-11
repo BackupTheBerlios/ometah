@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.24 2006/02/01 08:52:21 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.25 2006/04/11 10:42:33 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -470,7 +470,7 @@ itsPoint itsMetaheuristic::evaluate(itsPoint p)
 itsPoint itsMetaheuristic::getOptimum()
 {
     if( getSampleSizeCurrent() <= 0 ) {
-      throw "ErrorSize: null sample size";
+      throw Exception_Size("Empty sample", EXCEPTION_INFOS );
     }
     // FIXME : check if it is faster to use the sorting function
     itsPoint optimum = sample[0];
@@ -623,7 +623,7 @@ vector<double> itsMetaheuristic::getSampleSolutionsMin()
     ostringstream msg;
     msg << "ErrorSize: sample solutions size (" << vec.size()
         << ") does not match dimension (" << this->problem->getDimension() << ")";
-    throw msg.str().c_str();
+    throw Exception_Size_Match(msg.str(), EXCEPTION_INFOS );
   }
 
   return vec;
@@ -640,7 +640,7 @@ vector<double> itsMetaheuristic::getSampleSolutionsMax()
     ostringstream msg;
     msg << "ErrorSize: sample solutions size (" << vec.size()
         << ") does not match dimension (" << this->problem->getDimension() << ")";
-    throw msg.str().c_str();
+    throw Exception_Size_Match( msg.str(), EXCEPTION_INFOS );
   }
 
   return vec;

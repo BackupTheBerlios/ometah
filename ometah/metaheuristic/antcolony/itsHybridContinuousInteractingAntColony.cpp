@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridContinuousInteractingAntColony.cpp,v 1.2 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsHybridContinuousInteractingAntColony.cpp,v 1.3 2006/04/11 10:42:35 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -38,7 +38,7 @@ void itsHybridContinuousInteractingAntColony::diversification()
     msg << "ErrorSize: antsNb (" << antsNb << ")"
         << " and sample size (" << getSampleSizeCurrent() << ")"
         << " does not match";
-    throw msg.str().c_str();
+    throw Exception_Size_Match( msg.str(), EXCEPTION_INFOS );
   }
 
   // move ants

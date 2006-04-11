@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.19 2006/02/22 14:05:59 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.20 2006/04/11 10:42:33 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -41,6 +41,7 @@
 #include <sys/timeb.h>
 
 #include "../common/itsPoint.hpp"
+#include "../common/Exception_oMetah.hpp"
 #include "../communication/itsCommunicationClient.hpp"
 
 #include "../common/random.hpp"

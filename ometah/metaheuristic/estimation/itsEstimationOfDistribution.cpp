@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.8 2006/02/22 14:05:02 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.9 2006/04/11 10:42:36 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -79,7 +79,7 @@ void itsEstimationOfDistribution::learningUniform(vector< vector<double> > aSamp
             << ") does not correspond to problem dimension (" 
             << this->problem->getDimension() 
             << ")";
-        throw err.str();
+        throw Exception_Size_Match(err.str(), EXCEPTION_INFOS );
     }
 
     // find the minimum and the maximum for each dimension  

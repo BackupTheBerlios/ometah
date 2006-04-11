@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridContinuousInteractingAntColony.hpp,v 1.2 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsHybridContinuousInteractingAntColony.hpp,v 1.3 2006/04/11 10:42:36 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -33,6 +33,7 @@
 #include "../../common/random.hpp"
 #include "../../common/matrix.hpp"
 #include "../../common/geometry.hpp"
+#include "../../common/Exception_oMetah.hpp"
 
 #include "../itsMetaheuristic.hpp"
 #include "../neldermead/itsNelderMead.hpp"

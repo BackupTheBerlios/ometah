@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.hpp,v 1.5 2006/02/22 14:05:02 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.hpp,v 1.6 2006/04/11 10:42:36 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -35,6 +35,7 @@
 #include "../../common/random.hpp"
 #include "../../common/itsPoint.hpp"
 #include "../../common/string.hpp"
+#include "../../common/Exception_oMetah.hpp"
 
 using namespace std;
 
