@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.hpp,v 1.6 2006/04/11 10:13:57 nojhan Exp $
+ * $Id: itsPoint.hpp,v 1.7 2006/04/12 14:45:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author :  Walid TFAILI <tfaili@univ-paris12.fr>
  * Author : Johann Dré <nojhan@gmail.com>
@@ -58,6 +58,9 @@ public:
  
   //! Set the value vector
   void setValues(vector<double> values);
+
+  //! Put only one value in the value vector 
+  void setValue(double value);
 
   //! Return the dimension of the solution
   unsigned int getSolutionDimension();

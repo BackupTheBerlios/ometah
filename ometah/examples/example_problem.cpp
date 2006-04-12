@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: example_problem.cpp,v 1.1 2005/11/25 18:24:14 nojhan Exp $
+ * $Id: example_problem.cpp,v 1.2 2006/04/12 14:45:56 nojhan Exp $
  * Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -54,6 +54,9 @@ ITSEXAMPLEPROBLEM::ITSEXAMPLEPROBLEM()
 itsPoint ITSEXAMPLEPROBLEM::objectiveFunction(itsPoint point)
 {
     // put here the code of your problem
+    // for example, x² :
+    point.setValue( point.getSolution()[0] * point.getSolution-)[0] );
+    return point;
 }
 
 

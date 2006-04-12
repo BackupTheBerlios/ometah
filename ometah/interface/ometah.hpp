@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.18 2006/04/10 20:56:52 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.19 2006/04/12 14:45:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -74,6 +74,6 @@
 // interfaces
 #include "itsArgument.hpp"
 
-#define VERSION "0.2.4a"
+//#define VERSION "0.2.4"
 
 using namespace std;

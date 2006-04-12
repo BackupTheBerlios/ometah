@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.cpp,v 1.7 2006/04/11 10:13:57 nojhan Exp $
+ * $Id: itsPoint.cpp,v 1.8 2006/04/12 14:45:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -49,6 +49,13 @@ vector<double> itsPoint::getValues()
 void itsPoint::setValues(vector<double> values)
 {
   this->values = values;
+}
+
+
+void itsPoint::setValue(double value)
+{
+  vector<double> vec(1,value);
+  setValues(vec);
 }
 
 
