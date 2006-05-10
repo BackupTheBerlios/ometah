@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Base.hpp,v 1.2 2005/11/04 17:28:19 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Base.hpp,v 1.3 2006/05/10 18:36:28 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author: Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -40,9 +40,13 @@
 #ifndef ITSCEC05SSRPOBASE
 #define ITSCEC05SSRPOBASE
 
+#include <vector>
+#include <cmath>
+#include "../../common/geometry.hpp"
 #include "../../common/itsPoint.hpp"
 #include "../itsProblem.hpp"
- 
+
+using namespace std;
  
 /***** Ackley *****/
  
@@ -115,6 +119,7 @@ class itsSphere : public itsProblem
 {
 public:
     itsSphere();
+
     itsPoint objectiveFunction(itsPoint point);
 };
 

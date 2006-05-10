@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.11 2006/04/11 10:14:00 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.12 2006/05/10 18:36:28 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -30,10 +30,13 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 using namespace std;
 
 
+/*
 itsProblem::~itsProblem()
 {
 }
+*/
 
+/*
 //! the default constructor
 itsProblem::itsProblem()
 {
@@ -51,53 +54,59 @@ itsProblem::itsProblem()
   setAccuracy(0.1);
 
   // A fake optimum
-  /*vector<itsPoint> optim;
+  vector<itsPoint> optim;
   itsPoint pt;
   vector<double> sol(getDimension(),0);
   pt.setSolution(sol); // a vector of 0
   vector<double> val(1,0);
   pt.setValues(val); // a value of 0
   optim.push_back(pt);
-  setOptima(optim);*/
+  setOptima(optim);
 }
+*/
 
+/*
 string itsProblem::getName() 
 {
   return this->name;
 }
+*/
 
 void itsProblem::setName(string name)
 {
   this->name = name;
 }
 
-
+/*
 string itsProblem::getDescription()
 {
   return this->description;
 }
+*/
 
 void itsProblem::setDescription(string description)
 {
   this->description = description;
 }
 
-
+/*
 string itsProblem::getCitation()
 {
   return this->citation;
 }
+*/
 
 void itsProblem::setCitation(string citation)
 {
   this->citation = citation;
 }
 
-
+/*
 unsigned int itsProblem::getDimension()
 {
   return this->dimension;
 }
+*/
 
 void itsProblem::setDimension(unsigned int dimension)
 {
@@ -118,11 +127,12 @@ void itsProblem::setDimension(unsigned int dimension)
   setBoundsMaxima( x );
 }
 
-
+/*
 bool itsProblem::isDimensionFixed()
 {
     return dimensionFixed;
 }
+*/
   
 
 void itsProblem::setDimensionFixed(unsigned int dimension)
@@ -270,10 +280,12 @@ vector<itsPoint> itsProblem::getOptima()
     return this->optima;
 }
 
-void itsProblem::setOptima(vector<itsPoint> optima)
+/*
+void itsProblem::setOptima(vector<itsPoint> theOptima)
 {
-    this->optima = optima;
+    optima = theOptima;
 }
+*/
 
 vector<vector<double> > itsProblem::getBounds()
 {
@@ -308,10 +320,12 @@ void itsProblem::setBounds(vector<vector<double> > bounds)
     setBoundsMaxima(maxs);
 }
 
+/*
 vector<double> itsProblem::getBoundsMinima()
 {
     return this->boundsMinima;
 }
+*/
 
 void itsProblem::setBoundsMinima(vector<double> minima)
 {
@@ -325,10 +339,12 @@ void itsProblem::setBoundsMinima(vector<double> minima)
     }
 }
 
+/*
 vector<double> itsProblem::getBoundsMaxima()
 {
     return this->boundsMaxima;
 }
+*/
 
 void itsProblem::setBoundsMaxima(vector<double> maxima)
 {
@@ -367,33 +383,37 @@ void itsProblem::setBoundsMaximaAll(double max)
     }
     setBoundsMaxima(v);
 }
+
+/*
 string itsProblem::getFormula()
 {
     return this->formula;
 }
+*/
 
 void itsProblem::setFormula(string formula)
 {
     this->formula = formula;
 }
 
+/*
 string itsProblem::getKey()
 {
     return this->key;
 }
-
+*/
 
 void itsProblem::setKey( string key )
 {
     this->key = key;
 }
 
-
+/*
 float itsProblem::getAccuracy()
 {
   return this->accuracy;
 }
-
+*/
 
 void itsProblem::setAccuracy(float acc)
 {

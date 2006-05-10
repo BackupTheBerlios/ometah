@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.hpp,v 1.7 2006/04/12 14:45:56 nojhan Exp $
+ * $Id: itsPoint.hpp,v 1.8 2006/05/10 18:36:27 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author :  Walid TFAILI <tfaili@univ-paris12.fr>
  * Author : Johann Dré <nojhan@gmail.com>
@@ -32,6 +32,8 @@
 
 #include "Exception_oMetah.hpp"
 
+#include<iostream>
+
 using namespace std;
  
 //! The point abstraction
@@ -40,33 +42,56 @@ using namespace std;
 */
 class itsPoint
 {
-protected:
+//protected:
+public:
   //! the solution vector 
   vector<double> solution;
   //! the value vector
   vector<double> values;
 
 public:
+  //! The constructor without parameters
+  /*!
+    One must use setSolution and setValues to initialise the point 
+    after its instanciation.
+  */
+  itsPoint() : solution(vector<double>(1,0)), values(vector<double>(1,0)) {}
+  
+  ~itsPoint() 
+  {
+  /*
+        clog << "~itsPoint:" << this << endl;
+        clog << "~itsPoint.&solution:" << &solution << endl;
+        clog << "~itsPoint.&values:" << &values << endl;
+  */
+  }
+  
+  //! Constructor with explicit initialization of the solution
+  itsPoint( vector<double> theSolution ) : solution(theSolution) {}
+  
+  //! Constructor with explicit initialization of solution & value
+  itsPoint( vector<double> theSolution, vector<double> theValues ) : solution(theSolution), values(theValues) {}
+
   //! Get the solution vector
-  vector<double> getSolution();
+  vector<double> getSolution() const {return solution;}
 
   //! Set the solution vector
-  void setSolution(vector<double> solution);
+  void setSolution(const vector<double> & solution);
   
   //! Get the value vector
-  vector<double> getValues();
+  vector<double> getValues() const {return values;}
  
   //! Set the value vector
-  void setValues(vector<double> values);
+  void setValues(const vector<double> & values);
 
   //! Put only one value in the value vector 
-  void setValue(double value);
+  void setValue(const double value);
 
   //! Return the dimension of the solution
-  unsigned int getSolutionDimension();
+  unsigned int getSolutionDimension() const {return solution.size();}
 
   //! Return the number of values
-  unsigned int getValuesNumber();
+  unsigned int getValuesNumber() const {return values.size();}
 
 };
 

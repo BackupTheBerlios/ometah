@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.cpp,v 1.8 2006/04/12 14:45:56 nojhan Exp $
+ * $Id: itsPoint.cpp,v 1.9 2006/05/10 18:36:27 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -27,48 +27,54 @@
 
 using namespace std;
 
+/*
 //! Get the solution vector
 vector<double> itsPoint::getSolution()
 {
   return this->solution;
 }
+*/
 
 //! Set the solution vector
-void itsPoint::setSolution(vector<double> solution)
+void itsPoint::setSolution(const vector<double> & solution)
 {
   this->solution = solution;
 }
-  
+
+/*
 //! Get the value vector
 vector<double> itsPoint::getValues()
 {
   return this->values;
 }
+*/
  
 //! Set the value vector
-void itsPoint::setValues(vector<double> values)
+void itsPoint::setValues(const vector<double> & values)
 {
   this->values = values;
 }
 
 
-void itsPoint::setValue(double value)
+void itsPoint::setValue(const double value)
 {
   vector<double> vec(1,value);
   setValues(vec);
 }
 
-
+/*
 unsigned int itsPoint::getSolutionDimension()
 {
     return this->solution.size();
 }
+*/
 
-
+/*
 unsigned int itsPoint::getValuesNumber()
 {
     return this->values.size();
 }
+*/
 
 bool isValueSmaller(itsPoint p1, itsPoint p2, int dimension)
 {

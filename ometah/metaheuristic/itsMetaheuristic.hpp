@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.20 2006/04/11 10:42:33 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.21 2006/05/10 18:36:27 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -40,6 +40,8 @@
 #include <set.h>
 #include <sys/timeb.h>
 
+#include <map>
+
 #include "../common/itsPoint.hpp"
 #include "../common/Exception_oMetah.hpp"
 #include "../communication/itsCommunicationClient.hpp"
@@ -70,6 +72,14 @@ protected:
   //! The learning phase
   virtual void learning() {};
 
+  //! Called at the end of the start() method
+  /*! 
+    Use this method if you want to add a terminal
+    process after the optimization (for example a 
+    terminal local search).
+  */
+  virtual void end();
+  
 public:
   //! The initialization phase
   virtual void initialization();
@@ -201,7 +211,8 @@ protected:
       This is an associative container of the form :
       level name => level number
   */
-  hash_map< const char*, int, hash<const char*>, eqstr > logKeys;
+  //hash_map< const char*, int, hash<const char*>, eqstr > logKeys;
+    map<string, int> logKeys;
   
   //! The current log levels
   int logLevel;
@@ -226,7 +237,26 @@ public:
   virtual ~itsMetaheuristic();
 
   //! Constructor
-  itsMetaheuristic();
+  itsMetaheuristic()  : name("Unknown"), key(""), accronym("Unknown"), family("Unknown"), description("Unknown"), citation("Unknown"),
+                        sampleSize(1), iterationsCurrent(0), iterationsMaxNumber(2), 
+                        evaluationsNumber(0), evaluationsMaxNumber(0), valueThreshold(0), isInternalStoppingCriterion(false), 
+                        seed(0), initializationSeed(0), 
+                        outEndResult(&cout), outProcessResult(&cout), outErrors(&cerr), outLog(&clog), outDebug(&clog),
+                        logLevel(0)
+    {
+        logKeys["optimum_value"] = 0;
+        logKeys["optimum"] = 1;
+        logKeys["steps"] = 1;
+        logKeys["communications"] = 2;
+        logKeys["instanciations"] = 2;
+        logKeys["iterations"] = 2;
+        logKeys["sample_steps"] = 3;
+    
+        initRandom();
+
+        clog << "itsMetaheuristic::itsMetaheuristic  " /*- getLogLevel:" << getLogLevel() */ << " - logLevel:" << logLevel << endl;
+        clog << "itsMetaheuristic::itsMetaheuristic  " << " - logKeys.size:" << logKeys.size() << endl;
+    }
 
   //! The pointer to the problem
   itsCommunicationClient* problem;
@@ -240,17 +270,12 @@ public:
     call initialization() as a first step !
   */
   void startSilent();
-  
-  //! Called at the end of the start() method
-  /*! 
-    Use this method if you want to add a terminal
-    process after the optimization (for example a 
-    terminal local search).
-  */
-  virtual void end();
       
   //! Take a point and evaluate its values
   itsPoint evaluate(itsPoint p);
+  
+  //! Evaluate all the points in the sample itself
+  void evaluate();
   
   //! Find the optimum
   itsPoint getOptimum();
@@ -266,27 +291,27 @@ public:
   //!@{
 
   //! Return the name
-  string getName();
+  string getName() const {return name;}
   //! Set the name
   void setName(string name);
 
   //! Return the accronym
-  string getAccronym();
+  string getAccronym() const {return accronym;}
   //! Change the Accronym
   void setAccronym(string accronym);
 
   //! Return the description
-  string getDescription();
+  string getDescription() const {return description;}
   //! Change the description
   void setDescription(string description);
   
   //! Return the reference
-  string getCitation();
+  string getCitation() const {return citation;}
   //! Change the reference
   void setCitation(string citation);
 
   //! Return the family
-  string getFamily();
+  string getFamily() const {return family;}
   //! Change the reference
   void setFamily(string family);
   
@@ -310,9 +335,9 @@ public:
   string getParameters_XML();
 
   //! Return the sample size
-  unsigned int getSampleSize();
+  unsigned int getSampleSize() const {return sampleSize;}
   //! Return the true current sample size_t
-  unsigned int getSampleSizeCurrent();
+  unsigned int getSampleSizeCurrent() const {return sample.size();}
   //! Change the sample size
   /*!
     WARNING : changing the size may cause data loss
@@ -330,37 +355,38 @@ public:
   
   
   //! Return the maximum iterations number
-  unsigned int getIterationsMaxNumber();
+  unsigned int getIterationsMaxNumber() const {return iterationsMaxNumber;}
   //! Change the  maximum iterations number
   void setIterationsMaxNumber(unsigned int nbr);
   
   //! Return the current number of evaluationsNumber
-  unsigned int getEvaluationNumber();
+  unsigned int getEvaluationNumber() const {return evaluationsNumber;}
   
   //! Return the maximum evaluations number allowed
-  unsigned int getEvaluationsMaxNumber();
+  unsigned int getEvaluationsMaxNumber() const {return evaluationsMaxNumber;}
   
   //! Change the max evaluation number
   void setEvaluationsMaxNumber(unsigned int nb);
   
   //! Return the value threshold
-  double getValueMin();
+  double getValueMin() const {return valueThreshold;}
   
   //! Change the value threshold
   void setValueMin(double val);
   
   
   //! Return the key
-  string getKey();
+  string getKey() const {return key;}
   //! Change the key
   void setKey( string key );
   
   //! Return the log level  
-  int getLogLevel();
-  
+  int getLogLevel() const {return logLevel;};
   //! Change the log level
   void setLogLevel(int level);
 
+  //! Return the log keys
+  map<string, int> getLogKeys() const {clog << "itsMetaheuristic::getLogKeys - logKeys.size:" << logKeys.size() << endl;return logKeys;}
 
   //! Change the output for end results
   void setOutEndResult(ostream* out);
@@ -422,13 +448,13 @@ public:
   void initRandom();
   
   //! Return the random seed used
-  unsigned int getSeed();
+  unsigned int getSeed() const {return seed;}
   
   //! Change the initialization seed
   void setInitializationSeed(unsigned int seed);
   
   //! Return the initialization seed
-  unsigned int getInitializationSeed();
+  unsigned int getInitializationSeed() const {return initializationSeed;}
 };
 
 

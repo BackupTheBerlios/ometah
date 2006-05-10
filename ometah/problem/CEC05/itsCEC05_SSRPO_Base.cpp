@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Base.cpp,v 1.4 2005/11/04 17:28:19 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Base.cpp,v 1.5 2006/05/10 18:36:28 nojhan Exp $
  * Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  * Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -29,9 +29,6 @@
  
 
 
-#include <vector>
-#include <cmath>
-#include "../../common/geometry.hpp"
 #include "itsCEC05_SSRPO_Base.hpp"
 
 using namespace std;
@@ -41,7 +38,7 @@ using namespace std;
  * Ackley
  ******************************************************************************/
 
-itsAckley::itsAckley()
+itsAckley::itsAckley() : itsProblem()
 {
     // informations 
     setName("Ackley");
@@ -102,7 +99,7 @@ itsProblem * itsAckleyFactory::create()
  ******************************************************************************/
 
 
-itsRastrigin::itsRastrigin()
+itsRastrigin::itsRastrigin() : itsProblem()
 {
     // informations 
     setName("Rastrigin");
@@ -159,7 +156,7 @@ itsProblem * itsRastriginFactory::create()
  ******************************************************************************/
 
 
-itsWeierstrass::itsWeierstrass()
+itsWeierstrass::itsWeierstrass() : itsProblem()
 {
     // informations 
     setName("Weierstrass");
@@ -226,7 +223,7 @@ itsProblem * itsWeierstrassFactory::create()
  ******************************************************************************/
 
 
-itsGriewank::itsGriewank()
+itsGriewank::itsGriewank() : itsProblem()
 {
     // informations 
     setName("Griewank");
@@ -286,8 +283,9 @@ itsProblem * itsGriewankFactory::create()
  * Sphere
  ******************************************************************************/
 
+#include <iostream>
 
-itsSphere::itsSphere()
+itsSphere::itsSphere() : itsProblem()
 {
     // informations 
     setName("Sphere");
@@ -302,7 +300,9 @@ itsSphere::itsSphere()
     setBoundsMaximaAll(100);
 
     setAccuracy(0.000001);
-    
+
+    // FIXME set the optimum seems to generate a bug when itsPoint's destructors are called
+    /*
     vector<itsPoint> optim;
     itsPoint pt;
 
@@ -314,7 +314,22 @@ itsSphere::itsSphere()
 
     optim.push_back(pt);
     setOptima(optim);
+    */
+    /*
+    vector<itsPoint> optim;
+clog << "&optim:" << &optim << endl;
+
+    vector<double> sol( getDimension(), 0 );
+    vector<double> val( 1, 0 );
+    itsPoint pt( sol, val );
+clog << "&pt:" << &pt << endl;
+    optim.push_back(pt);
+clog << "&optim[0]:" << &optim[0] << endl;
+    setOptima( optim );
+    //delete optim;
+    */
 }
+
 
 itsPoint itsSphere::objectiveFunction(itsPoint point)
 {
@@ -343,7 +358,7 @@ itsProblem * itsSphereFactory::create()
  ******************************************************************************/
 
 
-itsSchwefel::itsSchwefel()
+itsSchwefel::itsSchwefel() : itsProblem()
 {
     // informations 
     setName("Schwefel");
@@ -406,7 +421,7 @@ itsProblem * itsSchwefelFactory::create()
  * Rosenbrock
  ******************************************************************************/
 
-itsRosenbrock::itsRosenbrock()
+itsRosenbrock::itsRosenbrock() : itsProblem()
 {
     // informations 
     setName("Rosenbrock");

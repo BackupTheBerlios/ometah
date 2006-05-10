@@ -1,4 +1,6 @@
 Version CVS
+* an evaluate function that update the sample, directly
+* code cleaned up
 
 Version 0.2.4
 * use clean exception management

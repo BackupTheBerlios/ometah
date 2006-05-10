@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_embedded.cpp,v 1.2 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: itsCommunicationClient_embedded.cpp,v 1.3 2006/05/10 18:36:27 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -31,20 +31,24 @@ itsPoint itsCommunicationClient_embedded::call(itsPoint point)
     return this->problem->call(point);
 }
 
+
 vector<double> itsCommunicationClient_embedded::boundsMinima()
 {
     return this->problem->boundsMinima();
 }
+
 
 vector<double> itsCommunicationClient_embedded::boundsMaxima()
 {
     return this->problem->boundsMaxima();
 }
 
+
 vector<vector<double> > itsCommunicationClient_embedded::bounds()
 {
     return this->problem->bounds();
 }
+
 
 int itsCommunicationClient_embedded::getDimension()
 {
@@ -52,13 +56,20 @@ int itsCommunicationClient_embedded::getDimension()
 }
 
 
-
 itsCommunicationClient_embedded::itsCommunicationClient_embedded()
 {
-    this->setKey("Embedded");
+    setKey("Embedded");
 
-    this->problem = new itsCommunicationServer_embedded;
+    problem = new itsCommunicationServer_embedded;
 }
+
+
+itsCommunicationClient_embedded::~itsCommunicationClient_embedded()
+{
+    delete problem;
+}
+
+
 
 
 itsCommunicationClient* itsCommunicationClientFactory_embedded::create()

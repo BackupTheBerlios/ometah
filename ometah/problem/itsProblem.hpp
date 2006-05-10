@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.8 2006/04/11 10:14:00 nojhan Exp $
+ *  $Id: itsProblem.hpp,v 1.9 2006/05/10 18:36:28 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -25,6 +25,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define ITSPROBLEM
 
 #include <string>
+#include <iostream>
 
 #include "../common/itsPoint.hpp"
 #include "../common/Exception_oMetah.hpp"
@@ -104,34 +105,39 @@ protected:
   
 public:
   //! Constructor
-  itsProblem();
+  itsProblem() : name("Unknown"), key(""), description("Unknown"), citation("Unknown"), formula("f(x)"),
+                  dimension(1), dimensionFixed(false), accuracy(0.1) 
+    {
+        setBoundsMaximaAll(1);
+        setBoundsMinimaAll(0);
+    }
 
   //! Virtual destructor
   /*!
     Necessary because of the abstract factory
   */
-  virtual ~itsProblem();
+  virtual ~itsProblem() {};
 
   //! Simple attribute accesses
   //!@{
 
   //! Return the name
-  string getName();
+  string getName() const {return name;}
   //! Set the name
   void setName(string name);
 
   //! Return the description
-  string getDescription();
+  string getDescription() const {return description;}
   //! Change the description
   void setDescription(string description);
   
   //! Return the reference
-  string getCitation();
+  string getCitation() const {return citation;}
   //! Change the reference
   void setCitation(string citation);
 
   //! Return the dimension
-  unsigned int getDimension();
+  unsigned int getDimension() const {return dimension;}
   //! Change the dimension
   void setDimension(unsigned int dimension);
   
@@ -140,17 +146,21 @@ public:
       True = dimension cannot be changed
       False = dimension can be changed
   */
-  bool isDimensionFixed();
+  bool isDimensionFixed() const {return dimensionFixed;}
 
   //! Return the formula
-  string getFormula();
+  string getFormula() const {return formula;}
   //! Change the formula
   void setFormula(string formula);
 
   //! Return the informations about the global optima
   vector<itsPoint> getOptima();
   //! Change the informations about the global optima
-  void setOptima(vector<itsPoint> optima);
+  void setOptima(const vector<itsPoint> & theOptima) 
+  {clog << "&theOptima:" << &theOptima << endl;
+      optima=theOptima;
+  clog << "&optima:" << &optima << endl;
+  }
   
   //! Return a formated output of all the informations
   /*!
@@ -184,12 +194,12 @@ public:
   void setBounds(vector<vector<double> > bounds);
   
   //! Return the search space bounds minima
-  vector<double> getBoundsMinima();
+  vector<double> getBoundsMinima() const {return boundsMinima;}
   //! Change the search space bounds minima
   void setBoundsMinima(vector<double> minima);
   
   //! Search space bounds maxima
-  vector<double> getBoundsMaxima();
+  vector<double> getBoundsMaxima() const {return boundsMaxima;}
   //! Search space bounds maxima
   void setBoundsMaxima(vector<double> maxima);
   
@@ -200,12 +210,12 @@ public:
   void setBoundsMaximaAll(double max);
   
   //! Return the key
-  string getKey();
+  string getKey() const {return key;}
   //! Change the key
   void setKey( string key );
 
   //! Return the accuracy
-  float getAccuracy();
+  float getAccuracy() const {return accuracy;}
   //! Change the accuracy 
   void setAccuracy( float acc );
     

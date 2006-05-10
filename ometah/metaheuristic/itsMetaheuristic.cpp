@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.25 2006/04/11 10:42:33 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.26 2006/05/10 18:36:27 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -51,9 +51,10 @@ itsMetaheuristic::~itsMetaheuristic()
 {
 }
 
-
+/*
 itsMetaheuristic::itsMetaheuristic()
 {
+
   setName("Unknown");
   setAccronym("Unknown");
   setFamily("Unknown");
@@ -87,8 +88,10 @@ itsMetaheuristic::itsMetaheuristic()
 
   initRandom(); 
   this->initializationSeed = 0;
-}
 
+clog << "itsMetaheuristic::itsMetaheuristic  - getLogLevel:" << getLogLevel() << " - logLevel:" << this->logLevel << endl;
+}
+*/
 void itsMetaheuristic::initialization()
 {
     
@@ -120,6 +123,7 @@ void itsMetaheuristic::initialization()
 
 void itsMetaheuristic::start()
 {
+clog << "itsMetaheuristic::start " << " - getLogLevel:" << getLogLevel() << " - logLevel:" << this->logLevel << endl;
   printLog("steps","initialization");
 
   *outProcessResult << "<optimization>" << endl;
@@ -278,11 +282,12 @@ bool itsMetaheuristic::isStoppingCriteria()
   return false;
 }
 
-
+/*
 string itsMetaheuristic::getKey()
 {
     return this->key;
 }
+*/
 
 
 void itsMetaheuristic::setKey( string key )
@@ -291,55 +296,60 @@ void itsMetaheuristic::setKey( string key )
 }
 
 
-
+/*
 string itsMetaheuristic::getName()
 {
     return this->name;
 }
+*/
 
 void itsMetaheuristic::setName(string name)
 {
     this->name = name;
 }
 
-
+/*
 string itsMetaheuristic::getAccronym()
 {
     return this->accronym;
 }
+*/
 
 void itsMetaheuristic::setAccronym(string accronym)
 {
     this->accronym = accronym;
 }
 
-
+/*
 string itsMetaheuristic::getDescription()
 {
     return this->description;
 }
+*/
 
 void itsMetaheuristic::setDescription(string description)
 {
     this->description = description;
 }
   
-
+/*
 string itsMetaheuristic::getCitation()
 {
     return this->citation;
 }
+*/
 
 void itsMetaheuristic::setCitation(string citation)
 {
     this->citation = citation;
 }
 
-
+/*
 string itsMetaheuristic::getFamily()
 {
     return this->family;
 }
+*/
 
 void itsMetaheuristic::setFamily(string family)
 {
@@ -404,15 +414,20 @@ string itsMetaheuristic::getParameters_XML()
 
     return infos.str();
 }
+
+/*
 unsigned int itsMetaheuristic::getSampleSize()
 {
     return this->sampleSize;
 }
+*/
 
+/*
 unsigned int itsMetaheuristic::getSampleSizeCurrent()
 {
     return this->sample.size();
 }
+*/
 
 void itsMetaheuristic::setSampleSize(unsigned int size)
 {
@@ -421,11 +436,12 @@ void itsMetaheuristic::setSampleSize(unsigned int size)
     this->sample.resize(size);
 }
 
-
+/*
 unsigned int itsMetaheuristic::getIterationsMaxNumber()
 {
     return this->iterationsMaxNumber;
 }
+*/
 
 void itsMetaheuristic::setIterationsMaxNumber(unsigned int nbr)
 {
@@ -434,8 +450,9 @@ void itsMetaheuristic::setIterationsMaxNumber(unsigned int nbr)
 
 
 void itsMetaheuristic::printLog(string level, string message)
-{
-    if( logLevel >= logKeys[level.c_str()] ) {
+{clog << "itsMetaheuristic::printLog - getLogLevel:" << getLogLevel() << " - logLevel:" << this->logLevel;
+ clog << " level:" << level.c_str() << " msg:" << message << " getLogKeys().size:" << getLogKeys().size() << endl;
+    if( getLogLevel() >= getLogKeys()[level.c_str()] ) {
         *outLog << message << endl;
     }
 }
@@ -445,11 +462,12 @@ void itsMetaheuristic::addDebugKey(string key)
     this->debugKeys.insert( key );
 }
 
-int itsMetaheuristic::getLogLevel()
+/*
+int itsMetaheuristic::getLogLevel() const
 {
     return this->logLevel;
 }
-  
+*/
 
 void itsMetaheuristic::setLogLevel(int level)
 {
@@ -465,6 +483,13 @@ itsPoint itsMetaheuristic::evaluate(itsPoint p)
     this->evaluationsNumber++;
 
     return res;
+}
+
+void itsMetaheuristic::evaluate()
+{
+    for( unsigned int i=0; i < this->problem->getDimension(); i++ ) {
+        sample[i] = evaluate( sample[i] );
+    }
 }
 
 itsPoint itsMetaheuristic::getOptimum()
@@ -542,11 +567,12 @@ void itsMetaheuristic::setOutDebug(ostream* out)
     this->outDebug = out;
 }
 
-
+/*
 unsigned int itsMetaheuristic::getEvaluationNumber()
 {
     return this->evaluationsNumber;
 }
+*/
 
 void itsMetaheuristic::initRandom(unsigned int seed)
 {
@@ -570,27 +596,31 @@ void itsMetaheuristic::initRandom()
   srand(this->seed);
 }
 
+/*
 unsigned int itsMetaheuristic::getSeed()
 {
     return this->seed;
 }
+*/
 
+/*
 unsigned int itsMetaheuristic::getEvaluationsMaxNumber()
 {
     return this->evaluationsMaxNumber;
 }
-
+*/
 
 void itsMetaheuristic::setEvaluationsMaxNumber(unsigned int nb)
 {
     this->evaluationsMaxNumber = nb;
 }
 
-
+/*
 double itsMetaheuristic::getValueMin()
 {
     return this->valueThreshold;
 }
+*/
   
 
 void itsMetaheuristic::setValueMin(double val)
@@ -650,8 +680,9 @@ void itsMetaheuristic::setInitializationSeed(unsigned int seed)
 {
     this->initializationSeed = seed;
 }
-
+/*
 unsigned int itsMetaheuristic::getInitializationSeed()
 {
     return this->initializationSeed;
 }
+*/
