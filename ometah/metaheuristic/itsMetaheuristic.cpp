@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.26 2006/05/10 18:36:27 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.27 2006/05/11 16:36:07 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -282,123 +282,123 @@ bool itsMetaheuristic::isStoppingCriteria()
   return false;
 }
 
-/*
-string itsMetaheuristic::getKey()
-{
-    return this->key;
-}
-*/
+//~ /*
+//~ string itsMetaheuristic::getKey()
+//~ {
+    //~ return this->key;
+//~ }
+//~ */
 
 
-void itsMetaheuristic::setKey( string key )
-{
-    this->key = key;
-}
+//~ void itsMetaheuristic::setKey( string key )
+//~ {
+    //~ this->key = key;
+//~ }
 
 
-/*
-string itsMetaheuristic::getName()
-{
-    return this->name;
-}
-*/
+//~ /*
+//~ string itsMetaheuristic::getName()
+//~ {
+    //~ return this->name;
+//~ }
+//~ */
 
-void itsMetaheuristic::setName(string name)
-{
-    this->name = name;
-}
+//~ void itsMetaheuristic::setName(string name)
+//~ {
+    //~ this->name = name;
+//~ }
 
-/*
-string itsMetaheuristic::getAccronym()
-{
-    return this->accronym;
-}
-*/
+//~ /*
+//~ string itsMetaheuristic::getAccronym()
+//~ {
+    //~ return this->accronym;
+//~ }
+//~ */
 
-void itsMetaheuristic::setAccronym(string accronym)
-{
-    this->accronym = accronym;
-}
+//~ void itsMetaheuristic::setAccronym(string accronym)
+//~ {
+    //~ this->accronym = accronym;
+//~ }
 
-/*
-string itsMetaheuristic::getDescription()
-{
-    return this->description;
-}
-*/
+//~ /*
+//~ string itsMetaheuristic::getDescription()
+//~ {
+    //~ return this->description;
+//~ }
+//~ */
 
-void itsMetaheuristic::setDescription(string description)
-{
-    this->description = description;
-}
+//~ void itsMetaheuristic::setDescription(string description)
+//~ {
+    //~ this->description = description;
+//~ }
   
-/*
-string itsMetaheuristic::getCitation()
-{
-    return this->citation;
-}
-*/
+//~ /*
+//~ string itsMetaheuristic::getCitation()
+//~ {
+    //~ return this->citation;
+//~ }
+//~ */
 
-void itsMetaheuristic::setCitation(string citation)
-{
-    this->citation = citation;
-}
+//~ void itsMetaheuristic::setCitation(string citation)
+//~ {
+    //~ this->citation = citation;
+//~ }
 
-/*
-string itsMetaheuristic::getFamily()
-{
-    return this->family;
-}
-*/
+//~ /*
+//~ string itsMetaheuristic::getFamily()
+//~ {
+    //~ return this->family;
+//~ }
+//~ */
 
-void itsMetaheuristic::setFamily(string family)
-{
-    this->family = family;
-}
+//~ void itsMetaheuristic::setFamily(string family)
+//~ {
+    //~ this->family = family;
+//~ }
 
-string itsMetaheuristic::getInformations()
-{
-    // a stream is easier to manipulate
-    stringstream infos;
+//~ string itsMetaheuristic::getInformations()
+//~ {
+    //~ // a stream is easier to manipulate
+    //~ stringstream infos;
 
-    // Separator used between key and value
-    string sep = ":\t";
+    //~ // Separator used between key and value
+    //~ string sep = ":\t";
 
-    infos << "Key" << sep << getKey() << endl;
-    infos << "Family" << sep << getFamily() << endl;
-    infos << "Name" << sep << getName() << endl;
-    infos << "Accronym" << sep << getAccronym() << endl;
-    infos << "Description" << sep << getDescription() << endl;
-    infos << "Reference" << sep << getCitation() << endl;
+    //~ infos << "Key" << sep << getKey() << endl;
+    //~ infos << "Family" << sep << getFamily() << endl;
+    //~ infos << "Name" << sep << getName() << endl;
+    //~ infos << "Accronym" << sep << getAccronym() << endl;
+    //~ infos << "Description" << sep << getDescription() << endl;
+    //~ infos << "Reference" << sep << getCitation() << endl;
 
-    // get back the string only
-    return infos.str();
-}
+    //~ // get back the string only
+    //~ return infos.str();
+//~ }
 
 
-string itsMetaheuristic::getInformations_XML()
-{
-    // a stream is easier to manipulate
-    stringstream infos;
+//~ string itsMetaheuristic::getInformations_XML()
+//~ {
+    //~ // a stream is easier to manipulate
+    //~ stringstream infos;
 
-    infos << "<metaheuristic>" << endl;
+    //~ infos << "<metaheuristic>" << endl;
 
-    infos << "<key>" << getKey() << "</key>" << endl;
-    infos << "<family>" << getFamily() << "</family>" << endl;
-    infos << "<name>" << getName() << "</name>" << endl;
-    infos << "<accronym>" << getAccronym() << "</accronym>" << endl;
-    infos << "<description>" << getDescription() << "</description>" << endl;
-    infos << "<reference>" << getCitation() << "</reference>" << endl;
+    //~ infos << "<key>" << getKey() << "</key>" << endl;
+    //~ infos << "<family>" << getFamily() << "</family>" << endl;
+    //~ infos << "<name>" << getName() << "</name>" << endl;
+    //~ infos << "<accronym>" << getAccronym() << "</accronym>" << endl;
+    //~ infos << "<description>" << getDescription() << "</description>" << endl;
+    //~ infos << "<reference>" << getCitation() << "</reference>" << endl;
 
-    infos << "<parameters>" << endl;
-        infos << getParameters_XML();
-    infos << "</parameters>" << endl;
+    //~ infos << "<parameters>" << endl;
+        //~ infos << getParameters_XML();
+    //~ infos << "</parameters>" << endl;
 
-    infos << "</metaheuristic>" << endl;
+    //~ infos << "</metaheuristic>" << endl;
 
-    // get back the string only
-    return infos.str();
-}
+    //~ // get back the string only
+    //~ return infos.str();
+//~ }
 
 
 string itsMetaheuristic::getParameters_XML()

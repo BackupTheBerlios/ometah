@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.10 2006/05/11 14:25:20 nojhan Exp $
+ *  $Id: itsProblem.hpp,v 1.11 2006/05/11 16:36:07 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -28,6 +28,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <iostream>
 
 #include "../common/itsPoint.hpp"
+#include "../common/itsSetItem.hpp"
 #include "../common/Exception_oMetah.hpp"
 
 using namespace std;
@@ -37,26 +38,27 @@ using namespace std;
   All classes of problem inherit from itsProblem, and declares the
   virtual functions.
  */
-class itsProblem 
+class itsProblem : public itsSetItem
 {
 protected:
-  //! The name of the problem
-  /*! 
-    This must be a unique name in the source tree
-  */
-  string name;
+    
+  //~ //! The name of the problem
+  //~ /*! 
+    //~ This must be a unique name in the source tree
+  //~ */
+  //~ string name;
 
-  //! A unique key identifying the problem
-  string key;
+  //~ //! A unique key identifying the problem
+  //~ string key;
 
-  //! A brief description 
-  string description;
+  //~ //! A brief description 
+  //~ string description;
 
-  //! The paper reference (if available)
-  /*!
-    The reference should be formated in BiBTeX.
-   */
-  string citation;
+  //~ //! The paper reference (if available)
+  //~ /*!
+    //~ The reference should be formated in BiBTeX.
+   //~ */
+  //~ string citation;
 
   //! The formula (if available)
   /*!  
@@ -105,7 +107,7 @@ protected:
   
 public:
   //! Constructor
-  itsProblem() : name("Unknown"), key(""), description("Unknown"), citation("Unknown"), formula("f(x)"),
+  itsProblem() : /*name("Unknown"), key(""), description("Unknown"), citation("Unknown"),*/ formula("f(x)"),
                   dimension(1), dimensionFixed(false), accuracy(0.1) 
     {
         setBoundsMaximaAll(1);
@@ -121,20 +123,20 @@ public:
   //! Simple attribute accesses
   //!@{
 
-  //! Return the name
-  string getName() const {return name;}
-  //! Set the name
-  void setName(string name);
+  //~ //! Return the name
+  //~ string getName() const {return name;}
+  //~ //! Set the name
+  //~ void setName(string name);
 
-  //! Return the description
-  string getDescription() const {return description;}
-  //! Change the description
-  void setDescription(string description);
+  //~ //! Return the description
+  //~ string getDescription() const {return description;}
+  //~ //! Change the description
+  //~ void setDescription(string description);
   
-  //! Return the reference
-  string getCitation() const {return citation;}
-  //! Change the reference
-  void setCitation(string citation);
+  //~ //! Return the reference
+  //~ string getCitation() const {return citation;}
+  //~ //! Change the reference
+  //~ void setCitation(string citation);
 
   //! Return the dimension
   unsigned int getDimension() const {return dimension;}
@@ -208,12 +210,12 @@ public:
   
   //! Change all the bounds maxima to the same value
   void setBoundsMaximaAll(double max);
-  
+/*
   //! Return the key
   string getKey() const {return key;}
   //! Change the key
   void setKey( string key );
-
+*/
   //! Return the accuracy
   float getAccuracy() const {return accuracy;}
   //! Change the accuracy 

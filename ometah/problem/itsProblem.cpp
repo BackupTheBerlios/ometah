@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.12 2006/05/10 18:36:28 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.13 2006/05/11 16:36:07 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -65,48 +65,48 @@ itsProblem::itsProblem()
 }
 */
 
-/*
-string itsProblem::getName() 
-{
-  return this->name;
-}
-*/
+//~ /*
+//~ string itsProblem::getName() 
+//~ {
+  //~ return this->name;
+//~ }
+//~ */
 
-void itsProblem::setName(string name)
-{
-  this->name = name;
-}
+//~ void itsProblem::setName(string name)
+//~ {
+  //~ this->name = name;
+//~ }
 
-/*
-string itsProblem::getDescription()
-{
-  return this->description;
-}
-*/
+//~ /*
+//~ string itsProblem::getDescription()
+//~ {
+  //~ return this->description;
+//~ }
+//~ */
 
-void itsProblem::setDescription(string description)
-{
-  this->description = description;
-}
+//~ void itsProblem::setDescription(string description)
+//~ {
+  //~ this->description = description;
+//~ }
 
-/*
-string itsProblem::getCitation()
-{
-  return this->citation;
-}
-*/
+//~ /*
+//~ string itsProblem::getCitation()
+//~ {
+  //~ return this->citation;
+//~ }
+//~ */
 
-void itsProblem::setCitation(string citation)
-{
-  this->citation = citation;
-}
+//~ void itsProblem::setCitation(string citation)
+//~ {
+  //~ this->citation = citation;
+//~ }
 
-/*
-unsigned int itsProblem::getDimension()
-{
-  return this->dimension;
-}
-*/
+//~ /*
+//~ unsigned int itsProblem::getDimension()
+//~ {
+  //~ return this->dimension;
+//~ }
+//~ */
 
 void itsProblem::setDimension(unsigned int dimension)
 {
@@ -402,12 +402,12 @@ string itsProblem::getKey()
     return this->key;
 }
 */
-
+/*
 void itsProblem::setKey( string key )
 {
     this->key = key;
 }
-
+*/
 /*
 float itsProblem::getAccuracy()
 {

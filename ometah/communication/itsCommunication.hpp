@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunication.hpp,v 1.2 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: itsCommunication.hpp,v 1.3 2006/05/11 16:36:06 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -25,15 +25,16 @@
 
 #include "../common/itsPoint.hpp"
 #include "../common/logic.hpp"
+#include "../common/itsSetItem.hpp"
 
 #include <hash_map.h>
 
 
-class itsCommunication
+class itsCommunication : public itsSetItem
 {
 protected:
   //! A unique key identifying the protocol
-  string key;
+  //string key;
 
 public:
   //! Virtual destructor
@@ -64,11 +65,12 @@ public:
 
   //! Return the dimension
   virtual int getDimension() =0;
-
+/*
   //! Return the key
   virtual string getKey();
   //! Change the key
   virtual void setKey(string key);
+*/
 };
 
 #endif

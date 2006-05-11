@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.21 2006/05/10 18:36:27 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.22 2006/05/11 16:36:07 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -46,6 +46,7 @@
 #include "../common/Exception_oMetah.hpp"
 #include "../communication/itsCommunicationClient.hpp"
 
+#include "../common/itsSetItem.hpp"
 #include "../common/random.hpp"
 #include "../common/matrix.hpp"
 #include "../common/string.hpp"
@@ -60,7 +61,7 @@ using namespace std;
   is based on the "Abstract Factory" Pattern
 */
  
-class itsMetaheuristic
+class itsMetaheuristic : public itsSetItem
 {
 protected:
   //! The intensification phase
@@ -100,13 +101,13 @@ protected:
   /*! 
     This must be a unique name in the source tree
   */
-  string name;
+  //string name;
 
   //! The unique key identifying the algorithm among other
-  string key;
+  //string key;
 
   //! The acronym of the algorithm
-  string accronym;
+  //string accronym;
 
   //! The family of the metaheuristic
   /*!
@@ -121,16 +122,16 @@ protected:
       - ...
       - Unknown
    */
-  string family;
+  //string family;
 
   //! A brief description 
-  string description;
+  //string description;
 
   //! The paper reference (if available)
   /*!
     The reference should be formated in BiBTeX.
   */
-  string citation;
+  //string citation;
 
   
   //! The points sample
@@ -237,7 +238,7 @@ public:
   virtual ~itsMetaheuristic();
 
   //! Constructor
-  itsMetaheuristic()  : name("Unknown"), key(""), accronym("Unknown"), family("Unknown"), description("Unknown"), citation("Unknown"),
+  itsMetaheuristic()  : /*name("Unknown"), key(""), accronym("Unknown"), family("Unknown"), description("Unknown"), citation("Unknown"),*/
                         sampleSize(1), iterationsCurrent(0), iterationsMaxNumber(2), 
                         evaluationsNumber(0), evaluationsMaxNumber(0), valueThreshold(0), isInternalStoppingCriterion(false), 
                         seed(0), initializationSeed(0), 
@@ -286,7 +287,7 @@ public:
   //! Parse data common to all metaheuristics
   void parameterParseCommon();
 
-  
+/*
   //! Simple attribute accesses
   //!@{
 
@@ -295,6 +296,11 @@ public:
   //! Set the name
   void setName(string name);
 
+  //! Return the key
+  string getKey() const {return key;}
+  //! Change the key
+  void setKey( string key );
+  
   //! Return the accronym
   string getAccronym() const {return accronym;}
   //! Change the Accronym
@@ -314,7 +320,7 @@ public:
   string getFamily() const {return family;}
   //! Change the reference
   void setFamily(string family);
-  
+*/
   //! Return a formated output of all the informations
   /*!
     Return the Key, Family, Name, Accronym, Description and Reference 
@@ -322,14 +328,14 @@ public:
     The format is the following :
         Key:\tValue\n
   */
-  string getInformations();
+  //string getInformations();
 
   //! Return a formated output of all the informations
   /*!
     Return the Key, Family, Name, Accronym, Description and Reference 
     (in this order) of the algorithm, if given. In xml format.
   */
-  string getInformations_XML();
+  //string getInformations_XML();
   
   //! Return a formated output with the values of parameters
   string getParameters_XML();
@@ -373,12 +379,6 @@ public:
   
   //! Change the value threshold
   void setValueMin(double val);
-  
-  
-  //! Return the key
-  string getKey() const {return key;}
-  //! Change the key
-  void setKey( string key );
   
   //! Return the log level  
   int getLogLevel() const {return logLevel;};

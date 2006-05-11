@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.26 2006/05/11 14:25:20 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.27 2006/05/11 16:36:07 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -47,6 +47,7 @@ int main(int argc, char ** argv)
   itsMetaheuristicFactory* factoryMetaheuristics;
 
   // add the estimation of distribution algorithm
+  
   factoryMetaheuristics = new itsEstimationOfDistributionFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
 
@@ -185,7 +186,7 @@ int main(int argc, char ** argv)
     // arguments definitions (only here !!)
     argumentParser.defArg("p", "problem",
 			  (problemUsage.str()).c_str(), 
-			  true, "string", "Rosenbrock");
+			  true, "string", "Ackley");
     argumentParser.defArg("m", "metah",
 			  (metahUsage.str()).c_str(), 
 			  true, "string", "CEDA");

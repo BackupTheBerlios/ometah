@@ -1,6 +1,8 @@
 Version CVS
 * an evaluate function that update the sample, directly
 * code cleaned up
+* Ackley as a default function for the interface
+* a new base class for every objects that can be put in a itsSet
 
 Version 0.2.4
 * use clean exception management

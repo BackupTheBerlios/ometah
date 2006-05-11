@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.35 2006/05/10 18:36:20 nojhan Exp $
+#  $Id: SConstruct,v 1.36 2006/05/11 16:36:04 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -100,7 +100,7 @@ scons -c: clean all the files used for the default build
 
 # Common
 common = ['itsPoint.cpp','geometry.cpp','itsSet.cpp','logic.cpp','matrix.cpp', \
-          'random.cpp','string.cpp','Exception_oMetah.cpp']
+          'random.cpp','string.cpp','Exception_oMetah.cpp','itsSetItem.cpp']
 common = [ 'common/'+i for i in common]
           
 # Interface

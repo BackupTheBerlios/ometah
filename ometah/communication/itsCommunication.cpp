@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunication.cpp,v 1.2 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: itsCommunication.cpp,v 1.3 2006/05/11 16:36:06 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -22,7 +22,7 @@
  
  #include "itsCommunication.hpp"
 
-  
+/*
 string itsCommunication::getKey()
 {
     return this->key;
@@ -32,3 +32,4 @@ void itsCommunication::setKey(string key)
 {
     this->key = key;
 }
+*/
