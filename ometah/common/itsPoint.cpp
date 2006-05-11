@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.cpp,v 1.9 2006/05/10 18:36:27 nojhan Exp $
+ * $Id: itsPoint.cpp,v 1.10 2006/05/11 21:59:46 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -76,7 +76,7 @@ unsigned int itsPoint::getValuesNumber()
 }
 */
 
-bool isValueSmaller(itsPoint p1, itsPoint p2, int dimension)
+bool isValueSmaller(const itsPoint & p1, const itsPoint & p2, int dimension)
 {
     if ( p1.getValues().size() <= 0 || p2.getValues().size() <= 0 ) {
       ostringstream msg;
@@ -90,20 +90,41 @@ bool isValueSmaller(itsPoint p1, itsPoint p2, int dimension)
 }
 
 
-bool isValueGreater(itsPoint p1, itsPoint p2, int dimension)
+bool isValueGreater(const itsPoint & p1, const itsPoint & p2, int dimension)
 {
+    if ( p1.getValues().size() <= 0 || p2.getValues().size() <= 0 ) {
+      ostringstream msg;
+      msg << "Point has no value" 
+          << " (p1: " << p1.getValues().size() 
+          << " values, p2: " << p2.getValues().size()
+          << " values)";
+      throw Exception_Size(msg.str(), EXCEPTION_INFOS );
+    }
     return (p1.getValues()[dimension] > p2.getValues()[dimension]);
 }
 
 
-bool isValueEqual(itsPoint p1, itsPoint p2, int dimension)
+bool isValueEqual(const itsPoint & p1, const itsPoint & p2, int dimension)
 {
+    if ( p1.getValues().size() <= 0 || p2.getValues().size() <= 0 ) {
+      ostringstream msg;
+      msg << "Point has no value" 
+          << " (p1: " << p1.getValues().size() 
+          << " values, p2: " << p2.getValues().size()
+          << " values)";
+      throw Exception_Size(msg.str(), EXCEPTION_INFOS );
+    }
     return (p1.getValues()[dimension] == p2.getValues()[dimension]);
 }
 
 
 vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension)
 {
+    // use the STL sort algorithm
+    sort( vec.begin(), vec.end() );
+    return vec;
+
+/*
     if( vec.size() <= 1) {
         return vec;
     
@@ -134,6 +155,7 @@ vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension)
         }
         return res;
     }
+*/
 }
 
 string printValues( vector<itsPoint> vec, int dimension, const char* separatorDimension, const char* separatorPoint )

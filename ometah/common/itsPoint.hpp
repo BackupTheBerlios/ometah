@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.hpp,v 1.8 2006/05/10 18:36:27 nojhan Exp $
+ * $Id: itsPoint.hpp,v 1.9 2006/05/11 21:59:46 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author :  Walid TFAILI <tfaili@univ-paris12.fr>
  * Author : Johann Dré <nojhan@gmail.com>
@@ -28,7 +28,8 @@
 
 #include <list>
 #include <vector>
-#include <functional>
+//#include <functional>
+#include <algorithm>
 
 #include "Exception_oMetah.hpp"
 
@@ -93,23 +94,31 @@ public:
   //! Return the number of values
   unsigned int getValuesNumber() const {return values.size();}
 
-};
+  //! Lesser than operator for two points, compare on value (used for sorting)
+  bool operator<(const itsPoint & p1) const {return isValueSmaller(*this,p1);}
+
+  //! Greater than operator for two points, compare on value (used for sorting)
+  bool operator>(const itsPoint & p1) const {return isValueGreater(*this,p1);}
+
+  //! Equality operator for two points, compare on value
+  bool operator==(const itsPoint & p1) const {return isValueEqual(*this,p1);}
+
 
 //! Check if a point has a smaller value than another one for a given dimension
-bool isValueSmaller(itsPoint p1, itsPoint p2, int dimension=0);
+friend bool isValueSmaller(const itsPoint & p1, const itsPoint & p2, int dimension=0);
 
 //! Check if a point has a greater value than another one for a given dimension
-bool isValueGreater(itsPoint p1, itsPoint p2, int dimension=0);
+friend bool isValueGreater(const itsPoint & p1, const itsPoint & p2, int dimension=0);
 
 //! Check if a point has an equal value than another one for a given dimension
-bool isValueEqual(itsPoint p1, itsPoint p2, int dimension=0);
+friend bool isValueEqual(const itsPoint & p1, const itsPoint & p2, int dimension=0);
 
 
 //! Sort a vector on values for a given dimension
 /*!
     It uses a quicksort algorithm
 */
-vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension);
+friend vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension);
 
 
 //! Select the bests values in a sample
@@ -117,7 +126,7 @@ vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension);
   You have the choice between two algorithms  (quicksort or comparison)
   at the compilation stage
 */
-vector<itsPoint> selectOnValues(vector<itsPoint> & vec, unsigned int selectNumber);
+friend vector<itsPoint> selectOnValues(vector<itsPoint> & vec, unsigned int selectNumber);
 
 
 //! Print the values of a point
@@ -129,7 +138,7 @@ vector<itsPoint> selectOnValues(vector<itsPoint> & vec, unsigned int selectNumbe
 |21 22 23| => 11,12,13  21,22,23  31,32,33
 |31 32 33|
 */
-string printValues( vector<itsPoint> vec, int dimension=-1, const char* separatorDimension=",", const char* separatorPoint="  " );
+friend string printValues( vector<itsPoint> vec, int dimension=-1, const char* separatorDimension=",", const char* separatorPoint="  " );
 
 //! Print the solution of a point
 /*!
@@ -140,6 +149,8 @@ string printValues( vector<itsPoint> vec, int dimension=-1, const char* separato
 |21 22 23| => 11,12,13  21,22,23  31,32,33
 |31 32 33|
 */
-string printSolutions( vector<itsPoint> vec, int dimension=-1, const char* separatorDimension=",", const char* separatorPoint="  " );
+friend string printSolutions( vector<itsPoint> vec, int dimension=-1, const char* separatorDimension=",", const char* separatorPoint="  " );
+
+};
 
 #endif
