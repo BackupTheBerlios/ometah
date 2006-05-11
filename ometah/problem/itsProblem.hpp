@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.9 2006/05/10 18:36:28 nojhan Exp $
+ *  $Id: itsProblem.hpp,v 1.10 2006/05/11 14:25:20 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -244,5 +244,8 @@ public:
 
   virtual ~itsProblemFactory() {};
 };
+
+
+EXCEPTION_DECLARATION(Exception_Size_Index_Dimension, Exception_Size_Index);
 
 #endif

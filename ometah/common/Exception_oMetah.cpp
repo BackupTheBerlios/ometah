@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: Exception_oMetah.cpp,v 1.1 2006/04/10 20:57:58 nojhan Exp $
+ *  $Id: Exception_oMetah.cpp,v 1.2 2006/05/11 14:25:20 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -26,8 +26,10 @@
 string Exception_oMetah::what()
 {
     ostringstream msg;
-    msg << description << ". (<" << name << "> error in function <" << function 
-        << ">, in file <" << file << ">, at line " << line << ")" << endl;
+    msg << description << " (<" << name << "> error in " << file << " : " << function << " : " << line << ")";
+
+    /*msg << description << " (<" << name << "> error in function <" << function 
+        << ">, in file <" << file << ">, at line " << line << ")." << endl;*/
 
     return msg.str();
 }

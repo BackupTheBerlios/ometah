@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.25 2006/04/11 10:14:00 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.26 2006/05/11 14:25:20 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -465,6 +465,11 @@ int main(int argc, char ** argv)
     } else {
       setMetaheuristic.item()->start();
     }
+  }
+  catch( Exception_Size_Index_Dimension & e ) {
+    cerr << "Error: " << e.what() << endl;
+    cerr << "Try asking for a higher dimension, for example by passing \"-d 2\" to ometah." << endl;
+    exit(1);
   }
   catch( Exception_oMetah & e ) {
     cerr << "Error: " << e.what() << endl;

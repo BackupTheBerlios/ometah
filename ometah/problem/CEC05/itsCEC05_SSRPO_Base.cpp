@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Base.cpp,v 1.5 2006/05/10 18:36:28 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Base.cpp,v 1.6 2006/05/11 14:25:20 nojhan Exp $
  * Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  * Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -421,7 +421,8 @@ itsProblem * itsSchwefelFactory::create()
  * Rosenbrock
  ******************************************************************************/
 
-itsRosenbrock::itsRosenbrock() : itsProblem()
+itsRosenbrock::itsRosenbrock() : 
+    itsProblem()
 {
     // informations 
     setName("Rosenbrock");
@@ -429,14 +430,14 @@ itsRosenbrock::itsRosenbrock() : itsProblem()
     setDescription("Rosenbrock is a classical test problem");
     setCitation("Unknown");
     setFormula("$R_{n}(\\overrightarrow{x})=\\sum_{i=1}^{n-1}\\left(100\\cdot\\left(x_{i}^{2}-x_{i+1}\\right)^{2}+\\left(x_{i}-1\\right)^{2}\\right)$");
-    
-    setDimension(1); // one dimension is the default, but one may change it after instanciation
-    
+
+    setDimension(2);
+
     setBoundsMinimaAll(-100);
     setBoundsMaximaAll(100);
 
     setAccuracy(0.01);
-    
+
     vector<itsPoint> optim;
     itsPoint pt;
     vector<double> sol(getDimension(),1);
@@ -452,7 +453,11 @@ itsPoint itsRosenbrock::objectiveFunction(itsPoint point)
     double rosen=0.0;
     int dim=getDimension();
 
-    for (int i=0;i<dim;i++) {
+    if(dim<2) {
+        throw Exception_Size_Index_Dimension("Dimension of the Rosenbrock problem should be strictly greater than 1", EXCEPTION_INFOS);
+    }
+
+    for (int i=0;i<dim-1;i++) {
         double X=point.getSolution()[i];
         double Y=point.getSolution()[i+1];
         rosen+=(100*(X*X-Y)*(X*X-Y)+(X-1)*(X-1));
