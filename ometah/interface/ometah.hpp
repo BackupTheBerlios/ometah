@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.19 2006/04/12 14:45:56 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.20 2006/05/12 14:17:09 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -23,6 +23,9 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
+#ifndef OMETAH_HPP
+#define OMETAH_HPP
+
 #include <hash_map.h>
 #include <string>
 #include <iostream>
@@ -74,6 +77,22 @@
 // interfaces
 #include "itsArgument.hpp"
 
-//#define VERSION "0.2.4"
+//#define VERSION "0.2.4" // deprecated, use a compiler flag instead (see the SCOnstruct file)
 
 using namespace std;
+
+void communication_bind( itsMetaheuristic* m, itsCommunicationClient* cc, itsCommunicationServer* cs, itsProblem* p)
+{
+    // metaheuristic -> client
+    m->problem = cc;
+    
+    // server -> problem
+    cs->problem = p;
+    
+    // Special case for the embedded protocol : we must link client and server
+    if( cc->getKey() == "Embedded" && 
+        cs->getKey() == "Embedded") {
+          cc->problem = cs;
+    }
+}
+#endif

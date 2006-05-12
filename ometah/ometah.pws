@@ -38,20 +38,6 @@ RunInTerminal=true
 [Project State]
 clean before build=false
 
-[filelist]
-0=/home/nojhan/travail/openMetaheuristic/source/ometah/problem/CEC05/itsCEC05_SSRPO_Base.cpp
-1=/home/nojhan/travail/openMetaheuristic/source/ometah/problem/CEC05/itsCEC05_SSRPO_Base.hpp
-2=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/genetic/itsEOInterface.hpp
-3=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/itsMetaheuristic.cpp
-4=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/itsMetaheuristic.hpp
-5=/home/nojhan/travail/openMetaheuristic/source/ometah/common/itsPoint.cpp
-6=/home/nojhan/travail/openMetaheuristic/source/ometah/common/itsPoint.hpp
-7=/home/nojhan/travail/openMetaheuristic/source/ometah/problem/itsProblem.cpp
-8=/home/nojhan/travail/openMetaheuristic/source/ometah/problem/itsProblem.hpp
-9=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/genetic/SConstruct
-10=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/genetic/test.cc
-11=/home/nojhan/travail/openMetaheuristic/source/ometah/metaheuristic/genetic/test_min_bug.cc
-
 [Project Tree]
 0=0
 1=0:0

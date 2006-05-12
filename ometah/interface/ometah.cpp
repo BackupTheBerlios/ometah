@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.27 2006/05/11 16:36:07 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.28 2006/05/12 14:17:09 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -334,18 +334,11 @@ int main(int argc, char ** argv)
    *  Links
    *  Warning : be sure to do the "choose" step before
    */
-    
-  // metaheuristic -> client
-  setMetaheuristic.item()->problem = setCommunicationClient.item();
-    
-  // server -> problem
-  setCommunicationServer.item()->problem = setProblem.item();
-    
-  // Special case for the embedded protocol : we must link client and server
-  if( setCommunicationClient.item()->getKey() == "Embedded" && 
-      setCommunicationServer.item()->getKey() == "Embedded") {
-        setCommunicationClient.item()->problem = setCommunicationServer.item();
-  }
+  communication_bind( setMetaheuristic.item(), 
+                      setCommunicationClient.item(), 
+                      setCommunicationServer.item(), 
+                      setProblem.item() 
+                    );
 
   if (VERBOSE)
     clog << "links done" << endl;
