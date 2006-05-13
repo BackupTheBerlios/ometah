@@ -1,5 +1,5 @@
  /***************************************************************************
- *  $Id: random.hpp,v 1.6 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: random.hpp,v 1.7 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -32,6 +32,8 @@
 #include "geometry.hpp" 
 
 using namespace std;
+
+namespace ometah {
 
 //! Draw a random number between 0 and 1
 template<class T>
@@ -225,5 +227,6 @@ T noiseUniform(T aVector, T noiseAmplitude)
   return aVector;
 }
 
+}//ometah
 
 #endif

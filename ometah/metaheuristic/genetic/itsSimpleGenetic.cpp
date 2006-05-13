@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.4 2005/11/09 10:53:03 nojhan Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.5 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -27,6 +27,8 @@
 
 
 using namespace std;
+
+namespace ometah {
 
 itsSimpleGenetic::~itsSimpleGenetic()
 {
@@ -155,3 +157,5 @@ itsMetaheuristic* itsSimpleGeneticFactory::create()
 {
     return new itsSimpleGenetic;
 }
+
+}//ometah

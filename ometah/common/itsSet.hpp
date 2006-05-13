@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsSet.hpp,v 1.3 2006/05/10 18:36:27 nojhan Exp $
+ * $Id: itsSet.hpp,v 1.4 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author: Walid TFAILI <tfaili@univ-paris12.fr>
  * Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -32,7 +32,9 @@
 #include "logic.hpp"
 
 using namespace std;
- 
+
+namespace ometah {
+
 //! A common class for all sets of objects
 /*!
   It uses templates to permit any kind of instanciation
@@ -107,5 +109,7 @@ public:
   }
 
 };
+
+}
 
 #endif

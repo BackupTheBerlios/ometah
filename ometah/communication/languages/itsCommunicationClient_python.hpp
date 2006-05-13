@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_python.hpp,v 1.1 2006/04/10 20:56:52 nojhan Exp $
+ *  $Id: itsCommunicationClient_python.hpp,v 1.2 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -33,6 +33,8 @@
 #include "../itsCommunicationClient.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 class itsCommunicationClient_python : public itsCommunicationClient
 {
@@ -88,11 +90,11 @@ public:
 EXCEPTION_DECLARATION( Exception_Python, Exception_oMetah );
 
 //! Exceptions when importing a module, searching a callable object, etc.
-EXCEPTION_DECLARATION( Exception_Python_LookUp, Exception_oMetah );
+EXCEPTION_DECLARATION( Exception_Python_LookUp, Exception_Python );
 
 //! Exceptions when checking a type, the existence of a variable, etc.
-EXCEPTION_DECLARATION( Exception_Python_Type, Exception_oMetah );
+EXCEPTION_DECLARATION( Exception_Python_Type, Exception_Python );
     
-    
+}//ometah    
 
 #endif

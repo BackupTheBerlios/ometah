@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationServer.hpp,v 1.5 2006/04/07 16:55:58 nojhan Exp $
+ *  $Id: itsCommunicationServer.hpp,v 1.6 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -30,6 +30,7 @@
 
 using namespace std;
 
+namespace ometah {
 
 class itsCommunicationServer : public itsCommunication
 {
@@ -75,5 +76,7 @@ public:
 
     virtual itsCommunicationServer * create() =0;
 };
+
+}//ometah
 
 #endif

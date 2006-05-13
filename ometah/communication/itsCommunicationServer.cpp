@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationServer.cpp,v 1.2 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: itsCommunicationServer.cpp,v 1.3 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -22,6 +22,8 @@
  
 
 #include "itsCommunicationServer.hpp"
+
+namespace ometah {
 
 itsPoint itsCommunicationServer::call(itsPoint point)
 {
@@ -47,3 +49,5 @@ int itsCommunicationServer::getDimension()
 {
     return this->problem->getDimension();
 }
+
+}//ometah

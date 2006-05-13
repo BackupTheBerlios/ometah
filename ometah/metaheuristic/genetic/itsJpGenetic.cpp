@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.8 2005/11/09 10:53:03 nojhan Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.9 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -27,6 +27,8 @@
 
 
 using namespace std;
+
+namespace ometah {
 
 itsJpGenetic::~itsJpGenetic()
 {
@@ -192,3 +194,5 @@ itsMetaheuristic* itsJpGeneticFactory::create()
 {
     return new itsJpGenetic;
 }
+
+}//ometah

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunication.hpp,v 1.3 2006/05/11 16:36:06 nojhan Exp $
+ *  $Id: itsCommunication.hpp,v 1.4 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,6 +29,7 @@
 
 #include <hash_map.h>
 
+namespace ometah {
 
 class itsCommunication : public itsSetItem
 {
@@ -72,5 +73,7 @@ public:
   virtual void setKey(string key);
 */
 };
+
+}//ometah
 
 #endif

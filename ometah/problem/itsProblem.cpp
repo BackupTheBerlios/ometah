@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.13 2006/05/11 16:36:07 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.14 2006/05/13 10:05:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,6 +29,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 using namespace std;
 
+namespace ometah {
 
 /*
 itsProblem::~itsProblem()
@@ -419,3 +420,5 @@ void itsProblem::setAccuracy(float acc)
 {
   this->accuracy = acc;
 }
+
+} //ometah

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridContinuousInteractingAntColony.cpp,v 1.3 2006/04/11 10:42:35 nojhan Exp $
+ *  $Id: itsHybridContinuousInteractingAntColony.cpp,v 1.4 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -22,6 +22,7 @@
 
 #include "itsHybridContinuousInteractingAntColony.hpp"
 
+namespace ometah {
 
 void itsHybridContinuousInteractingAntColony::initialization()
 {
@@ -836,3 +837,5 @@ itsMetaheuristic* itsHybridContinuousInteractingAntColonyFactory::create()
 {
     return new itsHybridContinuousInteractingAntColony;
 }
+
+}//ometah

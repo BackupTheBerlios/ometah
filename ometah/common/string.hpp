@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: string.hpp,v 1.6 2005/11/04 17:56:51 nojhan Exp $
+ *  $Id: string.hpp,v 1.7 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,6 +29,8 @@
 #include <vector>
 
 using namespace std;
+
+namespace ometah {
 
 //! Print a vector
 template<class T>
@@ -112,5 +114,7 @@ double stringToDouble(string aString);
     "3:1.0" => <1.0,1.0,1.0>
 */
 vector<double> stringToDouble_shortcuts(string aString, string itemSeparator=",", string multiSeparator=":");
+
+} // namespace ometah
 
 #endif

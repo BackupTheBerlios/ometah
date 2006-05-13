@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.11 2006/04/11 10:14:00 nojhan Exp $
+ *  $Id: itsArgument.hpp,v 1.12 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -38,6 +38,8 @@
 #define USAGE_KEY "usage_key" // string value doesn't matter
 
 using namespace std;
+
+namespace ometah {
 
 /*!
   An argument is a command line specification, like an option, 
@@ -176,5 +178,7 @@ EXCEPTION_DECLARATION(Exception_Argument, Exception_oMetah);
 
     //! Use this exception if there is no argument definition
     EXCEPTION_DECLARATION(Exception_Argument_Definition, Exception_Argument);
+
+}//ometah
 
 #endif

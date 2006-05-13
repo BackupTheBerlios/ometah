@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Base.cpp,v 1.6 2006/05/11 14:25:20 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Base.cpp,v 1.7 2006/05/13 10:05:56 nojhan Exp $
  * Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  * Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -32,7 +32,8 @@
 #include "itsCEC05_SSRPO_Base.hpp"
 
 using namespace std;
- 
+
+namespace ometah {
 
 /*******************************************************************************
  * Ackley
@@ -473,3 +474,5 @@ itsProblem * itsRosenbrockFactory::create()
 {
     return new itsRosenbrock();
 }
+
+}//ometah

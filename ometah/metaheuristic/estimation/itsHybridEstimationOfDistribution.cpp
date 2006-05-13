@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridEstimationOfDistribution.cpp,v 1.3 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsHybridEstimationOfDistribution.cpp,v 1.4 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -24,6 +24,8 @@
  
 #include "itsHybridEstimationOfDistribution.hpp"
 #include "../neldermead/itsNelderMead.hpp"
+
+namespace ometah {
 
 itsHybridEstimationOfDistribution::itsHybridEstimationOfDistribution()
 {
@@ -125,3 +127,5 @@ itsMetaheuristic* itsHybridEstimationOfDistributionFactory::create()
 {
     return new itsHybridEstimationOfDistribution;
 }
+
+}//ometah

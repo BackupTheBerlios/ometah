@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.13 2006/02/09 14:55:47 nojhan Exp $
+ *  $Id: itsNelderMead.cpp,v 1.14 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -26,6 +26,8 @@
 #include "itsNelderMead.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 itsNelderMead::~itsNelderMead()
 {
@@ -241,3 +243,5 @@ itsMetaheuristic* itsNelderMeadFactory::create()
 {
     return new itsNelderMead;
 }
+
+}//ometah

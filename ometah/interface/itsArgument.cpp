@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.16 2006/04/11 10:14:00 nojhan Exp $
+ *  $Id: itsArgument.cpp,v 1.17 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -32,8 +32,7 @@
 using namespace std;
 
 
-// ITS ARGUMENT
-
+namespace ometah {
 
 itsArgument::~itsArgument(){
 
@@ -375,3 +374,5 @@ bool itsArgumentParser::isAsked(string flag)
     }
     throw Exception_Argument_Definition("Argument not defined (" + flag + ")", EXCEPTION_INFOS );
 }
+
+}//ometah

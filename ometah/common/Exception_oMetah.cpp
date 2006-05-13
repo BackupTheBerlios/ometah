@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: Exception_oMetah.cpp,v 1.2 2006/05/11 14:25:20 nojhan Exp $
+ *  $Id: Exception_oMetah.cpp,v 1.3 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -23,6 +23,8 @@
  
  #include "Exception_oMetah.hpp"
 
+namespace ometah {
+
 string Exception_oMetah::what()
 {
     ostringstream msg;
@@ -33,3 +35,5 @@ string Exception_oMetah::what()
 
     return msg.str();
 }
+
+} // namespace ometah

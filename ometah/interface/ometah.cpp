@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.28 2006/05/12 14:17:09 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.29 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -28,6 +28,7 @@
 
 using namespace std;
 
+using namespace ometah;
 
 int main(int argc, char ** argv)
 {
@@ -130,7 +131,7 @@ int main(int argc, char ** argv)
 #endif
   
 #ifdef WITH_PYTHON
-    bool python_path_error = 0;
+    bool python_path_error = false;
     try {
         // add the python protocol
         factoryClient = new itsCommunicationClientFactory_python;
@@ -138,7 +139,7 @@ int main(int argc, char ** argv)
     }
     catch( Exception_Python_LookUp & e ) {
         cerr << "Warning: " << e.what() << endl;
-        python_path_error = 1;
+        python_path_error = true;
     }
     catch( Exception_oMetah & e ) {
         cerr << "Error: " << e.what() << endl;
@@ -290,7 +291,7 @@ int main(int argc, char ** argv)
   setCommunicationServer.choose(argumentParser.getStringValue("com-server"));
 
 #ifdef WITH_PYTHON
-    if( python_path_error && argumentParser.getStringValue("com-client") == "Python" ) {
+    if( python_path_error /*&& argumentParser.getStringValue("com-client") == "Python"*/ ) {
         cerr << "Warning: Python cannot find the necessary module/functions, "
              << "thus Python communication client is not available, Embedded protocol used instead." << endl;
         setCommunicationClient.choose("Embedded");

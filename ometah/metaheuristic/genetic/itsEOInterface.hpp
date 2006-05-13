@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEOInterface.hpp,v 1.1 2006/05/10 18:36:27 nojhan Exp $
+ *  $Id: itsEOInterface.hpp,v 1.2 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -35,6 +35,8 @@
 #include "../itsMetaheuristic.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 //! An interface for adapting metaheuristics made with EO to oMetah
 /*! 
@@ -214,5 +216,7 @@ public:
     
     
 };
+
+}//ometah
 
 #endif

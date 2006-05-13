@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.hpp,v 1.9 2006/05/11 21:59:46 nojhan Exp $
+ * $Id: itsPoint.hpp,v 1.10 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author :  Walid TFAILI <tfaili@univ-paris12.fr>
  * Author : Johann Dré <nojhan@gmail.com>
@@ -37,6 +37,8 @@
 
 using namespace std;
  
+namespace ometah {
+
 //! The point abstraction
 /*! 
   A point is a value and a solution vector
@@ -152,5 +154,7 @@ friend string printValues( vector<itsPoint> vec, int dimension=-1, const char* s
 friend string printSolutions( vector<itsPoint> vec, int dimension=-1, const char* separatorDimension=",", const char* separatorPoint="  " );
 
 };
+
+} // ometah
 
 #endif

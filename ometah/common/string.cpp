@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: string.cpp,v 1.3 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: string.cpp,v 1.4 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -22,6 +22,8 @@
  
 
 #include "string.hpp"
+
+namespace ometah {
 
 vector<string> stringSplit (string text, string separators)
 {
@@ -87,3 +89,5 @@ vector<double> stringToDouble_shortcuts(string aString, string itemSeparator, st
   }
   return res;
 }
+
+} // namespace ometah

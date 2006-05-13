@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.hpp,v 1.9 2005/11/04 17:28:19 nojhan Exp $
+ *  $Id: itsGridSampling.hpp,v 1.10 2006/05/13 10:05:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -37,6 +37,8 @@
 #include "../../common/string.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 class itsGridSampling : public itsMetaheuristic 
 {
@@ -88,5 +90,7 @@ class itsSamplingFactory : public itsMetaheuristicFactory
 public:
     itsMetaheuristic* create();
 };
+
+}//ometah
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_embedded.hpp,v 1.3 2006/05/10 18:36:27 nojhan Exp $
+ *  $Id: itsCommunicationClient_embedded.hpp,v 1.4 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,6 +29,8 @@
 
 using namespace std;
 
+namespace ometah {
+
 class itsCommunicationClient_embedded : public itsCommunicationClient
 {
 public:
@@ -49,5 +51,7 @@ class itsCommunicationClientFactory_embedded : public itsCommunicationClientFact
 public:
     itsCommunicationClient* create();
 };
+
+}//ometah
 
 #endif

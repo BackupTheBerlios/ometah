@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Base.hpp,v 1.3 2006/05/10 18:36:28 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Base.hpp,v 1.4 2006/05/13 10:05:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author: Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -47,7 +47,9 @@
 #include "../itsProblem.hpp"
 
 using namespace std;
- 
+
+namespace ometah {
+
 /***** Ackley *****/
  
 class itsAckley : public itsProblem
@@ -160,5 +162,7 @@ class itsRosenbrockFactory : public itsProblemFactory
 public:
     itsProblem * create();
 };
+
+}//ometah
 
 #endif

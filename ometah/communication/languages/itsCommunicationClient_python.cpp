@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_python.cpp,v 1.1 2006/04/10 20:56:52 nojhan Exp $
+ *  $Id: itsCommunicationClient_python.cpp,v 1.2 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -21,6 +21,8 @@
  */
  
 #include "itsCommunicationClient_python.hpp"
+
+namespace ometah {
 
 itsPoint itsCommunicationClient_python::call(itsPoint point)
 {
@@ -227,3 +229,5 @@ itsCommunicationClient* itsCommunicationClientFactory_python::create()
 {
     return new itsCommunicationClient_python;
 }
+
+}//ometah

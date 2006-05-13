@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Problems.cpp,v 1.2 2005/11/04 17:28:19 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Problems.cpp,v 1.3 2006/05/13 10:05:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author: Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -24,6 +24,8 @@
 #include"../../common/random.hpp"
 
 #include "itsCEC05_SSRPO_Problems.hpp"
+
+namespace ometah {
 
 itsCEC05_SSRPO_Problem::itsCEC05_SSRPO_Problem()
 {
@@ -80,3 +82,5 @@ void itsCEC05_SSRPO_Problem::addBias()
     
     currentPoint.setValues( val );
 }
+
+}//ometah

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.9 2006/04/11 10:42:36 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.10 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -28,6 +28,8 @@
 
 
 using namespace std;
+
+namespace ometah {
 
 itsEstimationOfDistribution::~itsEstimationOfDistribution()
 {
@@ -239,3 +241,5 @@ itsMetaheuristic* itsEstimationOfDistributionFactory::create()
 {
     return new itsEstimationOfDistribution;
 }
+
+}//ometah

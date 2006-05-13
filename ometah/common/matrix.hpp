@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.10 2006/04/11 10:13:57 nojhan Exp $
+ *  $Id: matrix.hpp,v 1.11 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,6 +29,8 @@
 #include "Exception_oMetah.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 //! Test if a vector is comprised in bounds
 template<class T>
@@ -552,5 +554,7 @@ vector<T> gravityCenter( vector<vector<T> > points, vector<T> weights )
   
   return gravity;
 }
+
+} // ometah
 
 #endif // MATRIX

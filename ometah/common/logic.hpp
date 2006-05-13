@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: logic.hpp,v 1.2 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: logic.hpp,v 1.3 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -25,6 +25,8 @@
 
 #include <string>
 
+namespace ometah {
+
 //! Exclusive or
 template<class T>
 bool xOr(T cond1, T cond2)
@@ -45,5 +47,6 @@ struct eqstr
   }
 };
 
+}
 
 #endif

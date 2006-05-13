@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.hpp,v 1.3 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsJpGenetic.hpp,v 1.4 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -39,6 +39,8 @@
 #include "../../common/string.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 class itsJpGenetic : public itsMetaheuristic
 {
@@ -95,5 +97,7 @@ class itsJpGeneticFactory : public itsMetaheuristicFactory
 public:
     itsMetaheuristic* create();
 };
+
+}//ometah
 
 #endif

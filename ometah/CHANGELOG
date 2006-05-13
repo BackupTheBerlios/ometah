@@ -5,6 +5,7 @@ Version CVS
 * a new base class for every objects that can be put in a itsSet
 * binary operators for points, and faster sorting for containers
 * a binding function for simplify the link step between Metah/ComC/ComS/Prob
+* all the specific code in now in the ometah namespace
 
 Version 0.2.4
 * use clean exception management

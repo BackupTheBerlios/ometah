@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: geometry.hpp,v 1.3 2005/11/04 17:28:12 nojhan Exp $
+ *  $Id: geometry.hpp,v 1.4 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,6 +29,8 @@ using namespace std;
 
 #define E  2.7182818284590452353602874713526625
 #define PI 3.1415926535897932384626433832795029
+
+namespace ometah {
 
 //! Translate 2D rectangular coordinates to polar ones
 template<class T>
@@ -145,5 +147,7 @@ T gravityCenter(U & points, T & weights)
     
   return VG;
 }
+
+} // namespace ometah
 
 #endif

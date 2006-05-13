@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.11 2006/05/11 16:36:07 nojhan Exp $
+ *  $Id: itsProblem.hpp,v 1.12 2006/05/13 10:05:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -32,6 +32,8 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "../common/Exception_oMetah.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 //! The base classe for problems instances
 /*! 
@@ -249,5 +251,7 @@ public:
 
 
 EXCEPTION_DECLARATION(Exception_Size_Index_Dimension, Exception_Size_Index);
+
+}//ometah
 
 #endif

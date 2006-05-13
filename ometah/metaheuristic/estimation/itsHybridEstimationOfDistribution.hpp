@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridEstimationOfDistribution.hpp,v 1.2 2005/11/04 17:28:13 nojhan Exp $
+ *  $Id: itsHybridEstimationOfDistribution.hpp,v 1.3 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,6 +29,7 @@
 
 using namespace std;
 
+namespace ometah {
 
 class itsHybridEstimationOfDistribution : public itsEstimationOfDistribution
 {
@@ -70,5 +71,7 @@ class itsHybridEstimationOfDistributionFactory : public itsEstimationOfDistribut
 public:
     itsMetaheuristic* create();
 };
+
+}//ometah
 
 #endif

@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.27 2006/05/11 16:36:07 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.28 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -29,6 +29,8 @@
 
  
 using namespace std;
+
+namespace ometah {
  
 //! global optimization methods 
 /*! 
@@ -686,3 +688,6 @@ unsigned int itsMetaheuristic::getInitializationSeed()
     return this->initializationSeed;
 }
 */
+
+
+} // namespace ometah

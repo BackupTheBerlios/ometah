@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsRandom.hpp,v 1.3 2005/11/04 17:28:19 nojhan Exp $
+ *  $Id: itsRandom.hpp,v 1.4 2006/05/13 10:05:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -38,6 +38,8 @@
 
 using namespace std;
 
+namespace ometah {
+
 class itsRandom : public itsMetaheuristic
 {
   
@@ -68,5 +70,7 @@ class itsRandomFactory : public itsMetaheuristicFactory
 public:
     itsMetaheuristic* create();
 };
+
+}//ometah
 
 #endif

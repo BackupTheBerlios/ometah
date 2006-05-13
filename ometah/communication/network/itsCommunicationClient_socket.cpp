@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_socket.cpp,v 1.2 2006/04/10 20:56:52 nojhan Exp $
+ *  $Id: itsCommunicationClient_socket.cpp,v 1.3 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -21,6 +21,8 @@
  */
 
 #include "itsCommunicationClient_socket.hpp"
+
+namespace ometah {
 
 itsPoint itsCommunicationClient_socket::call(itsPoint point)
 {
@@ -181,3 +183,5 @@ itsCommunicationClient* itsCommunicationClientFactory_socket::create()
 {
     return new itsCommunicationClient_socket;
 }
+
+}//ometah

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.20 2006/05/12 14:17:09 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.21 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -81,6 +81,8 @@
 
 using namespace std;
 
+namespace ometah {
+
 void communication_bind( itsMetaheuristic* m, itsCommunicationClient* cc, itsCommunicationServer* cs, itsProblem* p)
 {
     // metaheuristic -> client
@@ -95,4 +97,7 @@ void communication_bind( itsMetaheuristic* m, itsCommunicationClient* cc, itsCom
           cc->problem = cs;
     }
 }
+
+}//ometah
+
 #endif

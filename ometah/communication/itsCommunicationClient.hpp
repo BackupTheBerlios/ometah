@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient.hpp,v 1.4 2005/11/04 21:03:00 nojhan Exp $
+ *  $Id: itsCommunicationClient.hpp,v 1.5 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -29,6 +29,8 @@
 #include "../communication/itsCommunication.hpp"
 #include "../communication/itsCommunicationServer.hpp"
 #include "../common/logic.hpp"
+
+namespace ometah {
 
 class itsCommunicationClient : public itsCommunication
 {
@@ -71,5 +73,7 @@ public:
     
     virtual itsCommunicationClient * create() =0;
 };
+
+}//ometah
 
 #endif

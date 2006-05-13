@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimulatedAnnealing.hpp,v 1.1 2005/11/24 22:28:48 nojhan Exp $
+ *  $Id: itsSimulatedAnnealing.hpp,v 1.2 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmil.com>
  ****************************************************************************/
@@ -37,6 +37,8 @@
 #include "../../common/string.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 class itsSimulatedAnnealing : public itsMetaheuristic
 {
@@ -78,5 +80,7 @@ class itsSimulatedAnnealingFactory : public itsMetaheuristicFactory
 public:
     itsMetaheuristic* create();
 };
+
+}//ometah
 
 #endif

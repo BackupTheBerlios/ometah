@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_socket.hpp,v 1.1 2006/04/07 16:55:57 nojhan Exp $
+ *  $Id: itsCommunicationClient_socket.hpp,v 1.2 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -35,6 +35,8 @@
 #include "SocketProtocol.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 class itsCommunicationClient_socket : public itsCommunicationClient
 {
@@ -90,5 +92,7 @@ class itsCommunicationClientFactory_socket : public itsCommunicationClientFactor
 public:
     itsCommunicationClient* create();
 };
+
+}//ometah
 
 #endif

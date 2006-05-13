@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.hpp,v 1.8 2005/11/04 17:28:19 nojhan Exp $
+ *  $Id: itsNelderMead.hpp,v 1.9 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -37,6 +37,8 @@
 #include "../../common/string.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 class itsNelderMead : public itsMetaheuristic
 {
@@ -121,5 +123,7 @@ class itsNelderMeadFactory : public itsMetaheuristicFactory
 public:
     itsMetaheuristic* create();
 };
+
+}//ometah
 
 #endif

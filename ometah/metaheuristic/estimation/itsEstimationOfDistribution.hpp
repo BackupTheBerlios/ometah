@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.hpp,v 1.6 2006/04/11 10:42:36 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.hpp,v 1.7 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -38,6 +38,8 @@
 #include "../../common/Exception_oMetah.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 class itsEstimationOfDistribution : public itsMetaheuristic
 {
@@ -135,5 +137,7 @@ class itsEstimationOfDistributionFactory : public itsMetaheuristicFactory
 public:
     itsMetaheuristic* create();
 };
+
+}//ometah
 
 #endif

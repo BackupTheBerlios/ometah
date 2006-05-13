@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: Exception_oMetah.hpp,v 1.2 2006/04/11 10:13:57 nojhan Exp $
+ *  $Id: Exception_oMetah.hpp,v 1.3 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -45,6 +45,7 @@ using namespace std;
 */
 #define EXCEPTION_DECLARATION(Current,Super) class Current : public Super {public: Current ( const string & desc, const string & func="?", const string & f="?", const int l=-1 ) : Super (desc,func,f,l) {name = #Current;} }
 
+namespace ometah {
 
 //! This is the base class for all exceptions in oMetah
 class Exception_oMetah
@@ -89,5 +90,7 @@ EXCEPTION_DECLARATION(Exception_Size,Exception_oMetah);
 
     //! Use this exception when size of containers does not match
     EXCEPTION_DECLARATION(Exception_Size_Match,Exception_Size);
+
+} // namespace ometah
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridContinuousInteractingAntColony.hpp,v 1.3 2006/04/11 10:42:36 nojhan Exp $
+ *  $Id: itsHybridContinuousInteractingAntColony.hpp,v 1.4 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -40,12 +40,12 @@
 
 using namespace std;
 
+namespace ometah {
 
 /*! Métaheuristique d'optimisation :
  * Colonie de fourmis (Spots localisés) Hybridé avec Simplexe Nelder-Mead
  * Variables Continues
  */
-
 class itsHybridContinuousInteractingAntColony : public itsMetaheuristic
 {
 
@@ -264,5 +264,7 @@ class itsHybridContinuousInteractingAntColonyFactory : public itsMetaheuristicFa
 public:
     itsMetaheuristic* create();
 };
+
+}//ometah
 
 #endif

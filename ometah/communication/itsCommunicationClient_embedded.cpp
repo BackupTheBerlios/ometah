@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_embedded.cpp,v 1.3 2006/05/10 18:36:27 nojhan Exp $
+ *  $Id: itsCommunicationClient_embedded.cpp,v 1.4 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -21,10 +21,13 @@
  */
 
 #include <iostream>
-using namespace std;
 
 #include "itsCommunicationServer_embedded.hpp"
 #include "itsCommunicationClient_embedded.hpp"
+
+using namespace std;
+
+namespace ometah {
 
 itsPoint itsCommunicationClient_embedded::call(itsPoint point)
 {
@@ -76,3 +79,5 @@ itsCommunicationClient* itsCommunicationClientFactory_embedded::create()
 {
     return new itsCommunicationClient_embedded;
 }
+
+}//ometah

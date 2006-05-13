@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.cpp,v 1.10 2006/05/11 21:59:46 nojhan Exp $
+ * $Id: itsPoint.cpp,v 1.11 2006/05/13 10:05:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -26,6 +26,8 @@
 #include "itsPoint.hpp"
 
 using namespace std;
+
+namespace ometah {
 
 /*
 //! Get the solution vector
@@ -336,3 +338,5 @@ vector<itsPoint> selectOnValues(vector<itsPoint> & vec, unsigned int selectNumbe
   
   }
 }
+
+} // namespace ometah

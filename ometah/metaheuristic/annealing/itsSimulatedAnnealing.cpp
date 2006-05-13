@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimulatedAnnealing.cpp,v 1.1 2005/11/24 22:28:48 nojhan Exp $
+ *  $Id: itsSimulatedAnnealing.cpp,v 1.2 2006/05/13 10:05:55 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -28,6 +28,8 @@
 
 
 using namespace std;
+
+namespace ometah {
 
 itsSimulatedAnnealing::~itsSimulatedAnnealing()
 {
@@ -102,3 +104,5 @@ itsMetaheuristic* itsSimulatedAnnealingFactory::create()
 {
     return new itsSimulatedAnnealing;
 }
+
+}//ometah

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: Exception_Socket.hpp,v 1.2 2006/04/10 20:56:52 nojhan Exp $
+ *  $Id: Exception_Socket.hpp,v 1.3 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -24,6 +24,8 @@
 #define EXCEPTION_SOCKET
 
 #include "../../common/Exception_oMetah.hpp"
+
+using namespace ometah;
 
 //! Declaration of the main exception
 EXCEPTION_DECLARATION( Exception_Socket, Exception_oMetah );

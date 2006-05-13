@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationServer_embedded.cpp,v 1.3 2006/04/07 16:55:58 nojhan Exp $
+ *  $Id: itsCommunicationServer_embedded.cpp,v 1.4 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -22,6 +22,8 @@
 
 #include "itsCommunicationServer_embedded.hpp"
 
+namespace ometah {
+
 itsCommunicationServer_embedded::itsCommunicationServer_embedded()
 {
     this->setKey("Embedded");
@@ -37,3 +39,5 @@ itsCommunicationServer* itsCommunicationServerFactory_embedded::create()
 {
     return new itsCommunicationServer_embedded;
 }
+
+}//ometah

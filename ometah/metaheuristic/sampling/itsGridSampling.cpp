@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.12 2005/11/04 17:28:19 nojhan Exp $
+ *  $Id: itsGridSampling.cpp,v 1.13 2006/05/13 10:05:56 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -28,6 +28,8 @@
 
 
 using namespace std;
+
+namespace ometah {
 
 itsGridSampling::itsGridSampling()  
 {
@@ -143,3 +145,5 @@ itsMetaheuristic* itsSamplingFactory::create()
 {
     return new itsGridSampling;
 }
+
+} // namespace ometah

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationServer_embedded.hpp,v 1.3 2006/04/07 16:55:58 nojhan Exp $
+ *  $Id: itsCommunicationServer_embedded.hpp,v 1.4 2006/05/13 10:05:54 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -25,6 +25,8 @@
  
  #include "itsCommunicationServer.hpp"
  
+namespace ometah {
+ 
 class itsCommunicationServer_embedded : public itsCommunicationServer
 {
 public:
@@ -43,5 +45,7 @@ public:
     
     itsCommunicationServer* create();
 };
+
+} //ometah
 
 #endif
