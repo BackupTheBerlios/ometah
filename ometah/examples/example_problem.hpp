@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: example_problem.hpp,v 1.1 2005/11/25 18:24:14 nojhan Exp $
+ * $Id: example_problem.hpp,v 1.2 2006/05/14 07:33:28 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author: Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -10,6 +10,8 @@
 
 #include <ometah/common/itsPoint.hpp>
 #include <ometah/itsProblem.hpp>
+ 
+using namespace ometah;
  
 class ITSEXAMPLEPROBLEM : public itsProblem
 {

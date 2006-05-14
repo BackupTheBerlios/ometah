@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: example_interface.cpp,v 1.2 2005/11/30 21:19:10 nojhan Exp $
+ *  $Id: example_interface.cpp,v 1.3 2006/05/14 07:33:28 nojhan Exp $
  *  Copyright : Free Software Fundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -19,6 +19,7 @@
 #include <ometah/communication/itsCommunicationClient_embedded.hpp>
 
 using namespace std;
+using namespace ometah;
 
 
 int main(int argc, char ** argv)

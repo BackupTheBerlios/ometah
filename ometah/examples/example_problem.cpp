@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: example_problem.cpp,v 1.2 2006/04/12 14:45:56 nojhan Exp $
+ * $Id: example_problem.cpp,v 1.3 2006/05/14 07:33:28 nojhan Exp $
  * Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -9,6 +9,7 @@
 
 using namespace std;
  
+using namespace ometah;
 
 ITSEXAMPLEPROBLEM::ITSEXAMPLEPROBLEM()
 {

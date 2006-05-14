@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_python.hpp,v 1.2 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsCommunicationClient_python.hpp,v 1.3 2006/05/14 07:33:28 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -39,6 +39,9 @@ namespace ometah {
 class itsCommunicationClient_python : public itsCommunicationClient
 {
 private:
+    //! The path of the current binary
+    char * base_path;
+
     //! The name of the python module to load
     string py_module_name;
     //! The python module, loaded
@@ -69,7 +72,7 @@ private:
     
 
 public:
-    itsCommunicationClient_python();
+    itsCommunicationClient_python( char* argv_0);
     ~itsCommunicationClient_python();
 
     itsPoint call(itsPoint point);

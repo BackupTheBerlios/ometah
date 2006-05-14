@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: example_metaheuristic.cpp,v 1.1 2005/11/25 18:24:14 nojhan Exp $
+ *  $Id: example_metaheuristic.cpp,v 1.2 2006/05/14 07:33:28 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -14,6 +14,7 @@
 
 
 using namespace std;
+using namespace ometah;
 
 ITSEXAMPLEMETAHEURISTIC::~ITSEXAMPLEMETAHEURISTIC()
 {

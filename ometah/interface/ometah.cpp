@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.29 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.30 2006/05/14 07:33:28 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -134,8 +134,9 @@ int main(int argc, char ** argv)
     bool python_path_error = false;
     try {
         // add the python protocol
-        factoryClient = new itsCommunicationClientFactory_python;
-        setCommunicationClient.add( factoryClient->create() );
+        // we must use a dynamic casting to bypass the default constructor prototype
+        itsCommunicationClient_python * ccp = new itsCommunicationClient_python( argv[0] );
+        setCommunicationClient.add( dynamic_cast< itsCommunicationClient * >( ccp ) );
     }
     catch( Exception_Python_LookUp & e ) {
         cerr << "Warning: " << e.what() << endl;
@@ -386,6 +387,20 @@ int main(int argc, char ** argv)
   setMetaheuristic.item()->initRandom( argumentParser.getIntValue("random-seed") );
   setMetaheuristic.item()->setInitializationSeed( argumentParser.getIntValue("init-random-seed") );
 
+  // NOTE : if you want to set a parameter specific to an algorithms
+  //        you must bypass the indirection of the sets
+  //        use something like :
+  /*
+    // You must do it only for an item
+    if( setMetaheuristic.item()->getKey() == "CEDA" ) {
+        // use dynamic_cast
+        itsEstimationOfDistribution * m = dynamic_cast<itsEstimationOfDistribution*>( setMetaheuristic.item() );
+        // call the appropriate method
+        m->setSelectRatio(0.1);
+    }
+  */
+  
+  
   if (VERBOSE)
     clog << "parameters ok, starting..." << endl;
     
@@ -432,6 +447,7 @@ int main(int argc, char ** argv)
     *pout << setMetaheuristic.item()->getInformations_XML() << endl;
   }
 
+
   try {
     // if we are asking for silence
     if( argumentParser.isAsked("silent") ) {
@@ -458,12 +474,13 @@ int main(int argc, char ** argv)
       *pout << endl;
     
     } else {
+      // normal mode
       setMetaheuristic.item()->start();
     }
   }
   catch( Exception_Size_Index_Dimension & e ) {
     cerr << "Error: " << e.what() << endl;
-    cerr << "Try asking for a higher dimension, for example by passing \"-d 2\" to ometah." << endl;
+    cerr << "Try asking for a higher dimension, using \"-d <number>\" when invoking ometah." << endl;
     exit(1);
   }
   catch( Exception_oMetah & e ) {

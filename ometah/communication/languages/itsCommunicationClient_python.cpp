@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_python.cpp,v 1.2 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsCommunicationClient_python.cpp,v 1.3 2006/05/14 07:33:28 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -128,25 +128,30 @@ int itsCommunicationClient_python::getDimension()
 
 
 
-itsCommunicationClient_python::itsCommunicationClient_python()
+itsCommunicationClient_python::itsCommunicationClient_python ( char * argv_0 ) : base_path( argv_0)
 {
-    this->setKey("Python");
+    setKey("Python");
 
-    this->py_module_name = "problem_for_ometah";
-    this->py_objective_function_name = "objectiveFunction";
-    this->py_dimension_function_name = "dimension";
-    this->py_bounds_max_function_name = "boundsMinima";
-    this->py_bounds_min_function_name = "boundsMaxima";
+    py_module_name = "problem_for_ometah";
+    py_objective_function_name = "objectiveFunction";
+    py_dimension_function_name = "dimension";
+    py_bounds_max_function_name = "boundsMinima";
+    py_bounds_min_function_name = "boundsMaxima";
 
-    PyObject *module_name, *module_dict;
 
     // initialization of the path
     // necessary for the import module command below
-    // FIXME take the argv from the main ?
-    Py_SetProgramName("./ometah");
-
-    // necessary initialization
+    // FIXME : does not seems to have an effect
+    clog << "Python base program name asked: " << base_path << endl;
+    Py_SetProgramName( base_path );
     Py_Initialize();
+    clog << "Python isInitialized ? " << ( Py_IsInitialized()?"yes":"no" ) << endl;
+    clog << "Python base program name set:" << Py_GetProgramName() << endl;
+    clog << "Python base program full path set:" << Py_GetProgramFullPath(	) << endl;
+    clog << "Python path: " << Py_GetPath() << endl;
+
+
+    PyObject *module_name, *module_dict;
 
     // get the module from its name
     module_name = PyString_FromString( this->py_module_name.c_str() );
@@ -224,10 +229,11 @@ itsCommunicationClient_python::~itsCommunicationClient_python()
     Py_Finalize();
 }
 
-
+/*
 itsCommunicationClient* itsCommunicationClientFactory_python::create()
 {
-    return new itsCommunicationClient_python;
+    return new itsCommunicationClient_python(".");
 }
+*/
 
 }//ometah
