@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.30 2006/05/14 07:33:28 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.31 2006/05/14 17:05:02 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -351,7 +351,8 @@ int main(int argc, char ** argv)
    */
     
   // giving parameters
-  hash_map<string,string, eqstr> parameters;
+  //hash_map<string,string, eqstr> parameters;
+  map<string,string> parameters;
   setCommunicationClient.item()->initialization( parameters );
 
   if (VERBOSE) {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient.hpp,v 1.5 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsCommunicationClient.hpp,v 1.6 2006/05/14 17:05:02 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -25,7 +25,8 @@
 
 #include <vector>
 #include <string>
-#include <hash_map.h>
+//#include <hash_map.h>
+#include <map>
 #include "../communication/itsCommunication.hpp"
 #include "../communication/itsCommunicationServer.hpp"
 #include "../common/logic.hpp"
@@ -42,7 +43,8 @@ public:
 
 public:
     
-    virtual void initialization(hash_map<string,string, eqstr> args) {};
+    //virtual void initialization(hash_map<string,string, eqstr> args) {};
+    virtual void initialization(map<string,string> args) {};
 
     //! Call the problem on a point to get its associated values
     virtual itsPoint call(itsPoint point) =0;

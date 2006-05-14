@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunication.hpp,v 1.4 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsCommunication.hpp,v 1.5 2006/05/14 17:05:02 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -27,7 +27,8 @@
 #include "../common/logic.hpp"
 #include "../common/itsSetItem.hpp"
 
-#include <hash_map.h>
+//#include <hash_map.h>
+#include <map>
 
 namespace ometah {
 
@@ -49,7 +50,8 @@ public:
   virtual itsPoint call(itsPoint point) =0;
 
   //!
-  virtual void initialization(hash_map<string,string, eqstr> args) {};
+  //virtual void initialization(hash_map<string,string, eqstr> args) {};
+  virtual void initialization(map<string,string> args) {};
   
   //! The minima of the problem bounds
   virtual vector<double> boundsMinima() =0;

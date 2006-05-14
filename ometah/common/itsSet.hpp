@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsSet.hpp,v 1.4 2006/05/13 10:05:53 nojhan Exp $
+ * $Id: itsSet.hpp,v 1.5 2006/05/14 17:04:59 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author: Walid TFAILI <tfaili@univ-paris12.fr>
  * Author: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -25,8 +25,9 @@
 #define ITSSET
 
 #include <string>
-#include <hash_map.h>
-//#include <map>
+#include <vector>
+//#include <hash_map.h>
+#include <map>
 #include <ostream>
 
 #include "logic.hpp"
@@ -50,7 +51,8 @@ protected:
     It associate a string to an object.
     The string is the name of the object (from instance.getName())
   */
-  hash_map< const char*, T, hash<const char*>, eqstr > collection;
+  //hash_map< const char*, T, hash<const char*>, eqstr > collection;
+  map< string, T > collection;
 
   //! The current choice 
   string currentItem;
@@ -66,7 +68,8 @@ public:
   void add(T anItem)
   {
     // key is based on a const char*, so we take the c_str
-    collection[anItem->getKey().c_str()] = anItem;
+    //collection[anItem->getKey().c_str()] = anItem;
+    collection[anItem->getKey()] = anItem;
   };
   
   //! Remove an object
@@ -78,7 +81,8 @@ public:
     // find the element iterator
     // erase the element
     collection.erase(
-		     collection.find(name.c_str())
+		     //collection.find(name.c_str())
+       collection.find(name)
 		     );
   };
 
@@ -91,15 +95,18 @@ public:
   //! Return a pointer on the current object
   T item()
   {
-    return collection[currentItem.c_str()];
+    //return collection[currentItem.c_str()];
+    return collection[currentItem];
   };
 
   //! Return a list of the available keys  
   vector<string> getKeyList() 
   {
     vector<string> list;
-    typename hash_map< const char*, T, hash<const char*>, eqstr > ::iterator current = collection.begin();
-    typename hash_map< const char*, T, hash<const char*>, eqstr > ::iterator end = collection.end();
+    //typename hash_map< const char*, T, hash<const char*>, eqstr > ::iterator current = collection.begin();
+    typename map< string, T> ::iterator current = collection.begin();
+    //typename hash_map< const char*, T, hash<const char*>, eqstr > ::iterator end = collection.end();
+    typename map< string, T> ::iterator end = collection.end();
     while ( current != end ) {
         string s = (*current).first;
         list.push_back(s);

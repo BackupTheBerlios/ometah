@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.21 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.22 2006/05/14 17:05:02 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -26,7 +26,8 @@
 #ifndef OMETAH_HPP
 #define OMETAH_HPP
 
-#include <hash_map.h>
+//#include <hash_map.h>
+#include <map>
 #include <string>
 #include <iostream>
 #include <fstream>
