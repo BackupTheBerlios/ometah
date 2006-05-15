@@ -11,6 +11,7 @@ semVersion CVS
 	* binary operators for points, and faster sorting for containers
 	* a binding function for simplify the link step between Metah/ComC/ComS/Prob
 	* all the specific code is now in the ometah namespace
+	* simple headers for future includes
 
 Version 0.2.4
 * use clean exception management

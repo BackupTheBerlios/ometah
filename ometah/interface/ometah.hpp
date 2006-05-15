@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.23 2006/05/15 20:58:00 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.24 2006/05/15 21:23:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -32,6 +32,7 @@
 #include <iostream>
 #include <fstream>
 
+/*
 // common stuff
 #include "../common/logic.hpp"
 #include "../common/itsSet.hpp"
@@ -77,6 +78,12 @@
 
 // interfaces
 #include "itsArgument.hpp"
+*/
+
+#include "../commons.h"
+#include "../metaheuristics.h"
+#include "../problems.h"
+#include "../communications.h"
 
 //#define VERSION "0.2.4" // deprecated, use a compiler flag instead (see the SCOnstruct file)
 
