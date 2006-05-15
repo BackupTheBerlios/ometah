@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.33 2006/05/15 11:44:52 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.34 2006/05/15 20:58:00 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -241,6 +241,8 @@ try {
     argumentParser.defArg("S", "com-server", 
 			  (serverUsage.str()).c_str() ,
 			  true, "string", "Embedded");
+    argumentParser.defArg("H", "help-on", 
+			  "print informations about a given item", true, "string", "");
 } catch(const char * s) {
     cerr << s;
     exit(1);
@@ -279,6 +281,24 @@ try {
     exit(1);
   }
   
+  if( argumentParser.isAsked("help-on") ) {
+      const string asked = argumentParser.getStringValue("help-on");
+      if(    
+            get_help_on( &setMetaheuristic, asked )
+         || get_help_on( &setProblem, asked )
+         || get_help_on( &setCommunicationClient, asked )
+         || get_help_on( &setCommunicationServer, asked ) 
+        ) 
+      {
+          // end without error
+          exit(0);
+          
+      } else {
+          // end with an error
+          cerr << "Error: Unknown item: " << argumentParser.getStringValue("help-on") << endl;
+          exit(1);
+      }
+  }
   
   if (VERBOSE){
     clog << "\ngetValues :" 

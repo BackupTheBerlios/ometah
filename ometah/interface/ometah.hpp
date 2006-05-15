@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.22 2006/05/14 17:05:02 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.23 2006/05/15 20:58:00 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -97,6 +97,26 @@ void communication_bind( itsMetaheuristic* m, itsCommunicationClient* cc, itsCom
         cs->getKey() == "Embedded") {
           cc->problem = cs;
     }
+}
+
+template <class T>
+bool get_help_on( T * theSet, const string asked )
+{
+      // list of the names of available problems
+      vector<string> slist = theSet->getKeyList();
+  
+      // search the asked item in the problems
+      vector<string>::iterator p = find( slist.begin(), slist.end(), asked );
+  
+      // if the item is find
+      if( p != slist.end() ) {
+          theSet->choose(*p);
+          cout << "Informations:" << endl;
+          cout << theSet->item()->getInformations();
+          return true;
+      } else {
+          return false;
+      }
 }
 
 }//ometah

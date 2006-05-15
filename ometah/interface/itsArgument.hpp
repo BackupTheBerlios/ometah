@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.hpp,v 1.13 2006/05/15 11:44:52 nojhan Exp $
+ *  $Id: itsArgument.hpp,v 1.14 2006/05/15 20:58:00 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -26,7 +26,9 @@
 #ifndef ITSARGUMENT
 #define ITSARGUMENT
 
+#include <iostream>
 #include <string>
+#include <vector>
 #include <sstream>
 #include <stdlib.h>
 

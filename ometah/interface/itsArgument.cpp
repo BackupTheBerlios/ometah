@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsArgument.cpp,v 1.18 2006/05/15 11:44:52 nojhan Exp $
+ *  $Id: itsArgument.cpp,v 1.19 2006/05/15 20:58:00 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -26,12 +26,8 @@
 
 #include "itsArgument.hpp"
 
-//#define FLAG_SHORT_MARK "-"
-//#define FLAG_LONG_MARK "--"
-
-const string FLAG_SHORT_MARK "-"
-const string FLAG_LONG_MARK "--"
-
+#define FLAG_SHORT_MARK "-"
+#define FLAG_LONG_MARK "--"
 
 using namespace std;
 

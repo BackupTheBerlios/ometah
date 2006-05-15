@@ -1,13 +1,16 @@
-Version CVS
-* an evaluate function that update the sample, directly
-* code cleaned up
-* Ackley as a default function for the interface
-* a new base class for every objects that can be put in a itsSet
-* binary operators for points, and faster sorting for containers
-* a binding function for simplify the link step between Metah/ComC/ComS/Prob
-* all the specific code in now in the ometah namespace
-* the python communication client really works
-* can choose the name of the python module to use
+semVersion CVS
+* features :
+	* Ackley as a default function for the interface
+	* the python communication client really works
+	* can choose the name of the python module to use
+	* -H option to ask for the complete informations about problems, metaheuristics or communication protocols
+* code :
+	* an evaluate function that update the sample, directly
+	* code cleaned up
+	* a new base class for every objects that can be put in a itsSet
+	* binary operators for points, and faster sorting for containers
+	* a binding function for simplify the link step between Metah/ComC/ComS/Prob
+	* all the specific code is now in the ometah namespace
 
 Version 0.2.4
 * use clean exception management
