@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.31 2006/05/14 17:05:02 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.32 2006/05/15 10:31:41 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -296,6 +296,8 @@ int main(int argc, char ** argv)
         cerr << "Warning: Python cannot find the necessary module/functions, "
              << "thus Python communication client is not available, Embedded protocol used instead." << endl;
         setCommunicationClient.choose("Embedded");
+    } else {
+        setCommunicationClient.choose(argumentParser.getStringValue("com-client"));
     }
 #else
   setCommunicationClient.choose(argumentParser.getStringValue("com-client"));
