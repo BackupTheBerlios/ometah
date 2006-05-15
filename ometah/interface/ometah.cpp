@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.32 2006/05/15 10:31:41 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.33 2006/05/15 11:44:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -32,6 +32,70 @@ using namespace ometah;
 
 int main(int argc, char ** argv)
 {
+
+  /*
+   * Arguments
+   */
+
+  // fill the argv vector
+  vector<string> argumentsVector;
+  for(int i=0; i<argc; i++){
+    argumentsVector.push_back(argv[i]);
+  }
+
+  // create a parser
+  itsArgumentParser argumentParser(argc, argumentsVector);
+
+  int VERBOSE;
+  if (argumentParser.defArg("v", "verbose", "verbose level", true, "int", "0"))
+    VERBOSE = argumentParser.getIntValue("verbose");
+  else
+    VERBOSE = 0;
+  
+  
+  try {
+    // arguments definitions
+#ifdef WITH_SOCKET
+    argumentParser.defArg("t", "port", 
+			  "network port to use for communication with the problem server (Socket communication client)" , true, "int", "80277");
+    argumentParser.defArg("I", "ip", 
+			  "ip address of the problem server (Socket communication client)" , true, "string", "localhost");
+#endif
+  
+#ifdef WITH_PYTHON
+    argumentParser.defArg("M", "py-module", 
+			  "python module to use as the objective function (Python communication client)" , true, "string", "problem_for_ometah");
+#endif
+    argumentParser.defArg("r", "random-seed", 
+			  "seed of the pseudo-random generator (0 to use the clock)", true, "int", "0");
+    argumentParser.defArg("a", "init-random-seed", 
+			  "a specific random seed for the initialization step", true, "int", "0");
+    argumentParser.defArg("D", "debug", 
+			  "debug key" ,true, "string", "");
+    argumentParser.defArg("i", "iterations", 
+			  "maximum number of iterations" ,true, "int", "10000");
+    argumentParser.defArg("e", "evaluations", 
+			  "maximum number of evaluations" ,true, "int", "110");
+    argumentParser.defArg("P", "precision", 
+			  "minimum value to reach" ,true, "double", "0.0");
+    argumentParser.defArg("s", "sample-size", 
+			  "number of points in the sample" ,true, "int", "10");
+    argumentParser.defArg("d", "dimension", 
+			  "dimension of the problem" ,true, "int", "1");
+    argumentParser.defArg("o", "output", 
+			  "output of the results" ,true, "string", "-");
+    argumentParser.defArg("l", "silent", 
+			  "only output the number of evaluations and the optimums values" ,false);
+  }
+  catch(const char * s) {
+    cerr << s;
+    exit(1);
+  }
+  catch( Exception_Argument & e ) {
+      cerr << "Error: " << e.what() << endl;
+      exit(1);
+  }
+
 
   // differents sets of objects
   itsSet<itsMetaheuristic*> setMetaheuristic;
@@ -129,13 +193,13 @@ int main(int argc, char ** argv)
   factoryServer = new itsCommunicationServerFactory_socket;
   setCommunicationServer.add( factoryServer->create() );
 #endif
-  
+
 #ifdef WITH_PYTHON
     bool python_path_error = false;
     try {
         // add the python protocol
         // we must use a dynamic casting to bypass the default constructor prototype
-        itsCommunicationClient_python * ccp = new itsCommunicationClient_python( argv[0] );
+        itsCommunicationClient_python * ccp = new itsCommunicationClient_python( argv[0], argumentParser.getStringValue("py-module") );
         setCommunicationClient.add( dynamic_cast< itsCommunicationClient * >( ccp ) );
     }
     catch( Exception_Python_LookUp & e ) {
@@ -147,25 +211,6 @@ int main(int argc, char ** argv)
         exit(1);
     }
 #endif
-  
-  /*
-   * Arguments
-   */
-
-  // fill the argv vector
-  vector<string> argumentsVector;
-  for(int i=0; i<argc; i++){
-    argumentsVector.push_back(argv[i]);
-  }
-
-  // create a parser
-  itsArgumentParser argumentParser(argc, argumentsVector);
-
-  int VERBOSE;
-  if (argumentParser.defArg("v", "verbose", "verbose level", true, "int", "0"))
-    VERBOSE = argumentParser.getIntValue("verbose");
-  else
-    VERBOSE = 0;
   
   /* 
    * Make the usage strings
@@ -183,9 +228,7 @@ int main(int argc, char ** argv)
   stringstream serverUsage;
   serverUsage << "protocol name for server (" << print(setCommunicationServer.getKeyList()) << ")";
 
-
-  try {
-    // arguments definitions (only here !!)
+try {
     argumentParser.defArg("p", "problem",
 			  (problemUsage.str()).c_str(), 
 			  true, "string", "Ackley");
@@ -198,41 +241,13 @@ int main(int argc, char ** argv)
     argumentParser.defArg("S", "com-server", 
 			  (serverUsage.str()).c_str() ,
 			  true, "string", "Embedded");
-#ifdef WITH_SOCKET
-    argumentParser.defArg("t", "port", 
-			  "network port to use for communication with the problem server (Socket protocol)" , true, "int", "80277");
-    argumentParser.defArg("I", "ip", 
-			  "ip address of the problem server (Socket protocol)" , true, "string", "localhost");
-#endif
-    argumentParser.defArg("r", "random-seed", 
-			  "seed of the pseudo-random generator (0 to use the clock)", true, "int", "0");
-    argumentParser.defArg("a", "init-random-seed", 
-			  "a specific random seed for the initialization step", true, "int", "0");
-    argumentParser.defArg("D", "debug", 
-			  "debug key" ,true, "string", "");
-    argumentParser.defArg("i", "iterations", 
-			  "maximum number of iterations" ,true, "int", "10000");
-    argumentParser.defArg("e", "evaluations", 
-			  "maximum number of evaluations" ,true, "int", "110");
-    argumentParser.defArg("P", "precision", 
-			  "minimum value to reach" ,true, "double", "0.0");
-    argumentParser.defArg("s", "sample-size", 
-			  "number of points in the sample" ,true, "int", "10");
-    argumentParser.defArg("d", "dimension", 
-			  "dimension of the problem" ,true, "int", "1");
-    argumentParser.defArg("o", "output", 
-			  "output of the results" ,true, "string", "-");
-    argumentParser.defArg("l", "silent", 
-			  "only output the number of evaluations and the optimums values" ,false);
-  }
-  catch(const char * s) {
+} catch(const char * s) {
     cerr << s;
     exit(1);
-  }
-  catch( Exception_Argument & e ) {
+} catch( Exception_Argument & e ) {
       cerr << "Error: " << e.what() << endl;
       exit(1);
-  }
+}
 
 
   // look for end flags (-V, -h, etc...)

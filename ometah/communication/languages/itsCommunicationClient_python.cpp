@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_python.cpp,v 1.3 2006/05/14 07:33:28 nojhan Exp $
+ *  $Id: itsCommunicationClient_python.cpp,v 1.4 2006/05/15 11:44:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -128,11 +128,12 @@ int itsCommunicationClient_python::getDimension()
 
 
 
-itsCommunicationClient_python::itsCommunicationClient_python ( char * argv_0 ) : base_path( argv_0)
+itsCommunicationClient_python::itsCommunicationClient_python ( char * argv_0, string _py_module_name ) 
+    : base_path( argv_0), py_module_name(_py_module_name)
 {
     setKey("Python");
 
-    py_module_name = "problem_for_ometah";
+    //py_module_name = "problem_for_ometah";
     py_objective_function_name = "objectiveFunction";
     py_dimension_function_name = "dimension";
     py_bounds_max_function_name = "boundsMinima";
@@ -141,14 +142,16 @@ itsCommunicationClient_python::itsCommunicationClient_python ( char * argv_0 ) :
 
     // initialization of the path
     // necessary for the import module command below
-    // FIXME : does not seems to have an effect
-    clog << "Python base program name asked: " << base_path << endl;
     Py_SetProgramName( base_path );
     Py_Initialize();
-    clog << "Python isInitialized ? " << ( Py_IsInitialized()?"yes":"no" ) << endl;
-    clog << "Python base program name set:" << Py_GetProgramName() << endl;
-    clog << "Python base program full path set:" << Py_GetProgramFullPath(	) << endl;
-    clog << "Python path: " << Py_GetPath() << endl;
+
+    string m_name = py_module_name+".py";
+    base_argv[0] = (char*)m_name.c_str();
+    base_argv[1] = Py_GetProgramFullPath(	);
+
+    PySys_SetArgv(	2, base_argv);
+
+    //clog << "Python path: " << Py_GetPath() << endl;
 
 
     PyObject *module_name, *module_dict;

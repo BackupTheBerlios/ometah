@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_python.hpp,v 1.3 2006/05/14 07:33:28 nojhan Exp $
+ *  $Id: itsCommunicationClient_python.hpp,v 1.4 2006/05/15 11:44:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -38,9 +38,28 @@ namespace ometah {
 
 class itsCommunicationClient_python : public itsCommunicationClient
 {
+public:
+    //! The constructor
+    /*!
+        The arguments are used to set the python path.
+    */
+    itsCommunicationClient_python( char* argv_0, string _py_module_name );
+
+    ~itsCommunicationClient_python();
+
+    itsPoint call(itsPoint point);
+    vector<double> boundsMinima();
+    vector<double> boundsMaxima();
+    vector<vector<double> > bounds();
+    int getDimension();
+
+
 private:
     //! The path of the current binary
     char * base_path;
+
+    //!
+    char * base_argv[2];
 
     //! The name of the python module to load
     string py_module_name;
@@ -68,18 +87,6 @@ private:
     string py_bounds_max_function_name;
     //!
     PyObject * py_bounds_max_function;
-    
-    
-
-public:
-    itsCommunicationClient_python( char* argv_0);
-    ~itsCommunicationClient_python();
-
-    itsPoint call(itsPoint point);
-    vector<double> boundsMinima();
-    vector<double> boundsMaxima();
-    vector<vector<double> > bounds();
-    int getDimension();
 };
 
 class itsCommunicationClientFactory_python : public itsCommunicationClientFactory

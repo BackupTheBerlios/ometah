@@ -6,6 +6,8 @@ Version CVS
 * binary operators for points, and faster sorting for containers
 * a binding function for simplify the link step between Metah/ComC/ComS/Prob
 * all the specific code in now in the ometah namespace
+* the python communication client really works
+* can choose the name of the python module to use
 
 Version 0.2.4
 * use clean exception management

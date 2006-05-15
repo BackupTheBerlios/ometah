@@ -1,5 +1,6 @@
 def objectiveFunction(x1,x2):
-    return x1*x1+x2*x2
+    #return x1*x1+x2*x2
+    return x1
 
 def dimension():
     return 2
