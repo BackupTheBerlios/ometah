@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.14 2006/05/13 10:05:56 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.15 2006/05/16 13:51:38 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -161,7 +161,7 @@ string itsProblem::getInformations()
   msg << "Name" << sep << getName() << endl;
   msg << "Description" << sep << getDescription() << endl;
   msg << "Formula" << sep << getFormula() << endl;
-  msg << "Dimension" << sep << getDimension() << endl;
+  msg << "Dimension" << sep << getDimension() << (isDimensionFixed()?" (fixed)":" (not fixed)") << endl;
   
 
   if ( getOptima().size() <= 0 ) {

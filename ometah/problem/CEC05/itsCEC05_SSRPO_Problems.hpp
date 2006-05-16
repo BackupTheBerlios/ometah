@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Problems.hpp,v 1.3 2006/05/13 10:05:56 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Problems.hpp,v 1.4 2006/05/16 13:51:38 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author: Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -33,6 +33,21 @@ namespace ometah {
 
 class itsCEC05_SSRPO_Problem : public itsProblem 
 {
+public:
+    itsCEC05_SSRPO_Problem();
+
+    virtual itsPoint objectiveFunction(itsPoint point) =0;
+
+protected:
+    //! Parse the file containing the rotation matrix
+    void loadRotationMatrix(string fileName);
+
+    // Apply the translation
+    void translation();
+    
+    //! Apply the rotation
+    void rotation();
+
 protected:
     //! The number of the problem in the original benchmark
     int ssrpoID;
@@ -40,17 +55,29 @@ protected:
     //! The current point being computed
     itsPoint currentPoint;
 
+    //! The bias on the optimum value
+    double f_bias;
+
+    //! The optimum solution
+    /*!
+        In CEC'05-SSRPO, it is used to shift the function
+    */
+    vector<double> o;
+
+    //! The rotation matrix
+    /*! 
+        Initialized with the data files.
+    */
+    vector<double> M;
+
+    
+/*
     //! The transformation vector for the optimum
     vector<double> optimumShift;
 
     //! The transformation matrix for global rotation
     vector< vector<double> > rotationMatrix;
 
-    //! The bias on the optimum value
-    double f_bias;
-
-
-protected:    
     //! Compute the shifted optimum
     void doShiftOptimum();
 
@@ -62,13 +89,20 @@ protected:
 
     //! Add the bias
     void addBias();
+*/
+};
 
-
+class itsF1_ShiftedSphere : public itsCEC05_SSRPO_Problem
+{
 public:
-    itsCEC05_SSRPO_Problem();
+    itsF1_ShiftedSphere();
+    itsPoint objectiveFunction(itsPoint point);
+};
 
-    virtual itsPoint objectiveFunction(itsPoint point) =0;
-
+class itsF1_ShiftedSphere_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
 };
 
 }//ometah

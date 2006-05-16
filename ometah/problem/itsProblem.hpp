@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.12 2006/05/13 10:05:56 nojhan Exp $
+ *  $Id: itsProblem.hpp,v 1.13 2006/05/16 13:51:38 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -161,9 +161,14 @@ public:
   vector<itsPoint> getOptima();
   //! Change the informations about the global optima
   void setOptima(const vector<itsPoint> & theOptima) 
-  {clog << "&theOptima:" << &theOptima << endl;
+  {
+  #ifdef DEBUG
+  clog << "&theOptima:" << &theOptima << endl;
+  #endif
       optima=theOptima;
+  #ifdef DEBUG
   clog << "&optima:" << &optima << endl;
+  #endif
   }
   
   //! Return a formated output of all the informations

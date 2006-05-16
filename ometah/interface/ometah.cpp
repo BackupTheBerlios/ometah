@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.34 2006/05/15 20:58:00 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.35 2006/05/16 13:51:38 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -168,6 +168,9 @@ int main(int argc, char ** argv)
   setProblem.add( factoryProblems->create() );
   // add Weierstrass
   factoryProblems = new itsWeierstrassFactory;
+  setProblem.add( factoryProblems->create() );    
+  // add CEC'05 SSRPO : F1
+  factoryProblems = new itsF1_ShiftedSphere_Factory;
   setProblem.add( factoryProblems->create() );    
     
   /*

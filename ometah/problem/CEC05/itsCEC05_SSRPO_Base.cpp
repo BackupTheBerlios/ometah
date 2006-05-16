@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Base.cpp,v 1.7 2006/05/13 10:05:56 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Base.cpp,v 1.8 2006/05/16 13:51:38 nojhan Exp $
  * Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  * Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -303,7 +303,7 @@ itsSphere::itsSphere() : itsProblem()
     setAccuracy(0.000001);
 
     // FIXME set the optimum seems to generate a bug when itsPoint's destructors are called
-    /*
+    
     vector<itsPoint> optim;
     itsPoint pt;
 
@@ -315,7 +315,7 @@ itsSphere::itsSphere() : itsProblem()
 
     optim.push_back(pt);
     setOptima(optim);
-    */
+    
     /*
     vector<itsPoint> optim;
 clog << "&optim:" << &optim << endl;

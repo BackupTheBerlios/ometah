@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: problems.h,v 1.1 2006/05/15 21:23:34 nojhan Exp $
+ *  $Id: problems.h,v 1.2 2006/05/16 13:51:35 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -28,5 +28,6 @@
 #include "problem/itsProblem.hpp"
 
 #include "problem/CEC05/itsCEC05_SSRPO_Base.hpp"
+#include "problem/CEC05/itsCEC05_SSRPO_Problems.hpp"
 
 #endif

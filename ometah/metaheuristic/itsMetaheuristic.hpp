@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsMetaheuristic.hpp,v 1.23 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsMetaheuristic.hpp,v 1.24 2006/05/16 13:51:38 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -257,8 +257,10 @@ public:
     
         initRandom();
 
+        #ifdef DEBUG
         clog << "itsMetaheuristic::itsMetaheuristic  " /*- getLogLevel:" << getLogLevel() */ << " - logLevel:" << logLevel << endl;
         clog << "itsMetaheuristic::itsMetaheuristic  " << " - logKeys.size:" << logKeys.size() << endl;
+        #endif
     }
 
   //! The pointer to the problem
@@ -388,7 +390,12 @@ public:
   void setLogLevel(int level);
 
   //! Return the log keys
-  map<string, int> getLogKeys() const {clog << "itsMetaheuristic::getLogKeys - logKeys.size:" << logKeys.size() << endl;return logKeys;}
+  map<string, int> getLogKeys() const {
+      #ifdef DEBUG
+      clog << "itsMetaheuristic::getLogKeys - logKeys.size:" << logKeys.size() << endl;
+      #endif
+      return logKeys;
+  }
 
   //! Change the output for end results
   void setOutEndResult(ostream* out);

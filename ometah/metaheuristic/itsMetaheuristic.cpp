@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.28 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.29 2006/05/16 13:51:38 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -125,7 +125,9 @@ void itsMetaheuristic::initialization()
 
 void itsMetaheuristic::start()
 {
+#ifdef DEBUG
 clog << "itsMetaheuristic::start " << " - getLogLevel:" << getLogLevel() << " - logLevel:" << this->logLevel << endl;
+#endif
   printLog("steps","initialization");
 
   *outProcessResult << "<optimization>" << endl;
@@ -452,8 +454,11 @@ void itsMetaheuristic::setIterationsMaxNumber(unsigned int nbr)
 
 
 void itsMetaheuristic::printLog(string level, string message)
-{clog << "itsMetaheuristic::printLog - getLogLevel:" << getLogLevel() << " - logLevel:" << this->logLevel;
- clog << " level:" << level.c_str() << " msg:" << message << " getLogKeys().size:" << getLogKeys().size() << endl;
+{
+#ifdef DEBUG
+clog << "itsMetaheuristic::printLog - getLogLevel:" << getLogLevel() << " - logLevel:" << this->logLevel;
+clog << " level:" << level.c_str() << " msg:" << message << " getLogKeys().size:" << getLogKeys().size() << endl;
+#endif
     if( getLogLevel() >= getLogKeys()[level.c_str()] ) {
         *outLog << message << endl;
     }
