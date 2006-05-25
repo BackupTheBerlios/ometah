@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_embedded.cpp,v 1.4 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsCommunicationClient_embedded.cpp,v 1.5 2006/05/25 08:51:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -53,7 +53,7 @@ vector<vector<double> > itsCommunicationClient_embedded::bounds()
 }
 
 
-int itsCommunicationClient_embedded::getDimension()
+unsigned int itsCommunicationClient_embedded::getDimension()
 {
     return this->problem->getDimension();
 }
@@ -62,6 +62,11 @@ int itsCommunicationClient_embedded::getDimension()
 itsCommunicationClient_embedded::itsCommunicationClient_embedded()
 {
     setKey("Embedded");
+    setName("Embedded on pointers");
+    setAccronym("None");
+    setFamily("Direct");
+    setDescription("This communication client embbed the communication server in the same binary.");
+    setCitation("None");
 
     problem = new itsCommunicationServer_embedded;
 }

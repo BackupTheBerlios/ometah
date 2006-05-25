@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_python.hpp,v 1.4 2006/05/15 11:44:52 nojhan Exp $
+ *  $Id: itsCommunicationClient_python.hpp,v 1.5 2006/05/25 08:51:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -26,7 +26,10 @@
 #include <vector>
 #include <stdexcept>
 
-#include <python2.4/Python.h>
+// include something like
+//#include <python2.4/Python.h>
+// with the asked version
+#include PYTHON_HEADER_LOCATION
 
 #include "../../common/itsPoint.hpp"
 #include "../../common/Exception_oMetah.hpp"
@@ -51,7 +54,7 @@ public:
     vector<double> boundsMinima();
     vector<double> boundsMaxima();
     vector<vector<double> > bounds();
-    int getDimension();
+    unsigned int getDimension();
 
 
 private:

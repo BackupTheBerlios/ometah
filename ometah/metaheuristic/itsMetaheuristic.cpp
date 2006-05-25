@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.29 2006/05/16 13:51:38 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.30 2006/05/25 08:51:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -268,6 +268,8 @@ bool itsMetaheuristic::isStoppingCriteria()
   
   // if the minimum value has been reached
   } else if ( getSampleSizeCurrent() > 0 ) { // if we have a sample
+    // FIXME : choose between accuracy and min value !
+    //if ( abs( getOptimum().getValues()[0] - problem->getOptima()[0].getValue() ) <= getValueMin() ) {
     if ( getOptimum().getValues()[0] <= getValueMin() ) {
       printLog("steps","Minimum value reached");
       return true;

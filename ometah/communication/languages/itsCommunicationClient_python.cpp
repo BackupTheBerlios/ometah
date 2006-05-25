@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_python.cpp,v 1.4 2006/05/15 11:44:52 nojhan Exp $
+ *  $Id: itsCommunicationClient_python.cpp,v 1.5 2006/05/25 08:51:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -84,7 +84,7 @@ vector<vector<double> > itsCommunicationClient_python::bounds()
     vector<double> bi = this->boundsMinima();
     vector<double> ba = this->boundsMaxima();
 
-    for(int i=0; i<this->getDimension(); i++) {
+    for( unsigned int i=0; i<this->getDimension(); i++) {
         vector<double> p;
         p.push_back(bi[i]);
         p.push_back(ba[i]);
@@ -94,7 +94,7 @@ vector<vector<double> > itsCommunicationClient_python::bounds()
     return b;
 }
 
-int itsCommunicationClient_python::getDimension()
+unsigned int itsCommunicationClient_python::getDimension()
 {
     long value;
     PyObject * result, * args;
@@ -132,6 +132,13 @@ itsCommunicationClient_python::itsCommunicationClient_python ( char * argv_0, st
     : base_path( argv_0), py_module_name(_py_module_name)
 {
     setKey("Python");
+    setName("Python client");
+    setFamily("Extern langage");
+    setAccronym("None");
+    setDescription("This client call an extern python module as the problem."
+                   "The module must follow the oMetah interface (see documentation)."
+                   "A Python interpreter is embedded to execute the script.");
+    setCitation("Python reference manual (\"Embedding python\" section)");
 
     //py_module_name = "problem_for_ometah";
     py_objective_function_name = "objectiveFunction";

@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.36 2006/05/11 16:36:04 nojhan Exp $
+#  $Id: SConstruct,v 1.37 2006/05/25 08:51:50 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dréo <nojhan@gmail.com>
 ################################################################################
@@ -51,11 +51,13 @@ env = Environment()
 # setting the options
 opts = Options()
 opts.AddOptions( \
-    BoolOption('static', 'Build a static version',0), \
+    BoolOption('static', 'Build a static version',1), \
     BoolOption('debug', 'Compile with the debug informations',0), \
     BoolOption('network', 'Compile with the network support',0), \
     BoolOption('python', 'Compile with the python bindings',0) \
 )
+
+opts.Add( ('python_version','The python version you want to use','2.4') )
 
 opts.AddOptions( ('flags','Additional flags to pass to the compiler','') )
 
@@ -165,8 +167,9 @@ if not conf.CheckLib('libstdc++'):
     Exit(1)
         
 if env['python'] == 1:
-    if not conf.CheckLibWithHeader('python2.4','python2.4/Python.h', 'C', 'void Py_Initialize();'):
-        print 'Python 2.4 must be installed if you want to compile with python support'
+    pyv = env['python_version']
+    if not conf.CheckLibWithHeader('python'+pyv,'python'+pyv+'/Python.h', 'C', 'void Py_Initialize();'):
+        print 'Python '+pyv+' must be installed if you want to compile with python support'
         Exit(1)
         
 if env['network'] == 1:
@@ -176,7 +179,7 @@ if env['network'] == 1:
         if not conf.CheckCHeader(h):
             no_header_error = 1
     if no_header_error == 1:
-        print 'Unix socket headers must be installed if you want to compile with python support'
+        print 'Unix socket headers must be installed if you want to compile with network support'
         Exit(1)
 
         
@@ -201,10 +204,10 @@ if env['network'] == 1:
 
 if env['python'] == 1:
     all += com_languages
-    flags += ' -D WITH_PYTHON '
+    flags += ' -D WITH_PYTHON -D PYTHON_HEADER_LOCATION='+"\"<python"+env['python_version']+"/Python.h>\""
     env.Replace( CCFLAGS = flags )
     
-    libs += ['python2.4']
+    libs += ['python'+env['python_version']]
     
     
 if env['static']==1:
@@ -275,7 +278,7 @@ if env['network']==1:
     zipName += "-network"
 
 if env['python']==1:
-    zipName += "-python2.4"
+    zipName += "-python"+env['python_version']
     
 if env['static']==1:
     zipName += "-static"

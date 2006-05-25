@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationServer.hpp,v 1.6 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsCommunicationServer.hpp,v 1.7 2006/05/25 08:51:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -58,7 +58,7 @@ public:
     vector<vector<double> > bounds();
 
     //! Return the dimension
-    int getDimension();
+    unsigned int getDimension();
     
     //! Launch the server
     /*!

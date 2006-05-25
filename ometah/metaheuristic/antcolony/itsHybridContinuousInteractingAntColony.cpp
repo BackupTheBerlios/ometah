@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridContinuousInteractingAntColony.cpp,v 1.4 2006/05/13 10:05:55 nojhan Exp $
+ *  $Id: itsHybridContinuousInteractingAntColony.cpp,v 1.5 2006/05/25 08:51:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -308,7 +308,7 @@ int itsHybridContinuousInteractingAntColony::antMoveNMS( int antId )
 
   // edges from sample hypercube
   vector<double> edges;
-  for ( int i=0; i<this->problem->getDimension(); i++ ) {
+  for ( unsigned int i=0; i<this->problem->getDimension(); i++ ) {
     edges.push_back( antMoveRange[antId] );
   }
   

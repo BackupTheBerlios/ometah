@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.15 2006/05/16 13:51:38 nojhan Exp $
+ *  $Id: itsProblem.cpp,v 1.16 2006/05/25 08:51:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -122,10 +122,14 @@ void itsProblem::setDimension(unsigned int dimension)
   }
 
   // reinitialization of bounds
-  vector<double> n(dimension,0);
+  /*vector<double> n(dimension,0);
   setBoundsMinima( n );
   vector<double> x(dimension,1);
-  setBoundsMaxima( x );
+  setBoundsMaxima( x );*/
+
+#ifdef DEBUG
+clog << "itsProblem::setDimension dimension=" << dimension << " this->dimension=" << this->dimension << " getDimension()=" << getDimension() << endl;
+#endif
 }
 
 /*
@@ -338,6 +342,9 @@ void itsProblem::setBoundsMinima(vector<double> minima)
     } else {
         this->boundsMinima = minima;
     }
+#ifdef DEBUG
+clog << "itsProblem::setBoundsMinima() minima=" << print(getBoundsMinima()) << endl;
+#endif
 }
 
 /*

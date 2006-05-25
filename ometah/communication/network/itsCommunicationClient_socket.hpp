@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient_socket.hpp,v 1.2 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsCommunicationClient_socket.hpp,v 1.3 2006/05/25 08:51:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -81,7 +81,7 @@ public:
     vector<double> boundsMinima();
     vector<double> boundsMaxima();
     vector<vector<double> > bounds();
-    int getDimension();
+    unsigned int getDimension();
 
     void setPort( int port );
     void setHostIP( string ip );

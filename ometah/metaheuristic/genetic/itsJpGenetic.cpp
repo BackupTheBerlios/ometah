@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.9 2006/05/13 10:05:55 nojhan Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.10 2006/05/25 08:51:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -112,7 +112,7 @@ vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
 
   // for each dimension, set the coordinate
   // ~ find a point with uniform proba in hypercube of parents coords.
-  for (int i=0; i<this->problem->getDimension(); i++) {
+  for ( unsigned int i=0; i<this->problem->getDimension(); i++) {
 
     alpha = rand();
     bsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
@@ -158,7 +158,7 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
 
       psol = point.getSolution();
 
-      for ( int i=0; i<this->problem->getDimension(); i++) {
+      for ( unsigned int i=0; i<this->problem->getDimension(); i++) {
       
 	// P(up) = P(down) = P(no change) = 0.3
 	proba = rand();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: string.hpp,v 1.7 2006/05/13 10:05:53 nojhan Exp $
+ *  $Id: string.hpp,v 1.8 2006/05/25 08:51:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -34,7 +34,7 @@ namespace ometah {
 
 //! Print a vector
 template<class T>
-void print( T aVector, char * aSeparator=",", ostream * outer)
+void print( T aVector, string aSeparator=",", ostream * outer)
 {
   *outer << aVector[0];
   
@@ -45,7 +45,7 @@ void print( T aVector, char * aSeparator=",", ostream * outer)
 
 //! Print a vector
 template<class T>
-string print( T aVector, char * aSeparator="," )
+string print( T aVector, string aSeparator="," )
 {
   ostringstream out;
   out << aVector[0];
@@ -59,7 +59,7 @@ string print( T aVector, char * aSeparator="," )
 
 //! Print a matrix
 template<class T>
-string print( vector< vector< T > > aMatrix, char * sepCol = ",", char * sepLine = "\n")
+string print( vector< vector< T > > aMatrix, string sepCol = ",", string sepLine = "\n")
 {
   ostringstream out;
   out << print(aMatrix[0]);

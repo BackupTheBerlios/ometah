@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.hpp,v 1.13 2006/05/16 13:51:38 nojhan Exp $
+ *  $Id: itsProblem.hpp,v 1.14 2006/05/25 08:51:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -141,7 +141,12 @@ public:
   //~ void setCitation(string citation);
 
   //! Return the dimension
-  unsigned int getDimension() const {return dimension;}
+  unsigned int getDimension() const {
+      #ifdef DEBUG
+      clog << "itsProblem::getDimension() dimension=" << dimension << endl;
+      #endif
+      return dimension;
+  }
   //! Change the dimension
   void setDimension(unsigned int dimension);
   

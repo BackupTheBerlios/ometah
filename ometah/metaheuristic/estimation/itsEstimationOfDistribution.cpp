@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.10 2006/05/13 10:05:55 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.11 2006/05/25 08:51:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -87,7 +87,7 @@ void itsEstimationOfDistribution::learningUniform(vector< vector<double> > aSamp
     // find the minimum and the maximum for each dimension  
     this->parameterUniformMinima.clear();
     this->parameterUniformMaxima.clear();
-    for(int dim=0; dim < this->problem->getDimension(); dim++) {
+    for(unsigned int dim=0; dim < this->problem->getDimension(); dim++) {
         // store them
         this->parameterUniformMinima.push_back( min( aSample[dim] ) );
         this->parameterUniformMaxima.push_back( max( aSample[dim] ) );
@@ -141,7 +141,7 @@ vector<double> itsEstimationOfDistribution::diversificationNormal()
 
     // test if is in bounds
     if( this->isKeepBounds ) {
-        for(int i=0; i < this->problem->getDimension(); i++) {
+        for(unsigned int i=0; i < this->problem->getDimension(); i++) {
             // if < min or > max
             if( sol[i] < this->problem->boundsMinima()[i] ||
                 sol[i] > this->problem->boundsMaxima()[i] ) {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.14 2006/05/13 10:05:55 nojhan Exp $
+ *  $Id: itsNelderMead.cpp,v 1.15 2006/05/25 08:51:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -60,7 +60,7 @@ void itsNelderMead::initSimplexFromBasePoint(itsPoint basePoint, vector<double> 
 
   // empty simplex
   vector<itsPoint> plex;
-  for( int i=0; i < this->problem->getDimension() + 1; i++ ) {
+  for( unsigned int i=0; i < this->problem->getDimension() + 1; i++ ) {
     itsPoint p;
     vector<double> v(this->problem->getDimension(), 0.0);
     p.setSolution( v );
@@ -68,13 +68,13 @@ void itsNelderMead::initSimplexFromBasePoint(itsPoint basePoint, vector<double> 
   }
 
   // on number of vertex
-  for( int i=0; i < this->problem->getDimension(); i++ ) {
+  for( unsigned int i=0; i < this->problem->getDimension(); i++ ) {
     // plex[dim][i] = basePoint[i]
     vector<double> v = plex[this->problem->getDimension()].getSolution();
     v[i] = basePoint.getSolution()[i];
     plex[this->problem->getDimension()].setSolution( v );
   
-    for( int j=0; j < this->problem->getDimension(); j++) {
+    for( unsigned int j=0; j < this->problem->getDimension(); j++) {
       // plex[i][j] = basePoint[j]
       vector<double> w = plex[i].getSolution();
       w[j] = basePoint.getSolution()[j];

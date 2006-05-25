@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.35 2006/05/16 13:51:38 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.36 2006/05/25 08:51:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -220,16 +220,16 @@ int main(int argc, char ** argv)
    */
   
   stringstream problemUsage;
-  problemUsage << "problem name (" << print(setProblem.getKeyList()) << ")";
+  problemUsage << "problem name [" << print(setProblem.getKeyList()) << "]";
   
   stringstream metahUsage;
-  metahUsage << "metaheuristic name (" << print(setMetaheuristic.getKeyList()) << ")";
+  metahUsage << "metaheuristic name [" << print(setMetaheuristic.getKeyList()) << "]";
   
   stringstream clientUsage;
-  clientUsage << "protocol name for client (" << print(setCommunicationClient.getKeyList()) << ")";
+  clientUsage << "protocol name for client [" << print(setCommunicationClient.getKeyList()) << "]";
   
   stringstream serverUsage;
-  serverUsage << "protocol name for server (" << print(setCommunicationServer.getKeyList()) << ")";
+  serverUsage << "protocol name for server [" << print(setCommunicationServer.getKeyList()) << "]";
 
 try {
     argumentParser.defArg("p", "problem",
@@ -245,7 +245,7 @@ try {
 			  (serverUsage.str()).c_str() ,
 			  true, "string", "Embedded");
     argumentParser.defArg("H", "help-on", 
-			  "print informations about a given item", true, "string", "");
+			  "print informations about a given item (\"list\" show the available items)", true, "string", "list");
 } catch(const char * s) {
     cerr << s;
     exit(1);
@@ -265,7 +265,9 @@ try {
       return -1;
     }
     else if (!strcmp(USAGE_KEY, s)) {
-      cout << "Open Metaheuristics, a free framework for designing hard optimization algorithms." << endl;
+      cout << "Open Metaheuristics, a free framework for metaheuristics "
+           << "(targets hard optimization problems with real parameters)." << endl;
+      cout << "LGPL license, (c) Free Software Fundation." << endl;
       cout << "Version " << VERSION << endl;
       argumentParser.usage();
       return -1;
@@ -286,20 +288,35 @@ try {
   
   if( argumentParser.isAsked("help-on") ) {
       const string asked = argumentParser.getStringValue("help-on");
-      if(    
-            get_help_on( &setMetaheuristic, asked )
-         || get_help_on( &setProblem, asked )
-         || get_help_on( &setCommunicationClient, asked )
-         || get_help_on( &setCommunicationServer, asked ) 
-        ) 
-      {
+      
+      const bool hm = get_help_on( &setMetaheuristic, asked, "metaheuristic" );
+      const bool hp = get_help_on( &setProblem, asked, "problem" );
+      const bool hc = get_help_on( &setCommunicationClient, asked, "communication client" );
+      const bool hs = get_help_on( &setCommunicationServer, asked, "communication server" );
+  
+      if( hm || hp || hc || hs ) {
           // end without error
           exit(0);
           
       } else {
           // end with an error
-          cerr << "Error: Unknown item: " << argumentParser.getStringValue("help-on") << endl;
-          exit(1);
+          //cerr << "Error: Unknown item: " << argumentParser.getStringValue("help-on") << endl;
+          //exit(1);
+          string sep = ", ";
+          cout << "Available items:" << endl;
+          cout << "\tMetaheuristics: ";
+              print( setMetaheuristic.getKeyList(), sep, &cout );
+              cout << endl;
+          cout << "\tProblems: ";
+              print( setProblem.getKeyList(), sep, &cout );
+              cout << endl;
+          cout << "\tCommunication clients: ";
+              print( setCommunicationClient.getKeyList(), sep, &cout );
+              cout << endl;
+          cout << "\tCommunication servers: ";
+              print( setCommunicationServer.getKeyList(), sep, &cout );
+              cout << endl;
+          exit(0);
       }
   }
   
@@ -415,12 +432,29 @@ try {
   //setMetaheuristic.item()->setLogLevel(0);
 
   // parameters
-  setProblem.item()->setDimension( argumentParser.getIntValue("dimension") );
+
+  // the dimension is set only of we asked for it
+  // else, the default dimension of the problem is used
+  if( argumentParser.isAsked("dimension") ) {
+      if( setProblem.item()->isDimensionFixed() ) { // warning if we ask to change a fixed dimension
+          cerr << "Warning: dimension is fixed to " << setProblem.item()->getDimension() << " for this problem,"
+               << " change it to " << argumentParser.getIntValue("dimension") << " may cause strange behaviour." << endl;
+      }
+      if(VERBOSE)
+          cerr << "Warning: default problem dimension " << setProblem.item()->getDimension();
+  
+      setProblem.item()->setDimension( argumentParser.getIntValue("dimension") );
+      
+      if(VERBOSE)
+          cerr << " changed to " << setProblem.item()->getDimension() << "." << endl;
+  }
+
   setMetaheuristic.item()->setSampleSize( argumentParser.getIntValue("sample-size") );
 
   // Stopping criteria
   setMetaheuristic.item()->setEvaluationsMaxNumber( argumentParser.getIntValue("evaluations") );
   setMetaheuristic.item()->setIterationsMaxNumber( argumentParser.getIntValue("iterations") );
+
   setMetaheuristic.item()->setValueMin( argumentParser.getDoubleValue("precision") );
 
   // Initialize pseudo random generator with time unit
@@ -441,6 +475,19 @@ try {
     }
   */
   
+#ifdef WITH_SOCKET
+    if( setCommunicationClient.item()->getKey()=="Socket" ) {
+        if( argumentParser.isAsked("port") ) {
+            itsCommunicationClient_socket * c = dynamic_cast<itsCommunicationClient_socket*>( setCommunicationClient.item() );
+            c->setPort( argumentParser.getIntValue("port") );
+        }
+        if( argumentParser.isAsked("ip") ) {
+            itsCommunicationClient_socket * c = dynamic_cast<itsCommunicationClient_socket*>( setCommunicationClient.item() );
+            c->setHostIP( argumentParser.getStringValue("ip") );
+        }
+    }
+#endif
+
   
   if (VERBOSE)
     clog << "parameters ok, starting..." << endl;

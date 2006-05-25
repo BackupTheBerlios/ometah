@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationClient.hpp,v 1.6 2006/05/14 17:05:02 nojhan Exp $
+ *  $Id: itsCommunicationClient.hpp,v 1.7 2006/05/25 08:51:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -63,7 +63,7 @@ public:
     virtual vector<vector<double> > bounds() =0;
 
     //! Return the dimension
-    virtual int getDimension() =0;
+    virtual unsigned int getDimension() =0;
 
 };
 

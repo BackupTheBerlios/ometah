@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationServer_socket.cpp,v 1.2 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsCommunicationServer_socket.cpp,v 1.3 2006/05/25 08:51:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -44,7 +44,7 @@ vector<vector<double> > itsCommunicationServer_socket::bounds()
     return this->problem->getBounds();
 }
 
-int itsCommunicationServer_socket::getDimension()
+unsigned int itsCommunicationServer_socket::getDimension()
 {
     return this->problem->getDimension();
 }

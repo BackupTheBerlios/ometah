@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsCommunicationServer_embedded.cpp,v 1.4 2006/05/13 10:05:54 nojhan Exp $
+ *  $Id: itsCommunicationServer_embedded.cpp,v 1.5 2006/05/25 08:51:51 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -26,7 +26,12 @@ namespace ometah {
 
 itsCommunicationServer_embedded::itsCommunicationServer_embedded()
 {
-    this->setKey("Embedded");
+    setKey("Embedded");
+    setName("Embedded on pointers");
+    setAccronym("None");
+    setFamily("Direct");
+    setDescription("Only used as a compatibility layer, this server do nothing.");
+    setCitation("None");
 }
 
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.24 2006/05/15 21:23:34 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.25 2006/05/25 08:51:52 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -31,6 +31,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <iterator>
 
 /*
 // common stuff
@@ -85,7 +86,7 @@
 #include "../problems.h"
 #include "../communications.h"
 
-//#define VERSION "0.2.4" // deprecated, use a compiler flag instead (see the SCOnstruct file)
+//#define VERSION "0.2.4" // deprecated, use a compiler flag instead (see the SConstruct file)
 
 using namespace std;
 
@@ -107,8 +108,9 @@ void communication_bind( itsMetaheuristic* m, itsCommunicationClient* cc, itsCom
 }
 
 template <class T>
-bool get_help_on( T * theSet, const string asked )
+bool get_help_on( T * theSet, const string asked, const string field="" )
 {
+
       // list of the names of available problems
       vector<string> slist = theSet->getKeyList();
   
@@ -118,7 +120,7 @@ bool get_help_on( T * theSet, const string asked )
       // if the item is find
       if( p != slist.end() ) {
           theSet->choose(*p);
-          cout << "Informations:" << endl;
+          cout << "Informations on " << field << ":" << endl;
           cout << theSet->item()->getInformations();
           return true;
       } else {

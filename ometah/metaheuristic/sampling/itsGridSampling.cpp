@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.13 2006/05/13 10:05:56 nojhan Exp $
+ *  $Id: itsGridSampling.cpp,v 1.14 2006/05/25 08:51:53 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -108,7 +108,7 @@ void itsGridSampling::diversification()
 */
 void itsGridSampling::pointConstruction( vector<double> partialPoint )
 {  
-  int n = partialPoint.size();  
+  unsigned int n = partialPoint.size();  
 
   if(( n >= this->problem->getDimension() )) { // if vector is built
     
