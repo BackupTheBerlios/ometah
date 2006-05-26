@@ -20,6 +20,7 @@ Date 5 february 2006
 * bugfix with SA compilation
 
 Version 0.2.4
+Date 11 april 2006
 * use clean exception management
 * can call problems written in Python with the Python communication client
 * a network protocol for communication, using unix sockets
