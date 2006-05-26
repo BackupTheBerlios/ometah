@@ -1,0 +1,5 @@
+[FICHIER MESURE]
+Chemin=E:\Affaires\Excess\Travail\Dossier de Fabrication Controle\Controle\contrôle lentille en transmission\ihm algo etc\Sources\Simulation L05 22\PO L05 simul 22.txt
+[PARAMETRES]
+Numero de la Couronne=-1
+Code Parametres=1

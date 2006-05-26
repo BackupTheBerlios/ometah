@@ -1,0 +1,80 @@
+# -*- coding: iso-8859-1 -*-
+################################################################################
+#  $Id: SConstruct,v 1.1 2006/05/26 11:00:42 nojhan Exp $
+#  Author : Johann Dréo <nojhan@gmail.com>
+################################################################################
+
+
+
+################################################################################
+# Environment
+################################################################################
+
+# flags for optimization, use them in production
+foptim = '-fcaller-saves -fcse-follow-jumps -fcse-skip-blocks  \
+          -felide-constructors -fexpensive-optimizations -ffast-math \
+          -ffloat-store -funroll-all-loops -funroll-loops -O3'
+
+# flags for checking the code
+#-Wstrict-prototypes -Wmissing-prototypes 
+fcheck = '-Wall -ansi -pedantic -Wimplicit \
+          -Wredundant-decls -Wreturn-type -Wunused'
+          
+# flags for debugging
+fdebug = '-ggdb'
+
+# more flags
+fsup = '-Wno-deprecated'
+
+# setting the environnement
+env = Environment()
+
+# setting the options
+opts = Options()
+opts.AddOptions( \
+    BoolOption('debug', 'Compile with the debug informations',0) \
+)
+opts.Update(env)
+
+flags=""
+if env['debug']==1:
+    flags = " ".join( [fcheck,fdebug,fsup] )
+else:
+    flags = " ".join( [fcheck,fsup] )
+
+env.Replace( CCFLAGS = flags )
+
+Help( \
+"""
+Usage:
+scons [options...] [name=val...] [targets...]
+
+Targets: 
+scons ometahcats: build the main interface
+
+Flags:""" + \
+  opts.GenerateHelpText(env) + \
+"""
+Example:
+scons ometahcats debug=no: build the main interface, without debugging informations
+scons -c ometahcats: clean the files used to generate the interface
+scons -c: clean all the files used for the default build
+"""
+)
+
+################################################################################
+# Configuration
+################################################################################
+
+#conf = Configure(env)
+#env = conf.Finish()
+
+
+################################################################################
+# Targets
+################################################################################
+
+# static interface
+ometah = env.Program( target = 'ometahcats', source = ['ometahcats.cpp'], LIBS='ometah', LIBPATH='.' )
+
+Default(ometah)
