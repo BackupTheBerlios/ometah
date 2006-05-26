@@ -80,3 +80,15 @@ common/random.cpp
 common/random.hpp
 common/string.cpp
 common/string.hpp
+AccumulatorAction.py
+AUTHORS
+CHANGELOG
+compilation_tuning.py
+COPYING
+Doxyfile
+makefile
+myShutil.py
+problem_for_ometah.py
+README
+SConstruct
+Zipper.py

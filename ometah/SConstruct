@@ -1,8 +1,8 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.37 2006/05/25 08:51:50 nojhan Exp $
+#  $Id: SConstruct,v 1.38 2006/05/26 12:54:48 nojhan Exp $
 #  Copyright : Free Software Fundation
-#  Author : Johann Dréo <nojhan@gmail.com>
+#  Author : Johann Drï¿½ <nojhan@gmail.com>
 ################################################################################
 
 # This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 # Environment
 ################################################################################
 
-version = "0.2.5a"
+version = "0.3"
 
 # flags for optimization, use them in production
 #foptim = '-fcaller-saves -fcse-follow-jumps -fcse-skip-blocks  \

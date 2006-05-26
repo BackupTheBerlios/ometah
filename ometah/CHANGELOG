@@ -1,34 +1,5 @@
-Version 0.1.1
-Date 14 june 2005
-* The first release embed a estimation of distribution metaheuristic, some classical tests problems, and a statically link protocol.
-* The command line interface is usable and it outputs xml files.
-
-Version 0.2.1
-Date 5 october 2005
-* lost changelog :(
-
-Version 0.2.2
-Date 2 december 2005
-* Can now be compiled in a dynamic library
-* Added a Simulated Annealing algorithm
-* fix a bug when fixing dimension
-
-Version 0.2.3
-Date 5 february 2006
-* possibility to fix a random seed for the initialization step only
-* automated archive creation in SConstruct
-* bugfix with SA compilation
-
-Version 0.2.4
-Date 11 april 2006
-* use clean exception management
-* can call problems written in Python with the Python communication client
-* a network protocol for communication, using unix sockets
-* a silent mode, outputing only the number of evaluation and the optimum, no xml
-* better selection algorithm for high selection rate
-* flags marks automatically managed
-
-Current Version
+Version 0.3
+Date 26 may 2006
 * features :
 	* Ackley as a default function for the interface
 	* the python communication client really works
@@ -45,3 +16,34 @@ Current Version
 	* simple headers for future includes
 	* true unsigned int for dimension
 	* possibility to change the python version at compilation time
+	* a fake makefile that launch scons 
+
+Version 0.2.4
+Date 11 april 2006
+* use clean exception management
+* can call problems written in Python with the Python communication client
+* a network protocol for communication, using unix sockets
+* a silent mode, outputing only the number of evaluation and the optimum, no xml
+* better selection algorithm for high selection rate
+* flags marks automatically managed
+
+Version 0.2.3
+Date 5 february 2006
+* possibility to fix a random seed for the initialization step only
+* automated archive creation in SConstruct
+* bugfix with SA compilation
+
+Version 0.2.2
+Date 2 december 2005
+* Can now be compiled in a dynamic library
+* Added a Simulated Annealing algorithm
+* fix a bug when fixing dimension
+
+Version 0.2.1
+Date 5 october 2005
+* lost changelog :(
+
+Version 0.1.1
+Date 14 june 2005
+* The first release embed a estimation of distribution metaheuristic, some classical tests problems, and a statically link protocol.
+* The command line interface is usable and it outputs xml files.
