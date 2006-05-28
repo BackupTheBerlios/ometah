@@ -1,0 +1,8 @@
+
+env = Environment(CPPPATH='/usr/local/include/eo/', CCFLAGS = '-ggdb -Wno-deprecated' )
+
+env.Program( 
+    target = 'test_eo', \
+    source = ['test_eo.cc'], \
+    LIBS=['ometah','eo','eoutils'], \
+    LIBPATH=['/usr/lib','/usr/local/lib'])
