@@ -1,11 +1,9 @@
 
 #include "itsEOInterface.hpp"
-#include "../../common/itsPoint.hpp"
-#include "../../common/Exception_oMetah.hpp"
 
-#include <ometah/problem/CEC05/itsCEC05_SSRPO_Base.hpp>
-#include <ometah/communication/itsCommunicationServer_embedded.hpp>
-#include <ometah/communication/itsCommunicationClient_embedded.hpp>
+#include <ometah/problems.h>
+#include <ometah/communications.h>
+#include <ometah/commons.h>
 
 #include <eo>
 #include <es.h>

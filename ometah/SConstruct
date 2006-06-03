@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.38 2006/05/26 12:54:48 nojhan Exp $
+#  $Id: SConstruct,v 1.39 2006/06/03 18:58:38 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dr� <nojhan@gmail.com>
 ################################################################################
@@ -222,8 +222,19 @@ if env['static']==1:
         
     # installation
     # FIXME : only works for Unix
-    env.Install('/usr/local/bin', ometah)
-    env.Alias('install', '/usr/local/bin')
+    prefix = '/usr/local'
+    env.Install(prefix+'/bin', ometah)
+    env.Alias('install', prefix+'/bin')
+
+    heads = [f.replace('.cpp','.hpp') for f in all]
+    env.Install( prefix+'/include/ometah', ['commons.h', 'metaheuristics.h', 'problems.h', 'communications.h'] )
+    env.Alias('install', prefix+'/include/ometah')
+
+    for f in all:
+        f = f.replace('.cpp','.hpp')
+        d = "/".join(f.split('/')[:-1])
+        env.Install( prefix+'/include/ometah/'+d, f )
+        env.Alias('install', prefix+'/include/ometah/'+d )
     
 else:
     # shared library

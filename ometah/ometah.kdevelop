@@ -156,11 +156,13 @@
   </kdevvisualadvance>
   <kdevfileview>
     <groups>
+      <group pattern="*.py" name="Python files" />
+      <group pattern="*.h" name="Group headers" />
       <hidenonprojectfiles>false</hidenonprojectfiles>
       <hidenonlocation>false</hidenonlocation>
     </groups>
     <tree>
-      <hidepatterns>*.o,*.lo,CVS</hidepatterns>
+      <hidepatterns>*.o,*.lo,CVS,*.os</hidepatterns>
       <hidenonprojectfiles>false</hidenonprojectfiles>
       <showvcsfields>false</showvcsfields>
     </tree>
