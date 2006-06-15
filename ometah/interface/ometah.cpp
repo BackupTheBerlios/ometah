@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.36 2006/05/25 08:51:52 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.37 2006/06/15 12:17:49 walid_tfaili Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -81,7 +81,7 @@ int main(int argc, char ** argv)
     argumentParser.defArg("s", "sample-size", 
 			  "number of points in the sample" ,true, "int", "10");
     argumentParser.defArg("d", "dimension", 
-			  "dimension of the problem" ,true, "int", "1");
+			  "dimension of the problem" ,true, "int", "2");
     argumentParser.defArg("o", "output", 
 			  "output of the results" ,true, "string", "-");
     argumentParser.defArg("l", "silent", 
@@ -136,7 +136,12 @@ int main(int argc, char ** argv)
   
   factoryMetaheuristics = new itsHybridContinuousInteractingAntColonyFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
-  
+
+#ifdef WITH_EACO
+  factoryMetaheuristics = new itsEacoFactory;
+  setMetaheuristic.add( factoryMetaheuristics->create() );
+#endif
+
   factoryMetaheuristics = new itsSimulatedAnnealingFactory;
   setMetaheuristic.add( factoryMetaheuristics->create() );
   
