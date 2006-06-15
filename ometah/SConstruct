@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.39 2006/06/03 18:58:38 nojhan Exp $
+#  $Id: SConstruct,v 1.40 2006/06/15 12:13:34 walid_tfaili Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dr� <nojhan@gmail.com>
 ################################################################################
@@ -54,7 +54,8 @@ opts.AddOptions( \
     BoolOption('static', 'Build a static version',1), \
     BoolOption('debug', 'Compile with the debug informations',0), \
     BoolOption('network', 'Compile with the network support',0), \
-    BoolOption('python', 'Compile with the python bindings',0) \
+    BoolOption('python', 'Compile with the python bindings',0), \
+    BoolOption('eaco', 'Compiler avec eACO',0) \
 )
 
 opts.Add( ('python_version','The python version you want to use','2.4') )
@@ -149,7 +150,11 @@ neldermead = [ 'metaheuristic/neldermead/'+i for i in neldermead]
 genetic = ['itsJpGenetic.cpp', 'itsSimpleGenetic.cpp']
 genetic = [ 'metaheuristic/genetic/'+i for i in genetic]
 
+
 antcolony = ['itsHybridContinuousInteractingAntColony.cpp']
+if env['eaco'] == 1:
+	flags += "-D WITH_EACO"
+	antcolony += ['itsEaco.cpp']
 antcolony = [ 'metaheuristic/antcolony/'+i for i in antcolony]
 
 annealing = ['itsSimulatedAnnealing.cpp']
@@ -182,7 +187,7 @@ if env['network'] == 1:
         print 'Unix socket headers must be installed if you want to compile with network support'
         Exit(1)
 
-        
+
 env = conf.Finish()
 
 
@@ -194,7 +199,7 @@ libPaths = ['.']
 libs = ['ometah']
 
 all = common + communication + metaheuristic + problem + cec + interface \
-      + estimation + random + sampling + neldermead + antcolony + genetic + annealing 
+      + estimation + random + sampling + neldermead + antcolony + genetic + annealing
 
 if env['network'] == 1:
     all += com_network
