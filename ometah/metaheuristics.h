@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: metaheuristics.h,v 1.1 2006/05/15 21:23:34 nojhan Exp $
+ *  $Id: metaheuristics.h,v 1.2 2006/06/15 12:27:29 walid_tfaili Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -43,4 +43,9 @@
 
 #include "metaheuristic/annealing/itsSimulatedAnnealing.hpp"
 
+#endif
+
+
+#ifdef WITH_EACO
+#include "metaheuristic/antcolony/itsEaco.hpp"
 #endif
