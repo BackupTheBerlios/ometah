@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.38 2006/06/16 17:15:45 walid_tfaili Exp $
+ *  $Id: ometah.cpp,v 1.39 2006/06/16 17:34:41 walid_tfaili Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -180,7 +180,7 @@ int main(int argc, char ** argv)
 
   // add CEC'05 SSRPO : F2
   factoryProblems = new itsF2_ShiftedSchwefel_Factory;
-  setProblem.add( factoryProblems->create() );    
+  setProblem.add( factoryProblems->create() );
 
   // add CEC'05 SSRPO : F3
  // factoryProblems = new itsF3_ShiftedRotatedElliptic_Factory;

@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Problems.hpp,v 1.5 2006/06/16 17:12:41 walid_tfaili Exp $
+ * $Id: itsCEC05_SSRPO_Problems.hpp,v 1.6 2006/06/16 17:34:43 walid_tfaili Exp $
  *  Copyright : Free Software Foundation
  * Author: Johann Dréo <nojhan@gmail.com>
  * Author: Walid Tfaili <walidtfaili@yahoo.fr>
