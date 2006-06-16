@@ -1,7 +1,8 @@
 /***************************************************************************
- *  $Id: matrix.hpp,v 1.11 2006/05/13 10:05:53 nojhan Exp $
+ *  $Id: matrix.hpp,v 1.12 2006/06/16 16:40:23 walid_tfaili Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
+ *  Author : Walid Tfaili <walidtfaili@yahoo.fr>
  ****************************************************************************/
 
 /*
@@ -135,6 +136,28 @@ T multiply( T matA, T matB)
     }
   }
   return newMat;
+}
+
+//! Multiply a 2D n*m dimension matrix with a n dimension vector (Rotation)
+template<class T>
+T rotation( vector< T > matA, T aVector)
+{
+
+  unsigned int Al=matA.size();
+  unsigned int Ac=matA[0].size();
+  unsigned int Bl=aVector.size();
+
+  T newVector( Bl, 0.0 );
+
+  if(Al!=Bl) {
+    throw Exception_Size_Match("Cannot multiply the matrix and the vector, sizes does not match", EXCEPTION_INFOS );
+  }
+
+  for( unsigned int i=0; i<Ac; i++ ) 
+    for( unsigned int j=0; j<Al; j++ ) 
+         newVector[j] += matA[i][j]*aVector[j];
+
+  return newVector;
 }
 
 //! Multiply each term of a vector by a scalar
