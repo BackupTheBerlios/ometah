@@ -1,7 +1,8 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Problems.hpp,v 1.4 2006/05/16 13:51:38 nojhan Exp $
+ * $Id: itsCEC05_SSRPO_Problems.hpp,v 1.5 2006/06/16 17:12:41 walid_tfaili Exp $
  *  Copyright : Free Software Foundation
  * Author: Johann Dréo <nojhan@gmail.com>
+ * Author: Walid Tfaili <walidtfaili@yahoo.fr>
  ****************************************************************************/
 
 /*
@@ -40,13 +41,16 @@ public:
 
 protected:
     //! Parse the file containing the rotation matrix
-    void loadRotationMatrix(string fileName);
-
-    // Apply the translation
-    void translation();
+    vector<double> loadVectorFromFile(string fileName);
     
-    //! Apply the rotation
-    void rotation();
+    //! Translate a vector two a square matrix
+    vector< vector<double> > vectorToSquareMatrix( vector<double> V  );
+
+    //! Parse and load the rotation data file in the rotation matrix
+    void loadRotation( string problemName );
+
+    //! Apply the translation
+    void translation();
 
 protected:
     //! The number of the problem in the original benchmark
@@ -68,7 +72,7 @@ protected:
     /*! 
         Initialized with the data files.
     */
-    vector<double> M;
+    vector< vector<double> > M;
 
     
 /*
@@ -92,6 +96,7 @@ protected:
 */
 };
 
+
 class itsF1_ShiftedSphere : public itsCEC05_SSRPO_Problem
 {
 public:
@@ -104,6 +109,39 @@ class itsF1_ShiftedSphere_Factory : public itsProblemFactory
 public:
     itsProblem* create();
 };
+
+
+
+
+
+class itsF2_ShiftedSchwefel : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF2_ShiftedSchwefel();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF2_ShiftedSchwefel_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
+
+/*
+
+class itsF3_ShiftedRotatedElliptic : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF3_ShiftedRotatedElliptic();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF3_ShiftedRotatedElliptic_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};*/
 
 }//ometah
 
