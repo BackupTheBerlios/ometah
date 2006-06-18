@@ -1,8 +1,9 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.39 2006/06/16 17:34:41 walid_tfaili Exp $
+ *  $Id: ometah.cpp,v 1.40 2006/06/18 18:29:41 walid_tfaili Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+ *  Author : Walid Tfaili <walidtfaili@yahoo.fr>
  ****************************************************************************/
 
 /*  Open Metaheuristic is a Library aimed at the conception of metaheuristics 
@@ -173,37 +174,45 @@ int main(int argc, char ** argv)
   setProblem.add( factoryProblems->create() );
   // add Weierstrass
   factoryProblems = new itsWeierstrassFactory;
-  setProblem.add( factoryProblems->create() );    
+  setProblem.add( factoryProblems->create() );
+
+
   // add CEC'05 SSRPO : F1
   factoryProblems = new itsF1_ShiftedSphere_Factory;
-  setProblem.add( factoryProblems->create() );    
-
+  setProblem.add( factoryProblems->create() );
   // add CEC'05 SSRPO : F2
   factoryProblems = new itsF2_ShiftedSchwefel_Factory;
   setProblem.add( factoryProblems->create() );
-
   // add CEC'05 SSRPO : F3
- // factoryProblems = new itsF3_ShiftedRotatedElliptic_Factory;
-  //setProblem.add( factoryProblems->create() );    
-/*  // add CEC'05 SSRPO : F4
-  factoryProblems = new itsF1_ShiftedSphere_Factory;
-  setProblem.add( factoryProblems->create() );    
-// add CEC'05 SSRPO : F5
-  factoryProblems = new itsF1_ShiftedSphere_Factory;
-  setProblem.add( factoryProblems->create() );    
-// add CEC'05 SSRPO : F6
-  factoryProblems = new itsF1_ShiftedSphere_Factory;
-  setProblem.add( factoryProblems->create() );    
-// add CEC'05 SSRPO : F7
-  factoryProblems = new itsF1_ShiftedSphere_Factory;
-  setProblem.add( factoryProblems->create() );    
-// add CEC'05 SSRPO : F8
-  factoryProblems = new itsF1_ShiftedSphere_Factory;
-  setProblem.add( factoryProblems->create() );    
-// add CEC'05 SSRPO : F9
-  factoryProblems = new itsF1_ShiftedSphere_Factory;
-  setProblem.add( factoryProblems->create() );    
-*/
+  factoryProblems = new itsF3_ShiftedRotatedElliptic_Factory;
+  setProblem.add( factoryProblems->create() );
+  // add CEC'05 SSRPO : F4
+  factoryProblems = new itsF4_ShiftedSchwefelWithNoise_Factory;
+  setProblem.add( factoryProblems->create() );
+  // add CEC'05 SSRPO : F5
+  factoryProblems = new itsF5_SchwefelBounds_Factory;
+  setProblem.add( factoryProblems->create() );
+  // add CEC'05 SSRPO : F6
+  factoryProblems = new itsF6_ShiftedRosenbrock_Factory;
+  setProblem.add( factoryProblems->create() );
+  // add CEC'05 SSRPO : F7
+  factoryProblems = new itsF7_ShiftedRotatedGriewank_Factory;
+  setProblem.add( factoryProblems->create() );
+  // add CEC'05 SSRPO : F8
+  factoryProblems = new itsF8_RotatedAckleyWithBounds_Factory;
+  setProblem.add( factoryProblems->create() );
+  // add CEC'05 SSRPO : F9
+  factoryProblems = new itsF9_ShiftedRastrigin_Factory;
+  setProblem.add( factoryProblems->create() );
+  // add CEC'05 SSRPO : F10
+  factoryProblems = new itsF10_ShiftedRotatedRastrigin_Factory;
+  setProblem.add( factoryProblems->create() );
+  // add CEC'05 SSRPO : F11
+  factoryProblems = new itsF11_ShiftedRotatedWeierstrass_Factory;
+  setProblem.add( factoryProblems->create() );
+  // add CEC'05 SSRPO : F12
+  factoryProblems = new itsF12_Schwefel_Factory;
+  setProblem.add( factoryProblems->create() );
 
 
   /*

@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsCEC05_SSRPO_Problems.hpp,v 1.6 2006/06/16 17:34:43 walid_tfaili Exp $
+ * $Id: itsCEC05_SSRPO_Problems.hpp,v 1.7 2006/06/18 18:29:42 walid_tfaili Exp $
  *  Copyright : Free Software Foundation
  * Author: Johann Dréo <nojhan@gmail.com>
  * Author: Walid Tfaili <walidtfaili@yahoo.fr>
@@ -128,7 +128,7 @@ public:
 };
 
 
-/*
+
 
 class itsF3_ShiftedRotatedElliptic : public itsCEC05_SSRPO_Problem
 {
@@ -141,7 +141,159 @@ class itsF3_ShiftedRotatedElliptic_Factory : public itsProblemFactory
 {
 public:
     itsProblem* create();
-};*/
+};
+
+
+
+
+
+class itsF4_ShiftedSchwefelWithNoise : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF4_ShiftedSchwefelWithNoise();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF4_ShiftedSchwefelWithNoise_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
+
+
+
+
+class itsF5_SchwefelBounds : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF5_SchwefelBounds();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF5_SchwefelBounds_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
+
+
+
+
+class itsF6_ShiftedRosenbrock : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF6_ShiftedRosenbrock();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF6_ShiftedRosenbrock_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
+
+
+
+
+class itsF7_ShiftedRotatedGriewank : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF7_ShiftedRotatedGriewank();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF7_ShiftedRotatedGriewank_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
+
+
+
+class itsF8_RotatedAckleyWithBounds : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF8_RotatedAckleyWithBounds();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF8_RotatedAckleyWithBounds_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
+
+
+
+class itsF9_ShiftedRastrigin : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF9_ShiftedRastrigin();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF9_ShiftedRastrigin_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
+
+
+
+class itsF10_ShiftedRotatedRastrigin : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF10_ShiftedRotatedRastrigin();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF10_ShiftedRotatedRastrigin_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
+
+
+
+
+class itsF11_ShiftedRotatedWeierstrass : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF11_ShiftedRotatedWeierstrass();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF11_ShiftedRotatedWeierstrass_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
+
+
+
+
+
+class itsF12_Schwefel : public itsCEC05_SSRPO_Problem
+{
+public:
+    itsF12_Schwefel();
+    itsPoint objectiveFunction(itsPoint point);
+};
+
+class itsF12_Schwefel_Factory : public itsProblemFactory
+{
+public:
+    itsProblem* create();
+};
+
 
 }//ometah
 
