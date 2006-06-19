@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: metaheuristics.h,v 1.2 2006/06/15 12:27:29 walid_tfaili Exp $
+ *  $Id: metaheuristics.h,v 1.3 2006/06/19 11:30:52 walid_tfaili Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
