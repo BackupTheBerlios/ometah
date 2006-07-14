@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsProblem.cpp,v 1.17 2006/06/15 12:20:32 walid_tfaili Exp $
+ *  $Id: itsProblem.cpp,v 1.18 2006/07/14 20:55:22 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -178,10 +178,10 @@ string itsProblem::getInformations()
           } else {
               msg << "Optimum " << sep;
           }
-          msg << "<";
-          print(getOptima()[i].getValues()," ",&msg);
-          msg << "> @ <";
-          print(getOptima()[i].getSolution()," ",&msg);
+          msg << "<"
+          << print(getOptima()[i].getValues()," ");
+          msg << "> @ <"
+          << print(getOptima()[i].getSolution()," ");
           msg << ">";
           msg << endl;
       }
@@ -190,8 +190,8 @@ string itsProblem::getInformations()
   // print vectors of bounds
   msg << "Bounds" << sep << "[";
   for(unsigned int i=0;i<getBounds().size();i++) {
-      msg << "[";
-      print(getBounds()[i]," ",&msg);
+      msg << "["
+      << print(getBounds()[i]," ");
       msg << "]";
   }
   msg << "]" << endl;
@@ -230,9 +230,9 @@ string itsProblem::getInformations_XML()
               msg << "<point>" << "<values>";
           }
           
-          print(getOptima()[i].getValues()," ",&msg);
+          msg << print(getOptima()[i].getValues()," ");
           msg << "</values>" << "<solution>";
-          print(getOptima()[i].getSolution()," ",&msg);
+          msg << print(getOptima()[i].getSolution()," ");
           msg << "</solution>" << "</point>" << endl;
       
       }

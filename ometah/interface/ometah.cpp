@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.40 2006/06/18 18:29:41 walid_tfaili Exp $
+ *  $Id: ometah.cpp,v 1.41 2006/07/14 20:55:22 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -346,18 +346,18 @@ try {
           //exit(1);
           string sep = ", ";
           cout << "Available items:" << endl;
-          cout << "\tMetaheuristics: ";
-              print( setMetaheuristic.getKeyList(), sep, &cout );
-              cout << endl;
-          cout << "\tProblems: ";
-              print( setProblem.getKeyList(), sep, &cout );
-              cout << endl;
-          cout << "\tCommunication clients: ";
-              print( setCommunicationClient.getKeyList(), sep, &cout );
-              cout << endl;
-          cout << "\tCommunication servers: ";
-              print( setCommunicationServer.getKeyList(), sep, &cout );
-              cout << endl;
+          cout << "\tMetaheuristics: " 
+               << print( setMetaheuristic.getKeyList(), sep )
+               << endl;
+          cout << "\tProblems: "
+              << print( setProblem.getKeyList(), sep )
+              << endl;
+          cout << "\tCommunication clients: "
+              << print( setCommunicationClient.getKeyList(), sep )
+              << endl;
+          cout << "\tCommunication servers: "
+              << print( setCommunicationServer.getKeyList(), sep )
+              << endl;
           exit(0);
       }
   }

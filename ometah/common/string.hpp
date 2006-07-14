@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: string.hpp,v 1.8 2006/05/25 08:51:51 nojhan Exp $
+ *  $Id: string.hpp,v 1.9 2006/07/14 20:55:20 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -33,8 +33,9 @@ using namespace std;
 namespace ometah {
 
 //! Print a vector
+/*
 template<class T>
-void print( T aVector, string aSeparator=",", ostream * outer)
+void print( T aVector, string aSeparator=",", ostream * outer=0)
 {
   *outer << aVector[0];
   
@@ -42,6 +43,7 @@ void print( T aVector, string aSeparator=",", ostream * outer)
     *outer << aSeparator << aVector[i];
   }
 }
+*/
 
 //! Print a vector
 template<class T>
