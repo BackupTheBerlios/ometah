@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.hpp,v 1.25 2006/05/25 08:51:52 nojhan Exp $
+ *  $Id: ometah.hpp,v 1.26 2006/09/09 20:18:33 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -95,7 +95,7 @@ namespace ometah {
 void communication_bind( itsMetaheuristic* m, itsCommunicationClient* cc, itsCommunicationServer* cs, itsProblem* p)
 {
     // metaheuristic -> client
-    m->problem = cc;
+    m->setProblem( cc );
     
     // server -> problem
     cs->problem = p;

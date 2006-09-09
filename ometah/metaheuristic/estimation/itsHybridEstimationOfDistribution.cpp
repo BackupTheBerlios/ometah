@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridEstimationOfDistribution.cpp,v 1.4 2006/05/13 10:05:55 nojhan Exp $
+ *  $Id: itsHybridEstimationOfDistribution.cpp,v 1.5 2006/09/09 20:18:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -47,14 +47,14 @@ void itsHybridEstimationOfDistribution::simplex()
   // if no given NMS evaluations number
   if( getSimplexEvaluations() == -1 ) {
     //setSimplexEvaluations( (int)floor( pow( (this->problem->getDimension() + 1 ), 2.0 ) ) );
-    setSimplexEvaluations( this->problem->getDimension() + 10 );
+    setSimplexEvaluations( this->getProblem()->getDimension() + 10 );
   }
   
   for( unsigned int i=0; i < getSampleSizeCurrent(); i++ ) {
     itsNelderMead nms;
   
     // problem optimized
-    nms.problem = this->problem;
+    nms.setProblem( this->getProblem() );
   
     // no ending stopping criteria
     nms.setValueMin(0.0);
@@ -67,20 +67,20 @@ void itsHybridEstimationOfDistribution::simplex()
     vector<double> edges = 
       multiply(
         substraction(
-          this->problem->boundsMaxima(),
-          this->problem->boundsMinima()
+          this->getProblem()->boundsMaxima(),
+          this->getProblem()->boundsMinima()
         ),
-        1 / ( pow( (double)getSampleSizeCurrent(), (double)1.0/this->problem->getDimension() ) - 1 )
+        1 / ( pow( (double)getSampleSizeCurrent(), (double)1.0/this->getProblem()->getDimension() ) - 1 )
       );
       
     // init on current point
-    nms.initSimplexFromBasePoint( sample[i], edges );
+    nms.initSimplexFromBasePoint( getSamplePoint(i), edges );
   
     // silent launch
     nms.startSilent();
     
     // change the point to the new local optimum
-    sample[i] = nms.getOptimum();
+    setSamplePoint( i, nms.getOptimum() );
   }
 }
 

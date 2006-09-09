@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsGridSampling.cpp,v 1.14 2006/05/25 08:51:53 nojhan Exp $
+ *  $Id: itsGridSampling.cpp,v 1.15 2006/09/09 20:18:35 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -50,14 +50,14 @@ itsGridSampling::~itsGridSampling()
 void itsGridSampling::initialization()
 {
   itsMetaheuristic::initialization();
-  this->sample.resize(0);
+  setSampleSize( 0 );
 
-  unsigned int dim = this->problem->getDimension();
+  unsigned int dim = this->getProblem()->getDimension();
 
   // initialize maxs and mins vectors, giving min and max bounds for each dim
   for (unsigned int i = 0; i < dim; i++ ) {
-    maxs.push_back(this->problem->boundsMaxima()[i]);
-    mins.push_back(this->problem->boundsMinima()[i]);
+    maxs.push_back(this->getProblem()->boundsMaxima()[i]);
+    mins.push_back(this->getProblem()->boundsMinima()[i]);
   }
 
   // if pointsperDim non initialized
@@ -86,7 +86,7 @@ void itsGridSampling::initialization()
   pointConstruction( partialPoint );
 
   // only one iteration needed
-  this->isInternalStoppingCriterion = true;
+  setIsInternalStoppingCriterion( true );
 
 }
 
@@ -110,17 +110,17 @@ void itsGridSampling::pointConstruction( vector<double> partialPoint )
 {  
   unsigned int n = partialPoint.size();  
 
-  if(( n >= this->problem->getDimension() )) { // if vector is built
+  if(( n >= this->getProblem()->getDimension() )) { // if vector is built
     
     // add the point to our sample buffer
     itsPoint p;
     p.setSolution( partialPoint );
     p = evaluate(p);
-    sample.push_back( p );
+    getSampleAddr()->push_back( p );
 
     printDebug("GSpoint", print( p.getSolution() ) + " " + print( p.getValues() ) );
   
-    evaluationsNumber ++;
+    incrEvaluationsNumber();
     
   } else { // vector not fully filled
     

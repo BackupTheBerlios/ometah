@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEstimationOfDistribution.cpp,v 1.11 2006/05/25 08:51:52 nojhan Exp $
+ *  $Id: itsEstimationOfDistribution.cpp,v 1.12 2006/09/09 20:18:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -74,12 +74,12 @@ void itsEstimationOfDistribution::learningUniform(vector< vector<double> > aSamp
     vector< vector<double> > transposedSimplifiedSample = transpose(aSample);
 
     // verify that we have the correct dimension
-    if( transposedSimplifiedSample.size() != (unsigned int)this->problem->getDimension() ) {
+    if( transposedSimplifiedSample.size() != (unsigned int)this->getProblem()->getDimension() ) {
         ostringstream err;
         err << "ErrorSize: transposed matrix size (" 
             << transposedSimplifiedSample.size() 
             << ") does not correspond to problem dimension (" 
-            << this->problem->getDimension() 
+            << this->getProblem()->getDimension() 
             << ")";
         throw Exception_Size_Match(err.str(), EXCEPTION_INFOS );
     }
@@ -87,7 +87,7 @@ void itsEstimationOfDistribution::learningUniform(vector< vector<double> > aSamp
     // find the minimum and the maximum for each dimension  
     this->parameterUniformMinima.clear();
     this->parameterUniformMaxima.clear();
-    for(unsigned int dim=0; dim < this->problem->getDimension(); dim++) {
+    for(unsigned int dim=0; dim < this->getProblem()->getDimension(); dim++) {
         // store them
         this->parameterUniformMinima.push_back( min( aSample[dim] ) );
         this->parameterUniformMaxima.push_back( max( aSample[dim] ) );
@@ -111,7 +111,7 @@ void itsEstimationOfDistribution::learning()
     // for each point, extract the solution vector
     for(unsigned int i=0; i < getSampleSizeCurrent(); i++) {
         // put this vector in a matrix
-        simplifiedSample.push_back( sample[i].getSolution() );
+        simplifiedSample.push_back( getSamplePointAddr(i)->getSolution() );
     }
 
 
@@ -141,12 +141,12 @@ vector<double> itsEstimationOfDistribution::diversificationNormal()
 
     // test if is in bounds
     if( this->isKeepBounds ) {
-        for(unsigned int i=0; i < this->problem->getDimension(); i++) {
+        for(unsigned int i=0; i < this->getProblem()->getDimension(); i++) {
             // if < min or > max
-            if( sol[i] < this->problem->boundsMinima()[i] ||
-                sol[i] > this->problem->boundsMaxima()[i] ) {
+            if( sol[i] < this->getProblem()->boundsMinima()[i] ||
+                sol[i] > this->getProblem()->boundsMaxima()[i] ) {
                     // redraw in a uniform distribution on bounds
-                    sol = randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() );
+                    sol = randomUniform( this->getProblem()->boundsMinima(), this->getProblem()->boundsMaxima() );
             }
         }
     }
@@ -178,20 +178,20 @@ void itsEstimationOfDistribution::diversification()
         }
     
         // get values
-        sample[i] = evaluate(p);
+        setSamplePoint(i, evaluate(p) );
     }
   
     // keep the best point
-    sample[0] = optim;
+    setSamplePoint(0, optim);
 }
 
 void itsEstimationOfDistribution::selection()
 {
 
-    int selectNumber = (int) floor( (double)this->sample.size() * this->selectRatio);
+    int selectNumber = (int) floor( (double)getSampleSizeCurrent() * this->selectRatio);
     printDebug("selectNumber",selectNumber);
 
-    this->sample = selectOnValues( this->sample, selectNumber );
+    setSample( selectOnValues( getSample(), selectNumber ) );
 
 }
 

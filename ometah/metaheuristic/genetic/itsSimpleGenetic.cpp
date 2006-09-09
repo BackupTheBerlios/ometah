@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimpleGenetic.cpp,v 1.6 2006/05/25 08:51:52 nojhan Exp $
+ *  $Id: itsSimpleGenetic.cpp,v 1.7 2006/09/09 20:18:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -53,7 +53,7 @@ void itsSimpleGenetic::learning()
   // reproduction 
  
   // if not is first call
-  if ( getEvaluationNumber() != getSampleSize() ) {
+  if ( getEvaluationsNumber() != getSampleSize() ) {
 
     unsigned size = getSampleSizeCurrent();
     // sample already sorted, when diversification was done before
@@ -61,12 +61,12 @@ void itsSimpleGenetic::learning()
 
       vector<itsPoint> v;
       if ( i+1 < size)
-	v = makeChildren(sample[i], sample[i+1]);
+	v = makeChildren(getSamplePoint(i), getSamplePoint(i+1) );
       else
-	v = makeChildren(sample[i], sample[0]);
-      sample.push_back( v[0] );
+	v = makeChildren(getSamplePoint(i), getSamplePoint(0) );
+      getSampleAddr()->push_back( v[0] );
       if ( i+1 < size)
-	sample.push_back( v[1] );
+	getSampleAddr()->push_back( v[1] );
     }
   }
 }
@@ -79,7 +79,7 @@ void itsSimpleGenetic::diversification()
   // only make mutation on newly created points
   for(unsigned i= (unsigned)(getSampleSize() * selectionCoef); i<getSampleSize(); i++) {
     
-    sample[i] = mutation( sample[i] );
+    setSamplePoint( i, mutation( getSamplePoint(i) ) );
   }
 }
 
@@ -87,12 +87,12 @@ void itsSimpleGenetic::intensification()
 {
   // selection
 
-  vector<itsPoint> sortedSample = sortOnValues(sample, 0);
+  vector<itsPoint> sortedSample = sortOnValues( getSample(), 0);
   // darwinist selection
   vector<itsPoint> v;
-  sample = v;
+  setSample( v );
   for(unsigned i=0; i< (int) getSampleSize() * selectionCoef; i++) {
-    sample.push_back(sortedSample[i]);
+    getSampleAddr()->push_back(sortedSample[i]);
   }
 }
 
@@ -112,7 +112,7 @@ vector<itsPoint> itsSimpleGenetic::makeChildren(itsPoint father, itsPoint mother
 
   // for each dimension, set the coordinate
   // ~ find a point with uniform proba in hypercube of parents coords.
-  for ( unsigned int i=0; i<this->problem->getDimension(); i++) {
+  for ( unsigned int i=0; i<this->getProblem()->getDimension(); i++) {
 
     alpha = rand();
     bsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
@@ -135,7 +135,7 @@ itsPoint itsSimpleGenetic::mutation(itsPoint point)
   float proba;
 
   // if current optimal point, make a mutation
-  if ( evaluate(point).getValues()[0] == sample[0].getValues()[0] ) {
+  if ( evaluate(point).getValues()[0] == getSamplePointAddr(0)->getValues()[0] ) {
     proba = 0;
   }
   else
@@ -147,7 +147,7 @@ itsPoint itsSimpleGenetic::mutation(itsPoint point)
   }
   else {
     // full mutation = new randomized point
-    point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
+    point.setSolution( randomUniform(this->getProblem()->boundsMinima(), this->getProblem()->boundsMaxima()) );
     return evaluate (point);
   }
 }

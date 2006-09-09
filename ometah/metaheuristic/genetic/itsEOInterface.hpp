@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsEOInterface.hpp,v 1.2 2006/05/13 10:05:55 nojhan Exp $
+ *  $Id: itsEOInterface.hpp,v 1.3 2006/09/09 20:18:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -157,8 +157,8 @@ public:
           eoCross( _cross ), eoCrossRate( _cross_rate), 
           eoMutate( _mutate ), eoMutateRate( _mutate_rate )
     {
-        clog << "itsEOInterface::itsEOInterface - getLogLevel:" << getLogLevel() << " - logLevel:" << logLevel << endl;
-        clog << "itsEOInterface::itsEOInterface - getLogKeys().size:" << getLogKeys().size() << " - logKeys.size:" << logKeys.size() << endl;
+        clog << "itsEOInterface::itsEOInterface - getLogLevel:" << getLogLevel() << " - logLevel:" /* << logLevel */<< endl;
+        clog << "itsEOInterface::itsEOInterface - getLogKeys().size:" << getLogKeys().size() << " - logKeys.size:" /*<< logKeys.size()*/ << endl;
     }
     
 
@@ -177,11 +177,11 @@ public:
     
         for(unsigned int i=0; i < pop_size; i++ ) { 
             // get the fitness of the individual in the (*eoPopulation)
-            sample[i].setValue( (*eoPopulation)[i].fitness() );
+            getSamplePointAddr(i)->setValue( (*eoPopulation)[i].fitness() );
             // get the vector<double> hidden behind the indivudal (for example eoReal<eoMinimizingFitness> is based on vector)
             vector<double> s = (*eoPopulation)[i];
             //sample[i].setSolution( s );
-            sample[i].solution = s;
+            getSamplePointAddr(i)->solution = s;
         }
     }
 
@@ -197,18 +197,18 @@ public:
         }
     
         for(unsigned int i=0; i < pop_size; i++ ) {
-            if( sample[i].getValues().size() == 0 ) {
+            if( getSamplePointAddr(i)->getValues().size() == 0 ) {
                 throw Exception_Size("the sample has not been evaluated", EXCEPTION_INFOS );
             }
             // set the fitness
-            (*eoPopulation)[i].fitness( sample[i].getValues()[0] );
+            (*eoPopulation)[i].fitness( getSamplePointAddr(i)->getValues()[0] );
         
             // EO doesn't implement the [] operator so that we can put a vector<double> in the EOType
             // fortunatly, we can use the constructor and the [] operator for items
             unsigned int i_size;
             EOType s( i_size, 0.0 ); // build a EOType vector of i_size items filled with 0.0
             for( unsigned int j=0; j<i_size; j++) {
-                s[j] = sample[i].getSolution()[j]; // use the [] operator to change its items
+                s[j] = getSamplePointAddr(i)->getSolution()[j]; // use the [] operator to change its items
             }
             (*eoPopulation)[i] = s; // put an EOType in the eoPop<EOType>
         }

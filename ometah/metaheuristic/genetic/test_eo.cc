@@ -9,6 +9,8 @@
 #include <es.h>
 
 using namespace std;
+using namespace ometah;
+using namespace eo;
 
 typedef eoReal<eoMinimizingFitness> Indi;
 
@@ -35,7 +37,7 @@ cerr << "itsEOInterface.getLogLevel():" << metaheuristic.getLogLevel() << endl;
     itsSphere problem;
     itsCommunicationClient_embedded client;
     itsCommunicationServer_embedded server;
-    metaheuristic.problem = & client;
+    metaheuristic.setProblem( & client );
     client.problem = & server;
     server.problem = & problem;
 cerr << "linking c/s" << endl;

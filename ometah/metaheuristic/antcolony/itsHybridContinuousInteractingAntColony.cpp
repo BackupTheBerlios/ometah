@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsHybridContinuousInteractingAntColony.cpp,v 1.5 2006/05/25 08:51:52 nojhan Exp $
+ *  $Id: itsHybridContinuousInteractingAntColony.cpp,v 1.6 2006/09/09 20:18:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -54,7 +54,7 @@ void itsHybridContinuousInteractingAntColony::diversification()
     vector<double> val;
     val.push_back( antCurrentValue[i] );
     p.setValues( val );
-    sample[i] = p;
+    setSamplePoint( i, p );
   }
 
 }
@@ -114,7 +114,7 @@ void itsHybridContinuousInteractingAntColony::createAnts()
   antProbaMemory.reserve( antsNb );
   //antMoveRange.reserve( antsNb*SpaceDim() );
   antMoveRange.reserve( antsNb );
-  antCurrentPoint.reserve( antsNb * this->problem->getDimension() );
+  antCurrentPoint.reserve( antsNb * this->getProblem()->getDimension() );
   antCurrentValue.reserve( antsNb );
   // trop gourmand : antIncomingPoints.reserve( antsNb*antsNb*SpaceDim() );
   antIncomingPoints.reserve( antsNb*antsNb );
@@ -127,17 +127,17 @@ void itsHybridContinuousInteractingAntColony::createAnts()
     
     vector<double> aPoint;
     /*
-    aPoint.reserve( this->problem->getDimension() );
-    aPoint = randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() );
+    aPoint.reserve( this->getProblem()->getDimension() );
+    aPoint = randomUniform( this->getProblem()->boundsMinima(), this->getProblem()->boundsMaxima() );
     */
-    aPoint = this->sample[i].getSolution();
+    aPoint = this->getSamplePointAddr(i)->getSolution();
     
     // tire suivant N l'amplitude max de mouvement
     // distribution normale sur la moyenne de l'amplitude de l'espace de recherche
     double aMoveRange;
     aMoveRange = abs( randomNormal( 
-				  mean( substraction(this->problem->boundsMaxima(),this->problem->boundsMinima()) ) * moveRangeMeanRatio, 
-				  1/2 * mean( substraction(this->problem->boundsMaxima(),this->problem->boundsMinima()) ) * moveRangeStdRatio 
+				  mean( substraction(this->getProblem()->boundsMaxima(),this->getProblem()->boundsMinima()) ) * moveRangeMeanRatio, 
+				  1/2 * mean( substraction(this->getProblem()->boundsMaxima(),this->getProblem()->boundsMinima()) ) * moveRangeStdRatio 
 				  ) );
     
     // tire sur N la probabilit�de d�art d'utiliser un type de m�oire
@@ -176,7 +176,7 @@ void itsHybridContinuousInteractingAntColony::addAnt( vector<double> aPoint, dou
   antIncomingValues.push_back( nullValuesStack );
 
   vector< vector<double> > nullPointsStack;
-  vector<double> nullPoint( this->problem->getDimension(), 0 );
+  vector<double> nullPoint( this->getProblem()->getDimension(), 0 );
   nullPointsStack.push_back( nullPoint );
   antIncomingPoints.push_back( nullPointsStack );
 }
@@ -199,14 +199,14 @@ void itsHybridContinuousInteractingAntColony::antMove( int antId )
   if ( antState[antId] == 0 ) {
     // re-placement al�toire :
     vector<double> aPoint;
-    aPoint.reserve( this->problem->getDimension() );
+    aPoint.reserve( this->getProblem()->getDimension() );
     
     
     // tirage al�toire uniforme sur l'hypercube de l'espace de recherche
     // aPoint = RandomVector_Cube( getBoundsMinima(), getBoundsMaxima() );
     
     // tirage al�toire dans la zone de visibilit�    //aPoint = RandomVector_Noise( antCurrentPoint[antId], antMoveRange[antId] );
-    vector<double> tempVec( this->problem->getDimension(),antMoveRange[antId] );
+    vector<double> tempVec( this->getProblem()->getDimension(),antMoveRange[antId] );
     aPoint = noiseUniform( antCurrentPoint[antId], tempVec );
     
     antMoveTo(antId, aPoint);
@@ -218,7 +218,7 @@ void itsHybridContinuousInteractingAntColony::antMove( int antId )
     antIncomingValues[antId] =  nullValuesStack;
     
     vector< vector<double> > nullPointsStack;
-    vector<double> nullPoint( this->problem->getDimension(), 0 );
+    vector<double> nullPoint( this->getProblem()->getDimension(), 0 );
     nullPointsStack.push_back( nullPoint );
     antIncomingPoints[antId] = nullPointsStack;
     
@@ -293,7 +293,7 @@ int itsHybridContinuousInteractingAntColony::antMoveNMS( int antId )
   itsNelderMead NMS;
   
   // link avec la fonction objectif de la m�hode appelante
-  NMS.problem = this->problem;
+  NMS.setProblem( this->getProblem() );
 
   // no ending stopping criteria
   NMS.setValueMin(0.0);
@@ -308,7 +308,7 @@ int itsHybridContinuousInteractingAntColony::antMoveNMS( int antId )
 
   // edges from sample hypercube
   vector<double> edges;
-  for ( unsigned int i=0; i<this->problem->getDimension(); i++ ) {
+  for ( unsigned int i=0; i<this->getProblem()->getDimension(); i++ ) {
     edges.push_back( antMoveRange[antId] );
   }
   
@@ -384,7 +384,7 @@ int itsHybridContinuousInteractingAntColony::antMoveMessages( int antId )
 						 antIncomingPoints[antId][i],
 						 antMoveRange[antId]
 						 );*/
-    vector<double> tempVec( this->problem->getDimension(), antMoveRange[antId]);
+    vector<double> tempVec( this->getProblem()->getDimension(), antMoveRange[antId]);
     vector<double> newPoint = noiseUniform( 
 						 antIncomingPoints[antId][i],
 						 tempVec
@@ -406,7 +406,7 @@ int itsHybridContinuousInteractingAntColony::antMoveMessages( int antId )
 int itsHybridContinuousInteractingAntColony::antMoveRandom( int antId ) 
 {
   vector<double> aPoint;
-  aPoint.reserve( this->problem->getDimension() );
+  aPoint.reserve( this->getProblem()->getDimension() );
 
   // tire une position au hasard dans l'espace
   //aPoint = RandomVector_Cube( getBoundsMinima(), getBoundsMaxima() );
@@ -415,7 +415,7 @@ int itsHybridContinuousInteractingAntColony::antMoveRandom( int antId )
 
   // ajoute du bruit
   //aPoint = RandomVector_Noise( antCurrentPoint[antId], antMoveRange[antId]  );
-  vector<double> tempVec( this->problem->getDimension(),antMoveRange[antId] );
+  vector<double> tempVec( this->getProblem()->getDimension(),antMoveRange[antId] );
   aPoint = noiseUniform( antCurrentPoint[antId], tempVec  );
   
   if ( antMoveTo( antId, aPoint ) ) {
@@ -431,7 +431,7 @@ int itsHybridContinuousInteractingAntColony::antMoveTo( int antId, vector<double
 {
 
   // v�ifie la pr�ence dans les bornes
-  if( ! isInBounds(aPoint,this->problem->boundsMinima(),this->problem->boundsMaxima()) ) {
+  if( ! isInBounds(aPoint,this->getProblem()->boundsMinima(),this->getProblem()->boundsMaxima()) ) {
     // renvoi false, ne peut sortir de l'espace de recherche
     return 0;
   }
@@ -544,7 +544,7 @@ void itsHybridContinuousInteractingAntColony::antSpotLay( int antId, vector< dou
     
     
     // FIXME il vaudrait mieux prendre la distance euclidienne au spot que de d�inir ainsi un hypercube sur chaque dimensions...
-    /*for ( int i=0; i<this->problem->getDimension(); i++ ) {
+    /*for ( int i=0; i<this->getProblem()->getDimension(); i++ ) {
       antMoveRange[antId][i] = abs( spotsPoints[spot][i] - antCurrentPoint[antId][i] );
       }*/
 
@@ -573,13 +573,13 @@ vector<int> itsHybridContinuousInteractingAntColony::antGetCloseSpots( int antId
   for ( i=0; i<n; i++ ) {
     // si le spot est dans la zone visible
     /*int k = 0;
-    for( int j=0; j<this->problem->getDimension(); j++ ) {
+    for( int j=0; j<this->getProblem()->getDimension(); j++ ) {
       if( abs( antCurrentPoint[antId][j] - spotsPoints[i][j] ) < antMoveRange[antId][j] ) {
 	k++;
       }
       }
       
-    if ( k == this->problem->getDimension() ) {
+    if ( k == this->getProblem()->getDimension() ) {
       spotsIds.push_back( i );
       }*/
     

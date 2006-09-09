@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: ometah.cpp,v 1.41 2006/07/14 20:55:22 nojhan Exp $
+ *  $Id: ometah.cpp,v 1.42 2006/09/09 20:18:33 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
@@ -585,7 +585,7 @@ try {
       setMetaheuristic.item()->startSilent(); // silent mode
     
       // print out the evaluation number
-      *pout << setMetaheuristic.item()->getEvaluationNumber() << " ";
+      *pout << setMetaheuristic.item()->getEvaluationsNumber() << " ";
     
       // print out one optimum only
       itsPoint optim = setMetaheuristic.item()->getOptimum();

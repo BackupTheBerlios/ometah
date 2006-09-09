@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsSimulatedAnnealing.cpp,v 1.2 2006/05/13 10:05:55 nojhan Exp $
+ *  $Id: itsSimulatedAnnealing.cpp,v 1.3 2006/09/09 20:18:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -54,7 +54,7 @@ void itsSimulatedAnnealing::initialization()
     itsMetaheuristic::initialization();
 
     // first previous point
-    p_current.setSolution( randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() ) );
+    p_current.setSolution( randomUniform( this->getProblem()->boundsMinima(), this->getProblem()->boundsMaxima() ) );
     p_current = evaluate(p_current);
   
     p_new = p_current;
@@ -76,9 +76,9 @@ void itsSimulatedAnnealing::diversification()
     // draw each point in an hyper cube
     for( unsigned int i=0; i < getSampleSize(); i++) {
         // draw solution
-        p_new.setSolution( randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() ) );
+        p_new.setSolution( randomUniform( this->getProblem()->boundsMinima(), this->getProblem()->boundsMaxima() ) );
         p_new = evaluate(p_new);
-        sample[i] = p_new;
+        setSamplePoint( i, p_new );
     
         // Metropolis rule
         // if the value is the better than the previous point, accept

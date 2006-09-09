@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.cpp,v 1.11 2006/05/13 10:05:53 nojhan Exp $
+ * $Id: itsPoint.cpp,v 1.12 2006/09/09 20:18:33 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author : Johann Dréo <nojhan@gmail.com>
  ****************************************************************************/
@@ -120,7 +120,7 @@ bool isValueEqual(const itsPoint & p1, const itsPoint & p2, int dimension)
 }
 
 
-vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension)
+vector<itsPoint> sortOnValues(vector<itsPoint> vec, int dimension)
 {
     // use the STL sort algorithm
     sort( vec.begin(), vec.end() );
@@ -235,7 +235,7 @@ string printSolutions( vector<itsPoint> vec, int dimension, const char* separato
 
 
 
-vector<itsPoint> selectOnValues(vector<itsPoint> & vec, unsigned int selectNumber)
+vector<itsPoint> selectOnValues(vector<itsPoint> vec, unsigned int selectNumber)
 {
 
   // if we want to use the quick-sort version of the selection algorithm

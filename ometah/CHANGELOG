@@ -1,3 +1,6 @@
+Current version
+* all attributes of itsMetaheuristic are private, you must use accessors
+
 Version 0.3
 Date 26 may 2006
 * features :

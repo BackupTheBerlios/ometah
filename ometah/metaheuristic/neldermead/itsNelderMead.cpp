@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsNelderMead.cpp,v 1.15 2006/05/25 08:51:52 nojhan Exp $
+ *  $Id: itsNelderMead.cpp,v 1.16 2006/09/09 20:18:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -56,25 +56,25 @@ itsNelderMead::itsNelderMead()
 void itsNelderMead::initSimplexFromBasePoint(itsPoint basePoint, vector<double> edgesLengths)
 {
   // reduce the sample size to the dimension + 1
-  setSampleSize( this->problem->getDimension() + 1 );
+  setSampleSize( this->getProblem()->getDimension() + 1 );
 
   // empty simplex
   vector<itsPoint> plex;
-  for( unsigned int i=0; i < this->problem->getDimension() + 1; i++ ) {
+  for( unsigned int i=0; i < this->getProblem()->getDimension() + 1; i++ ) {
     itsPoint p;
-    vector<double> v(this->problem->getDimension(), 0.0);
+    vector<double> v(this->getProblem()->getDimension(), 0.0);
     p.setSolution( v );
     plex.push_back( p );
   }
 
   // on number of vertex
-  for( unsigned int i=0; i < this->problem->getDimension(); i++ ) {
+  for( unsigned int i=0; i < this->getProblem()->getDimension(); i++ ) {
     // plex[dim][i] = basePoint[i]
-    vector<double> v = plex[this->problem->getDimension()].getSolution();
+    vector<double> v = plex[this->getProblem()->getDimension()].getSolution();
     v[i] = basePoint.getSolution()[i];
-    plex[this->problem->getDimension()].setSolution( v );
+    plex[this->getProblem()->getDimension()].setSolution( v );
   
-    for( unsigned int j=0; j < this->problem->getDimension(); j++) {
+    for( unsigned int j=0; j < this->getProblem()->getDimension(); j++) {
       // plex[i][j] = basePoint[j]
       vector<double> w = plex[i].getSolution();
       w[j] = basePoint.getSolution()[j];
@@ -90,7 +90,7 @@ void itsNelderMead::initSimplexFromBasePoint(itsPoint basePoint, vector<double> 
   // evaluations
   for( unsigned int i=0; i<getSampleSizeCurrent(); i++ ) {
     itsPoint p = evaluate( plex[i] );
-    sample[i] = p;
+    setSamplePoint(i, p);
   }
 }
 
@@ -112,7 +112,7 @@ void itsNelderMead::initialization()
   );*/
 
   // p a random point
-  p.setSolution( randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() ) );
+  p.setSolution( randomUniform( this->getProblem()->boundsMinima(), this->getProblem()->boundsMaxima() ) );
 
   // edges length = search space lengths / n^e root of dimensions
   /*vector<double> edges = 
@@ -125,7 +125,7 @@ void itsNelderMead::initialization()
     );*/
     
   // random edges lengths
-  vector<double> edges = randomUniform( this->problem->boundsMinima(), this->problem->boundsMaxima() );
+  vector<double> edges = randomUniform( this->getProblem()->boundsMinima(), this->getProblem()->boundsMaxima() );
   
   initSimplexFromBasePoint( p, edges );
 }
@@ -156,16 +156,16 @@ void itsNelderMead::diversification()
 
   if ( sortedSample[0].getValues()[0] <= minR) {
     makeContractionSimplex();
-    sample = contractionSimplex;
+    setSample( contractionSimplex );
   }
   else {
     makeExpansionSimplex();
     double minE = simplexOptimum( reflectionSimplex);
     if (( sortedSample[0].getValues()[0] > minR) && ( minR > minE)) {
-      sample = expansionSimplex;
+      setSample( expansionSimplex );
     }
     else {
-      sample = reflectionSimplex;
+      setSample( reflectionSimplex );
     }      
   }
 }
@@ -188,7 +188,7 @@ double itsNelderMead::simplexOptimum( vector<itsPoint> points)
 
 void itsNelderMead::sortSample()
 {
-  sortedSample = sortOnValues(sample, 0);
+  sortedSample = sortOnValues( getSample(), 0);
 }
 
 
@@ -205,7 +205,7 @@ itsPoint itsNelderMead::getTransformedPoint(itsPoint point, float coef)
   }
 
   // force the simplex to stay in bounds
-  newSol = forceBounds( newSol, this->problem->boundsMinima(), this->problem->boundsMaxima() );
+  newSol = forceBounds( newSol, this->getProblem()->boundsMinima(), this->getProblem()->boundsMaxima() );
 
   itsPoint p;
   p.setSolution(newSol);

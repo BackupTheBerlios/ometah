@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 ################################################################################
-#  $Id: SConstruct,v 1.40 2006/06/15 12:13:34 walid_tfaili Exp $
+#  $Id: SConstruct,v 1.41 2006/09/09 20:18:31 nojhan Exp $
 #  Copyright : Free Software Fundation
 #  Author : Johann Dr� <nojhan@gmail.com>
 ################################################################################
@@ -26,7 +26,7 @@
 # Environment
 ################################################################################
 
-version = "0.3"
+version = "0.4a"
 
 # flags for optimization, use them in production
 #foptim = '-fcaller-saves -fcse-follow-jumps -fcse-skip-blocks  \

@@ -1,5 +1,5 @@
 /***************************************************************************
- * $Id: itsPoint.hpp,v 1.10 2006/05/13 10:05:53 nojhan Exp $
+ * $Id: itsPoint.hpp,v 1.11 2006/09/09 20:18:33 nojhan Exp $
  *  Copyright : Free Software Foundation
  * Author :  Walid TFAILI <tfaili@univ-paris12.fr>
  * Author : Johann Dré <nojhan@gmail.com>
@@ -120,7 +120,7 @@ friend bool isValueEqual(const itsPoint & p1, const itsPoint & p2, int dimension
 /*!
     It uses a quicksort algorithm
 */
-friend vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension);
+friend vector<itsPoint> sortOnValues(vector<itsPoint>  vec, int dimension);
 
 
 //! Select the bests values in a sample
@@ -128,7 +128,7 @@ friend vector<itsPoint> sortOnValues(vector<itsPoint> & vec, int dimension);
   You have the choice between two algorithms  (quicksort or comparison)
   at the compilation stage
 */
-friend vector<itsPoint> selectOnValues(vector<itsPoint> & vec, unsigned int selectNumber);
+friend vector<itsPoint> selectOnValues(vector<itsPoint> vec, unsigned int selectNumber);
 
 
 //! Print the values of a point

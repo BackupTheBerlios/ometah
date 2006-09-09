@@ -1,5 +1,5 @@
 /**************************************************************************** 
- *  $Id: itsMetaheuristic.cpp,v 1.30 2006/05/25 08:51:52 nojhan Exp $
+ *  $Id: itsMetaheuristic.cpp,v 1.31 2006/09/09 20:18:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Walid Tfaili <tfaili@univ-paris12.fr>
  *  Author : Johann Dréo <nojhan@gmail.com>
@@ -149,7 +149,7 @@ clog << "itsMetaheuristic::start " << " - getLogLevel:" << getLogLevel() << " - 
   *outProcessResult << "</step>" << endl;
 
     *outProcessResult << "<evaluations>";
-        *outProcessResult << getEvaluationNumber();
+        *outProcessResult << getEvaluationsNumber();
     *outProcessResult << "</evaluations>" << endl;
 
   *outProcessResult << "</iteration>" << endl;
@@ -203,7 +203,7 @@ clog << "itsMetaheuristic::start " << " - getLogLevel:" << getLogLevel() << " - 
 
 
     *outProcessResult << "<evaluations>";
-        *outProcessResult << getEvaluationNumber();
+        *outProcessResult << getEvaluationsNumber();
     *outProcessResult << "</evaluations>" << endl;
 
     *outProcessResult << "</iteration>" << endl;
@@ -248,11 +248,12 @@ void itsMetaheuristic::startSilent()
 void itsMetaheuristic::end()
 {
 }
-
+/*
 void itsMetaheuristic::parameterParse()
 { }
 void itsMetaheuristic::parameterParseCommon()
 { }
+*/
 
 bool itsMetaheuristic::isStoppingCriteria()
 {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  $Id: itsJpGenetic.cpp,v 1.10 2006/05/25 08:51:52 nojhan Exp $
+ *  $Id: itsJpGenetic.cpp,v 1.11 2006/09/09 20:18:34 nojhan Exp $
  *  Copyright : Free Software Foundation
  *  Author : Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
  ****************************************************************************/
@@ -56,7 +56,7 @@ void itsJpGenetic::learning()
 
   // bests with bests, etc.
   // if not is first call
-  if ( getEvaluationNumber() != getSampleSize() ) {
+  if ( getEvaluationsNumber() != getSampleSize() ) {
 
   unsigned size = getSampleSizeCurrent();
   // sample already sorted, when diversification was done before
@@ -64,12 +64,12 @@ void itsJpGenetic::learning()
 
   vector<itsPoint> v;
   if ( i+1 < size)
-  v = makeChildren(sample[i], sample[i+1]);
+  v = makeChildren(getSamplePoint(i), getSamplePoint(i+1) );
   else
-  v = makeChildren(sample[i], sample[0]);
-  sample.push_back( v[0] );
+  v = makeChildren(getSamplePoint(i), getSamplePoint(0));
+  getSampleAddr()->push_back( v[0] );
   if ( i+1 < size)
-  sample.push_back( v[1] );
+  getSampleAddr()->push_back( v[1] );
   }
   }
 }
@@ -80,7 +80,7 @@ void itsJpGenetic::diversification()
   // only make mutation on newly created points
   for(unsigned i= (unsigned)( getSampleSize() * selectionCoef); i<getSampleSize(); i++) {
     
-    sample[i] = mutation( sample[i] );
+    setSamplePoint( i, mutation( getSamplePoint(i) ) );
   }       
 }
 
@@ -88,12 +88,12 @@ void itsJpGenetic::intensification()
 {
   // selection
 
-  vector<itsPoint> sortedSample = sortOnValues(sample, 0);
+  vector<itsPoint> sortedSample = sortOnValues( getSample(), 0);
   // darwinist selection
   vector<itsPoint> v;
-  sample = v;
+  setSample( v );
   for(unsigned i=0; i< (int) getSampleSize() * selectionCoef; i++) {
-    sample.push_back(sortedSample[i]);
+    getSampleAddr()->push_back(sortedSample[i]);
   }
 }
 
@@ -112,7 +112,7 @@ vector<itsPoint> itsJpGenetic::makeChildren(itsPoint father, itsPoint mother)
 
   // for each dimension, set the coordinate
   // ~ find a point with uniform proba in hypercube of parents coords.
-  for ( unsigned int i=0; i<this->problem->getDimension(); i++) {
+  for ( unsigned int i=0; i<this->getProblem()->getDimension(); i++) {
 
     alpha = rand();
     bsol.push_back( fsol[i] * alpha + msol[i] * (1 - alpha) );
@@ -138,7 +138,7 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
   double coef, buf;
   
   // if current optimal point, make a partial mutation
-  if ( evaluate(point).getValues()[0] > sample[0].getValues()[0] ) {
+  if ( evaluate(point).getValues()[0] > getSamplePointAddr(0)->getValues()[0] ) {
     proba = mutationProba * rand(); // force mutation
   }
   else
@@ -151,14 +151,14 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
   else {
     if ( proba < mutationProba * totalMutationProba ) {
       // full mutation = new randomized point
-      point.setSolution( randomUniform(this->problem->boundsMinima(), this->problem->boundsMaxima()) );
+      point.setSolution( randomUniform(this->getProblem()->boundsMinima(), this->getProblem()->boundsMaxima()) );
       return evaluate (point);
     }
     else {  // partial mutation
 
       psol = point.getSolution();
 
-      for ( unsigned int i=0; i<this->problem->getDimension(); i++) {
+      for ( unsigned int i=0; i<this->getProblem()->getDimension(); i++) {
       
 	// P(up) = P(down) = P(no change) = 0.3
 	proba = rand();
@@ -167,14 +167,14 @@ itsPoint itsJpGenetic::mutation(itsPoint point)
 	// calcul new coordinate, and check if its into bounds
 	if ( proba < 0.3333 ){
 	  buf = psol[i] * coef * reduction;	
-	  if ( buf > this->problem->boundsMinima()[i] )
+	  if ( buf > this->getProblem()->boundsMinima()[i] )
 	    npsol.push_back( buf );
 	  else
 	    npsol.push_back( psol[i] );
 	}
 	else if ( proba < 0.6666 ) {
 	  buf = psol[i] * ( 1 - coef ) * reduction;
-	  if ( buf < this->problem->boundsMaxima()[i] )
+	  if ( buf < this->getProblem()->boundsMaxima()[i] )
 	    npsol.push_back( buf );
 	  else
 	    npsol.push_back( psol[i] );
