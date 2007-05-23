@@ -1,0 +1,338 @@
+#!/usr/bin/env python
+
+
+###################################################################################
+#
+# 
+# The aim of this script is to automatically compile your kdevelop 
+# project with the SCons construction tool.
+#
+# Features:
+# * get the source file list from your kdevelop project
+# * compile in separate build directories, one for each combination of build options
+# * comes with a basic dist tool, that put all the sources in a zip archive
+#
+# Todo:
+# * handle libraries
+# * improve the dist part so that it can generate archives of binaries
+# * handle config.h
+# * get the project name from the .kdevelop file
+# * ...
+#
+# Credits:
+# * Author : Johann "nojhan" Dreo <nojhan@gmail.com>
+# * Accumulate builder, from the SCons recipes : http://www.scons.org/wiki/AccumulateBuilder
+# 
+###################################################################################
+
+
+# Here start the generic code
+# Normally, you should not change this part
+# Look at the end of the SConstruct file for the interesting stuff
+
+import os, shutil
+import distutils.archive_util
+import SCons
+
+# setting the scons environnement
+env = Environment()
+
+
+def listdir(path,extensions=''): 
+	"""Recursively list files matching a pattern (sort of "find . -name pattern")"""
+	fichier=[] 
+	for root, dirs, files in os.walk(path): 
+		for g in extensions:
+			for f in glob.glob( root+'/*'+g ):
+				fichier.append( os.path.join(root, f) ) 
+	return fichier
+
+
+def zipperFunction(target, source, env):
+	"""Function to use as an action which creates a ZIP file from the arguments"""
+	targetName = str(target[0])
+	sourceDir = str(source[0])
+	distutils.archive_util.make_archive(targetName, 'zip', sourceDir)
+
+
+def copytree(src, dest, symlinks=False):
+	"""My own copyTree which does not fail if the directory exists.
+	
+	Recursively copy a directory tree using copy2().
+
+	If the optional symlinks flag is true, symbolic links in the
+	source tree result in symbolic links in the destination tree; if
+	it is false, the contents of the files pointed to by symbolic
+	links are copied.
+	
+	Behavior is meant to be identical to GNU 'cp -R'.	
+	"""
+	def copyItems(src, dest, symlinks=False):
+		"""Function that does all the work.
+		
+		It is necessary to handle the two 'cp' cases:
+		- destination does exist
+		- destination does not exist
+		
+		See 'cp -R' documentation for more details
+		"""
+		for item in os.listdir(src):
+		   srcPath = os.path.join(src, item)
+		   if os.path.isdir(srcPath):
+			   srcBasename = os.path.basename(srcPath)
+			   destDirPath = os.path.join(dest, srcBasename)
+			   if not os.path.exists(destDirPath):
+				   os.makedirs(destDirPath)
+			   copyItems(srcPath, destDirPath)
+		   elif os.path.islink(item) and symlinks:
+			   linkto = os.readlink(item)
+			   os.symlink(linkto, dest)
+		   else:
+			   shutil.copy2(srcPath, dest)
+			   
+	# case 'cp -R src/ dest/' where dest/ already exists
+	if os.path.exists(dest):
+	   destPath = os.path.join(dest, os.path.basename(src))
+	   if not os.path.exists(destPath):
+		   os.makedirs(destPath)
+	# case 'cp -R src/ dest/' where dest/ does not exist
+	else:
+	   os.makedirs(dest)
+	   destPath = dest
+	# actually copy the files
+	copyItems(src, destPath)
+
+
+def accumulatorFunction(target, source, env):
+	"""Function called when builder is called"""
+	destDir = str(target[0])
+	if not os.path.exists(destDir):
+		os.makedirs(destDir)
+	for s in source:
+		s = str(s)
+		if os.path.isdir(s):
+			myShutil.copytree(s, destDir, symlinks = False)
+		else:
+			shutil.copy2(s, destDir)
+
+
+
+class Maker:
+	"""The main class that handle all the complicated SConstruct stuff"""
+	
+	def __init__(self, name="a.out", version="0.0"):
+		"""In this constructors are defined the usefull build variables"""
+		
+		# name of the program
+		# TODO: get the project name from the .kdevelop file
+		self.name = name
+		
+		# version of the program
+		self.version = version
+		
+
+		# Extensions of the source code files
+		self.source_extensions = ['.cpp']
+
+
+		# flags for optimization, use them in production
+		#foptim = '-fcaller-saves -fcse-follow-jumps -fcse-skip-blocks  \
+		#		  -felide-constructors -fexpensive-optimizations -ffast-math \
+		#		  -ffloat-store -funroll-all-loops -funroll-loops'
+		self.flags_optimization = '-O2 -mfpmath=sse' # better than -03 for me
+
+		# flags for checking the code
+		#-Wstrict-prototypes -Wmissing-prototypes 
+		self.flags_check = '-Wall -ansi -pedantic -Wimplicit -Wredundant-decls -Wreturn-type -Wunused'
+				  
+		# flags for debugging
+		self.flags_debug = '-ggdb -D _GLIBCXX_DEBUG '
+		
+		# more flags
+		self.flags_sup = '' #-Wno-deprecated 
+
+		# Default directories
+		self.dir_src = "src"
+		self.dir_build = "build"
+		self.dir_dist = "dist"
+
+		# Path to libraries
+		self.lib_path = ['/usr/lib','/usr/local/lib']
+		
+		# Libraries to use
+		self.libs = []
+
+		# default options
+		self.options = Options()
+		# Use the same scons way of adding options, on the 'options' member object
+		self.options.AddOptions( \
+			BoolOption('debug', 'Compile with the debug informations',1) \
+		)
+		self.options.AddOptions( ('flags','Additional flags to pass to the compiler','') )
+		# You must update the environment
+		self.options.Update(env)
+
+		# Grab the list of files
+		self.sources = self.getKDevelopSourceList()
+		self.files = self.getKDevelopFileList()
+
+
+	def getKDevelopSourceList(self):
+		"""Extract the source file list from the kdevelop project files"""
+
+		# Open project.kdevelop.filelist
+		kdevlist = open(self.name+".kdevelop.filelist")
+		l = []
+		for f in kdevlist.readlines()[1:]:
+			f = f.strip()
+			# Only consider the specified extensions
+			for e in self.source_extensions:
+				if f.endswith( e ):
+					l += [f]
+		return l
+
+
+	def getKDevelopFileList(self):
+		"""Extract the list of all the files from the kdevelop project files"""
+
+		# Open project.kdevelop.filelist
+		kdevlist = open(self.name+".kdevelop.filelist")
+		l = []
+		# Get all the files that are listed as part of the kdevelop project
+		for f in kdevlist.readlines()[1:]:
+			l += [f.strip()]
+
+		# Add the kdevelop project configuration files
+		for f in os.listdir('.'):
+			if f.find(self.name+'.')==0 and not f.endswith('~'):
+				l += [f]
+
+		return l
+
+
+	def makePackagingSource(self):
+		"""Put the files of the projects in a new builder"""
+		# TODO: improve the dist part so that it can generate archives of binaries
+			
+		# add builder to accumulate files
+		accuBuilder = env.Builder(action=accumulatorFunction,
+			source_factory=SCons.Node.FS.default_fs.Entry,
+			target_factory=SCons.Node.FS.default_fs.Entry,
+			multi=1)
+		env['BUILDERS']['Accumulate'] = accuBuilder
+
+		# add builder to zip files
+		zipBuilder = env.Builder(action=zipperFunction,
+		   source_factory=SCons.Node.FS.default_fs.Entry,
+		   target_factory=SCons.Node.FS.default_fs.Entry,
+		   multi=0)
+		env['BUILDERS']['Zipper'] = zipBuilder
+
+		# temporary directory where files are stored
+		distDir = self.dir_dist
+		#Execute(Delete(distDir))
+
+		# base name of the package
+		zipName = self.name+"-"+self.version
+
+		# directory to use
+		accDir = os.path.join(distDir,zipName)
+	
+		# Add the files
+		env.Accumulate(accDir, self.files)
+
+		# zip an archive
+		env.Zipper(zipName, distDir)
+
+		# use dist as target
+		env.Alias(self.dir_dist,[zipName])
+
+
+
+	def prepareBuild( self, name, envId, sources, sourceDir="src", buildDir = "build" ):
+		"""Automatic handling of several build directory with several options.
+		ex.: name = 'prog', envId = 'debug', sources = ['src/lib1.cpp', 'src/lib2.cpp','src/main.cpp'], sourceDir = 'src'"""
+
+		# target = build/debug/prog
+		target = os.path.join(buildDir,envId,name)
+
+		# sources = ['build/debug/lib1.cpp', 'build/debug/lib2.cpp','build/debug/main.cpp']
+		sources = [f.replace(sourceDir+os.path.sep, buildDir+os.path.sep+envId+os.path.sep) for f in sources]
+
+		return target, sources
+
+
+	def make(self):
+		"""The SConstruct code"""
+		# if debug, then add the debug options
+		if env['debug']==1:
+			flags = " ".join( [self.flags_check,self.flags_sup,self.flags_debug,env['flags']] )
+		else:
+			flags = " ".join( [self.flags_check,self.flags_sup,env['flags']] )
+
+		# make the changes
+		env.Replace( CCFLAGS = flags )
+	
+		# Generate the help
+		Help( self.options.GenerateHelpText(env) )
+
+		# list of the boolean options asked
+		opts_list = [o.key for o in self.options.options if env[o.key]==1 ] # or env[o.key]==0]
+
+		# ex.: a "prog-debug-network/" directory
+		target_id = "-".join( [self.name] + opts_list )
+		
+		# Prepare the correct directories for building
+		_target, _sources = self.prepareBuild( self.name, target_id, self.sources, self.dir_src, self.dir_build )
+		
+		# Apply in SCons
+		env.BuildDir( os.path.join( self.dir_build, target_id ), self.dir_src )
+		
+		# The default target
+		# TODO: handle libraries
+		default = env.Program( target = _target, source = _sources, LIBPATH=self.lib_path, LIBS=self.libs  )
+
+		# Make the dist target
+		self.makePackagingSource()
+
+		Default(default)
+
+
+
+###################################################################################
+#
+# Your own specific code
+#
+###################################################################################
+
+# Instanciate the Maker class, that wrap all the boring work
+m = Maker( name="eometah", version="0.1" )
+
+# Pass some more flags to the compiler
+# Here, the version as a precompiler constant 
+# TODO: handle config.h
+m.flags_sup = " -D VERSION=\"\\\""+m.version+"\\\"\" "
+
+# Add a fake option to the environment
+# The options set to 0 are not specified when generating the build directories
+# ex.: scons test=0 will be built in build/name
+#      scons test=1 will be built in build/name-test
+m.options.AddOptions(\
+	BoolOption('test', 'Does nothing',0) \
+)
+m.options.Update(env)
+
+# The configure part is too specific
+# so you have to do it by yourself
+conf = Configure(env)
+if not ( conf.CheckLib('libeo') and conf.CheckLib('libeoutils') ):
+	print 'EO (Evolving Objects) must be installed'
+	Exit(1)
+else:
+	env.Replace( CPPPATH='/usr/local/include/eo/' )
+	# Add some libs
+	m.libs += ['eo','eoutils']
+env = conf.Finish()
+
+# Launch the whole thing
+m.make()

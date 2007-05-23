@@ -1,0 +1,8 @@
+# KDevelop Custom Project File List
+Makefile
+SConstruct
+src/test.cpp
+src/eosMetaheuristic.h
+src/eosExceptions.cpp
+src/eosExceptions.h
+src/eosOperators.h
